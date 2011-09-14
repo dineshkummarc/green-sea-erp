@@ -1,0 +1,26 @@
+<?php
+return array(
+    "user"=>array(
+        "text"=>"我的资料",
+        "info"=>"查看资料",
+        "editinfo"=>"修改资料",
+        "receive"=>"收货地址",
+        "changepwd"=>"修改密码",
+        "score"=>"我的积分",
+        "scoreexplain"=>"积分说明",
+        "contact"=>"意见反馈",
+    	"download"=>"作品下载",
+        "adduser"=>"添加新客户"
+    ),
+    "order"=>array(
+        "text"=>"我的订单",
+        "index"=>"订单列表",
+        "show"=>"订单详情",
+        "add"=>"添加新订单",
+        "edit"=>"修改订单",
+        "goodslist"=>"订单物品",
+        "goodsedit"=>"订单物品",
+        "shootscene"=>"订单需求",
+        "selectmodels"=>"选择模特"
+    ),
+);

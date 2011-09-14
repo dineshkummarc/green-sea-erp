@@ -1,0 +1,264 @@
+@CHARSET "UTF-8";
+.error
+{
+    color: #B62C12;
+}
+
+.error-container
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    z-index: 999;
+}
+
+.error-container .error
+{
+    width: 120px;
+    position: absolute;
+    padding: 5px;
+    border: 1px solid #B62C12;
+    background: #FFFFDE;
+}
+
+.step
+{
+    float: left;
+    width: 110px;
+    height: 43px;
+    line-height: 43px;
+    color: #FFF;
+    margin-right: 10px;
+    padding-left: 20px;
+    background: url(../images/order-step.png) no-repeat;
+}
+
+.step.active
+{
+    background: url(../images/order-step-active.png) no-repeat;
+}
+
+.table
+{
+    width: 100%;
+    margin: 20px 0;
+    border-top: 1px solid #C6C5C5;
+    border-left: 1px solid #C6C5C5;
+}
+
+.table td
+{
+    padding: 5px 5px 5px 10px;;
+    border-right: 1px solid #C6C5C5;
+    border-bottom: 1px solid #C6C5C5;
+}
+
+.table .label
+{
+    width: 120px;
+    background: #EAEAEA;
+    text-align: right;
+    vertical-align: top;
+}
+
+.models 
+{
+    padding: 0 20px;
+}
+
+.models h2
+{
+    padding: 10px 0;
+}
+
+.models .selected
+{
+    height: 35px;
+    line-height: 35px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    background: #e2e2e2;
+}
+
+.models .selected span
+{
+    color: #98BF24;
+    margin-right: 10px;
+}
+
+.model
+{
+    display: inline-block;
+    *display: inline;
+    padding: 5px;
+    width: 133px;
+    border: 1px solid #CCC;
+    text-align: center;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.model .name
+{
+    font-size: 14px;
+    padding: 2px 0;
+}
+
+.box-separation
+{
+    border: 1px solid #c6c5c5;
+    border-bottom: 0 none;
+}
+
+.box-separation div
+{
+    padding-left: 10px;
+    line-height: 31px;
+    border-bottom: 1px solid #c6c5c5;
+}
+
+.box-separation div.separation
+{
+    background: #EAEAEA;
+}
+
+*.box-separation input
+{
+    margin: 9px 0;
+    vertical-align:middle;
+}
+
+table.list tr.head
+{
+    background: url(../images/client-bg.png) no-repeat 0 -268px;
+}
+
+table.list th, table.list td
+{
+    padding-left: 5px;
+}
+
+table.list
+{
+    border-left: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+}
+
+table.list th
+{
+    height: 32px;
+}
+
+table.list td
+{
+    height: 32px;
+    border-bottom: 1px solid #CCC;
+}
+
+.title
+{
+    font-weight: bold;
+    padding: 15px 0;
+}
+
+#content .right .box
+{
+    padding-left: 10px;
+    border: 1px solid #CCC;
+    min-height: 30px;
+    _height: 30px;
+    line-height: 30px;
+}
+
+#content .right .order-price
+{
+    background: #DFB;
+}
+
+#content .right .model-container
+{
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+}
+
+#content .right .model-container .models, #content .right .model-container .model-info-container
+{
+    float: left;
+    display: inline;
+    height: 208px;
+    padding: 5px;
+    margin-right: 10px;
+    background: url(../images/client-bg.png) no-repeat -55px -45px;
+    border: 1px solid #C6C5C5;
+}
+
+#content .right .model-container .models
+{
+    width: 140px;
+    overflow: auto;
+}
+
+#content .right .model-container .models li a
+{
+    float: right;
+    display: inline;
+}
+
+#content .right .model-container .model-info-container
+{
+    width: 500px;
+    padding: 5px 10px;
+    margin: 0;
+    overflow: auto;
+}
+
+#content .right .model-container .model-info-container .model-info
+{
+    float: left;
+    width: 130px;
+    display: inline;
+    margin-right: 15px;
+}
+
+#content .right .model-container .model-info-container .model-info label
+{
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: 70px;
+}
+
+#content .right .model-container .model-info-container .model-image
+{
+    float: left;
+    width: 330px;
+    display: inline;
+}
+
+#content .right .price
+{
+    color: #98bf24;
+}
+
+#content .right .total-price
+{
+    text-align: right;
+    margin-top: 10px;
+    padding-right: 20px;
+    background: none;
+    color: #98bf24;
+}
+
+#content .right .total-price .error
+{
+    margin-right: 10px;
+}
+
+#content .right .info
+{
+    padding-left: 10px;
+    color: #ec6941;
+}

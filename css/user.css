@@ -1,0 +1,157 @@
+@CHARSET "UTF-8";
+#content .right .title
+{
+    height: 32px;
+    line-height: 32px;
+    background: url(../images/client-bg.png) no-repeat 0 -268px;
+    padding: 0 20px;
+}
+
+#content .right .title a
+{
+    float: right;
+}
+
+#content .right .info
+{
+    padding: 20px 10px;
+}
+
+#content .right .info div
+{
+    height: 32px;
+    line-height: 32px;
+}
+
+#content .right .info label
+{
+    display: inline-block;
+    *display: inline;
+    width: 95px;
+    text-align: right;
+}
+
+#content .right .info span
+{
+    padding-left: 10px;
+}
+
+#content .right .receive-list
+{
+    border: 1px solid #C6C5C5;
+}
+
+#content .right .receive-list td
+{
+    padding: 5px;
+    border-top: 1px solid #C6C5C5;
+}
+
+#content .right .receive-list .head th
+{
+    font-style: normal;
+    font-weight: normal;
+    height: 30px;
+    text-align: center;
+    background: url(../images/title-bg.jpg) repeat-x 0 0;
+}
+
+#content .right .add-address
+{
+    margin: 10px 0;
+}
+
+#content .right .add-address div
+{
+    padding: 5px 0;
+}
+
+#content .right .add-address label
+{
+    float: left;
+    width: 100px;
+    padding-right: 10px;
+    text-align: right;
+}
+
+#content .right .concate
+{
+    padding: 5px 10px 0 10px;
+}
+
+#content .right .contact p
+{
+    padding: 5px 0;
+}
+
+#content .right .contact .imp
+{
+    color: #98bf24;
+    text-decoration: underline;
+}
+
+#content .right .score-explain
+{
+    padding-left: 40px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #727171;
+}
+
+#content .right .score-explain div
+{
+    padding: 5px 0;
+}
+
+#content .right .score-explain .green
+{
+    color: #a1d237
+}
+
+#content .right .score-explain .indent
+{
+    padding-left: 2em;
+}
+
+#content .right .score
+{
+    color: #666;
+    padding-left: 20px;
+}
+
+#content .right .score div
+{
+    padding: 5px 0;
+}
+
+#content .right .score .notice
+{
+    margin-top: 5px;
+    background: #e5ffff;
+    border: 1px solid #cce5e5;
+    padding: 2px 5px;
+}
+
+#content .right .score-log 
+{
+    border-top: 1px solid #CCC;
+    border-left: 1px solid #CCC;
+}
+
+#content .right .score-log th, #content .right .score-log td
+{
+    border-bottom: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+}
+
+#content .right .score-log th
+{
+    background: #ccc;
+    padding: 2px 0;
+}
+
+#content .right .score-log td
+{
+    padding: 2px 5px;
+}
+

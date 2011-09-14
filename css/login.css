@@ -1,0 +1,55 @@
+@CHARSET "UTF-8";
+.content .form
+{
+    font-size: 14px;
+    padding: 50px 0 80px 150px;
+}
+
+.content .form .row
+{
+    height: 35px;
+    line-height: 35px;
+}
+
+.content .form .row label
+{
+    float: left;
+    width: 150px;
+    text-align: right;
+    margin-right: 20px;
+}
+
+.content .form .row input
+{
+    float: left;
+    padding: 5px 0;
+}
+
+.content .form .row_remember
+{
+    padding: 10px;
+    padding-left: 170px;
+}
+
+.content .form .row_submit
+{
+    padding: 10px;
+    padding-left: 170px;
+}
+
+.content .form .error
+{
+    color: #000;
+}
+
+.content .form .error input, .content .form input.error 
+{
+    border: 1px solid #B62C12;
+}
+
+.content .form .errorMessage
+{
+    float: left;
+    color: #B62C12;
+    margin-left: 10px;
+}
