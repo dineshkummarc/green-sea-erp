@@ -78,6 +78,7 @@ class Order extends CActiveRecord
 			array('following, square, artwork, retouch, typesetting, diff_color, status', 'numerical', 'integerOnly'=>true),
 			array('sn, user_name', 'length', 'max'=>20),
 			array('user_id, create_time, update_time, pay_time, receive_time, shoot_time, studio_shoot, outdoor_shoot', 'length', 'max'=>10),
+			array('pay_time, receive_time, shoot_time, studio_shoot, outdoor_shoot', 'default', 'value'=>0),
 			array('logistics_sn', 'length', 'max'=>50),
 			array('example_img, shoot_notice', 'length', 'max'=>200),
 			array('total_price', 'length', 'max'=>6),

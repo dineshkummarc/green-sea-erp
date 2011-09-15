@@ -55,6 +55,7 @@ class OrderGoods extends CActiveRecord
 			array('order_id, sn, season, sex, type, type_name, shoot_type, style, count, width, detail_width, status', 'required'),
 			array('season, sex, status', 'numerical', 'integerOnly'=>true),
 			array('order_id, type, shoot_type, style, count, real_count, shoot_count, width, detail_width', 'length', 'max'=>10),
+			array('price', 'default', 'value'=>0),
 			array('real_count, shoot_count', 'default', 'value'=>0),
 			array('sn, type_name', 'length', 'max'=>20),
 			array('memo', 'length', 'max'=>255),
