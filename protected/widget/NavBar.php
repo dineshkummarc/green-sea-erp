@@ -3,7 +3,7 @@ class NavBar extends CWidget
 {
     public function run()
     {
-        $this->render('navbar/index');
+        $this->render('navbar');
     }
 }
 ?>
