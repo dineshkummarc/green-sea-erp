@@ -66,6 +66,7 @@
             </td>
             <td>
                 <input id="goods-count" type="text" name="Form[count]" class="input" style="width: 100px;" value="<?php if (isset($goods->count)) echo $goods->count; ?>" tip="请填写" />
+                只能填数字
             </td>
         </tr>
         <tr>
