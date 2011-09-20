@@ -39,12 +39,12 @@ return array(
                 "active"=>"contact",
                 "url"=>"user/contact",
             ),
-            array(
+            /*array(
                 "text"=>"作品下载",
                 "active"=>"download",
                 "class"=>"no-top",
                 "url"=>"user/dowload",
-            ),
+            ),*/
         ),
     ),
     array(
@@ -61,11 +61,11 @@ return array(
                 "active"=>"index",
                 "url"=>"order/index",
             ),
-            array(
+            /*array(
                 "text"=>"订单详情",
                 "active"=>"show",
                 "url"=>"order/show",
-            ),
+            ),*/
         ),
     ),
 );
