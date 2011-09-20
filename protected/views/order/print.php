@@ -208,7 +208,13 @@
                 </tr>
                 <tr>
                     <td width="18%">增值服务</td>
-                    <td>需要方形主图：否&nbsp;&nbsp;&nbsp;修图标准：简修&nbsp;&nbsp;&nbsp;是否跟拍：否</td>
+                    <td>
+                        需要方形主图：<?php echo $order->square == 1 ? "是" : "否" ?>&nbsp;&nbsp;
+                        修图标准：<?php echo $order->retouch == 1 ? "简修" : "精修" ?>&nbsp;&nbsp;
+                        是否跟拍：<?php echo $order->following == 1 ? "是" : "否" ?>&nbsp;&nbsp;
+                        排版：<?php echo $order->typesetting == 1 ? "需要" : "不需要" ?>&nbsp;&nbsp;
+                        同款不同色：<?php echo $order->diff_color == 1 ? "需要" : "不需要" ?>
+                    </td>
                 </tr>
                 <tr>
                     <td width="18%">订单备注</td>
