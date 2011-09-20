@@ -17,6 +17,7 @@ function userInit()
             option = "<option value=\"" +  area.id+ "\">" + area.name + "</option>";
             shi.append(option);
         }
+        $(this).css('zoom', 1);
     });
     $("select#shi").change(function () {
         if (this.value == 0) return false;
@@ -112,7 +113,7 @@ function validateReceive()
         alert("请填写电话号码或者手机号码任意一个");
         return false;
     }
-    else if (mobile_phone != "" && !/^0{0,1}(13[0-9]|15[0-9])[0-9]{8}$/.test(mobile_phone))
+    else if (mobile_phone != "" && !/^0{0,1}1[0-9]{2}[0-9]{8}$/.test(mobile_phone))
     {
         alert("手机号码格式错误");
         return false;
@@ -195,7 +196,7 @@ function validateReg()
         return false;
     }
     
-    var regexp = /^0{0,1}(13[0-9]|15[0-9])[0-9]{8}$/;
+    var regexp = /^0{0,1}1[0-9]{2}[0-9]{8}$/;
 
     if (!regexp.test(mobile_phone))
     {
