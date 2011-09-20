@@ -100,7 +100,7 @@ function validateGoods()
     }
     
     var count = $("#goods-count");
-    var numRegexp = /\d{1,}/;
+    var numRegexp = /^\d{1,}$/;
     if (count.val() == '' || !numRegexp.test(count.val()) || count.val() < 1)
     {
         alert("请填写正确的拍摄数量");
@@ -445,10 +445,10 @@ function goodsCountValidator(dom)
         showError(dom, '请填写拍摄数量');
         return false;
     }
-    var regexp = /^\d*$/;
+    var regexp = /^\d{1,}$/;
     if (!regexp.test(dom.val()))
     {
-        showError(dom, '拍摄数量只能为数组');
+        showError(dom, '拍摄数量只能为数字');
         return false;
     }
     else
