@@ -1,5 +1,5 @@
-<div class="step active">添加拍摄物品</div>
-<div class="step">填写拍摄要求</div>
+<div class="step">添加拍摄物品</div>
+<div class="step active">填写拍摄要求</div>
 <div class="step">选择付款方式</div>
 <div class="step">生成订单</div>
 <div class="clear"></div>
@@ -57,7 +57,7 @@
             <td class="label">是否跟拍：</td>
             <td>
                 <label><input type="radio" name="Form[following]" value="0" checked />否</label>&nbsp;&nbsp;&nbsp;
-                <label><input type="radio" name="Form[following]" value="1" />是</label>
+                <label><input type="radio" name="Form[following]" value="1" onclick="alert('选择此项请联系客服')" />是</label>
             </td>
         </tr>
         <tr>
@@ -80,7 +80,7 @@
             <td>
                 <label><input type="radio" name="Form[retouch]" value="1" checked /> 简修图</label>&nbsp;&nbsp;&nbsp;
                 <a href="#">简修图说明</a><br/>
-                <label><input type="radio" name="Form[retouch]" value="2" /> 精修图</label>&nbsp;&nbsp;&nbsp;
+                <label><input type="radio" name="Form[retouch]" value="2" onclick="alert('选择此项请联系客服')" /> 精修图</label>&nbsp;&nbsp;&nbsp;
                 <span class="error">此项为收费项目，请联系客服说明具体的需求</span>
             </td>
         </tr>
@@ -105,7 +105,7 @@
             <td>
                 <label><input type="radio" name="Form[square]" value="0" checked /> 不需要</label>&nbsp;&nbsp;&nbsp;
                 <br/>
-                <label><input type="radio" name="Form[square]" value="1" /> 需要</label>&nbsp;&nbsp;<span class="error">选择此项请与客服联系</span>
+                <label><input type="radio" name="Form[square]" value="1" onclick="alert('选择此项请联系客服')" /> 需要</label>&nbsp;&nbsp;<span class="error">选择此项请与客服联系</span>
             </td>
         </tr>
         <tr>
@@ -113,7 +113,7 @@
             <td>
                 <label><input type="radio" name="Form[typesetting]" value="0" checked /> 不需要</label>&nbsp;&nbsp;&nbsp;
                 <br/>
-                <label><input type="radio" name="Form[typesetting]" value="1" /> 需要</label>&nbsp;&nbsp;<span class="error">选择此项请与客服联系</span>
+                <label><input type="radio" name="Form[typesetting]" value="1" onclick="alert('选择此项请联系客服')" /> 需要</label>&nbsp;&nbsp;<span class="error">选择此项请与客服联系</span>
             </td>
         </tr>
         <tr>
@@ -121,7 +121,7 @@
             <td>
                 <label><input type="radio" name="Form[diff_color]" value="0" checked /> 不需要</label>&nbsp;&nbsp;&nbsp;
                 <br/>
-                <label><input type="radio" name="Form[diff_color]" value="1" /> 需要</label>&nbsp;&nbsp;<span class="error">选择此项请与客服联系</span>
+                <label><input type="radio" name="Form[diff_color]" value="1" onclick="alert('选择此项请联系客服')" /> 需要</label>&nbsp;&nbsp;<span class="error">选择此项请与客服联系</span>
             </td>
         </tr>
         <tr>
@@ -134,6 +134,12 @@
             <td class="label">价格：</td>
             <td>
                 <input type="text" name="Form[total_price]" class="input" />
+            </td>
+        </tr>
+        <tr>
+            <td class="label">运单号：</td>
+            <td>
+                <input type="text" name="Form[logistics_sn]" class="input" />
             </td>
         </tr>
     </table>

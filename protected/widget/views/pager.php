@@ -13,33 +13,33 @@
             <?php if ($this->pages->pageCount <= 1): ?>
             <li><label class="disable">首页</label></li>
             <?php else: ?>
-            <li><a href="<?php echo $controller->createUrl($url, array_merge(array('page'=>1), $params)); ?>">首页</a></li>
+            <li><a href="<?php echo $this->pages->createPageUrl($this->controller, 0); ?>">首页</a></li>
             <?php endif; ?>
 
-            <?php if ($this->pages->currentPage + 1 == 1): ?>
+            <?php if ($this->pages->currentPage + 1 >= 1): ?>
             <li><label class="disable">上一页</label></li>
             <?php else: ?>
-            <li><a id="next" href="<?php echo $controller->createUrl($url, array_merge(array('page'=>$this->pages->currentPage), $params)); ?>">上一页</a></li>
+            <li><a id="next" href="<?php echo $this->pages->createPageUrl($this->controller, $this->pages->currentPage); ?>">上一页</a></li>
             <?php endif; ?>
 
             <?php for ($p = 0; $p < $this->pages->pageCount; $p++): ?>
             <?php if ($this->pages->currentPage == $p): ?>
             <li><label class="current"><?php echo $p + 1; ?></label></li>
             <?php else: ?>
-            <li><a href="<?php echo $controller->createUrl($url, array_merge(array('page'=>$p + 1), $params)); ?>"><?php echo $p + 1; ?></a></li>
+            <li><a href="<?php echo $this->pages->createPageUrl($this->controller, $p); ?>"><?php echo $p + 1; ?></a></li>
             <?php endif; ?>
             <?php endfor;  ?>
 
             <?php if ($this->pages->currentPage <= $this->pages->pageCount): ?>
             <li><label class="disable">下一页</label></li>
             <?php else: ?>
-            <li><a href="<?php echo $controller->createUrl($url, array_merge(array('page'=>$this->pages->currentPage + 2), $params)); ?>">下一页</a></li>
+            <li><a href="<?php echo $this->pages->createPageUrl($this->controller, $this->pages->currentPage + 1); ?>">下一页</a></li>
             <?php endif; ?>
 
             <?php if ($this->pages->pageCount <= 1): ?>
             <li><label class="disable">末页</label></li>
             <?php else: ?>
-            <li><a href="<?php echo $controller->createUrl($url, array_merge(array('page'=>$this->pages->pageCount), $params)); ?>">末页</a></li>
+            <li><a href="<?php echo $this->pages->createPageUrl($this->controller, $this->pages->pageCount - 1); ?>">末页</a></li>
             <?php endif; ?>
         </ul>
     </div>

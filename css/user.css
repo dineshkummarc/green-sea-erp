@@ -12,30 +12,6 @@
     float: right;
 }
 
-#content .right .info
-{
-    padding: 20px 10px;
-}
-
-#content .right .info div
-{
-    height: 32px;
-    line-height: 32px;
-}
-
-#content .right .info label
-{
-    display: inline-block;
-    *display: inline;
-    width: 95px;
-    text-align: right;
-}
-
-#content .right .info span
-{
-    padding-left: 10px;
-}
-
 #content .right .receive-list
 {
     border: 1px solid #C6C5C5;

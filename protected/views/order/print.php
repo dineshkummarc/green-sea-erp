@@ -80,15 +80,21 @@
                 </tr>
                 <tr>
                     <td width="15%">客户名</td>
-                    <td width="25%"><?php echo $user->name; ?></td>
+                    <td width="25%"><?php echo $order->User->name; ?></td>
                     <td width="6%">QQ</td>
-                    <td width="20%"><?php echo $user->qq; ?></td>
+                    <td width="20%"><?php echo $order->User->qq; ?></td>
                     <td width="14%">手机号</td>
-                    <td><?php echo $user->mobile_phone; ?></td>
+                    <td><?php echo $order->User->mobile_phone; ?></td>
+                </tr>
+                <tr>
+                    <td width="15%">旺旺号</td>
+                    <td colspan="2"><?php echo $order->User->wangwang; ?></td>
+                    <td width="15%">运单号</td>
+                    <td colspan="2"><?php echo $order->logistics_sn; ?></td>
                 </tr>
                 <tr>
                     <td>店铺地址</td>
-                    <td colspan="5"><?php echo $user->page; ?></td>
+                    <td colspan="5"><?php echo $order->User->page; ?></td>
                 </tr>
                 <tr>
                     <td>地&nbsp;&nbsp;址</td>
@@ -115,9 +121,9 @@
                     <td><?php echo $goods->type_name; ?></td>
                     <td><?php echo $season[$goods->season]; ?></td>
                     <td><?php echo $sex[$goods->sex]; ?></td>
-                    <td><?php echo $shootType[$goods->shoot_type]; ?></td>
+                    <td><strong><?php echo $shootType[$goods->shoot_type]; ?></strong></td>
                     <td><?php echo $style[$goods->style]; ?></td>
-                    <td><?php echo $goods->count; ?></td>
+                    <td><strong><?php echo $goods->count; ?></strong></td>
                 </tr>
                 <tr class="content">
                     <td>订单备注：</td>
@@ -142,7 +148,7 @@
                 </tr>
                 <?php foreach ($models as $model): ?>
                 <tr>
-                    <td><?php echo $model->niki_name; ?></td>
+                    <td><strong><?php echo $model->nick_name; ?></strong></td>
                     <td><?php echo $model->height; ?></td>
                     <td><?php echo $model->weight; ?></td>
                     <td><?php echo $model->chest . "," . $model->waist . "," . $model->hip; ?></td>
@@ -161,11 +167,11 @@
                 </tr>
                 <tr>
                     <td width="18%">棚拍背景</td>
-                    <td><?php echo $order->studio_shoot; ?></td>
+                    <td><strong><?php echo $order->studio_shoot; ?></strong></td>
                 </tr>
                 <tr>
                     <td>外拍场景</td>
-                    <td><?php echo $order->outdoor_shoot; ?></td>
+                    <td><strong><?php echo $order->outdoor_shoot; ?></strong></td>
                 </tr>
                 <tr>
                     <td valign="top">搭配注意事项</td>
@@ -197,7 +203,7 @@
                         <?php foreach($goodsPublicInfo['width'] as $key=>$width): ?>
                         <div style="font-weight: bold; margin-bottom: 5px;"><?php echo $shootType[$key]; ?></div>
                         <div style="margin-bottom: 5px;">
-                            简图宽度：<?php echo $width[0] ?>px(像素)&nbsp;&nbsp;细节图宽度：<?php echo $width[1] ?>px(像素)<br/>
+                            简图宽度：<strong><?php echo $width[0] ?>px(像素)</strong>&nbsp;&nbsp;细节图宽度：<strong><?php echo $width[1] ?>px(像素)</strong><br/>
                         </div>
                         <?php endforeach; ?>
                     </td>
@@ -209,16 +215,16 @@
                 <tr>
                     <td width="18%">增值服务</td>
                     <td>
-                        需要方形主图：<?php echo $order->square == 1 ? "是" : "否" ?>&nbsp;&nbsp;
-                        修图标准：<?php echo $order->retouch == 1 ? "简修" : "精修" ?>&nbsp;&nbsp;
-                        是否跟拍：<?php echo $order->following == 1 ? "是" : "否" ?>&nbsp;&nbsp;
-                        排版：<?php echo $order->typesetting == 1 ? "需要" : "不需要" ?>&nbsp;&nbsp;
-                        同款不同色：<?php echo $order->diff_color == 1 ? "需要" : "不需要" ?>
+                        需要方形主图：<strong><?php echo $order->square == 1 ? "是" : "否" ?></strong>&nbsp;&nbsp;
+                        修图标准：<strong><?php echo $order->retouch == 1 ? "简修" : "精修" ?></strong>&nbsp;&nbsp;
+                        是否跟拍：<strong><?php echo $order->following == 1 ? "是" : "否" ?></strong>&nbsp;&nbsp;
+                        排版：<strong><?php echo $order->typesetting == 1 ? "需要" : "不需要" ?></strong>&nbsp;&nbsp;
+                        同款不同色：<strong><?php echo $order->diff_color == 1 ? "需要" : "不需要" ?></strong>
                     </td>
                 </tr>
                 <tr>
                     <td width="18%">订单备注</td>
-                    <td><?php echo empty($order->memo) ? "无" : $order->memo; ?></td>
+                    <td><strong><?php echo empty($order->memo) ? "无" : $order->memo; ?></strong></td>
                 </tr>
             </table>
 

@@ -11,7 +11,11 @@ class Controller extends CController
     public function beforeAction($action)
     {
         if (!in_array($action->id, $this->exclude) && Yii::app()->user->isGuest)
+        {
+            if (Yii::app()->user->id == 999)
+	            $this->redirect(array("order/index"));
             $this->redirect(Yii::app()->homeUrl);
+        }
         return true;
     }
 

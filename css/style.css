@@ -276,6 +276,85 @@ a.button.disable span
     left:0;
 }
 
+table.list
+{
+    border-left: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+}
+
+table.list tr.head
+{
+    background: url(../images/client-bg.png) no-repeat 0 -268px;
+}
+
+table.list th, table.list td
+{
+    padding-left: 5px;
+}
+
+table.list th
+{
+    height: 32px;
+}
+
+table.list td
+{
+    height: 32px;
+    border-bottom: 1px solid #CCC;
+}
+
+div.info
+{
+    padding: 20px 10px;
+}
+
+div.info div
+{
+    height: 32px;
+    line-height: 32px;
+}
+
+div.info label
+{
+    display: inline-block;
+    *display: inline;
+    width: 95px;
+    text-align: right;
+}
+
+div.info span
+{
+    padding-left: 10px;
+}
+
+div.detail
+{
+    margin: 0 auto;
+    border-left: 1px solid #CCC;
+    border-top: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+}
+
+div.detail label
+{
+    display: inline-block;
+    *display: inline;
+    text-align: center;
+    border-right: 1px solid #CCC;
+    width: 100px;
+    padding: 10px;
+}
+
+div.detail span
+{
+    padding: 10px;
+}
+
+div.detail .line
+{
+    border-bottom: 1px solid #CCC;
+}
+
 #head
 {
     width:960px;
@@ -524,7 +603,7 @@ a.button.disable span
 
 #content .right .pager .pages a, #content .right .pager .pages label
 {
-    display: block;
+    display: inline-block;
     padding: 0 5px;
     margin-right: 2px;
     height: 25px;

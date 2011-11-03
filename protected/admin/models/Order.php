@@ -50,7 +50,7 @@ class Order extends CActiveRecord
 	    $sql = "UPDATE {{order}} SET status = :status";
 	    $command = Yii::app()->db->createCommand($sql);
 	    $command->bindParam(":status", $status, PDO::PARAM_INT);
-	    $command->excute();
+	    $command->execute();
 	}
 
 	/**

@@ -16,7 +16,12 @@ class UserController extends Controller
 	public function actionLogin()
 	{
 	    if (!Yii::app()->user->isGuest)
-	        $this->redirect(array('user/info'));
+	    {
+	        if (Yii::app()->user->id == 999)
+                $this->redirect(array("order/index"));
+            else
+	            $this->redirect(array('user/info'));
+	    }
 	    $this->layout = false;
 	    array_push($this->cssFiles, 'login.css');
 		$model=new LoginForm;
@@ -27,6 +32,8 @@ class UserController extends Controller
 	        // 验证用户输入，并在判断输入正确后重定向到前一页（内置的验证validate）
 	        if($model->validate() && $model->login($time))
 	        {
+	            if (Yii::app()->user->id == 999)
+	                $this->redirect(array("order/index"));
 				$this->redirect($this->getUrlReferrer($this->createUrl('user/info')));
 	        }
 	    }
@@ -48,7 +55,7 @@ class UserController extends Controller
 	 */
 	public function actionAddUser()
 	{
-	    if (Yii::app()->user->id != 1)
+	    if (Yii::app()->user->id != 999)
 	        $this->redirect("user/index");
 
 	    if (isset($_POST['Form']))
@@ -347,9 +354,25 @@ class UserController extends Controller
 	{
 	}
 
-    public function actionTest()
+    public function actionList()
     {
-        echo strtolower("9518A98F75216F319247D6AE49C84A8C");
+        $userList = User::model()->findAll();
+        $this->render('list', array('userList'=>$userList));
+    }
+
+    public function actionDelUser($id = null)
+    {
+        if (empty($id))
+        {
+            $this->error("参数错误");
+            $this->redirect(array("user/list"));
+        }
+
+        $sql = "DELETE FROM {{user}} WHERE id = :id";
+        $command = Yii::app()->db->createCommand($sql);
+        $command->execute(array(':id'=>$id));
+        $this->success("删除成功");
+        $this->redirect(array("user/list"));
     }
 
 }

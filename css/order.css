@@ -34,7 +34,7 @@
     background: url(../images/order-step.png) no-repeat;
 }
 
-.step.active
+div.step.active
 {
     background: url(../images/order-step-active.png) no-repeat;
 }
@@ -90,8 +90,9 @@
 
 .model
 {
-    display: inline-block;
-    *display: inline;
+    /*display: inline-block;*/
+    /*display: inline;*/
+    float: left;
     padding: 5px;
     width: 133px;
     border: 1px solid #CCC;
@@ -128,33 +129,6 @@
 {
     margin: 9px 0;
     vertical-align:middle;
-}
-
-table.list tr.head
-{
-    background: url(../images/client-bg.png) no-repeat 0 -268px;
-}
-
-table.list th, table.list td
-{
-    padding-left: 5px;
-}
-
-table.list
-{
-    border-left: 1px solid #CCC;
-    border-right: 1px solid #CCC;
-}
-
-table.list th
-{
-    height: 32px;
-}
-
-table.list td
-{
-    height: 32px;
-    border-bottom: 1px solid #CCC;
 }
 
 .title

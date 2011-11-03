@@ -5,8 +5,12 @@ class SideBar extends CWidget
     {
         $controller = $this->controller;
         $action = $controller->action;
+        if (Yii::app()->user->id == 999)
+            $menuList = require(dirname(__FILE__)."/../config/adminMenu.php");
+        else
+            $menuList = Yii::app()->params['menu'];
         $this->render('sidebar', array(
-            'menuList'=>Yii::app()->params['menu'],
+            'menuList'=>$menuList,
         	'controller'=>$controller,
         	'action'=>$action
         ));

@@ -9,22 +9,37 @@ class OrderController extends Controller
     /**
      * 订单列表
      */
-	public function actionIndex()
+	public function actionIndex($sort = '', $logistics = '', $page = 1, $size = 20)
 	{
 	    $order = Order::model();
 	    $criteria = new CDbCriteria;
 	    $criteria->select = '*';
-	    if (Yii::app()->user->id > 1)
+	    if (Yii::app()->user->id != 999)
 	        $criteria->condition = "user_id = " . Yii::app()->user->id;
 
-	    $count = $order->count();
+        if (!empty($logistics))
+            $criteria->addCondition("logistics_sn like '%{$logistics}%'");
+	    $count = $order->count($criteria);
         $pages = new CPagination($count);
-        $pages->currentPage = empty($pageNum) ? 0 : $pageNum - 1;
-        $pages->pageSize = empty($numPerPage) ? 20 : $numPerPage;
+        $pages->currentPage = $page - 1;
+        $pages->pageSize = $size;
         $pages->applyLimit($criteria);
+        $params = array();
+        if ($sort === 'time')
+        {
+            $params['sort'] = 'time';
+            $criteria->order = 'create_time DESC';
+        }
+        elseif ($sort === 'status')
+        {
+            $params['sort'] = 'status';
+            $criteria->order = 'status ASC';
+        }
+        else
+            $criteria->order = 'create_time DESC, status ASC';
 
         $orderList = $order->findAll($criteria);
-		$this->render('index', array('orderList'=>$orderList));
+		$this->render('index', array('orderList'=>$orderList, 'pages'=>$pages, 'params'=>$params));
 	}
 
 	/**
@@ -63,7 +78,7 @@ class OrderController extends Controller
 	}
 
 
-	public function actionChangeStatus($id, $status)
+	public function actionChangeStatus($id = null, $status = null)
 	{
 	    if ($id === null || $status === null)
 	    {
@@ -94,7 +109,7 @@ class OrderController extends Controller
                     $sql = "UPDATE  {{user}} first = 0, update_time = :update_time WHERE id = " . Yii::app()->user->id;
                     $command = Yii::app()->db->createCommand($sql);
                     $command->bindParam(":update_time", Yii::app()->params['timestamp'], PDO::PARAM_INT);
-                    $command->excute();
+                    $command->execute();
                 }
                 // 如果累积消费大于等于5000，则额外赠送3000积分
                 if ((int)$price >= 5000)
@@ -105,7 +120,7 @@ class OrderController extends Controller
                     $command = Yii::app()->db->createCommand($sql);
                     $command->bindParam(":price", strval($price - 5000), PDO::PARAM_STR);
                     $command->bindParam(":update_time", Yii::app()->params['timestamp'], PDO::PARAM_INT);
-                    $command->excute();
+                    $command->execute();
                 }
             }
 	    }
@@ -375,7 +390,7 @@ class OrderController extends Controller
 	    }
 
 	    $criteria = new CDbCriteria;
-	    $criteria->select = "t.id, t.niki_name, t.head_img_thumb";
+	    $criteria->select = "t.id, t.nick_name, t.head_img, t.picture";
 	    $models = Models::model()->findAll($criteria);
 	    $modelArr = array();
 	    foreach ($models as $model)
@@ -463,7 +478,7 @@ class OrderController extends Controller
                 $nextOrder += 1;
                 $user->setState("nextOrder", $nextOrder);
                 $userInfo->next_order = $nextOrder;
-                $userInfo ->save();
+                $userInfo->save();
                 $this->success("订单添加成功");
                 $this->redirect(array('order/index'));
             }
@@ -484,6 +499,22 @@ class OrderController extends Controller
 	    ));
 	}
 
+	public function actionEditShootScene($id)
+	{
+	    if (isset($_POST['id']))
+	    {
+	        $sql = "UPDATE {{order}} SET `memo` = :memo, `update_time` = :time WHERE `id` = :id";
+	        $command = Yii::app()->db->createCommand($sql);
+	        $command->execute(array(':id'=>$_POST['id'], ':memo'=>$_POST['memo'], ':time'=>Yii::app()->params['timestamp']));
+	        $this->success("修改成功");
+            $this->redirect(array('order/index'));
+	    }
+	    $sql = "SELECT `memo` FROM {{order}} WHERE id = :id";
+	    $command = Yii::app()->db->createCommand($sql);
+	    $memo = $command->queryScalar(array(':id'=>$id));
+	    $this->render('editShootScene', array('memo'=>$memo, 'id'=>$id));
+	}
+
 	/**
 	 * 打印订单
 	 * @param integer $id order id
@@ -498,7 +529,6 @@ class OrderController extends Controller
 	    $this->layout = false;
 
 	    // 获取数据库信息
-        $user = User::model()->findByPk(Yii::app()->user->id);
 	    $order = Order::model()->findByPk($id);
 	    $goodsList = OrderGoods::model()->findAllByAttributes(array('order_id'=>$order->id));
 	    $models = OrderModel::model()->findAllByAttributes(array('order_id'=>$order->id));
@@ -551,7 +581,6 @@ class OrderController extends Controller
         }
 
 	    $this->render("print", array(
-	        'user'=>$user,
 	        'order'=>$order,
 	        'goodsList'=>$goodsList,
 	    	'models'=>$models,

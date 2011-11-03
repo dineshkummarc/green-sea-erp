@@ -93,7 +93,7 @@ return array(
 		// this is used in contact page
 		'timestamp'=>time(),
 	    'upload_path'=>dirname(__FILE__).'/../../uploads/',
-	    'upload_url'=>'uploads/',
+    	'upload_url'=>'uploads/',
 	    'sitemap'=>require("sitemap.php"),
 	    'menu'=>require("menu.php"),
 	),

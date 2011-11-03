@@ -42,7 +42,7 @@ class User extends CActiveRecord
 	    $command->bindParam(":socre", $score);
 	    $command->bindParam(":update_time", Yii::app()->parames['timestamp']);
 	    $command->bindParam(":user_id", Yii::app()->user->id);
-	    $command->excute();
+	    $command->execute();
 
 	    // 保存日志
 	    ScoreLog::log($score, $reason);

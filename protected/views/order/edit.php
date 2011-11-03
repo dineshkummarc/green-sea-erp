@@ -104,7 +104,7 @@ var models = <?php echo json_encode($models); ?>;
                     <a id="<?php echo $model['id']; ?>" target="showModel" href="javascript: void(0);">查看</a>
                     <label>
                         <input type="checkbox" name="Form[models][]" value="<?php echo $model['id']; ?>"
-                        style="margin-right: 5px;" /><?php echo $model['niki_name']; ?>
+                        style="margin-right: 5px;" /><?php echo $model['nick_name']; ?>
                     </label>
                 </li>
                 <?php endforeach; ?>
@@ -113,7 +113,7 @@ var models = <?php echo json_encode($models); ?>;
         <div id="model-info-container" class="model-info-container">
             <?php $model = $models[0]; ?>
             <div class="model-info">
-                <div id="niki_name"><label>昵称：</label><span><?php echo $model['niki_name']; ?></span></div>
+                <div id="nick_name"><label>昵称：</label><span><?php echo $model['nick_name']; ?></span></div>
                 <div id="china_name"><label>中文名：</label><span><?php echo $model['china_name']; ?></span></div>
                 <div id="english_name"><label>英文名：</label><span><?php echo $model['english_name']; ?></span></div>
                 <div id="height"><label>身高(CM)：</label><span><?php echo $model['height']; ?></span></div>

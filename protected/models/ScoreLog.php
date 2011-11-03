@@ -27,12 +27,12 @@ class ScoreLog extends CActiveRecord
     public static function log($score, $reason)
 	{
 	    $sql = "INSERT INTO {{score_log}} (id, user_id, score, reason, create_time) VALUES (NULL, :user_id, :score, :reason, :create_time)";
-	    $command = Yii::app()->db->createCommand();
+	    $command = Yii::app()->db->createCommand($sql);
 	    $command->bindParam(":user_id", Yii::app()->user->id);
 	    $command->bindParam(":score", $score);
 	    $command->bindParam(":reason", $reason);
 	    $command->bindParam(":create_time", Yii::app()->params['timestamp']);
-	    $command->excute();
+	    $command->execute();
 	}
 
 	/**

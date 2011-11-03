@@ -13,6 +13,9 @@
             <label>手机号：</label><input type="text" name="Form[mobile_phone]" class="input" value="<?php echo $info->mobile_phone; ?>" />
         </div>
         <div>
+            <label>电话号：</label><input type="text" name="Form[phone]" class="input" value="<?php echo $info->phone; ?>" />
+        </div>
+        <div>
             <label>淘宝网店地址：</label><input type="text" name="Form[page]" class="input" value="<?php echo $info->page; ?>" />
         </div>
         <div style="margin-top: 10px; padding-left: 120px;">

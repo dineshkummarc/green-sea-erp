@@ -10,7 +10,14 @@ return array(
         "scoreexplain"=>"积分说明",
         "contact"=>"意见反馈",
     	"download"=>"作品下载",
-        "adduser"=>"添加新客户"
+        "adduser"=>"添加新客户",
+    	'list'=>'客户列表',
+    ),
+    'model'=>array(
+        'text'=>'模特管理',
+        'index'=>'模特列表',
+        'show'=>'查看模特',
+    	'edit'=>'编辑模特',
     ),
     "order"=>array(
         "text"=>"我的订单",

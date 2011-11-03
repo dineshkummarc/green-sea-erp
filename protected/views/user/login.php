@@ -3,12 +3,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="x-ua-compatible" content="ie=7" />
+        <title><?php echo Yii::app()->name; ?></title>
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
-        <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="js/client.js"></script>
         <!--[if IE 6]>
         <script type="text/javascript" src="js/DD_belatedPNG.js"></script>
         <script type="text/javascript">
+        DD_belatedPNG.fix('div, a, img');
         $(function () {
             $("a.button").each(function () {
                 var $this = $(this);
@@ -16,12 +17,15 @@
             });
             $("#content .content").each(function () {
                 var $this = $(this);
-                $this.height($this.find(".right").height() + $("#footer").height());
+                var height = $this.find(".right").height();
+                if (height)
+                    $this.height(height + $("#footer").height());
+                else
+                    $this.height($this.height());
             });
         });
         </script>
         <![endif]-->
-        <title><?php echo Yii::app()->name; ?></title>
     </head>
 
     <body>

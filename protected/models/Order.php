@@ -41,10 +41,9 @@ class Order extends CActiveRecord
 	 */
 	public static function changeStatus($id, $status)
 	{
-	    $sql = "UPDATE {{order}} SET status = :status";
+	    $sql = "UPDATE {{order}} SET status = :status WHERE id = :id";
 	    $command = Yii::app()->db->createCommand($sql);
-	    $command->bindParam(":status", $status, PDO::PARAM_INT);
-	    $command->excute();
+	    $command->execute(array(':status'=>$status, ':id'=>$id));
 	}
 
 	/**
@@ -96,6 +95,7 @@ class Order extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+		    'User'=>array(self::BELONGS_TO, 'User', 'user_id'),
 		    'Goods'=>array(self::HAS_MANY, 'OrderGoods', 'order_id'),
 		    'Models'=>array(self::MANY_MANY, 'Models', '{{order_model}}(order_id, model_id)'),
 		);
@@ -108,7 +108,7 @@ class Order extends CActiveRecord
 	{
 	    $user = Yii::app()->user;
 	    $nextOrder = $user->getState("nextOrder");
-	    $sn = "S";
+	    $sn = "P";
 	    $sn .= substr(strval($user->id + 1000),1,3); // 3位，当前客户ID，左补零
 	    $sn .= strlen($nextOrder) < 2 ? "0".$nextOrder : $nextOrder; // 2位，当前客户最后一个订单ID，左补零
 	    return $sn;

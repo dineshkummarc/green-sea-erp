@@ -9,20 +9,21 @@
         <h2>B类模特</h2>
         <?php foreach ($models as $model): ?>
         <div id="model-<?php echo $model->id ?>" class="model">
-            <a href="#"><img src="<?php echo $model->head_img_thumb; ?>" /></a>
+            <a href="<?php echo Yii::app()->baseUrl.'/'.$model->picture; ?>" target="_blank" title="点击看大图"><img src="<?php echo $model->head_img; ?>" /></a>
             <div class="name">
-                <?php echo $model->niki_name; ?>
+                <?php echo $model->nick_name; ?>
             </div>
             <div class="action">
                 <label><input type="checkbox" name="Form[models][]" value="<?php echo $model->id; ?>" <?php if (isset($selectedModels[$model->id])) echo "checked"; ?> /> 选择</label>
-                &nbsp;&nbsp;&nbsp;<a href="#">查看详情</a>
+                &nbsp;&nbsp;&nbsp;<a href="<?php echo $this->createUrl("model/show", array('id'=>$model->id)) ?>" target="_blank">查看详情</a>
             </div>
         </div>
         <?php endforeach; ?>
+        <div class='clear'></div>
         <div class="selected">
             您选择的模特：
             <?php if (!empty($selectedModels)): foreach ($selectedModels as $model): ?>
-            <span id="model-<?php echo $model; ?>"><?php echo $models[$model]->niki_name; ?></span>
+            <span id="model-<?php echo $model; ?>"><?php echo $models[$model]->nick_name; ?></span>
             <?php endforeach; else: ?>
             <span id="model-0">无</span>
             <?php endif; ?>

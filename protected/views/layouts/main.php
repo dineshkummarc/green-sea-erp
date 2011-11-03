@@ -4,12 +4,17 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="x-ua-compatible" content="ie=7" />
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
-        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript">
+        if (typeof jQuery == 'undefined')
+        {
+            document.write('<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.js"><\/script>');
+        }
+        </script>
         <script type="text/javascript" src="js/client.js"></script>
         <!--[if IE 6]>
         <script type="text/javascript" src="js/DD_belatedPNG.js"></script>
-        <script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
         <script type="text/javascript">
+        DD_belatedPNG.fix('div, a, img');
         $(function () {
             $("a.button").each(function () {
                 var $this = $(this);
