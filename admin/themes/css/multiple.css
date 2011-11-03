@@ -1,0 +1,8 @@
+@CHARSET "UTF-8";
+div.multiple { padding: 5px; }
+div.multiple .leftDiv div, div.multiple .rightDiv div { height: 23px; line-height: 23px; margin: 2px; padding: 0 5px; }
+div.multiple .leftDiv { float: left; clear: none; margin-right: 10px; border: 1px solid #B8D0D6; }
+div.multiple .rightDiv { float: left; clear: none; border: 1px solid #B8D0D6; }
+div.multiple .btn { cursor: pointer; float: right; width: 20px; height: 23px; overflow: hidden; background: url("../default/images/grid/grid.png") no-repeat 0 0; }
+div.multiple .btn.add { background-position: 0 -696px; }
+div.multiple .btn.del { background-position: 0 -746px; }

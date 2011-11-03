@@ -103,6 +103,7 @@ class Order extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'User'=>array(self::BELONGS_TO, 'User', 'user_id', 'select'=>'t.wangwang'),
 		    'Goods'=>array(self::HAS_MANY, 'OrderGoods', 'order_id'),
 		    'Models'=>array(self::MANY_MANY, 'Models', '{{order_model}}(order_id, model_id)'),
 		);

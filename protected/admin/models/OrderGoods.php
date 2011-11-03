@@ -44,9 +44,9 @@ class OrderGoods extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('order_id, sn, season, sex, type_id, type_name, shoot_type_id, style_id, count, real_count, shoot_count, status', 'required'),
+			array('order_id, sn, season, sex, type, type_name, shoot_type, style, count, real_count, shoot_count, status', 'required'),
 			array('season, sex, status', 'numerical', 'integerOnly'=>true),
-			array('order_id, type_id, shoot_type_id, style_id, count, real_count, shoot_count', 'length', 'max'=>10),
+			array('order_id, type, shoot_type, style, count, real_count, shoot_count', 'length', 'max'=>10),
 			array('sn, type_name', 'length', 'max'=>20),
 		);
 	}
@@ -59,9 +59,9 @@ class OrderGoods extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-		    'Type'=>array(self::BELONGS_TO, 'GoodsType', 'type_id'),
-		    'ShootType'=>array(self::BELONGS_TO, 'ShootType', 'shoot_type_id'),
-		    'Style'=>array(self::BELONGS_TO, 'Style', 'style_id'),
+		    'Type'=>array(self::BELONGS_TO, 'GoodsType', 'type'),
+		    'ShootType'=>array(self::BELONGS_TO, 'ShootType', 'shoot_type'),
+		    'Style'=>array(self::BELONGS_TO, 'Style', 'style'),
 		);
 	}
 
@@ -76,9 +76,9 @@ class OrderGoods extends CActiveRecord
 			'sn' => 'Sn',
 			'season' => 'Season',
 			'sex' => 'Sex',
-			'type_id' => 'Type',
-			'shoot_type_id' => 'Shoot Type',
-			'style_id' => 'Style',
+			'type' => 'Type',
+			'shoot_type' => 'Shoot Type',
+			'style' => 'Style',
 			'count' => 'Count',
 			'real_count' => 'Real Count',
 			'shoot_count' => 'Shoot Count',
