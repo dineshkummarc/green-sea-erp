@@ -34,6 +34,14 @@ class User extends CActiveRecord
 	 * @param integer $score 积分数量
 	 * @param string $reason 添加原因 默认：下单送积分
 	 */
+	public function cache()
+    {
+        $duration = 3600 * 24 * 7;
+        $dependency = new CDbCacheDependency('SELECT COUNT(*), MAX(update_time) FROM '.$this->tableName());
+        return parent::cache($duration, $dependency);
+    }
+
+
 	public static function addScore($score, $reason = "下单送积分")
 	{
 	    // 更新积分

@@ -108,6 +108,7 @@ $(function(){
 							<li><a>ERP</a>
 								<ul>
 									<li><a href="<?php echo $this->createUrl('order/index');?>" target="navTab" rel="order-index">订单</a></li>
+									<li><a href="<?php echo $this->createUrl('user/index');?>" target="navTab" rel="order-index">用户管理</a></li>
 								</ul>
 							</li>
 						</ul>
