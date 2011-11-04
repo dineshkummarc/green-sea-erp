@@ -84,4 +84,77 @@ class OrderController extends Controller
 			'orderGoods' => $orderGoods
 		));
 	}
+	/**
+	 * 订单需求 修改
+	 */
+	public function actionShootScene($id = null)
+	{
+		$orders = new Order;
+		
+		if (!empty($id))
+			$orders = $orders->model()->findByPk($id);
+		
+		if (isset($_POST['Form']))
+        {
+            if (!empty($_POST['Form']['id']))
+            {
+                $message = '修改成功';
+                $orders = $orders->findByPk($_POST['Form']['id']);
+            }
+            else
+            {
+                $message = '添加成功';
+            }
+            $orders->attributes = $_POST['Form'];
+            $orders->shoot_notice=serialize($_POST['Form']['shoot_notice']);
+            $orders->width=serialize($_POST['Form']['width']);
+            
+            if ($orders->save())
+                $this->success($message, array('navTabId'=>'order-goods'));
+            else
+            {
+                $error = array_shift($orders->getErrors());
+                $message = '错误：'.$error[0];
+                $this->error($message);
+            }
+        }
+        $goods = unserialize($orders->shoot_notice);
+        
+        $shootType = $this->loadShootType();
+		$shootTypeList = unserialize($orders->width);
+//        CVarDumper::dump($shootTypeList,10,true);
+        $shootNotice = $this->getShootNotice();
+		$this->render('shoot_scene',array(
+			'goods'	=> $goods,
+			'shootType' => $shootType,
+			'shootTypeList' => $shootTypeList,
+			'shootNotice' => $shootNotice,
+			'orders' => $orders
+		));
+	}
+	/**
+	 * 返回需求 格式化类型
+	 * Enter description here ...
+	 */
+	public function loadShootType()
+	{
+		$shootType = ShootType::model()->findAll();
+		$list=array();
+		foreach ($shootType as $type)
+		{
+			$list[$type->id]=$type->name;
+		}
+		return $list;
+	}
+	/**
+	 * 返回需求 说明
+	 * @var unknown_type
+	 */
+    public $_shootNotice;
+	public function getShootNotice()
+	{
+	    if (empty($this->_shootNotice))
+	        $this->_shootNotice = require_once(Yii::getPathOfAlias('application.components', true) . '\shootnotice.php');
+	    return $this->_shootNotice;
+	}
 }

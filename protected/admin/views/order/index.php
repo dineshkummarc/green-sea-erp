@@ -31,6 +31,8 @@
 	            <td>
 	            	<a href="<?php echo $this->createUrl('order/goods', array('id'=>$order->id)); ?>" target="navTab" rel="order-goods">订单物品</a>
 	                &nbsp;
+	            	<a href="<?php echo $this->createUrl('order/ShootScene', array('id'=>$order->id)); ?>" target="dialog" width="700" height="600" title="拍摄需求">需求</a>
+	                &nbsp;
 	            </td>
 	        </tr>
 	        <?php endforeach; endif; ?>
