@@ -118,14 +118,13 @@ class OrderController extends Controller
                 $this->error($message);
             }
         }
-        $goods = unserialize($orders->shoot_notice);
+        $shoot = unserialize($orders->shoot_notice);
         
         $shootType = $this->loadShootType();
 		$shootTypeList = unserialize($orders->width);
-//        CVarDumper::dump($shootTypeList,10,true);
         $shootNotice = $this->getShootNotice();
 		$this->render('shoot_scene',array(
-			'goods'	=> $goods,
+			'shoot'	=> $shoot,
 			'shootType' => $shootType,
 			'shootTypeList' => $shootTypeList,
 			'shootNotice' => $shootNotice,

@@ -28,7 +28,9 @@
                         <?php if($option['type'] == 'radio'): ?>
                         <input name="<?php echo $option['name']; ?>" type="radio"
                             value="<?php echo $option['value']; ?>"
-                            <?php echo (isset($option['checked']) && !isset($goods['shoot_notice'][$key])) || ( isset($goods['shoot_notice'][$key]) && $goods['shoot_notice'][$key] == $option['value']) ? 'checked' : ''; ?>
+                            <?php
+                            	if ($shoot[$key] == $option['value'])echo "checked";
+                            ?>
                             /><?php echo $option['text']; ?>
                         <?php endif; ?>
                         <?php endforeach; ?>
@@ -61,8 +63,8 @@
 			</div>
             <div class="unit">
                 <label>修图标准：</label>
-                <input type="radio" name="Form[retouch]" value="1" <?php if ($orders->retouch == 0 || empty($orders->retouch)) echo "checked"; ?> /> 简修图&nbsp;<a href="#">简修图说明</a>
-                <input type="radio" name="Form[retouch]" value="2" <?php if ($orders->retouch == 1 ) echo "checked"; ?> onclick="alert('选择此项请联系客服')" /> 精修图&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="Form[retouch]" value="1" <?php if ($orders->retouch == 1 || empty($orders->retouch)) echo "checked"; ?> /> 简修图&nbsp;<a href="#">简修图说明</a>
+                <input type="radio" name="Form[retouch]" value="2" <?php if ($orders->retouch == 2 ) echo "checked"; ?> onclick="alert('选择此项请联系客服')" /> 精修图&nbsp;&nbsp;&nbsp;
                 <span class="error">此项为收费项目，请联系客服说明具体的需求</span>
 			</div>
             <div class="unit">
