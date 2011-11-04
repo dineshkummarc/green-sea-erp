@@ -9,13 +9,14 @@ class OrderController extends Controller
 	public function actionIndex($pageNum = 1, $numPerPage = 20)
 	{
 		$criteria = new CDbCriteria;
-		
+
 		$count = Order::model()->cache()->count($criteria);
         $pages = new CPagination($count);
         $pages->currentPage = $pageNum - 1;
         $pages->pageSize = $numPerPage;
         $pages->applyLimit($criteria);
-		
+
+        $criteria->order = "status desc, create_time asc";
 		$orders = Order::model()->cache()->findAll($criteria);
 		$this->render('index',array(
 			'pages' => $pages,
@@ -29,13 +30,13 @@ class OrderController extends Controller
 	{
 		$criteria = new CDbCriteria;
 		$criteria->condition='order_id='.$id;
-		
+
 		$count = OrderGoods::model()->count($criteria);
         $pages = new CPagination($count);
         $pages->currentPage = $pageNum - 1;
         $pages->pageSize = $numPerPage;
         $pages->applyLimit($criteria);
-		
+
 		$orderGoodsList = OrderGoods::model()->findAll($criteria);
 		$this->render('goods',array(
 			'pages' => $pages,
@@ -48,10 +49,10 @@ class OrderController extends Controller
 	public function actionGoodsEdit($id = null)
 	{
 		$orderGoods = new OrderGoods;
-		
+
 		if (!empty($id))
 			$orderGoods = $orderGoods->model()->findByPk($id);
-		
+
 		if (isset($_POST['Form']))
         {
             if (!empty($_POST['Form']['id']))
@@ -64,7 +65,7 @@ class OrderController extends Controller
                 $message = '添加成功';
             }
             $orderGoods->attributes = $_POST['Form'];
-            
+
             if ($orderGoods->save())
                 $this->success($message, array('navTabId'=>'order-goods'));
             else
@@ -74,7 +75,7 @@ class OrderController extends Controller
                 $this->error($message);
             }
         }
-        $styles = Style::model()->findAll(); 
+        $styles = Style::model()->findAll();
         $shootTypes = ShootType::model()->findAll();
         $types = GoodsType::model()->findAll();
 		$this->render('goods_edit',array(
@@ -90,10 +91,10 @@ class OrderController extends Controller
 	public function actionShootScene($id = null)
 	{
 		$orders = new Order;
-		
+
 		if (!empty($id))
 			$orders = $orders->model()->findByPk($id);
-		
+
 		if (isset($_POST['Form']))
         {
             if (!empty($_POST['Form']['id']))
@@ -108,7 +109,7 @@ class OrderController extends Controller
             $orders->attributes = $_POST['Form'];
             $orders->shoot_notice=serialize($_POST['Form']['shoot_notice']);
             $orders->width=serialize($_POST['Form']['width']);
-            
+
             if ($orders->save())
                 $this->success($message, array('navTabId'=>'order-goods'));
             else
@@ -119,7 +120,7 @@ class OrderController extends Controller
             }
         }
         $shoot = unserialize($orders->shoot_notice);
-        
+
         $shootType = $this->loadShootType();
 		$shootTypeList = unserialize($orders->width);
         $shootNotice = $this->getShootNotice();
