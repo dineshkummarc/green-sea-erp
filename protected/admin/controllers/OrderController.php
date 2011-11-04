@@ -6,9 +6,34 @@ class OrderController extends Controller
 	 * @param unknown_type $pageNum
 	 * @param unknown_type $numPerPage
 	 */
-	public function actionIndex($pageNum = 1, $numPerPage = 20)
+	public function actionIndex(array $params = array(), $pageNum = 1, $numPerPage = 20, $sort = null)
 	{
 		$criteria = new CDbCriteria;
+		if ($sort == 'time')
+		{
+			$criteria->order = 'create_time DESC';
+		}
+		if ($sort == 'status')
+		{
+			$criteria->order = 'status ASC';
+		}
+	    if (!empty($params['sn']))
+            $criteria->addSearchCondition('sn', $params['sn']);
+        if (!empty($params['user_name']))
+            $criteria->addCondition('user_name = \'' . $params['user_name'] . '\'');
+        if (!empty($params['status']) && $params['status'] > 0)
+        {
+            if ($params['status'] == 1)$criteria->addCondition('status = 1');
+            if ($params['status'] == 2)$criteria->addCondition('status = 2');
+            if ($params['status'] == 3)$criteria->addCondition('status = 3');
+            if ($params['status'] == 4)$criteria->addCondition('status = 4');
+            if ($params['status'] == 5)$criteria->addCondition('status = 5');
+            if ($params['status'] == 6)$criteria->addCondition('status = 6');
+            if ($params['status'] == 7)$criteria->addCondition('status = 7');
+            if ($params['status'] == 8)$criteria->addCondition('status = 8');
+            if ($params['status'] == 9)$criteria->addCondition('status = 9');
+            if ($params['status'] == 10)$criteria->addCondition('status = 10');
+        }
 		
 		$count = Order::model()->cache()->count($criteria);
         $pages = new CPagination($count);
@@ -17,7 +42,10 @@ class OrderController extends Controller
         $pages->applyLimit($criteria);
 		
 		$orders = Order::model()->cache()->findAll($criteria);
+//		if ($sort != null)
+//            $this->success('aaa', array('navTabId'=>'order-goods'));
 		$this->render('index',array(
+			'params'=>$params,
 			'pages' => $pages,
 			'orders' => $orders
 		));

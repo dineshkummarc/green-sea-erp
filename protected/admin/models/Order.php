@@ -81,9 +81,7 @@ class Order extends CActiveRecord
 			array('logistics_sn', 'length', 'max'=>50),
 			array('example_img, shoot_notice', 'length', 'max'=>200),
 			array('total_price', 'length', 'max'=>6),
-			array('receive_address, other_comment, width, example_comment', 'length', 'max'=>255),
-			array('example_img', 'FileValidator', 'types'=>'jpg, png, gif', 'wrongType'=>'只允许上传图片',
-				'maxSize'=>300 * 1024, 'tooLarge'=>'文件不能大于300K', 'allowEmpty'=>true),
+			array('receive_address, other_comment, width, example_comment, other_comment', 'length', 'max'=>255),
 		);
 	}
 
@@ -119,7 +117,12 @@ class Order extends CActiveRecord
 	 */
 	public function getStatusText()
 	{
-	    $statusList = require(Yii::app()->basePath . "/../config/orderType.php");
+		$basePath = Yii::app()->basePath;
+		if ((int)strripos($basePath,'admin') == false) {
+	    	$statusList = require($basePath . "/config/orderType.php");
+		}else{
+	    	$statusList = require($basePath . "/../config/orderType.php");
+		}
 	    return $statusList[$this->status];
 	}
 
