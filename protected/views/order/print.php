@@ -200,10 +200,10 @@
                 <tr>
                     <td valign="top">图片宽度</td>
                     <td>
-                        <?php foreach($goodsPublicInfo['width'] as $key=>$width): ?>
+                        <?php foreach($order->width as $key=>$width): ?>
                         <div style="font-weight: bold; margin-bottom: 5px;"><?php echo $shootType[$key]; ?></div>
                         <div style="margin-bottom: 5px;">
-                            简图宽度：<strong><?php echo $width[0] ?>px(像素)</strong>&nbsp;&nbsp;细节图宽度：<strong><?php echo $width[1] ?>px(像素)</strong><br/>
+                            简图宽度：<strong><?php echo $width['width'] ?>px(像素)</strong>&nbsp;&nbsp;细节图宽度：<strong><?php echo $width['detail_width'] ?>px(像素)</strong><br/>
                         </div>
                         <?php endforeach; ?>
                     </td>

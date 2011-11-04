@@ -1,0 +1,80 @@
+@charset "utf-8";
+
+html, body {
+    padding:0; 
+    margin:0; 
+    font-size:12px; 
+    line-height:100%; 
+    font-family:Arial, sans-serif; 
+    background: none repeat scroll 0 0 #E6EFF7; 
+}
+
+.submit {
+    cursor: pointer;
+}
+
+#login {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #007399;
+    margin: 90px auto 0; 
+    padding-bottom: 10px;
+    text-align: center; 
+    width: 600px;
+}
+
+#login_header { 
+    width: 580px;
+    line-height: 20px;
+    text-align: left;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: none repeat scroll 0 0 #0099CC;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.form {
+    clear: both;
+    text-align: left;
+    width: 400px;
+    height: 40px;
+    margin: 0 auto;
+}
+
+.form label{
+    float: left;
+    text-align: right;
+    width: 120px;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 20px;
+}
+
+.form input {
+    float: left;
+}
+
+.form img {
+    float: left;
+}
+
+.form .text {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #A2BAC0 #B8D0D6 #B8D0D6 #A2BAC0;
+}
+
+label.error {
+    color: #C00;
+}
+
+input.error {
+    background: none repeat scroll 0 0 #FFEEEE;
+    border-color: #CC0000;
+}
+
+.errorMessage {
+    padding: 5px;
+    color:#cd0a0a;
+}
