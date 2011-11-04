@@ -35,7 +35,7 @@
 	            <td><?php echo $orderGoods->count; ?></td>
 	            <td><?php echo $orderGoods->memo; ?></td>
 	            <td>
-	            	<a href="<?php echo $this->createUrl('order/goodsedit', array('id'=>$orderGoods->id)); ?>" target="dialog" width="600" height="400" title="修改物品">修改</a>
+	            	<a href="<?php echo $this->createUrl('order/goodsedit', array('id'=>$orderGoods->id)); ?>" target="dialog" mask="true" width="600" height="400" title="修改物品">修改</a>
 	                &nbsp;
 	            </td>
 	        </tr>

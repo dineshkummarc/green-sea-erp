@@ -607,4 +607,33 @@ a.btnAttach{background-position: -183px 0}
 .dialogContent .viewInfo {background-color:#fff}
 .pageContent .panel {clear:both; margin: 5px}
 
+/*自定义样式*/
+.box-separation
+{
+    border: 1px solid #c6c5c5;
+    border-bottom: 0 none;
+    float: left;
+}
 
+.box-separation div
+{
+    padding-left: 10px;
+    line-height: 20px;
+    border-bottom: 1px solid #c6c5c5;
+}
+
+.box-separation span {
+    line-height: 20px;
+}
+
+.box-separation div.separation
+{
+    background: #EAEAEA;
+}
+
+*.box-separation input
+{
+    margin: 9px 0;
+    vertical-align:middle;
+}
+/**/
