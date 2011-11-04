@@ -9,7 +9,6 @@
  * @property string $user_id
  * @property string $user_name
  * @property string $logistics_sn
- * @property string $payment_url
  * @property string $total_price
  * @property string $create_time
  * @property string $update_time
@@ -18,13 +17,17 @@
  * @property string $shoot_time
  * @property string $example_img
  * @property string $example_comment
- * @property string $retouch_demand
- * @property string $retouch_demand_data
- * @property string $shoot_notice
- * @property string $shoot_notice_data
+ * @property integer $square
+ * @property integer $artwork
+ * @property integer $retouch
+ * @property integer $following
+ * @property string $studio_shoot
+ * @property string $outdoor_shoot
  * @property string $other_comment
- * @property string $shoot_scene
- * @property string $shoot_scene_data
+ * @property string $width
+ * @property string $shoot_notice
+ * @property integer $typesetting
+ * @property integer $diff_color
  * @property string $receive_address
  * @property integer $status
  * @property string $memo
@@ -80,18 +83,14 @@ class Order extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, user_name, total_price, create_time, update_time, receive_address, status, following', 'required'),
-			array('status, following', 'numerical', 'integerOnly'=>true),
-			array('following', 'default', 'value'=>0),
+			array('sn, user_id, user_name, total_price, create_time, update_time, square, artwork, retouch, outdoor_shoot, width, shoot_notice, typesetting, diff_color, status', 'required'),
+			array('square, artwork, retouch, following, typesetting, diff_color, status', 'numerical', 'integerOnly'=>true),
 			array('sn, user_name', 'length', 'max'=>20),
-			array('sn', 'default', 'value'=>$this->getSn()),
-			array('user_id, create_time, update_time, pay_time, receive_time, shoot_time, shoot_scene', 'length', 'max'=>10),
+			array('user_id, create_time, update_time, pay_time, receive_time, shoot_time, studio_shoot, outdoor_shoot', 'length', 'max'=>10),
 			array('logistics_sn', 'length', 'max'=>50),
-			array('payment_url, example_img', 'length', 'max'=>200),
-			array('logistics_sn, payment_url, example_img', 'default', 'value'=>''),
 			array('total_price', 'length', 'max'=>6),
-			array('receive_address', 'length', 'max'=>255),
-			array('example_comment, retouch_demand, retouch_demand_data, shoot_notice, shoot_notice_data, other_comment, shoot_scene_data, memo', 'safe'),
+			array('example_img, shoot_notice', 'length', 'max'=>200),
+			array('example_comment, other_comment, width, receive_address, memo', 'length', 'max'=>255),
 		);
 	}
 
@@ -163,30 +162,6 @@ class Order extends CActiveRecord
 	}
 
 	/**
-	 * 拍摄注意事项数据序列化形式
-	 */
-	public function getShootSceneData()
-	{
-	    return @unserialize($this->shoot_scene_data);
-	}
-
-	/**
-	 * 拍摄注意事项数据序列化形式
-	 */
-	public function getShootNoticeData()
-	{
-	    return @unserialize($this->shoot_notice_data);
-	}
-
-	/**
-	 * 修图要求数据序列化形式
-	 */
-	public function getRetouchDemandData()
-	{
-	    return @unserialize($this->retouch_demand_data);
-	}
-
-	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
 	public function attributeLabels()
@@ -197,7 +172,6 @@ class Order extends CActiveRecord
 			'user_id' => 'User',
 			'user_name' => 'User Name',
 			'logistics_sn' => 'Logistics Sn',
-			'payment_url' => 'Payment Url',
 			'total_price' => 'Total Price',
 			'create_time' => 'Create Time',
 			'update_time' => 'Update Time',
@@ -206,13 +180,17 @@ class Order extends CActiveRecord
 			'shoot_time' => 'Shoot Time',
 			'example_img' => 'Example Img',
 			'example_comment' => 'Example Comment',
-			'retouch_demand' => 'Retouch Demand',
-			'retouch_demand_data' => 'Retouch Demand Data',
-			'shoot_notice' => 'Shoot Notice',
-			'shoot_notice_data' => 'Shoot Notice Data',
+			'square' => 'Square',
+			'artwork' => 'Artwork',
+			'retouch' => 'Retouch',
+			'following' => 'Following',
+			'studio_shoot' => 'Studio Shoot',
+			'outdoor_shoot' => 'Outdoor Shoot',
 			'other_comment' => 'Other Comment',
-			'shoot_scene' => 'Shoot Scene',
-			'shoot_scene_data' => 'Shoot Scene Data',
+			'width' => 'Width',
+			'shoot_notice' => 'Shoot Notice',
+			'typesetting' => 'Typesetting',
+			'diff_color' => 'Diff Color',
 			'receive_address' => 'Receive Address',
 			'status' => 'Status',
 			'memo' => 'Memo',
