@@ -40,12 +40,17 @@ class User extends CActiveRecord
 	    $sql = "UPDATE {{user}} SET score = :socre, update_time = :update_time WHERE id = :user_id";
 	    $command = Yii::app()->db->createCommand($sql);
 	    $command->bindParam(":socre", $score);
-	    $command->bindParam(":update_time", Yii::app()->parames['timestamp']);
+	    $command->bindParam(":update_time", Yii::app()->params['timestamp']);
 	    $command->bindParam(":user_id", Yii::app()->user->id);
 	    $command->execute();
 
 	    // 保存日志
 	    ScoreLog::log($score, $reason);
+	}
+
+	public function getArea()
+	{
+
 	}
 
 	/**
@@ -64,7 +69,7 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, mobile_phone, password, receive_id, area_id, create_time, login_time, last_ip', 'required'),
+			array('name, mobile_phone, password, receive_id, area_id, create_time, login_time', 'required'),
 			array('name, mobile_phone', 'length', 'max'=>20),
 			array('password', 'length', 'max'=>32),
 			array('score, qq, receive_id, area_id, create_time, login_time, receive_count', 'length', 'max'=>10),
@@ -84,6 +89,7 @@ class User extends CActiveRecord
 		return array(
 		    'ReceiveAddress'=>array(self::BELONGS_TO, 'UserReceive', 'receive_id', 'select'=>'receive_name, phone, mobile_phone, area_id, street, postalcode'),
 			'ReceiveAddresses'=>array(self::HAS_MANY, 'UserReceive', 'user_id', 'select'=>'receive_name, phone, mobile_phone, area_id, street, postalcode'),
+		    'Area'=>array(self::BELONGS_TO, 'Area', 'area_id')
 		);
 	}
 

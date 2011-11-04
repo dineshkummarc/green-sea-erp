@@ -85,13 +85,13 @@ $(function(){
 						</ul>
 					</li>
 					<li><a href="#" target="_blank">您最后登录时间：<?php echo date("Y-m-d H:i:s",time()) ?></a></li>
-					<li><a href="<?php echo Yii::app()->request->hostInfo; ?>" target="_blank">网站首页</a></li>
+					<li><a href="<?php echo Yii::app()->baseUrl; ?>" target="_blank">网站首页</a></li>
                     <li><a href="<?php echo Yii::app()->homeUrl; ?>">后台首页</a></li>
 					<li><a href="<?php echo $this->createUrl('site/logout'); ?>">退出</a></li>
 				</ul>
 			</div>
 			<!-- navMenu -->
-			
+
 		</div>
 
 		<div id="leftside">
@@ -147,7 +147,7 @@ $(function(){
 							<p><span></span></p>
 						</div>
 					</div>
-					
+
 				</div>
 			</div>
 		</div>

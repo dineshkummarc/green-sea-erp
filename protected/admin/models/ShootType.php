@@ -6,7 +6,7 @@
  * The followings are the available columns in table '{{shoot_type}}':
  * @property string $id
  * @property string $name
- * @property string $price
+ * @property string $width
  */
 class ShootType extends CActiveRecord
 {
@@ -35,9 +35,9 @@ class ShootType extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, price', 'required'),
+			array('name, width', 'required'),
 			array('name', 'length', 'max'=>20),
-			array('price', 'length', 'max'=>6),
+			array('width', 'length', 'max'=>10),
 		);
 	}
 
@@ -60,7 +60,7 @@ class ShootType extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
-			'price' => 'Price',
+			'width' => 'Width',
 		);
 	}
 }

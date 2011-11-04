@@ -99,10 +99,10 @@ class Area extends CActiveRecord
 	    $parent = $this->Parent;
         while ($parent !== null)
         {
-            $address = $parent->name . " " . $address;
+            $address = $parent->name . "，" . $address;
             $parent = $parent->Parent;
         }
-        $address .= $this->name . " ";
+        $address .= $this->name . "，";
         return $address;
 	}
 }

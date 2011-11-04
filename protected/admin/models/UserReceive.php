@@ -89,7 +89,7 @@ class UserReceive extends CActiveRecord
 
 	public function getFullAddress()
 	{
-	    return $this->Area->getFullArea() . $this->street;
+	    return $this->Area->getFullArea() . "，" . $this->street . "，" . $this->postalcode;
 	}
 
 }

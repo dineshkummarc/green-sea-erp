@@ -69,8 +69,8 @@
                 <?php foreach ($selectedShootType as $typeId=>$type): ?>
                 <div><?php echo $type ?></div>
                 <div>
-                    简图宽度：<input type="text" name="Form[width][<?php echo $typeId ?>]" tip="750" class="input" style="width: 50px;" />px(像素)
-                    细节图宽度：<input type="text" name="Form[detail_width][<?php echo $typeId ?>]" tip="750" class="input" style="width: 50px;" />px(像素)
+                    简图宽度：<input type="text" name="Form[width][<?php echo $typeId ?>][width]" tip="750" class="input" style="width: 50px;" />px(像素)
+                    细节图宽度：<input type="text" name="Form[width][<?php echo $typeId ?>][detail_width]" tip="750" class="input" style="width: 50px;" />px(像素)
                 </div>
                 <?php endforeach; ?>
             </td>

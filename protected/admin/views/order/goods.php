@@ -9,7 +9,6 @@
 	            <th width="80">拍摄类型</th>
 	            <th width="80">拍摄风格</th>
 	            <th width="50">数量</th>
-	            <th width="80">图片尺寸</th>
 	            <th>备注</th>
 	            <th width="100">操作</th>
 	        </tr>
@@ -23,18 +22,17 @@
 	        <tr>
 	            <td><input type="checkbox" name="id[]" value="<?php echo $orderGoods->id ?>" /></td>
 	            <td><?php echo $orderGoods->sn; ?></td>
-	            <td><?php 
+	            <td><?php
 	            	$season = $orderGoods->season;
-	            	if ($season == 0)echo "不限"; 
-	            	if ($season == 1)echo "春秋"; 
-	            	if ($season == 2)echo "夏"; 
-	            	if ($season == 3)echo "冬"; 
+	            	if ($season == 0)echo "不限";
+	            	if ($season == 1)echo "春秋";
+	            	if ($season == 2)echo "夏";
+	            	if ($season == 3)echo "冬";
 	            ?></td>
 	            <td><?php if ($orderGoods->type == 0)echo $orderGoods->type_name;else echo $orderGoods->Type->name; ?></td>
 	            <td><?php echo $orderGoods->ShootType->name; ?></td>
 	            <td><?php if ($orderGoods->style == 0)echo "不限";else echo $orderGoods->Style->name; ?></td>
 	            <td><?php echo $orderGoods->count; ?></td>
-	            <td><?php echo $orderGoods->width."、".$orderGoods->detail_width; ?></td>
 	            <td><?php echo $orderGoods->memo; ?></td>
 	            <td>
 	            	<a href="<?php echo $this->createUrl('order/goodsedit', array('id'=>$orderGoods->id)); ?>" target="dialog" width="600" height="400" title="修改物品">修改</a>

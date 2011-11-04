@@ -34,8 +34,8 @@ class ActionMessage extends CWidget
             echo CHtml::openTag('div',$this->htmlOptions);
             echo $content;
             echo CHtml::closeTag('div');
-            Yii::app()->clientScript->registerScript(__CLASS__.'#'.$id,
-				"setTimeout(\"jQuery('#$id').animate({height: 0}, 2000, function () { $(this).hide() });\", 3000);",CClientScript::POS_READY);
+//            Yii::app()->clientScript->registerScript(__CLASS__.'#'.$id,
+//				"setTimeout(\"jQuery('#$id').animate({height: 0}, 2000, function () { $(this).hide() });\", 3000);",CClientScript::POS_READY);
         }
     }
 }

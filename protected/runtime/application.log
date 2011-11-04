@@ -844,3 +844,322 @@ Stack trace:
 #15 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
 #16 E:\PHP\llerp\index.php(13): CApplication->run()
 #17 {main} REQUEST_URI=/llerp/index.php?r=user/editInfo
+2011/11/04 08:02:35 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[HY093]: Invalid parameter number: no parameters were bound. The SQL statement executed was: select width from ll_erp_order_goods where order_id = :id.
+in E:\PHP\llerp\protected\controllers\OrderController.php (689)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:02:35 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[HY093]: Invalid parameter number: no parameters were bound. The SQL statement executed was: select width from ll_erp_order_goods where order_id = :id' in E:\PHP\framework\db\CDbCommand.php:516
+Stack trace:
+#0 E:\PHP\framework\db\CDbCommand.php(374): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 E:\PHP\llerp\protected\controllers\OrderController.php(689): CDbCommand->queryAll(Array)
+#2 E:\PHP\framework\web\actions\CInlineAction.php(50): OrderController->actionTest()
+#3 E:\PHP\framework\web\CController.php(300): CInlineAction->runWithParams(Array)
+#4 E:\PHP\framework\web\CController.php(278): CController->runAction(Object(CInlineAction))
+#5 E:\PHP\framework\web\CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 E:\PHP\framework\web\CWebApplication.php(277): CController->run('test')
+#7 E:\PHP\framework\web\CWebApplication.php(136): CWebApplication->runController('order/test')
+#8 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#9 E:\PHP\llerp\index.php(13): CApplication->run()
+#10 {main} REQUEST_URI=/llerp/index.php?r=order/test
+2011/11/04 08:11:38 [error] [php] Undefined property: stdClass::$id (E:\PHP\llerp\protected\controllers\OrderController.php:700)
+Stack trace:
+#0 E:\PHP\framework\web\CController.php(278): OrderController->runAction()
+#1 E:\PHP\framework\web\CController.php(257): OrderController->runActionWithFilters()
+#2 E:\PHP\framework\web\CWebApplication.php(277): OrderController->run()
+#3 E:\PHP\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#4 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#5 E:\PHP\llerp\index.php(13): CWebApplication->run()
+REQUEST_URI=/llerp/index.php?r=order/test
+in E:\PHP\llerp\protected\controllers\OrderController.php (700)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:11:48 [error] [exception.CException] exception 'CException' with message 'CDbCommand and its behaviors do not have a method or closure named "excute".' in E:\PHP\framework\base\CComponent.php:269
+Stack trace:
+#0 E:\PHP\llerp\protected\controllers\OrderController.php(700): CComponent->__call('excute', Array)
+#1 E:\PHP\llerp\protected\controllers\OrderController.php(700): CDbCommand->excute(Array)
+#2 E:\PHP\framework\web\actions\CInlineAction.php(50): OrderController->actionTest()
+#3 E:\PHP\framework\web\CController.php(300): CInlineAction->runWithParams(Array)
+#4 E:\PHP\framework\web\CController.php(278): CController->runAction(Object(CInlineAction))
+#5 E:\PHP\framework\web\CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 E:\PHP\framework\web\CWebApplication.php(277): CController->run('test')
+#7 E:\PHP\framework\web\CWebApplication.php(136): CWebApplication->runController('order/test')
+#8 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#9 E:\PHP\llerp\index.php(13): CApplication->run()
+#10 {main} REQUEST_URI=/llerp/index.php?r=order/test
+2011/11/04 08:24:51 [warning] [application] Failed to set unsafe attribute "'width'" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:24:51 [warning] [application] Failed to set unsafe attribute "memo" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:24:51 [warning] [application] Failed to set unsafe attribute "id" of "OrderGoods".
+in E:\PHP\llerp\protected\controllers\OrderController.php (621)
+in E:\PHP\llerp\protected\controllers\OrderController.php (468)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:28:04 [warning] [application] Failed to set unsafe attribute "outdoor_shoot" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:28:04 [warning] [application] Failed to set unsafe attribute "'width'" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:28:04 [warning] [application] Failed to set unsafe attribute "retouch" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:28:04 [warning] [application] Failed to set unsafe attribute "artwork" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:28:04 [warning] [application] Failed to set unsafe attribute "square" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:28:04 [warning] [application] Failed to set unsafe attribute "typesetting" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:28:04 [warning] [application] Failed to set unsafe attribute "diff_color" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:28:04 [error] [exception.CException] exception 'CException' with message 'Property "Order.shoot_scene" is not defined.' in E:\PHP\framework\base\CComponent.php:131
+Stack trace:
+#0 E:\PHP\framework\db\ar\CActiveRecord.php(129): CComponent->__get('shoot_scene')
+#1 E:\PHP\framework\validators\CStringValidator.php(67): CActiveRecord->__get('shoot_scene')
+#2 E:\PHP\framework\validators\CValidator.php(192): CStringValidator->validateAttribute(Object(Order), 'shoot_scene')
+#3 E:\PHP\framework\base\CModel.php(152): CValidator->validate(Object(Order), NULL)
+#4 E:\PHP\framework\db\ar\CActiveRecord.php(780): CModel->validate(NULL)
+#5 E:\PHP\llerp\protected\controllers\OrderController.php(468): CActiveRecord->save()
+#6 [internal function]: OrderController->actionShootScene(NULL)
+#7 E:\PHP\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs(Object(OrderController), Array)
+#8 E:\PHP\framework\web\actions\CInlineAction.php(48): CAction->runWithParamsInternal(Object(OrderController), Object(ReflectionMethod), Array)
+#9 E:\PHP\framework\web\CController.php(300): CInlineAction->runWithParams(Array)
+#10 E:\PHP\framework\web\CController.php(278): CController->runAction(Object(CInlineAction))
+#11 E:\PHP\framework\web\CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 E:\PHP\framework\web\CWebApplication.php(277): CController->run('shootScene')
+#13 E:\PHP\framework\web\CWebApplication.php(136): CWebApplication->runController('order/shootScen...')
+#14 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#15 E:\PHP\llerp\index.php(13): CApplication->run()
+#16 {main} REQUEST_URI=/llerp/index.php?r=order/shootScene
+2011/11/04 08:36:07 [warning] [application] Failed to set unsafe attribute "'width'" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:37:11 [warning] [application] Failed to set unsafe attribute "'width'" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:38:05 [warning] [application] Failed to set unsafe attribute "'width'" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:41:57 [warning] [application] Failed to set unsafe attribute "'width'" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:41:57 [warning] [application] Failed to set unsafe attribute "id" of "OrderGoods".
+in E:\PHP\llerp\protected\controllers\OrderController.php (621)
+in E:\PHP\llerp\protected\controllers\OrderController.php (468)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:43:59 [warning] [application] Failed to set unsafe attribute "'width'" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:43:59 [warning] [application] Failed to set unsafe attribute "id" of "OrderGoods".
+in E:\PHP\llerp\protected\controllers\OrderController.php (625)
+in E:\PHP\llerp\protected\controllers\OrderController.php (468)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 08:44:03 [error] [exception.CException] exception 'CException' with message 'Property "OrderModel.Info" is not defined.' in E:\PHP\framework\base\CComponent.php:131
+Stack trace:
+#0 E:\PHP\framework\db\ar\CActiveRecord.php(129): CComponent->__get('Info')
+#1 E:\PHP\llerp\protected\controllers\OrderController.php(571): CActiveRecord->__get('Info')
+#2 [internal function]: OrderController->actionPrint('89')
+#3 E:\PHP\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs(Object(OrderController), Array)
+#4 E:\PHP\framework\web\actions\CInlineAction.php(48): CAction->runWithParamsInternal(Object(OrderController), Object(ReflectionMethod), Array)
+#5 E:\PHP\framework\web\CController.php(300): CInlineAction->runWithParams(Array)
+#6 E:\PHP\framework\web\CController.php(278): CController->runAction(Object(CInlineAction))
+#7 E:\PHP\framework\web\CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 E:\PHP\framework\web\CWebApplication.php(277): CController->run('print')
+#9 E:\PHP\framework\web\CWebApplication.php(136): CWebApplication->runController('order/print')
+#10 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#11 E:\PHP\llerp\index.php(13): CApplication->run()
+#12 {main} REQUEST_URI=/llerp/index.php?r=order/print&id=89
+2011/11/04 09:08:40 [error] [exception.CException] exception 'CException' with message 'Property "OrderModel.info" is not defined.' in E:\PHP\framework\base\CComponent.php:131
+Stack trace:
+#0 E:\PHP\framework\db\ar\CActiveRecord.php(129): CComponent->__get('info')
+#1 E:\PHP\llerp\protected\controllers\OrderController.php(571): CActiveRecord->__get('info')
+#2 [internal function]: OrderController->actionPrint('89')
+#3 E:\PHP\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs(Object(OrderController), Array)
+#4 E:\PHP\framework\web\actions\CInlineAction.php(48): CAction->runWithParamsInternal(Object(OrderController), Object(ReflectionMethod), Array)
+#5 E:\PHP\framework\web\CController.php(300): CInlineAction->runWithParams(Array)
+#6 E:\PHP\framework\web\CController.php(278): CController->runAction(Object(CInlineAction))
+#7 E:\PHP\framework\web\CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 E:\PHP\framework\web\CWebApplication.php(277): CController->run('print')
+#9 E:\PHP\framework\web\CWebApplication.php(136): CWebApplication->runController('order/print')
+#10 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#11 E:\PHP\llerp\index.php(13): CApplication->run()
+#12 {main} REQUEST_URI=/llerp/index.php?r=order/print&id=89
+2011/11/04 09:09:10 [error] [exception.CException] exception 'CException' with message 'Property "OrderModel.Model" is not defined.' in E:\PHP\framework\base\CComponent.php:131
+Stack trace:
+#0 E:\PHP\framework\db\ar\CActiveRecord.php(129): CComponent->__get('Model')
+#1 E:\PHP\llerp\protected\controllers\OrderController.php(571): CActiveRecord->__get('Model')
+#2 [internal function]: OrderController->actionPrint('89')
+#3 E:\PHP\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs(Object(OrderController), Array)
+#4 E:\PHP\framework\web\actions\CInlineAction.php(48): CAction->runWithParamsInternal(Object(OrderController), Object(ReflectionMethod), Array)
+#5 E:\PHP\framework\web\CController.php(300): CInlineAction->runWithParams(Array)
+#6 E:\PHP\framework\web\CController.php(278): CController->runAction(Object(CInlineAction))
+#7 E:\PHP\framework\web\CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 E:\PHP\framework\web\CWebApplication.php(277): CController->run('print')
+#9 E:\PHP\framework\web\CWebApplication.php(136): CWebApplication->runController('order/print')
+#10 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#11 E:\PHP\llerp\index.php(13): CApplication->run()
+#12 {main} REQUEST_URI=/llerp/index.php?r=order/print&id=89
+2011/11/04 09:14:58 [error] [exception.CException] exception 'CException' with message 'Property "OrderModel.Model" is not defined.' in E:\PHP\framework\base\CComponent.php:131
+Stack trace:
+#0 E:\PHP\framework\db\ar\CActiveRecord.php(129): CComponent->__get('Model')
+#1 E:\PHP\llerp\protected\controllers\OrderController.php(571): CActiveRecord->__get('Model')
+#2 [internal function]: OrderController->actionPrint('89')
+#3 E:\PHP\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs(Object(OrderController), Array)
+#4 E:\PHP\framework\web\actions\CInlineAction.php(48): CAction->runWithParamsInternal(Object(OrderController), Object(ReflectionMethod), Array)
+#5 E:\PHP\framework\web\CController.php(300): CInlineAction->runWithParams(Array)
+#6 E:\PHP\framework\web\CController.php(278): CController->runAction(Object(CInlineAction))
+#7 E:\PHP\framework\web\CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 E:\PHP\framework\web\CWebApplication.php(277): CController->run('print')
+#9 E:\PHP\framework\web\CWebApplication.php(136): CWebApplication->runController('order/print')
+#10 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#11 E:\PHP\llerp\index.php(13): CApplication->run()
+#12 {main} REQUEST_URI=/llerp/index.php?r=order/print&id=89
+2011/11/04 09:15:12 [error] [exception.CException] exception 'CException' with message 'Property "OrderGoods.width" is not defined.' in E:\PHP\framework\base\CComponent.php:131
+Stack trace:
+#0 E:\PHP\framework\db\ar\CActiveRecord.php(129): CComponent->__get('width')
+#1 E:\PHP\llerp\protected\controllers\OrderController.php(581): CActiveRecord->__get('width')
+#2 [internal function]: OrderController->actionPrint('89')
+#3 E:\PHP\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs(Object(OrderController), Array)
+#4 E:\PHP\framework\web\actions\CInlineAction.php(48): CAction->runWithParamsInternal(Object(OrderController), Object(ReflectionMethod), Array)
+#5 E:\PHP\framework\web\CController.php(300): CInlineAction->runWithParams(Array)
+#6 E:\PHP\framework\web\CController.php(278): CController->runAction(Object(CInlineAction))
+#7 E:\PHP\framework\web\CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 E:\PHP\framework\web\CWebApplication.php(277): CController->run('print')
+#9 E:\PHP\framework\web\CWebApplication.php(136): CWebApplication->runController('order/print')
+#10 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#11 E:\PHP\llerp\index.php(13): CApplication->run()
+#12 {main} REQUEST_URI=/llerp/index.php?r=order/print&id=89
+2011/11/04 09:44:10 [error] [exception.CException] exception 'CException' with message 'Property "OrderGoods.width" is not defined.' in E:\PHP\framework\base\CComponent.php:131
+Stack trace:
+#0 E:\PHP\framework\db\ar\CActiveRecord.php(129): CComponent->__get('width')
+#1 E:\PHP\llerp\protected\controllers\OrderController.php(581): CActiveRecord->__get('width')
+#2 [internal function]: OrderController->actionPrint('89')
+#3 E:\PHP\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs(Object(OrderController), Array)
+#4 E:\PHP\framework\web\actions\CInlineAction.php(48): CAction->runWithParamsInternal(Object(OrderController), Object(ReflectionMethod), Array)
+#5 E:\PHP\framework\web\CController.php(300): CInlineAction->runWithParams(Array)
+#6 E:\PHP\framework\web\CController.php(278): CController->runAction(Object(CInlineAction))
+#7 E:\PHP\framework\web\CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 E:\PHP\framework\web\CWebApplication.php(277): CController->run('print')
+#9 E:\PHP\framework\web\CWebApplication.php(136): CWebApplication->runController('order/print')
+#10 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#11 E:\PHP\llerp\index.php(13): CApplication->run()
+#12 {main} REQUEST_URI=/llerp/index.php?r=order/print&id=89
+2011/11/04 09:45:35 [error] [php] Undefined variable: goodsPublicInfo (E:\PHP\llerp\protected\views\order\print.php:203)
+Stack trace:
+#0 E:\PHP\framework\web\CController.php(866): OrderController->renderFile()
+#1 E:\PHP\framework\web\CController.php(779): OrderController->renderPartial()
+#2 E:\PHP\llerp\protected\controllers\OrderController.php(587): OrderController->render()
+#3 unknown(0): OrderController->actionPrint()
+#4 E:\PHP\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs()
+#5 E:\PHP\framework\web\actions\CInlineAction.php(48): CInlineAction->runWithParamsInternal()
+#6 E:\PHP\framework\web\CController.php(300): CInlineAction->runWithParams()
+#7 E:\PHP\framework\web\CController.php(278): OrderController->runAction()
+#8 E:\PHP\framework\web\CController.php(257): OrderController->runActionWithFilters()
+#9 E:\PHP\framework\web\CWebApplication.php(277): OrderController->run()
+#10 E:\PHP\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#11 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#12 E:\PHP\llerp\index.php(13): CWebApplication->run()
+REQUEST_URI=/llerp/index.php?r=order/print&id=89
+in E:\PHP\llerp\protected\views\order\print.php (203)
+in E:\PHP\llerp\protected\controllers\OrderController.php (587)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 09:46:58 [error] [php] Invalid argument supplied for foreach() (E:\PHP\llerp\protected\views\order\print.php:203)
+Stack trace:
+#0 E:\PHP\framework\web\CController.php(866): OrderController->renderFile()
+#1 E:\PHP\framework\web\CController.php(779): OrderController->renderPartial()
+#2 E:\PHP\llerp\protected\controllers\OrderController.php(588): OrderController->render()
+#3 unknown(0): OrderController->actionPrint()
+#4 E:\PHP\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs()
+#5 E:\PHP\framework\web\actions\CInlineAction.php(48): CInlineAction->runWithParamsInternal()
+#6 E:\PHP\framework\web\CController.php(300): CInlineAction->runWithParams()
+#7 E:\PHP\framework\web\CController.php(278): OrderController->runAction()
+#8 E:\PHP\framework\web\CController.php(257): OrderController->runActionWithFilters()
+#9 E:\PHP\framework\web\CWebApplication.php(277): OrderController->run()
+#10 E:\PHP\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#11 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#12 E:\PHP\llerp\index.php(13): CWebApplication->run()
+REQUEST_URI=/llerp/index.php?r=order/print&id=89
+in E:\PHP\llerp\protected\views\order\print.php (203)
+in E:\PHP\llerp\protected\controllers\OrderController.php (588)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 09:47:27 [error] [php] Trying to get property of non-object (E:\PHP\llerp\protected\controllers\OrderController.php:535)
+Stack trace:
+#0 E:\PHP\framework\web\actions\CInlineAction.php(48): CInlineAction->runWithParamsInternal()
+#1 E:\PHP\framework\web\CController.php(300): CInlineAction->runWithParams()
+#2 E:\PHP\framework\web\CController.php(278): OrderController->runAction()
+#3 E:\PHP\framework\web\CController.php(257): OrderController->runActionWithFilters()
+#4 E:\PHP\framework\web\CWebApplication.php(277): OrderController->run()
+#5 E:\PHP\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#6 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#7 E:\PHP\llerp\index.php(13): CWebApplication->run()
+REQUEST_URI=/llerp/index.php?r=order/print&id=88
+in E:\PHP\llerp\protected\controllers\OrderController.php (535)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 09:47:31 [error] [php] Undefined offset:  0 (E:\PHP\llerp\protected\views\order\print.php:206)
+Stack trace:
+#0 E:\PHP\framework\web\CController.php(866): OrderController->renderFile()
+#1 E:\PHP\framework\web\CController.php(779): OrderController->renderPartial()
+#2 E:\PHP\llerp\protected\controllers\OrderController.php(588): OrderController->render()
+#3 unknown(0): OrderController->actionPrint()
+#4 E:\PHP\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs()
+#5 E:\PHP\framework\web\actions\CInlineAction.php(48): CInlineAction->runWithParamsInternal()
+#6 E:\PHP\framework\web\CController.php(300): CInlineAction->runWithParams()
+#7 E:\PHP\framework\web\CController.php(278): OrderController->runAction()
+#8 E:\PHP\framework\web\CController.php(257): OrderController->runActionWithFilters()
+#9 E:\PHP\framework\web\CWebApplication.php(277): OrderController->run()
+#10 E:\PHP\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#11 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#12 E:\PHP\llerp\index.php(13): CWebApplication->run()
+REQUEST_URI=/llerp/index.php?r=order/print&id=86
+in E:\PHP\llerp\protected\views\order\print.php (206)
+in E:\PHP\llerp\protected\controllers\OrderController.php (588)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 09:49:01 [warning] [application] Failed to set unsafe attribute "'width'" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 09:49:01 [warning] [application] Failed to set unsafe attribute "memo" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 09:49:32 [warning] [application] Failed to set unsafe attribute "memo" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 09:49:43 [warning] [application] Failed to set unsafe attribute "memo" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 09:49:43 [warning] [application] Failed to set unsafe attribute "id" of "OrderGoods".
+in E:\PHP\llerp\protected\controllers\OrderController.php (617)
+in E:\PHP\llerp\protected\controllers\OrderController.php (468)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 09:49:51 [error] [php] Invalid argument supplied for foreach() (E:\PHP\llerp\protected\views\order\print.php:203)
+Stack trace:
+#0 E:\PHP\framework\web\CController.php(866): OrderController->renderFile()
+#1 E:\PHP\framework\web\CController.php(779): OrderController->renderPartial()
+#2 E:\PHP\llerp\protected\controllers\OrderController.php(588): OrderController->render()
+#3 unknown(0): OrderController->actionPrint()
+#4 E:\PHP\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs()
+#5 E:\PHP\framework\web\actions\CInlineAction.php(48): CInlineAction->runWithParamsInternal()
+#6 E:\PHP\framework\web\CController.php(300): CInlineAction->runWithParams()
+#7 E:\PHP\framework\web\CController.php(278): OrderController->runAction()
+#8 E:\PHP\framework\web\CController.php(257): OrderController->runActionWithFilters()
+#9 E:\PHP\framework\web\CWebApplication.php(277): OrderController->run()
+#10 E:\PHP\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#11 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#12 E:\PHP\llerp\index.php(13): CWebApplication->run()
+REQUEST_URI=/llerp/index.php?r=order/print&id=89
+in E:\PHP\llerp\protected\views\order\print.php (203)
+in E:\PHP\llerp\protected\controllers\OrderController.php (588)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 09:50:21 [warning] [application] Failed to set unsafe attribute "memo" of "Order".
+in E:\PHP\llerp\protected\controllers\OrderController.php (463)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 09:50:21 [warning] [application] Failed to set unsafe attribute "id" of "OrderGoods".
+in E:\PHP\llerp\protected\controllers\OrderController.php (617)
+in E:\PHP\llerp\protected\controllers\OrderController.php (468)
+in E:\PHP\llerp\index.php (13)
+2011/11/04 09:50:21 [warning] [application] Failed to set unsafe attribute "id" of "OrderGoods".
+in E:\PHP\llerp\protected\controllers\OrderController.php (617)
+in E:\PHP\llerp\protected\controllers\OrderController.php (468)
+in E:\PHP\llerp\index.php (13)

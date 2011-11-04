@@ -439,28 +439,30 @@ class OrderController extends Controller
             $order->status = 1;
 
             // 分离不是订单数据表的数据，以及合并物品公共需求
-            $goodsList = $user->getState("goodsList");
-            if ($goodsList === null)
-            {
-                $this->error("发生错误，请重新下单");
-                $this->redirect(array("order/index"));
-            }
-            $width = $_POST['Form']['width'];
-            $detail_width = $_POST['Form']['detail_width'];
-            foreach ($goodsList as $key=>$goods)
-            {
-                if (!empty($_POST['Form']['width']))
-                {
-                    $goods->width = $width[$goods->shoot_type];
-	                $goods->detail_width = $detail_width[$goods->shoot_type];
-                }
-                $goodsList[$key] = $goods;
-                $user->setState("goodsList", $goodsList);
-            }
-            unset($_POST['Form']['width'], $_POST['Form']['detail_width']);
+//            $goodsList = $user->getState("goodsList");
+//            if ($goodsList === null)
+//            {
+//                $this->error("发生错误，请重新下单");
+//                $this->redirect(array("order/index"));
+//            }
+//            $width = $_POST['Form']['width'];
+//            $detail_width = $_POST['Form']['detail_width'];
+//            foreach ($goodsList as $key=>$goods)
+//            {
+//                if (!empty($_POST['Form']['width']))
+//                {
+//                    $goods->width = $width[$goods->shoot_type];
+//	                $goods->detail_width = $detail_width[$goods->shoot_type];
+//                }
+//                $goodsList[$key] = $goods;
+//                $user->setState("goodsList", $goodsList);
+//            }
+
+//            unset($_POST['Form']['width'], $_POST['Form']['detail_width']);
 
             $order->attributes = $_POST['Form'];
-            $order->shoot_notice = @serialize($order->shoot_notice);
+            $order->width = serialize($order->width);
+            $order->shoot_notice = serialize($order->shoot_notice);
 
             // 保存订单、订单物品、模特
             if ($order->save() && $this->saveGoods($order->id, $order->sn) && $this->saveModel($order->id))
@@ -571,14 +573,7 @@ class OrderController extends Controller
         $models = $result;
 
         $order->shoot_notice = unserialize($order->shoot_notice);
-
-        // 组合物品公用信息
-        $goodsPublicInfo = array();
-        foreach ($goodsList as $goods)
-        {
-            $goodsPublicInfo['width'][$goods->shoot_type][0] = $goods->width;
-            $goodsPublicInfo['width'][$goods->shoot_type][1] = $goods->detail_width;
-        }
+        $order->width = unserialize($order->width);
 
 	    $this->render("print", array(
 	        'order'=>$order,
@@ -589,7 +584,6 @@ class OrderController extends Controller
 	        'shootType'=>$shootType,
 	        'style'=>$style,
 	        'models'=>$models,
-	        'goodsPublicInfo'=>$goodsPublicInfo,
             'shootNotice'=>$this->getShootNotice()
 	    ));
 	}
@@ -614,6 +608,10 @@ class OrderController extends Controller
 	        $goods->id = null;
 	        $goods->order_id = $id;
 	        $goods->status = 2;
+	        if (empty($goods->real_count))
+	            $goods->real_count = 0;
+            if (empty($goods->shoot_count))
+                $goods->shoot_count = 0;
 
 	        $orderGoods = new OrderGoods;
 	        $orderGoods->attributes = (array)$goods;
@@ -674,4 +672,5 @@ class OrderController extends Controller
 	        $this->_shootNotice = require_once(Yii::getPathOfAlias('application.config', true) . '\shootnotice.php');
 	    return $this->_shootNotice;
 	}
+
 }
