@@ -1,14 +1,35 @@
+<?php $this->widget('widget.Search', array(
+    'panleStyle'=>'width: 100%;',
+    'searchCondition'=>array(
+        '订单号：'=>array('type'=>'text', 'name'=>'params[sn]', 'defaultValue'=>empty($params['sn']) ? '' : $params['sn'], 'alt'=>'支持模糊搜索'),
+        '客户名：'=>array('type'=>'text', 'name'=>'params[user_name]', 'defaultValue'=>empty($params['user_name']) ? '' : $params['user_name']),
+        '状态：'=>array('type'=>'select', 'name'=>'params[status]', 'defaultValue'=>empty($params['status']) ? '' : $params['status'],
+            'options'=>array(
+				'未付款'=>'1',
+				'已付款、未收货'=>'2',
+				'已付款、已收货、待排程'=>'3',
+				'已付款、已收货、已排程'=>'4',
+				'拍摄中'=>'5',
+				'拍摄完成、修图中'=>'6',
+				'修图完成、可下载'=>'7',
+				'货物待寄出'=>'8',
+				'货物已寄出'=>'9',
+				'确认收货'=>'10',
+            )
+        ),
+    ),
+)); ?>
 <div class="pageContent" width="100%">
     <table class="table" width="100%">
     	<thead>
 	        <tr>
 	            <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
-	            <th width="100">客户名</th>
+	            <th width="100" >客户名</th>
 	            <th width="100">旺旺号</th>
 	            <th width="50">订单号</th>
 	            <th width="50">合同金额</th>
-	            <th width="80">下单时间</th>
-	            <th width="100">当前状态</th>
+	            <th width="80"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('sort'=>'time'));?>">下单时间</a></th>
+	            <th width="100"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('sort'=>'status'));?>">当前状态</a></th>
 	            <th width="50">是否跟拍</th>
 	            <th width="200">操作</th>
 	        </tr>
