@@ -844,3 +844,21 @@ Stack trace:
 #15 E:\PHP\framework\base\CApplication.php(158): CWebApplication->processRequest()
 #16 E:\PHP\llerp\index.php(13): CApplication->run()
 #17 {main} REQUEST_URI=/llerp/index.php?r=user/editInfo
+2011/11/03 01:50:16 [warning] [application] Failed to set unsafe attribute "saveTime" of "LoginForm".
+in D:\wamp2.2\www\green-sea-erp\protected\controllers\UserController.php (30)
+in D:\wamp2.2\www\green-sea-erp\index.php (13)
+2011/11/03 01:50:39 [warning] [application] Failed to set unsafe attribute "saveTime" of "LoginForm".
+in D:\wamp2.2\www\green-sea-erp\protected\controllers\UserController.php (30)
+in D:\wamp2.2\www\green-sea-erp\index.php (13)
+2011/11/04 13:57:02 [warning] [application] Failed to set unsafe attribute "saveTime" of "LoginForm".
+in D:\wamp2.2\www\green-sea-erp\protected\controllers\UserController.php (30)
+in D:\wamp2.2\www\green-sea-erp\index.php (13)
+2011/11/04 13:57:11 [warning] [application] Failed to set unsafe attribute "saveTime" of "LoginForm".
+in D:\wamp2.2\www\green-sea-erp\protected\controllers\UserController.php (30)
+in D:\wamp2.2\www\green-sea-erp\index.php (13)
+2011/11/04 13:57:57 [warning] [application] Failed to set unsafe attribute "saveTime" of "LoginForm".
+in D:\wamp2.2\www\green-sea-erp\protected\controllers\UserController.php (30)
+in D:\wamp2.2\www\green-sea-erp\index.php (13)
+2011/11/04 13:58:26 [warning] [application] Failed to set unsafe attribute "saveTime" of "LoginForm".
+in D:\wamp2.2\www\green-sea-erp\protected\controllers\UserController.php (30)
+in D:\wamp2.2\www\green-sea-erp\index.php (13)
