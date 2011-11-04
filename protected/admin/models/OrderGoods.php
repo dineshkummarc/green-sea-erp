@@ -9,13 +9,16 @@
  * @property string $sn
  * @property integer $season
  * @property integer $sex
- * @property string $type_id
  * @property string $type
- * @property string $shoot_type_id
+ * @property string $type_name
+ * @property string $shoot_type
+ * @property string $style
  * @property string $count
  * @property string $real_count
  * @property string $shoot_count
+ * @property string $price
  * @property integer $status
+ * @property string $memo
  */
 class OrderGoods extends CActiveRecord
 {
@@ -29,6 +32,24 @@ class OrderGoods extends CActiveRecord
 	}
 
 	/**
+	 * 缓存
+	 * @param integer $duration 缓存时间
+	 * @param CDbCacheDependency $dependency 缓存依赖条件
+	 */
+	public function cache($duration = null, $dependency = null)
+	{
+	    if (empty($duration))
+	    {
+	        $duration = 3600 * 24;
+	    }
+	    if (empty($dependency))
+	    {
+	        $dependency = new CDbCacheDependency("SELECT COUNT(*) FROM ".$this->tableName());
+	    }
+	    return parent::cache($duration, $dependency);
+	}
+
+	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -39,15 +60,17 @@ class OrderGoods extends CActiveRecord
 	/**
 	 * @return array validation rules for model attributes.
 	 */
-    public function rules()
+	public function rules()
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('order_id, sn, season, sex, type, type_name, shoot_type, style, count, real_count, shoot_count, status', 'required'),
+			array('order_id, sn, season, sex, type, type_name, shoot_type, style, count, real_count, shoot_count, price, status', 'required'),
 			array('season, sex, status', 'numerical', 'integerOnly'=>true),
 			array('order_id, type, shoot_type, style, count, real_count, shoot_count', 'length', 'max'=>10),
 			array('sn, type_name', 'length', 'max'=>20),
+			array('price', 'length', 'max'=>6),
+			array('memo', 'length', 'max'=>255),
 		);
 	}
 
@@ -77,14 +100,15 @@ class OrderGoods extends CActiveRecord
 			'season' => 'Season',
 			'sex' => 'Sex',
 			'type' => 'Type',
+			'type_name' => 'Type Name',
 			'shoot_type' => 'Shoot Type',
 			'style' => 'Style',
 			'count' => 'Count',
 			'real_count' => 'Real Count',
 			'shoot_count' => 'Shoot Count',
+			'price' => 'Price',
 			'status' => 'Status',
+			'memo' => 'Memo',
 		);
 	}
-
-
 }
