@@ -12,6 +12,7 @@
 <link href="themes/css/ieHack.css" rel="stylesheet" type="text/css" />
 <![endif]-->
 
+<script src="admin/js/admin.js" type="text/javascript"></script>
 <script src="admin/js/speedup.js" type="text/javascript"></script>
 <script src="admin/js/jquery-1.4.4.js" type="text/javascript"></script>
 <script src="admin/js/jquery.cookie.js" type="text/javascript"></script>
@@ -108,7 +109,7 @@ $(function(){
 							<li><a>ERP</a>
 								<ul>
 									<li><a href="<?php echo $this->createUrl('order/index');?>" target="navTab" rel="order-index">订单</a></li>
-									<li><a href="<?php echo $this->createUrl('user/index');?>" target="navTab" rel="order-index">用户管理</a></li>
+									<li><a href="<?php echo $this->createUrl('user/index');?>" target="navTab" rel="user-index">用户管理</a></li>
 								</ul>
 							</li>
 						</ul>

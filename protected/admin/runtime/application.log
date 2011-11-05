@@ -1291,3 +1291,294 @@ Stack trace:
 #1 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
 #2 E:\wamp\www\green-sea-erp\admin.php(13): CApplication->run()
 #3 {main} REQUEST_URI=/green-sea-erp/admin.php?r=editInfo/editInfo
+2011/11/05 01:17:22 [error] [exception.CException] exception 'CException' with message 'Property "UserController.controller" is not defined.' in E:\wamp\www\framework\base\CComponent.php:131
+Stack trace:
+#0 E:\wamp\www\green-sea-erp\protected\admin\views\user\index.php(3): CComponent->__get('controller')
+#1 E:\wamp\www\framework\web\CBaseController.php(119): require('E:\wamp\www\gre...')
+#2 E:\wamp\www\framework\web\CBaseController.php(88): CBaseController->renderInternal('E:\wamp\www\gre...', Array, true)
+#3 E:\wamp\www\framework\web\CController.php(866): CBaseController->renderFile('E:\wamp\www\gre...', Array, true)
+#4 E:\wamp\www\framework\web\CController.php(779): CController->renderPartial('index', Array, true)
+#5 E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php(23): CController->render('index', Array)
+#6 [internal function]: UserController->actionIndex(1, 20)
+#7 E:\wamp\www\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs(Object(UserController), Array)
+#8 E:\wamp\www\framework\web\actions\CInlineAction.php(48): CAction->runWithParamsInternal(Object(UserController), Object(ReflectionMethod), Array)
+#9 E:\wamp\www\framework\web\CController.php(300): CInlineAction->runWithParams(Array)
+#10 E:\wamp\www\framework\web\CController.php(278): CController->runAction(Object(CInlineAction))
+#11 E:\wamp\www\framework\web\CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 E:\wamp\www\framework\web\CWebApplication.php(277): CController->run('index')
+#13 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController('user/index')
+#14 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#15 E:\wamp\www\green-sea-erp\admin.php(13): CApplication->run()
+#16 {main} REQUEST_URI=/green-sea-erp/admin.php?r=user/index&_=1320455842538
+2011/11/05 01:17:26 [error] [exception.CException] exception 'CException' with message 'Property "UserController.controller" is not defined.' in E:\wamp\www\framework\base\CComponent.php:131
+Stack trace:
+#0 E:\wamp\www\green-sea-erp\protected\admin\views\user\index.php(3): CComponent->__get('controller')
+#1 E:\wamp\www\framework\web\CBaseController.php(119): require('E:\wamp\www\gre...')
+#2 E:\wamp\www\framework\web\CBaseController.php(88): CBaseController->renderInternal('E:\wamp\www\gre...', Array, true)
+#3 E:\wamp\www\framework\web\CController.php(866): CBaseController->renderFile('E:\wamp\www\gre...', Array, true)
+#4 E:\wamp\www\framework\web\CController.php(779): CController->renderPartial('index', Array, true)
+#5 E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php(23): CController->render('index', Array)
+#6 [internal function]: UserController->actionIndex(1, 20)
+#7 E:\wamp\www\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs(Object(UserController), Array)
+#8 E:\wamp\www\framework\web\actions\CInlineAction.php(48): CAction->runWithParamsInternal(Object(UserController), Object(ReflectionMethod), Array)
+#9 E:\wamp\www\framework\web\CController.php(300): CInlineAction->runWithParams(Array)
+#10 E:\wamp\www\framework\web\CController.php(278): CController->runAction(Object(CInlineAction))
+#11 E:\wamp\www\framework\web\CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 E:\wamp\www\framework\web\CWebApplication.php(277): CController->run('index')
+#13 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController('user/index')
+#14 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#15 E:\wamp\www\green-sea-erp\admin.php(13): CApplication->run()
+#16 {main} REQUEST_URI=/green-sea-erp/admin.php?r=user/index&_=1320455846080
+2011/11/05 01:55:45 [error] [php] Undefined index: options (E:\wamp\www\green-sea-erp\protected\admin\widget\views\search.php:14)
+Stack trace:
+#0 E:\wamp\www\framework\web\widgets\CWidget.php(242): Search->renderFile()
+#1 E:\wamp\www\green-sea-erp\protected\admin\widget\Search.php(14): Search->render()
+#2 E:\wamp\www\framework\web\CBaseController.php(166): Search->run()
+#3 E:\wamp\www\green-sea-erp\protected\admin\views\user\index.php(9): UserController->widget()
+#4 E:\wamp\www\framework\web\CBaseController.php(119): require()
+#5 E:\wamp\www\framework\web\CBaseController.php(88): UserController->renderInternal()
+#6 E:\wamp\www\framework\web\CController.php(866): UserController->renderFile()
+#7 E:\wamp\www\framework\web\CController.php(779): UserController->renderPartial()
+#8 E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php(23): UserController->render()
+#9 unknown(0): UserController->actionIndex()
+#10 E:\wamp\www\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs()
+#11 E:\wamp\www\framework\web\actions\CInlineAction.php(48): CInlineAction->runWithParamsInternal()
+#12 E:\wamp\www\framework\web\CController.php(300): CInlineAction->runWithParams()
+#13 E:\wamp\www\framework\web\CController.php(278): UserController->runAction()
+#14 E:\wamp\www\framework\web\CController.php(257): UserController->runActionWithFilters()
+#15 E:\wamp\www\framework\web\CWebApplication.php(277): UserController->run()
+#16 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#17 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#18 E:\wamp\www\green-sea-erp\admin.php(13): CWebApplication->run()
+REQUEST_URI=/green-sea-erp/admin.php?r=user/index&_=1320458145389
+in E:\wamp\www\green-sea-erp\protected\admin\widget\views\search.php (14)
+in E:\wamp\www\green-sea-erp\protected\admin\widget\Search.php (14)
+in E:\wamp\www\green-sea-erp\protected\admin\views\user\index.php (9)
+2011/11/05 02:24:52 [error] [php] Undefined variable: ad (E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php:91)
+Stack trace:
+#0 E:\wamp\www\framework\web\actions\CInlineAction.php(48): CInlineAction->runWithParamsInternal()
+#1 E:\wamp\www\framework\web\CController.php(300): CInlineAction->runWithParams()
+#2 E:\wamp\www\framework\web\CController.php(278): UserController->runAction()
+#3 E:\wamp\www\framework\web\CController.php(257): UserController->runActionWithFilters()
+#4 E:\wamp\www\framework\web\CWebApplication.php(277): UserController->run()
+#5 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#6 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#7 E:\wamp\www\green-sea-erp\admin.php(13): CWebApplication->run()
+REQUEST_URI=/green-sea-erp/admin.php?r=user/delete
+in E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php (91)
+in E:\wamp\www\green-sea-erp\admin.php (13)
+2011/11/05 02:26:31 [error] [php] Undefined variable: ad (E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php:91)
+Stack trace:
+#0 E:\wamp\www\framework\web\actions\CInlineAction.php(48): CInlineAction->runWithParamsInternal()
+#1 E:\wamp\www\framework\web\CController.php(300): CInlineAction->runWithParams()
+#2 E:\wamp\www\framework\web\CController.php(278): UserController->runAction()
+#3 E:\wamp\www\framework\web\CController.php(257): UserController->runActionWithFilters()
+#4 E:\wamp\www\framework\web\CWebApplication.php(277): UserController->run()
+#5 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#6 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#7 E:\wamp\www\green-sea-erp\admin.php(13): CWebApplication->run()
+REQUEST_URI=/green-sea-erp/admin.php?r=user/delete
+in E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php (91)
+in E:\wamp\www\green-sea-erp\admin.php (13)
+2011/11/05 02:32:54 [error] [php] Undefined variable: info (E:\wamp\www\green-sea-erp\protected\admin\views\user\editInfo.php:3)
+Stack trace:
+#0 E:\wamp\www\framework\web\CController.php(866): UserController->renderFile()
+#1 E:\wamp\www\framework\web\CController.php(779): UserController->renderPartial()
+#2 E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php(73): UserController->render()
+#3 E:\wamp\www\framework\web\actions\CInlineAction.php(50): UserController->actionUpdate()
+#4 E:\wamp\www\framework\web\CController.php(300): CInlineAction->runWithParams()
+#5 E:\wamp\www\framework\web\CController.php(278): UserController->runAction()
+#6 E:\wamp\www\framework\web\CController.php(257): UserController->runActionWithFilters()
+#7 E:\wamp\www\framework\web\CWebApplication.php(277): UserController->run()
+#8 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#9 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#10 E:\wamp\www\green-sea-erp\admin.php(13): CWebApplication->run()
+REQUEST_URI=/green-sea-erp/admin.php?r=user/update
+in E:\wamp\www\green-sea-erp\protected\admin\views\user\editInfo.php (3)
+in E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php (73)
+in E:\wamp\www\green-sea-erp\admin.php (13)
+2011/11/05 05:43:47 [error] [exception.CException] exception 'CException' with message 'UserController and its behaviors do not have a method or closure named "getCategory".' in E:\wamp\www\framework\base\CComponent.php:269
+Stack trace:
+#0 E:\wamp\www\green-sea-erp\protected\admin\views\user\editUser.php(2): CComponent->__call('getCategory', Array)
+#1 E:\wamp\www\green-sea-erp\protected\admin\views\user\editUser.php(2): UserController->getCategory()
+#2 E:\wamp\www\framework\web\CBaseController.php(119): require('E:\wamp\www\gre...')
+#3 E:\wamp\www\framework\web\CBaseController.php(88): CBaseController->renderInternal('E:\wamp\www\gre...', Array, true)
+#4 E:\wamp\www\framework\web\CController.php(866): CBaseController->renderFile('E:\wamp\www\gre...', Array, true)
+#5 E:\wamp\www\framework\web\CController.php(779): CController->renderPartial('editUser', Array, true)
+#6 E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php(75): CController->render('editUser', Array)
+#7 [internal function]: UserController->actionAddUser(NULL)
+#8 E:\wamp\www\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs(Object(UserController), Array)
+#9 E:\wamp\www\framework\web\actions\CInlineAction.php(48): CAction->runWithParamsInternal(Object(UserController), Object(ReflectionMethod), Array)
+#10 E:\wamp\www\framework\web\CController.php(300): CInlineAction->runWithParams(Array)
+#11 E:\wamp\www\framework\web\CController.php(278): CController->runAction(Object(CInlineAction))
+#12 E:\wamp\www\framework\web\CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 E:\wamp\www\framework\web\CWebApplication.php(277): CController->run('addUser')
+#14 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController('user/addUser')
+#15 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#16 E:\wamp\www\green-sea-erp\admin.php(13): CApplication->run()
+#17 {main} REQUEST_URI=/green-sea-erp/admin.php?r=user/addUser&_=1320471827781
+2011/11/05 05:58:12 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "update".' in E:\wamp\www\framework\web\CController.php:477
+Stack trace:
+#0 E:\wamp\www\framework\web\CController.php(262): CController->missingAction('update')
+#1 E:\wamp\www\framework\web\CWebApplication.php(277): CController->run('update')
+#2 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController('user/update')
+#3 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#4 E:\wamp\www\green-sea-erp\admin.php(13): CApplication->run()
+#5 {main} REQUEST_URI=/green-sea-erp/admin.php?r=user/update
+2011/11/05 06:31:51 [error] [php] Undefined variable: shop (E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php:71)
+Stack trace:
+#0 E:\wamp\www\framework\web\actions\CInlineAction.php(48): CInlineAction->runWithParamsInternal()
+#1 E:\wamp\www\framework\web\CController.php(300): CInlineAction->runWithParams()
+#2 E:\wamp\www\framework\web\CController.php(278): UserController->runAction()
+#3 E:\wamp\www\framework\web\CController.php(257): UserController->runActionWithFilters()
+#4 E:\wamp\www\framework\web\CWebApplication.php(277): UserController->run()
+#5 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#6 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#7 E:\wamp\www\green-sea-erp\admin.php(13): CWebApplication->run()
+REQUEST_URI=/green-sea-erp/admin.php?r=user/addUser
+in E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php (71)
+in E:\wamp\www\green-sea-erp\admin.php (13)
+2011/11/05 06:32:21 [error] [php] Undefined variable: shop (E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php:71)
+Stack trace:
+#0 E:\wamp\www\framework\web\actions\CInlineAction.php(48): CInlineAction->runWithParamsInternal()
+#1 E:\wamp\www\framework\web\CController.php(300): CInlineAction->runWithParams()
+#2 E:\wamp\www\framework\web\CController.php(278): UserController->runAction()
+#3 E:\wamp\www\framework\web\CController.php(257): UserController->runActionWithFilters()
+#4 E:\wamp\www\framework\web\CWebApplication.php(277): UserController->run()
+#5 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#6 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#7 E:\wamp\www\green-sea-erp\admin.php(13): CWebApplication->run()
+REQUEST_URI=/green-sea-erp/admin.php?r=user/addUser
+in E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php (71)
+in E:\wamp\www\green-sea-erp\admin.php (13)
+2011/11/05 06:39:03 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "update".' in E:\wamp\www\framework\web\CController.php:477
+Stack trace:
+#0 E:\wamp\www\framework\web\CController.php(262): CController->missingAction('update')
+#1 E:\wamp\www\framework\web\CWebApplication.php(277): CController->run('update')
+#2 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController('user/update')
+#3 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#4 E:\wamp\www\green-sea-erp\admin.php(13): CApplication->run()
+#5 {main} REQUEST_URI=/green-sea-erp/admin.php?r=user/update
+2011/11/05 06:40:03 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'Your request is invalid.' in E:\wamp\www\framework\web\CController.php:328
+Stack trace:
+#0 E:\wamp\www\framework\web\CController.php(301): CController->invalidActionParams(Object(CInlineAction))
+#1 E:\wamp\www\framework\web\CController.php(278): CController->runAction(Object(CInlineAction))
+#2 E:\wamp\www\framework\web\CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#3 E:\wamp\www\framework\web\CWebApplication.php(277): CController->run('addUser')
+#4 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController('user/addUser')
+#5 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#6 E:\wamp\www\green-sea-erp\admin.php(13): CApplication->run()
+#7 {main} REQUEST_URI=/green-sea-erp/admin.php?r=user/addUser
+2011/11/05 06:44:28 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'Your request is invalid.' in E:\wamp\www\framework\web\CController.php:328
+Stack trace:
+#0 E:\wamp\www\framework\web\CController.php(301): CController->invalidActionParams(Object(CInlineAction))
+#1 E:\wamp\www\framework\web\CController.php(278): CController->runAction(Object(CInlineAction))
+#2 E:\wamp\www\framework\web\CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#3 E:\wamp\www\framework\web\CWebApplication.php(277): CController->run('addUser')
+#4 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController('user/addUser')
+#5 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#6 E:\wamp\www\green-sea-erp\admin.php(13): CApplication->run()
+#7 {main} REQUEST_URI=/green-sea-erp/admin.php?r=user/addUser
+2011/11/05 06:50:16 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'Your request is invalid.' in E:\wamp\www\framework\web\CController.php:328
+Stack trace:
+#0 E:\wamp\www\framework\web\CController.php(301): CController->invalidActionParams(Object(CInlineAction))
+#1 E:\wamp\www\framework\web\CController.php(278): CController->runAction(Object(CInlineAction))
+#2 E:\wamp\www\framework\web\CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#3 E:\wamp\www\framework\web\CWebApplication.php(277): CController->run('addUser')
+#4 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController('user/addUser')
+#5 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#6 E:\wamp\www\green-sea-erp\admin.php(13): CApplication->run()
+#7 {main} REQUEST_URI=/green-sea-erp/admin.php?r=user/addUser
+2011/11/05 07:14:22 [error] [php] Undefined variable: user (E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php:70)
+Stack trace:
+#0 E:\wamp\www\framework\web\actions\CInlineAction.php(48): CInlineAction->runWithParamsInternal()
+#1 E:\wamp\www\framework\web\CController.php(300): CInlineAction->runWithParams()
+#2 E:\wamp\www\framework\web\CController.php(278): UserController->runAction()
+#3 E:\wamp\www\framework\web\CController.php(257): UserController->runActionWithFilters()
+#4 E:\wamp\www\framework\web\CWebApplication.php(277): UserController->run()
+#5 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#6 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#7 E:\wamp\www\green-sea-erp\admin.php(13): CWebApplication->run()
+REQUEST_URI=/green-sea-erp/admin.php?r=user/addUser&_=1320477262559
+in E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php (70)
+in E:\wamp\www\green-sea-erp\admin.php (13)
+2011/11/05 07:14:46 [error] [php] Undefined variable: user (E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php:70)
+Stack trace:
+#0 E:\wamp\www\framework\web\actions\CInlineAction.php(48): CInlineAction->runWithParamsInternal()
+#1 E:\wamp\www\framework\web\CController.php(300): CInlineAction->runWithParams()
+#2 E:\wamp\www\framework\web\CController.php(278): UserController->runAction()
+#3 E:\wamp\www\framework\web\CController.php(257): UserController->runActionWithFilters()
+#4 E:\wamp\www\framework\web\CWebApplication.php(277): UserController->run()
+#5 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#6 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#7 E:\wamp\www\green-sea-erp\admin.php(13): CWebApplication->run()
+REQUEST_URI=/green-sea-erp/admin.php?r=user/addUser&_=1320477286015
+in E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php (70)
+in E:\wamp\www\green-sea-erp\admin.php (13)
+2011/11/05 07:29:25 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "changeScore".' in E:\wamp\www\framework\web\CController.php:477
+Stack trace:
+#0 E:\wamp\www\framework\web\CController.php(262): CController->missingAction('changeScore')
+#1 E:\wamp\www\framework\web\CWebApplication.php(277): CController->run('changeScore')
+#2 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController('user/changeScor...')
+#3 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#4 E:\wamp\www\green-sea-erp\admin.php(13): CApplication->run()
+#5 {main} REQUEST_URI=/green-sea-erp/admin.php?r=user/changeScore
+2011/11/05 07:29:52 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "changeScore".' in E:\wamp\www\framework\web\CController.php:477
+Stack trace:
+#0 E:\wamp\www\framework\web\CController.php(262): CController->missingAction('changeScore')
+#1 E:\wamp\www\framework\web\CWebApplication.php(277): CController->run('changeScore')
+#2 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController('user/changeScor...')
+#3 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#4 E:\wamp\www\green-sea-erp\admin.php(13): CApplication->run()
+#5 {main} REQUEST_URI=/green-sea-erp/admin.php?r=user/changeScore
+2011/11/05 07:31:55 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "changeScore".' in E:\wamp\www\framework\web\CController.php:477
+Stack trace:
+#0 E:\wamp\www\framework\web\CController.php(262): CController->missingAction('changeScore')
+#1 E:\wamp\www\framework\web\CWebApplication.php(277): CController->run('changeScore')
+#2 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController('user/changeScor...')
+#3 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#4 E:\wamp\www\green-sea-erp\admin.php(13): CApplication->run()
+#5 {main} REQUEST_URI=/green-sea-erp/admin.php?r=user/changeScore
+2011/11/05 07:32:12 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "changeScore".' in E:\wamp\www\framework\web\CController.php:477
+Stack trace:
+#0 E:\wamp\www\framework\web\CController.php(262): CController->missingAction('changeScore')
+#1 E:\wamp\www\framework\web\CWebApplication.php(277): CController->run('changeScore')
+#2 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController('user/changeScor...')
+#3 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#4 E:\wamp\www\green-sea-erp\admin.php(13): CApplication->run()
+#5 {main} REQUEST_URI=/green-sea-erp/admin.php?r=user/changeScore
+2011/11/05 07:40:36 [warning] [application] Failed to set unsafe attribute "id" of "User".
+in E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php (92)
+in E:\wamp\www\green-sea-erp\admin.php (13)
+2011/11/05 07:40:36 [warning] [application] Failed to set unsafe attribute "re_pwd" of "User".
+in E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php (92)
+in E:\wamp\www\green-sea-erp\admin.php (13)
+2011/11/05 07:40:36 [warning] [application] Failed to set unsafe attribute "oage" of "User".
+in E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php (92)
+in E:\wamp\www\green-sea-erp\admin.php (13)
+2011/11/05 08:06:54 [error] [php] Undefined variable: params (E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php:31)
+Stack trace:
+#0 E:\wamp\www\framework\web\actions\CInlineAction.php(48): CInlineAction->runWithParamsInternal()
+#1 E:\wamp\www\framework\web\CController.php(300): CInlineAction->runWithParams()
+#2 E:\wamp\www\framework\web\CController.php(278): UserController->runAction()
+#3 E:\wamp\www\framework\web\CController.php(257): UserController->runActionWithFilters()
+#4 E:\wamp\www\framework\web\CWebApplication.php(277): UserController->run()
+#5 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#6 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#7 E:\wamp\www\green-sea-erp\admin.php(13): CWebApplication->run()
+REQUEST_URI=/green-sea-erp/admin.php?r=user/index&_=1320480414442
+in E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php (31)
+in E:\wamp\www\green-sea-erp\admin.php (13)
+2011/11/05 08:06:57 [error] [php] Undefined variable: params (E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php:31)
+Stack trace:
+#0 E:\wamp\www\framework\web\actions\CInlineAction.php(48): CInlineAction->runWithParamsInternal()
+#1 E:\wamp\www\framework\web\CController.php(300): CInlineAction->runWithParams()
+#2 E:\wamp\www\framework\web\CController.php(278): UserController->runAction()
+#3 E:\wamp\www\framework\web\CController.php(257): UserController->runActionWithFilters()
+#4 E:\wamp\www\framework\web\CWebApplication.php(277): UserController->run()
+#5 E:\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#6 E:\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#7 E:\wamp\www\green-sea-erp\admin.php(13): CWebApplication->run()
+REQUEST_URI=/green-sea-erp/admin.php?r=user/index&_=1320480417764
+in E:\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php (31)
+in E:\wamp\www\green-sea-erp\admin.php (13)
