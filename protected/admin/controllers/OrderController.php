@@ -308,4 +308,110 @@ class OrderController extends Controller
 			'storageGoods'	=> $storageGoods
 		));
 	}
+    /**
+     * 仓储入库 提交
+     */
+    public function actionStorageOut($id = null)
+    {
+        if (empty($id))
+            $this->error('参数传递错误');
+
+        $storage = Storage::model()->findByPk($id);
+        $storage->out_time = Yii::app()->params['timestamp'];
+        if ($storage->save())
+            $this->success('修改成功', array('navTabId'=>'order-storage'));
+        else
+        {
+            $error = array_shift($storage->getErrors());
+            $message = '错误：'.$error[0];
+            $this->error($message);
+        }
+    }
+
+	/**
+	 * 仓储物品 删除
+	 */
+    public function actionStorageGoodsDel(array $id = array())
+    {
+        if (empty($id))
+            $this->error('参数传递错误！');
+
+        $sqlIn = implode(',', $id);
+
+        $sql = "DELETE FROM {{storage_goods}} WHERE id in ($sqlIn)";
+        $command = Yii::app()->db->createCommand($sql);
+        $count = $command->execute();
+        $this->success('删除成功', array('navTabId'=>'order-storage'));
+    }
+
+	/**
+	 * 打印订单
+	 * @param integer $id order id
+	 */
+	public function actionPrint($id = null)
+	{
+	    if ($id === null)
+	    {
+	        $this->error("参数错误");
+	        $this->redirect(array("order/index"));
+	    }
+	    $this->layout = false;
+
+	    // 获取数据库信息
+	    $order = Order::model()->findByPk($id);
+	    $goodsList = OrderGoods::model()->findAllByAttributes(array('order_id'=>$order->id));
+	    $models = OrderModel::model()->findAllByAttributes(array('order_id'=>$order->id));
+	    $shootType = ShootType::model()->findAll();
+	    $style = Style::model()->findAll();
+
+	    // 拆解数据对象
+	    $season = array();
+        $season[0] = "不限";
+        $season[1] = "春秋";
+        $season[2] = "夏";
+        $season[3] = "冬";
+
+        $sex = array();
+        $sex[0] = "不限";
+        $sex[1] = "男";
+        $sex[2] = "女";
+        $sex[3] = "情侣";
+
+	    $result = array();
+        foreach ($shootType as $type)
+        {
+            $result[$type->id] = $type->name;
+        }
+        $shootType = $result;
+
+	    $result = array();
+        foreach ($style as $style)
+        {
+            $result[$style->id] = $style->name;
+        }
+        $result[0] = "不限";
+        $style = $result;
+
+        $result = array();
+        foreach ($models as $model)
+        {
+            $result[] = $model->Info;
+        }
+        $models = $result;
+
+        $order->shoot_notice = unserialize($order->shoot_notice);
+        $order->width = unserialize($order->width);
+
+	    $this->render("print", array(
+	        'order'=>$order,
+	        'goodsList'=>$goodsList,
+	    	'models'=>$models,
+	        'season'=>$season,
+	        'sex'=>$sex,
+	        'shootType'=>$shootType,
+	        'style'=>$style,
+	        'models'=>$models,
+            'shootNotice'=>Order::getShootNotice()
+	    ));
+	}
 }

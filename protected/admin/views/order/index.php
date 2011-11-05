@@ -84,6 +84,8 @@ function status(val)
 	                &nbsp;
 	            	<a href="<?php echo $this->createUrl('order/ShootScene', array('id'=>$order->id)); ?>" target="dialog" mask="true" width="700" height="600" title="拍摄需求">需求</a>
 	                &nbsp;
+	            	<a target="_blank" href="<?php echo $this->createUrl('order/print', array('id'=>$order->id)); ?>">打印</a>
+	                &nbsp;
 	            	<a href="<?php echo $this->createUrl('order/OrderDel', array('id'=>$order->id)); ?>" target="ajaxTodo" title="关联数据也将删除，确定删除？">删除</a>
 	                &nbsp;
 	            </td>
