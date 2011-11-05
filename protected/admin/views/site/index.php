@@ -101,6 +101,9 @@
 				<div class="toggleCollapse"><h2>主菜单</h2><div>收缩</div></div>
 
 				<div class="accordion" fillSpace="sidebar">
+					<div class="accordionHeader">
+						<h2><span>Folder</span>网站内容管理</h2>
+					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
 							<li><a>ERP</a>
@@ -110,10 +113,13 @@
 							</li>
 						</ul>
 					</div>
+					<div class="accordionHeader">
+						<h2><span>Folder</span>系统管理</h2>
+					</div>
 					<div class="accordionContent">
-						<ul class="tree">
-							<li><a href="newPage1.html" target="dialog" rel="dlg_page">列表</a></li>
-							<li><a href="newPage1.html" target="dialog" rel="dlg_page2">列表</a></li>
+						<ul class="tree treeFolder">
+							<li><a href="<?php echo $this->createUrl('auth/admin'); ?>" target="navTab" rel="admin">管理员列表</a></li>
+							<li><a href="<?php echo $this->createUrl('auth/role'); ?>" target="navTab" rel="admin">用户组管理</a></li>
 						</ul>
 					</div>
 				</div>

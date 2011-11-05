@@ -17,6 +17,7 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+		'application.models.Admin',
 	),
 
 	'aliases'=>array(
@@ -60,6 +61,9 @@ return array(
 			'charset' => 'utf8',
 		    'schemaCachingDuration'=>0,
 		),
+		'authManager'=>array(
+            'class'=>'AuthManager',
+        ),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
             //'errorAction'=>'site/error',

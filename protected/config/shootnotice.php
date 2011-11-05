@@ -15,6 +15,12 @@ return array(
                 'name'=>'Form[shoot_notice][1]',
                 'value'=>'不需要',
                 'text'=>'否',
+            ),
+            array(
+                'type'=>'radio',
+                'name'=>'Form[shoot_notice][1]',
+                'value'=>'均可',
+                'text'=>'均可',
                 'checked'=>true
             )
         ),
@@ -37,6 +43,12 @@ return array(
                 'name'=>'Form[shoot_notice][2]',
                 'value'=>'不可以',
                 'text'=>'否',
+            ),
+            array(
+                'type'=>'radio',
+                'name'=>'Form[shoot_notice][2]',
+                'value'=>'均可',
+                'text'=>'均可',
                 'checked'=>true
             )
         ),
@@ -56,6 +68,12 @@ return array(
                 'name'=>'Form[shoot_notice][3]',
                 'value'=>'不可以',
                 'text'=>'否',
+            ),
+            array(
+                'type'=>'radio',
+                'name'=>'Form[shoot_notice][3]',
+                'value'=>'均可',
+                'text'=>'均可',
                 'checked'=>true
             )
         ),

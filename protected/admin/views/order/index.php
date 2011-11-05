@@ -19,8 +19,8 @@
         ),
     ),
 )); ?>
-<div class="pageContent" width="100%">
-    <table class="table" width="100%">
+<div class="pageContent" width="100%" layoutH="65">
+    <table class="list" width="100%">
     	<thead>
 	        <tr>
 	            <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
@@ -53,6 +53,8 @@
 	            	<a href="<?php echo $this->createUrl('order/goods', array('id'=>$order->id)); ?>" target="navTab" rel="order-goods">订单物品</a>
 	                &nbsp;
 	            	<a href="<?php echo $this->createUrl('order/ShootScene', array('id'=>$order->id)); ?>" target="dialog" mask="true" width="700" height="600" title="拍摄需求">需求</a>
+	                &nbsp;
+	            	<a href="<?php echo $this->createUrl('order/OrderDel', array('id'=>$order->id)); ?>" target="ajaxTodo" title="关联数据也将删除，确定删除？">删除</a>
 	                &nbsp;
 	            </td>
 	        </tr>

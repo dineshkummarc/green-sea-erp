@@ -51,6 +51,24 @@ class OrderController extends Controller
 		));
 	}
 	/**
+	 * 订单 删除
+	 */
+    public function actionOrderDel($id = null)
+    {
+    	if ($id === null)
+	    {
+	        $this->error("删除失败，发生错误");
+	        $this->redirect(array('order/index'));
+	    }
+	    // 删除订单物品
+        OrderGoods::model()->deleteAllByAttributes(array('order_id'=>$id));
+	    // 删除订单模特
+        OrderModel::model()->deleteAllByAttributes(array('order_id'=>$id));
+	    //  删除订单
+	    Order::model()->deleteByPk($id);
+	    $this->success('删除成功', array('navTabId'=>'order-index'));
+    }
+	/**
 	 * 订单物品
 	 */
 	public function actionGoods($id, $pageNum = 1, $numPerPage = 20)

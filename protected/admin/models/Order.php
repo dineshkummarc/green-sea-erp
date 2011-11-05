@@ -117,12 +117,7 @@ class Order extends CActiveRecord
 	 */
 	public function getStatusText()
 	{
-		$basePath = Yii::app()->basePath;
-		if ((int)strripos($basePath,'admin') == false) {
-	    	$statusList = require($basePath . "/config/orderType.php");
-		}else{
-	    	$statusList = require($basePath . "/../config/orderType.php");
-		}
+		$statusList = require(Yii::getPathOfAlias('application.config') . '/orderType.php');
 	    return $statusList[$this->status];
 	}
 

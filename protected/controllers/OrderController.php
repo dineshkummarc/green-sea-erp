@@ -669,7 +669,7 @@ class OrderController extends Controller
 	public function getShootNotice()
 	{
 	    if (empty($this->_shootNotice))
-	        $this->_shootNotice = require_once(Yii::getPathOfAlias('application.config', true) . '\shootnotice.php');
+	        $this->_shootNotice = require(Yii::getPathOfAlias('application.config') . '/shootnotice.php');
 	    return $this->_shootNotice;
 	}
 
