@@ -66,7 +66,7 @@ class AuthController extends Controller
             $admin->attributes = $_POST['Form'];
             $admin->update_time = Yii::app()->params['timestamp'];
             if ($admin->save())
-                $this->success($message, array('navTabId'=>'admin'));
+                $this->success($message, array('navTabId'=>'list'));
             else
             {
                 $error = array_shift($admin->getErrors());
@@ -128,7 +128,7 @@ class AuthController extends Controller
         $command = Yii::app()->db->createCommand($sql);
         $count = $command->execute(array(":id"=>$id, ":status"=>$status, ":update_time"=>Yii::app()->params['timestamp']));
         if ($count > 0)
-            $this->success('修改成功', array('navTabId'=>'admin'));
+            $this->success('修改成功', array('navTabId'=>'list'));
         else
             $this->error('修改失败，请联系管理员');
     }
@@ -148,7 +148,7 @@ class AuthController extends Controller
             // 组合成字符串
             $id = implode(',', $id);
             if (Admin::model()->deleteAll("id in ({$id})") > 0)
-                $this->success('删除成功', array('navTabId'=>'admin'));
+                $this->success('删除成功', array('navTabId'=>'list'));
             else
                 $this->error('删除失败，请联系管理员');
         }
@@ -156,7 +156,7 @@ class AuthController extends Controller
         {
             $id = $id[0];
             if (Admin::model()->deleteByPk($id) > 0)
-                $this->success('删除成功', array('navTabId'=>'admin'));
+                $this->success('删除成功', array('navTabId'=>'list'));
             else
                 $this->error('删除失败，请联系管理员');
         }
@@ -193,7 +193,7 @@ class AuthController extends Controller
             $role->update_time = Yii::app()->params['timestamp'];
 
             if ($role->save())
-                $this->success($message, array('navTabId'=>'role'));
+                $this->success($message, array('navTabId'=>'auth-role'));
             else
             {
                 $error = array_shift($role->getErrors());
@@ -228,7 +228,7 @@ class AuthController extends Controller
             AdminRoleChild::model()->deleteAll("role_id in ({$id})");
             // 删除管理权限组
             if (AdminRole::model()->deleteAll("id in ({$id})") > 0)
-                $this->success('删除成功', array('navTabId'=>'role'));
+                $this->success('删除成功', array('navTabId'=>'auth-role'));
             else
                 $this->error('删除失败，请联系管理员');
         }
@@ -241,7 +241,7 @@ class AuthController extends Controller
             AdminRoleChild::model()->deleteAll("role_id = {$id}");
             // 删除管理权限组
             if (AdminRole::model()->deleteByPk($id) > 0)
-                $this->success('删除成功', array('navTabId'=>'role'));
+                $this->success('删除成功', array('navTabId'=>'auth-role'));
             else
                 $this->error('删除失败，请联系管理员');
         }
@@ -260,10 +260,10 @@ class AuthController extends Controller
 
         $sql = "UPDATE {{admin_role}} SET `status` = :status, `update_time` = :update_time WHERE `id` = :id";
         $command = Yii::app()->db->createCommand($sql);
-        $count = $command->excute(array(":id"=>$id, ":status"=>$status, ":update_time"=>Yii::app()->parames['timestamp']));
+        $count = $command->excute(array(":id"=>$id, ":status"=>$status, ":update_time"=>Yii::app()->params['timestamp']));
 
         if ($count > 0)
-            $this->success('修改成功', array('navTabId'=>'role'));
+            $this->success('修改成功', array('navTabId'=>'auth-role'));
         else
         {
             $this->error('错误，请联系管理员');
@@ -318,7 +318,7 @@ class AuthController extends Controller
             $item->update_time = Yii::app()->parames['timestamp'];
 
             if ($item->save())
-                $this->success($message, array('navTabId'=>'config'));
+                $this->success($message, array('navTabId'=>'admin'));
             else
             {
                 $error = array_shift($item->getErrors());
@@ -349,7 +349,7 @@ class AuthController extends Controller
         AdminRoleItem::model()->deleteAll("parent_id = {$id}");
 
         if (AdminRoleItem::model()->deleteByPk($id) > 0)
-            $this->success('删除成功', array('navTabId'=>'config'));
+            $this->success('删除成功', array('navTabId'=>'admin'));
         else
             $this->error('错误！');
     }

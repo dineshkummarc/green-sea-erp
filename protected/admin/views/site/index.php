@@ -120,8 +120,12 @@ $(function(){
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a href="<?php echo $this->createUrl('auth/admin'); ?>" target="navTab" rel="admin">管理员列表</a></li>
-							<li><a href="<?php echo $this->createUrl('auth/role'); ?>" target="navTab" rel="admin">用户组管理</a></li>
+							<li><a>用户组管理</a>
+								<ul>
+									<li><a href="<?php echo $this->createUrl('auth/admin'); ?>" target="navTab" rel="list">管理员列表</a></li>
+									<li><a href="<?php echo $this->createUrl('auth/role'); ?>" target="navTab" rel="admin">用户组管理</a></li>
+								</ul>
+							</li>
 						</ul>
 					</div>
 				</div>
