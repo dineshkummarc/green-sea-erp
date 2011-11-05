@@ -60,12 +60,13 @@ class LoginForm extends CFormModel
      */
     public function updateLoginInfo()
     {
-        $admin = Admin::model()->findByPk($this->_identity->getId());
-        $admin->login_time = Yii::app()->params['timestamp'];
-        $admin->last_ip = new CDbExpression("INET_ATON(:value)",array(':value' => Yii::app()->request->userHostAddress));
-        $admin->login_count = $admin->login_count + 1;
-        $admin->save();
+        $sql = "UPDATE {{admin}} SET login_time = :time, last_ip = INET_ATON(:ip), login_count = login_count + 1 WHERE id = :id";
+        $command = Yii::app()->db->createCommand($sql);
+        $command->execute(array(
+        	':id'=>$this->_identity->getId(),
+        	':time'=>Yii::app()->params['timestamp'],
+        	':ip'=>Yii::app()->request->userHostAddress
+        ));
     }
-
 }
 ?>
