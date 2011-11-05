@@ -77,7 +77,7 @@
 				<ul class="nav">
 					<li id="switchEnvBox"><a href="javascript:">您好，（<span><?php echo Yii::app()->user->name; ?></span>） </a>
 						<ul>
-							<li><a href="<?php echo $this->createUrl('auth/changePwd'); ?>" target="dialog" width="200">修改密码</a></li>
+							<li><a href="<?php echo $this->createUrl('auth/changePwd'); ?>" target="dialog" width="500">修改密码</a></li>
 						</ul>
 					</li>
 					<li><a href="#" target="_blank">您最后登录时间：<?php echo date("Y-m-d H:i:s",time()) ?></a></li>
@@ -109,6 +109,12 @@
 								<ul>
 									<li><a href="<?php echo $this->createUrl('order/index');?>" target="navTab" rel="order-index">订单</a></li>
 									<li><a href="<?php echo $this->createUrl('user/index');?>"   target="navTab" rel="user-index">用户管理</a></li>
+								</ul>
+							</li>
+							<li><a>模特管理</a>
+								<ul>
+									<li><a href="<?php echo $this->createUrl('model/index');?>" target="navTab" rel="model-index">模特列表</a></li>
+									<li><a href="<?php echo $this->createUrl('model/edit');?>" target="dialog" width="400" height="500" rel="model-edit">添加模特</a></li>
 								</ul>
 							</li>
 						</ul>

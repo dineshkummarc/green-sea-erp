@@ -260,10 +260,10 @@ class AuthController extends Controller
 
         $sql = "UPDATE {{admin_role}} SET `status` = :status, `update_time` = :update_time WHERE `id` = :id";
         $command = Yii::app()->db->createCommand($sql);
-        $count = $command->excute(array(":id"=>$id, ":status"=>$status, ":update_time"=>Yii::app()->params['timestamp']));
+        $count = $command->execute(array(":id"=>$id, ":status"=>$status, ":update_time"=>Yii::app()->params['timestamp']));
 
         if ($count > 0)
-            $this->success('修改成功', array('navTabId'=>'auth-role'));
+            $this->success('修改成功', array('navTabId'=>'admin'));
         else
         {
             $this->error('错误，请联系管理员');
@@ -315,7 +315,7 @@ class AuthController extends Controller
                 $message = '添加成功';
 
             $item->attributes = $_POST['Form'];
-            $item->update_time = Yii::app()->parames['timestamp'];
+            $item->update_time = Yii::app()->params['timestamp'];
 
             if ($item->save())
                 $this->success($message, array('navTabId'=>'admin'));
@@ -326,7 +326,7 @@ class AuthController extends Controller
             }
         }
 
-        $allItems = $item->cache()->findAll('id <> '.$id);
+        $allItems = $item->cache()->findAll();
         if ($id !== null)
             $item = $item->cache()->findByPk($id);
 
@@ -378,7 +378,7 @@ class AuthController extends Controller
         $model->item_id = $id;
 
         if ($model->save())
-            $this->success('授权成功', array('navTabId'=>'config'));
+            $this->success('授权成功', array('navTabId'=>'auth-role-config'));
         else
         {
             $error = array_shift($model->getErrors());
@@ -394,19 +394,14 @@ class AuthController extends Controller
      */
     public function actionRevoke($id = null, $roleId = null)
     {
-        if ( $id === null || $roleId === null)
-            $this->error('参数传递错误');
+    	if ( $id === null || $roleId === null)
+        	$this->error('参数传递错误');
 
-        $sql = "DELETE {{admin_role_child}} WHERE `item_id` = :item_id AND `role_id` = :role_id";
+        $sql = "DELETE FROM {{admin_role_child}} WHERE `item_id` = :item_id AND `role_id` = :role_id";
         $command = Yii::app()->db->createCommand($sql);
-        $count = $command->excute(array(":item_id"=>$id, ":role_id"=>$roleId));
-
-        if ($count > 0)
-            $this->success('撤销授权成功', array('config'));
-        else
-            $this->error('撤销授权失败');
-
+        $count = $command->execute(array(":item_id"=>$id, ":role_id"=>$roleId));
+        $this->success('撤销授权成功', array('auth-role-config'));
     }
-    
+
 }
 ?>

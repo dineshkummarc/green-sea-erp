@@ -1,16 +1,15 @@
 <?php
+
 class Controller extends CController
 {
-    public $layout = false;
-    public $compareExclude = array(
+	public $layout = '//layouts/main';
+	public $compareExclude = array(
 	    'site'=>array('error', 'login', 'logout', 'captcha', ),
 	    'test'=>array('*'),
 	);
-    /**
-     * 验证是否有权限执行这个action
-     * @see CController::beforeAction()
-     */
-    protected function beforeAction($action)
+
+    // 对action的权限验证
+	protected function beforeAction($action)
 	{
 	    //Yii::app()->cache->flush();
 	    $controller = strtolower($this->id);
@@ -33,16 +32,17 @@ class Controller extends CController
                 $this->error('登陆超时，请重新登陆！', array(), 301);
             return false;
         }
+
         // check access
 	    $authName = $this->id.'/'.$action->id;
         if ($user->checkAccess($authName))
             return true;
         else
             $this->error('您没有权限执行本操作', array('navTabId'=>$tabid));
-        return true;
+        return false;
 	}
 
-    public function createUrl($route = '', $params = array(), $ampersand = '&')
+	public function createUrl($route = '', $params = array(), $ampersand = '&')
 	{
 	    if (strpos($route, 'http://') !== false) return $route;
 	    return parent::createUrl($route, $params, $ampersand);
@@ -72,11 +72,9 @@ class Controller extends CController
 	    Yii::app()->end();
 	}
 
-    /**
-     * 重写方法，将GET和POST数据都映射到相关方法的参数中
-     */
-    public function getActionParams()
-    {
-        return $_GET+$_POST;
-    }
+	public function getActionParams()
+	{
+	    return $_GET + $_POST;
+	}
+
 }

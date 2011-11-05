@@ -4,11 +4,11 @@
 <div class="pageContent">
     <div class="panelBar" style="width: 100%">
         <ul class="toolBar">
-            <li><a class="add" href="<?php echo $this->createUrl("auth/editItem") ?>" target="dialog" width="350" height="250" resizable="false" maxable="false" mask="true" title="添加权限。"><span>添加权限</span></a></li>
+            <li><a class="add" href="<?php echo $this->createUrl("auth/editItem") ?>" target="dialog" width="400" height="250" resizable="false" maxable="false" mask="true" title="添加权限。"><span>添加权限</span></a></li>
             <li><a class="delete" href="<?php echo $this->createUrl("auth/delItem"); ?>" target="selectedTodo" title="确定删除选定数据吗？" rel="id[]" ><span>删除选定</span></a></li>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH="75">
+    <table class="table" width="100%" layoutH="100">
     <thead>
         <tr>
             <th width="20"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
@@ -35,7 +35,7 @@
                 <?php endif; ?>
             </td>
             <td>
-                <a href="<?php echo $this->createUrl('auth/editItem', array('id'=>$item->id)); ?>" target="dialog" width="350" height="250" resizable="false" maxable="false" mask="true" title="修改权限-请确定该模块已经改名。">修改权限</a>
+                <a href="<?php echo $this->createUrl('auth/editItem', array('id'=>$item->id)); ?>" target="dialog" width="400" height="250" resizable="false" maxable="false" mask="true" title="修改权限-请确定该模块已经改名。">修改权限</a>
                 <a href="<?php echo $this->createUrl('auth/delItem', array('id'=>$item->id)) ?>" target="ajaxTodo" title="请确定该模块已经废弃或者删除。是否删除？">删除</a>
             </td>
         </tr>
@@ -44,6 +44,5 @@
     </table>
     <?php $this->widget('widget.Pager', array(
         'pages'=>$pages,
-        'style'=>'width: 700px',
     )); ?>
 </div>
