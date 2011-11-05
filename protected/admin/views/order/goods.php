@@ -1,5 +1,5 @@
-<div class="pageContent" width="100%">
-    <table class="table" width="100%">
+<div class="pageContent" width="100%" layoutH="65">
+    <table class="list" width="100%">
     	<thead>
 	        <tr>
 	            <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
