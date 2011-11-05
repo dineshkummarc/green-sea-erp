@@ -19,8 +19,8 @@
     <script src="admin/js/jquery.bgiframe.js" type="text/javascript"></script>
     <script src="admin/uploadify/scripts/swfobject.js" type="text/javascript"></script>
     <script src="admin/uploadify/scripts/jquery.uploadify.v2.1.0.js" type="text/javascript"></script>
-    <script src="keditor/kindeditor.js" type="text/javascript"></script>
-    <script src="keditor/lang/zh_CN.js" type="text/javascript"></script>
+    <script src="admin/keditor/kindeditor.js" type="text/javascript"></script>
+    <script src="admin/keditor/lang/zh_CN.js" type="text/javascript"></script>
 
     <script src="admin/js/dwz.core.js" type="text/javascript"></script>
     <script src="admin/js/dwz.util.date.js" type="text/javascript"></script>

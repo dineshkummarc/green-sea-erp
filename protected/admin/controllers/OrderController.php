@@ -34,13 +34,13 @@ class OrderController extends Controller
             if ($params['status'] == 9)$criteria->addCondition('status = 9');
             if ($params['status'] == 10)$criteria->addCondition('status = 10');
         }
-		
+
 		$count = Order::model()->cache()->count($criteria);
         $pages = new CPagination($count);
         $pages->currentPage = $pageNum - 1;
         $pages->pageSize = $numPerPage;
         $pages->applyLimit($criteria);
-		
+
 		$orders = Order::model()->cache()->findAll($criteria);
 //		if ($sort != null)
 //            $this->success('aaa', array('navTabId'=>'order-goods'));
@@ -75,13 +75,13 @@ class OrderController extends Controller
 	{
 		$criteria = new CDbCriteria;
 		$criteria->condition='order_id='.$id;
-		
+
 		$count = OrderGoods::model()->count($criteria);
         $pages = new CPagination($count);
         $pages->currentPage = $pageNum - 1;
         $pages->pageSize = $numPerPage;
         $pages->applyLimit($criteria);
-		
+
 		$orderGoodsList = OrderGoods::model()->findAll($criteria);
 		$this->render('goods',array(
 			'pages' => $pages,
@@ -94,10 +94,10 @@ class OrderController extends Controller
 	public function actionGoodsEdit($id = null)
 	{
 		$orderGoods = new OrderGoods;
-		
+
 		if (!empty($id))
 			$orderGoods = $orderGoods->model()->findByPk($id);
-		
+
 		if (isset($_POST['Form']))
         {
             if (!empty($_POST['Form']['id']))
@@ -110,7 +110,7 @@ class OrderController extends Controller
                 $message = '添加成功';
             }
             $orderGoods->attributes = $_POST['Form'];
-            
+
             if ($orderGoods->save())
                 $this->success($message, array('navTabId'=>'order-goods'));
             else
@@ -120,7 +120,7 @@ class OrderController extends Controller
                 $this->error($message);
             }
         }
-        $styles = Style::model()->findAll(); 
+        $styles = Style::model()->findAll();
         $shootTypes = ShootType::model()->findAll();
         $types = GoodsType::model()->findAll();
 		$this->render('goods_edit',array(
@@ -135,46 +135,46 @@ class OrderController extends Controller
 	 */
 	public function actionShootScene($id = null)
 	{
-		$orders = new Order;
-		
+		$order = new Order;
+
 		if (!empty($id))
-			$orders = $orders->model()->findByPk($id);
-		
+			$order = $order->model()->findByPk($id);
+
 		if (isset($_POST['Form']))
         {
             if (!empty($_POST['Form']['id']))
             {
                 $message = '修改成功';
-                $orders = $orders->findByPk($_POST['Form']['id']);
+                $order = $order->findByPk($_POST['Form']['id']);
             }
             else
             {
                 $message = '添加成功';
             }
-            $orders->attributes = $_POST['Form'];
-            $orders->shoot_notice=serialize($_POST['Form']['shoot_notice']);
-            $orders->width=serialize($_POST['Form']['width']);
-            
-            if ($orders->save())
+            $order->attributes = $_POST['Form'];
+            $order->shoot_notice=serialize($_POST['Form']['shoot_notice']);
+            $order->width=serialize($_POST['Form']['width']);
+
+            if ($order->save())
                 $this->success($message, array('navTabId'=>'order-goods'));
             else
             {
-                $error = array_shift($orders->getErrors());
+                $error = array_shift($order->getErrors());
                 $message = '错误：'.$error[0];
                 $this->error($message);
             }
         }
-        $shoot = unserialize($orders->shoot_notice);
-        
+        $shoot = unserialize($order->shoot_notice);
+
         $shootType = $this->loadShootType();
-		$shootTypeList = unserialize($orders->width);
-        $shootNotice = $this->getShootNotice();
+		$shootTypeList = unserialize($order->width);
+        $shootNotice = Order::getShootNotice();
 		$this->render('shoot_scene',array(
 			'shoot'	=> $shoot,
 			'shootType' => $shootType,
 			'shootTypeList' => $shootTypeList,
 			'shootNotice' => $shootNotice,
-			'orders' => $orders
+			'orders' => $order
 		));
 	}
 	/**
@@ -191,15 +191,5 @@ class OrderController extends Controller
 		}
 		return $list;
 	}
-	/**
-	 * 返回需求 说明
-	 * @var unknown_type
-	 */
-    public $_shootNotice;
-	public function getShootNotice()
-	{
-	    if (empty($this->_shootNotice))
-	        $this->_shootNotice = require_once(Yii::getPathOfAlias('application.components', true) . '\shootnotice.php');
-	    return $this->_shootNotice;
-	}
+
 }

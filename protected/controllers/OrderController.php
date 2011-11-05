@@ -493,7 +493,7 @@ class OrderController extends Controller
 
         // 获取订单内存在的拍摄类型
         $selectedShootType = $user->getState("shootTypes");
-        $shootNotice = $this->getShootNotice();
+        $shootNotice = Order::getShootNotice();
 
 	    $this->render("shootScene", array(
 	        "selectedShootType"=>$selectedShootType,
@@ -584,7 +584,7 @@ class OrderController extends Controller
 	        'shootType'=>$shootType,
 	        'style'=>$style,
 	        'models'=>$models,
-            'shootNotice'=>$this->getShootNotice()
+            'shootNotice'=>Order::getShootNotice()
 	    ));
 	}
 
@@ -664,13 +664,6 @@ class OrderController extends Controller
 	        $styles = new OrderGoodsStyles;
         $styles->style_id = $styleId;
         return $styles->save();
-	}
-
-	public function getShootNotice()
-	{
-	    if (empty($this->_shootNotice))
-	        $this->_shootNotice = require(Yii::getPathOfAlias('application.config') . '/shootnotice.php');
-	    return $this->_shootNotice;
 	}
 
 }

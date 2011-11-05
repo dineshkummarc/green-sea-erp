@@ -126,6 +126,21 @@ class Order extends CActiveRecord
         return $statusList[$this->status];
     }
 
+	/**
+	 * 返回需求 说明
+	 * @var unknown_type
+	 */
+	public static function getShootNotice()
+	{
+	    $basePath = Yii::app()->basePath;
+        if ((int)strripos($basePath,'admin') == false) {
+            $shootNotice = require($basePath . "/config/shootnotice.php");
+        }else{
+            $shootNotice = require($basePath . "/../config/shootnotice.php");
+        }
+	    return $shootNotice;
+	}
+
     /**
      * 获取模特名称
      */

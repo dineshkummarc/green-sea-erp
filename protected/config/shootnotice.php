@@ -94,6 +94,12 @@ return array(
                 'name'=>'Form[shoot_notice][4]',
                 'value'=>'不要',
                 'text'=>'否',
+            ),
+            array(
+                'type'=>'radio',
+                'name'=>'Form[shoot_notice][4]',
+                'value'=>'均可',
+                'text'=>'均可',
                 'checked'=>true
             )
         ),
