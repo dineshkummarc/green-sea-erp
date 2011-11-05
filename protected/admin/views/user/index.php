@@ -1,5 +1,4 @@
 <?php $this->widget('widget.Search', array(
-    'panleStyle'=>'width: 840px;',
     'searchCondition'=>array(
         '用户名：'=>array('type'=>'text', 'name'=>'params[name]', 'defaultValue'=>empty($params['name']) ? '' : $params['name'], 'alt'=>'支持模糊搜索'),
         '手机号：'=>array('type'=>'text', 'name'=>'params[phone]', 'defaultValue'=>empty($params['phone']) ? '' : $params['phone']),
@@ -7,14 +6,14 @@
        											 ),
     																	)
 ); ?>
-<div class="pageContent">
-    <div class="panelBar" style="width: 850px">
+<div class="pageContent  width="100%"  layoutH="90">
+    <div class="panelBar" >
         <ul class="toolBar">
             <li><a class="delete" href="<?php echo $this->createUrl("user/del"); ?>" target="selectedTodo" title="优惠券也会删除，确定删除选定数据吗？" rel="id[]" ><span>删除选定</span></a></li>
            <li><a class="add" href="<?php echo $this->createUrl("user/addUser") ?>" target="dialog" width="520" height="400" mask="true" title="添加用户"><span>添加用户</span></a></li>
         </ul>
     </div>
-    <table class="list" width="850">
+    <table class="list" width="100%" >
         <tr>
             <th width="20"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
             <th>用户名</th>
@@ -44,8 +43,8 @@
         </tr>
         <?php endforeach; ?>
     </table>
+</div>
     <?php $this->widget('widget.Pager', array(
         'pages'=>$pages,
-        'style'=>'width: 850px',
+     
     )); ?>
-</div>
