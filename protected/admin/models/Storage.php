@@ -53,7 +53,8 @@ class Storage extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'Order'=>array(self::BELONGS_TO, 'Order', 'order_id')
+			'Order'=>array(self::BELONGS_TO, 'Order', 'order_id', 'select'=>'sn,user_name'),
+			'Admin'=>array(self::BELONGS_TO, 'Admin', 'admin_id', 'select'=>'name')
 		);
 	}
 
