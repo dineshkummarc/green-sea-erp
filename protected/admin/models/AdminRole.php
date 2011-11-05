@@ -54,7 +54,7 @@ class AdminRole extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, name, update_time, status', 'required'),
+			array('name, update_time, status', 'required'),
 			array('status', 'numerical', 'integerOnly'=>true),
 			array('id, update_time', 'length', 'max'=>10),
 			array('name', 'length', 'max'=>20),

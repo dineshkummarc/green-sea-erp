@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="login">
-        <div id="login_header"><?php echo Yii::app()->name; ?> 管理员登录</div>
+        <div id="login_header"><?php echo Yii::app()->name; ?></div>
         <?php $form = $this->beginWidget('CActiveForm', array('focus'=>array($model,'name'),)); ?>
             <?php echo $form->error($model, 'title'); ?>
             <?php echo $form->error($model, 'name'); ?>

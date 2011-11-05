@@ -12,7 +12,7 @@ class SiteController extends Controller
                 'height'=>25,
                 'minLength'=>4,
                 'maxLength'=>4,
-                'padding'=>0,
+                'padding'=>2,
             ),
         );
     }

@@ -1,5 +1,5 @@
 <div class="pageContent">
-    <div class="panelBar">
+    <div class="panelBar" width="100%">
         <ul class="toolBar">
             <li><a class="add" href="<?php echo $this->createUrl("auth/editRole") ?>" target="dialog" width="300" height="180" resizable="false" maxable="false" mask="true" title="添加权限组"><span>添加权限组</span></a></li>
             <li><a class="delete" href="<?php echo $this->createUrl("auth/delRole"); ?>" target="selectedTodo" title="确定删除选定数据吗？" rel="id[]" ><span>删除选定</span></a></li>

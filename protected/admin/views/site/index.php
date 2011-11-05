@@ -17,6 +17,7 @@
     <script src="admin/js/jquery.cookie.js" type="text/javascript"></script>
     <script src="admin/js/jquery.validate.js" type="text/javascript"></script>
     <script src="admin/js/jquery.bgiframe.js" type="text/javascript"></script>
+    <script src="admin/js/admin.js" type="text/javascript"></script>
     <script src="admin/uploadify/scripts/swfobject.js" type="text/javascript"></script>
     <script src="admin/uploadify/scripts/jquery.uploadify.v2.1.0.js" type="text/javascript"></script>
     <script src="admin/keditor/kindeditor.js" type="text/javascript"></script>
@@ -107,6 +108,7 @@
 							<li><a>ERP</a>
 								<ul>
 									<li><a href="<?php echo $this->createUrl('order/index');?>" target="navTab" rel="order-index">订单</a></li>
+									<li><a href="<?php echo $this->createUrl('user/index');?>"   target="navTab" rel="user-index">用户管理</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -116,8 +118,12 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
-							<li><a href="<?php echo $this->createUrl('auth/admin'); ?>" target="navTab" rel="admin">管理员列表</a></li>
-							<li><a href="<?php echo $this->createUrl('auth/role'); ?>" target="navTab" rel="admin">用户组管理</a></li>
+							<li><a>用户组管理</a>
+								<ul>
+									<li><a href="<?php echo $this->createUrl('auth/admin'); ?>" target="navTab" rel="list">管理员列表</a></li>
+									<li><a href="<?php echo $this->createUrl('auth/role'); ?>" target="navTab" rel="admin">用户组管理</a></li>
+								</ul>
+							</li>
 						</ul>
 					</div>
 				</div>

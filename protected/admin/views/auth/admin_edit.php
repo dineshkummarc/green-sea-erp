@@ -20,15 +20,6 @@
                 </select>
             </div>
             <div class="unit">
-                <label>负责城市</label>
-                <select name="Form[city_id]" class="combox" default="<?php echo $admin->city_id ?>">
-                    <option value="0">所有城市</option>
-                    <?php foreach($cities as $val): ?>
-                    <option value="<?php echo $val->id ?>"><?php echo $val->name ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="unit">
                 <label>超级管理员</label>
                 <span><input type="radio" value="1" name="Form[is_supper]" <?php if (!isset($menu->is_supper) || $menu->is_supper) echo "checked='1'"; ?> />是</span>
                 <span><input type="radio" value="0" name="Form[is_supper]" <?php if (isset($menu->is_supper) && !$menu->is_supper) echo "checked='1'"; ?> />否</span>
