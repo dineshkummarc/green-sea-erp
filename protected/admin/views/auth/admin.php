@@ -14,7 +14,7 @@ $this->widget('widget.Search', array(
 <div class="pageContent">
     <div class="panelBar" style="width: 100%">
         <ul class="toolBar">
-            <li><a class="add" href="<?php echo $this->createUrl("auth/editAdmin") ?>" target="dialog" width="280" height="300" mask="true" title="添加管理员"><span>添加管理员</span></a></li>
+            <li><a class="add" href="<?php echo $this->createUrl("auth/editAdmin") ?>" target="dialog" width="300" height="300" mask="true" title="添加管理员"><span>添加管理员</span></a></li>
             <li><a class="delete" href="<?php echo $this->createUrl("auth/delAdmin"); ?>" target="selectedTodo" title="确定删除选定管理员？" rel="id[]" ><span>删除选定</span></a></li>
             <li><a class="icon" href="<?php echo $this->createUrl("auth/role") ?>" target="navTab" rel="auth-role"><span>权限组列表</span></a></li>
         </ul>
@@ -51,7 +51,7 @@ $this->widget('widget.Search', array(
                     <?php endif; ?>
                 </td>
                 <td>
-                    <a href="<?php echo $this->createUrl("auth/editAdmin", array('id'=>$admin['id'])); ?>" target="dialog" width="280" height="300" mask="true" title="修改管理员">修改</a>
+                    <a href="<?php echo $this->createUrl("auth/editAdmin", array('id'=>$admin['id'])); ?>" target="dialog" width="300" height="300" mask="true" title="修改管理员">修改</a>
                     <a href="<?php echo $this->createUrl("auth/delAdmin", array('id'=>$admin['id'])); ?>" target="ajaxTodo" title="确定删除改管理员？">删除</a>
                 </td>
             </tr>

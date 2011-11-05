@@ -7,11 +7,16 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'../admin',
-	'name'=>'绿浪视觉-控制中心',
+	'name'=>'绿浪视觉-管理中心',
 
 
 	// preloading 'log' component
 	'preload'=>array('log'),
+
+	// 设置默认时区
+    'timeZone'=>'Asia/Shanghai',
+
+	'language'=>'zh_cn',
 
 	// autoloading model and component classes
 	'import'=>array(
@@ -93,7 +98,8 @@ return array(
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
 	'params'=>array(
-		// this is used in contact page
 		'timestamp'=>time(),
+		'upload_path'=>dirname(__FILE__).'/../../uploads/',
+    	'upload_url'=>'uploads/',
 	),
 );
