@@ -580,7 +580,7 @@ h3.contentTitle{margin-bottom:5px; line-height:25px; font-size:13px; border-bott
 #suggest ul{list-style:none; padding:1px; margin:0; background-color:#fff; border:1px solid #999; width:150px;}
 #suggest li{display:block; color:#000; padding:3px; margin:0; border:1px solid #fff; background-color:transparent; text-align:left; cursor:default;}
 #suggest li.selected{border:1px solid #0a246a; background-color:#b6bdd2}
-
+span.changeBtn {display: block;width: 100%;cursor: pointer;}
 /* button */
 a.btnAdd, a.btnDel, a.btnView, a.btnEdit, a.btnSelect, a.btnInfo, a.btnAssign, a.btnLook, a.btnAttach{background:url(../default/images/button/imgX.gif) no-repeat; display:block; width:22px; height:20px; text-indent:-1000px; overflow:hidden; float:left; margin-right: 3px}
 a.btnAdd{background-position:0 0}

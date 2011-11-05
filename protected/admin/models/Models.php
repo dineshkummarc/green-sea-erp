@@ -24,6 +24,16 @@
  */
 class Models extends CActiveRecord
 {
+
+	public function behaviors()
+    {
+        return array(
+            'uploadFile'=>array(
+                'class'=>'application.behaviors.UploadFileBehavior',
+            ),
+        );
+    }
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return Models the static model class

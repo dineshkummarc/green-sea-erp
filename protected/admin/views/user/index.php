@@ -1,60 +1,50 @@
-ï»¿<?php $this->widget('widget.Search', array(
-    'panleStyle'=>'width: 840px;',
+<?php $this->widget('widget.Search', array(
     'searchCondition'=>array(
-        'ç”¨æˆ·åï¼š'=>array('type'=>'text', 'name'=>'params[name]', 'defaultValue'=>empty($params['name']) ? '' : $params['name'], 'alt'=>'æ”¯æŒæ¨¡ç³Šæœç´¢'),
-        'æ‰‹æœºå·ï¼š'=>array('type'=>'text', 'name'=>'params[phone]', 'defaultValue'=>empty($params['phone']) ? '' : $params['phone']),
-        'é‚®ç®±ï¼š'=>array('type'=>'text', 'name'=>'params[mail]', 'defaultValue'=>empty($params['mail']) ? '' : $params['mail'], 'alt'=>'æ”¯æŒæ¨¡ç³Šæœç´¢'),
-       											 ),
-    												)
+        'ÓÃ»§Ãû£º'=>array('type'=>'text', 'name'=>'params[name]', 'defaultValue'=>empty($params['name']) ? '' : $params['name'], 'alt'=>'Ö§³ÖÄ£ºýËÑË÷'),
+        'ÊÖ»úºÅ£º'=>array('type'=>'text', 'name'=>'params[phone]', 'defaultValue'=>empty($params['phone']) ? '' : $params['phone']),
+        'ÓÊÏä£º'=>array('type'=>'text', 'name'=>'params[mail]', 'defaultValue'=>empty($params['mail']) ? '' : $params['mail'], 'alt'=>'Ö§³ÖÄ£ºýËÑË÷'),
+        ),
+	)
 ); ?>
-<div class="pageContent" width="100%">
-	<div class="panelBar">
+<div class="pageContent  width="100%"  layoutH="90">
+    <div class="panelBar" >
         <ul class="toolBar">
-            <li><a class="add" href="<?php echo $this->createUrl("user/addUser"); ?>" target="dialog" width="400" height="320" title="æ·»åŠ ä¸€ä¸ªæ–°ç”¨æˆ·" ><span>æ·»åŠ ç”¨æˆ·</span></a></li>
-            <li><a class="delete" href="<?php echo $this->createUrl("user/delete"); ?>" target="selectedTodo" title="åˆ é™¤é€‰å®šç”¨æˆ·" rel="id[]" ><span>åˆ é™¤é€‰å®šç”¨æˆ·</span></a></li>
+           <li><a class="add" href="<?php echo $this->createUrl("user/edit") ?>" target="dialog" width="350" height="320" mask="true" title="Ìí¼ÓÓÃ»§"><span>Ìí¼ÓÓÃ»§</span></a></li>
+           <li><a class="delete" href="<?php echo $this->createUrl("user/del"); ?>" target="selectedTodo" title="ÓÅ»ÝÈ¯Ò²»áÉ¾³ý£¬È·¶¨É¾³ýÑ¡¶¨Êý¾ÝÂð£¿" rel="id[]" ><span>É¾³ýÑ¡¶¨</span></a></li>
         </ul>
     </div>
-	<table class="table" width="100%">
-		<thead>
-			<tr>
-				<th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
-				<th width="100">å®¢æˆ·å</th>
-				<th width="100">æ—ºæ—ºå·</th>
-				<th width="50">QQå·</th>
-				<th width="50">æ‰‹æœºå·</th>
-				<th width="100">æ·˜å®ç½‘åº—åœ°å€</th>
-				<th width="100">å½“å‰ç§¯åˆ†</th>
-				<th width="100">æ“ä½œ</th>
-			</tr>
-		</thead>
-
-		<tbody>
-	        <?php if (empty($userList)): ?>
-	        <tr>
-	            <td colspan="10">æ— æ•°æ®</td>
-	        </tr>
-	        <?php else: foreach ($userList as $user): ?>
-	        <tr>
-	            <td><input type="checkbox" name="id[]" value="<?php echo $user->id ?>" /></td>
-	            <td><?php echo $user->name; ?></td>
-	            <td><?php echo $user->wangwang; ?></td>
-	            <td><?php echo $user->qq; ?></td>
-	            <td><?php echo $user->mobile_phone; ?></td>
-	            <td><?php echo $user->page; ?></td>
-	            <td>
-             		 <span id="<?php echo $user->id ?>" name="score" title="ç‚¹å‡»å³å¯ä¿®æ”¹ä¼šå‘˜ç§¯åˆ†" url="<?php echo $this->createUrl('user/changeScore'); ?>" class="changeBtn"><?php echo $user->score; ?></span>
-           			 </td>
-	            <td>
-					<a href="<?php echo $this->createUrl('user/delete',array('id'=>$user->id));?>" target="selectedTodo" rel="id[]">åˆ é™¤</a>
-	                &nbsp;
-	                <a href="<?php echo $this->createUrl('user/edit', array('id'=>$user->id)) ?>" target="dialog" width="350" height="320" title="ä¿®æ”¹">ä¿®æ”¹</a>
-	                &nbsp;
-	            </td>
-	        </tr>
-	        <?php endforeach; endif; ?>
-        </tbody>
-	</table>
-	 <?php $this->widget('widget.Pager', array(
+    <table class="list" width="100%" >
+        <tr>
+            <th width="20"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
+            <th>ÓÃ»§±àºÅ</th>
+            <th>ÓÃ»§Ãû</th>
+            <th>ÍúÍúºÅ</th>
+            <th width="80">QQºÅ</th>
+            <th width="115">ÊÖ»úºÅÂë</th>
+            <th width="200">ÌÔ±¦ÍøµØÖ·</th>
+            <th width="65">Ê£Óà»ý·Ö</th>
+            <th>²Ù×÷</th>
+        </tr>
+        <?php if (!empty($userList)) foreach ($userList as $user): ?>
+        <tr>
+            <td><input type="checkbox" name="id[]" value="<?php echo $user->id ?>" /></td>
+            <td>P<?php echo substr(strval($user->id + 1000),1,3); ?></td>
+            <td><?php echo $user->name; ?></td>
+            <td><?php echo $user->wangwang; ?></td>
+            <td><?php echo $user->qq; ?></td>
+            <td><?php echo $user->mobile_phone?></td>
+            <td><?php echo $user->page; ?></td>
+           <td>
+               <span id="<?php echo $user->id ?>" name="score" title="µã»÷¼´¿ÉÐÞ¸Ä»áÔ±»ý·Ö" url="<?php echo $this->createUrl('user/changeScore'); ?>" class="changeBtn"><?php echo $user->score; ?></span>
+            </td>
+            <td>
+                <a href="<?php echo $this->createUrl('user/edit', array('id'=>$user->id)) ?>" target="dialog" width="350" height="350" title="ÐÞ¸Ä">ÐÞ¸Ä</a>
+                <a href="<?php echo $this->createUrl('user/del', array('id'=>$user->id)); ?>" target="ajaxTodo" title="Ïà¶ÔÓ¦µÄÊý¾ÝÒ²½«É¾³ý£¬È·ÈÏÉ¾³ý£¿">É¾³ý</a>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+</div>
+    <?php $this->widget('widget.Pager', array(
         'pages'=>$pages,
     )); ?>
-</div>

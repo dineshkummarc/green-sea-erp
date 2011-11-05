@@ -1,15 +1,15 @@
 <?php
-	class UserController extends Controller
-	{
-	/**
-	 * ç”¨æˆ·åˆ—è¡¨
-	 * @param unknown_type $pageNum
-	 * @param unknown_type $numPerPage
-	 */
-	 public function actionIndex(array $params = array(), $pageNum = null, $numPerPage = null)
+class UserController extends Controller
+{
+    /**
+     * ÓÃ»§ÁÐ±í
+     * @param array $params
+     * @param integer $pageNum
+     * @param integer $numPerPage
+     */
+    public function actionIndex(array $params = array(), $pageNum = null, $numPerPage = null)
     {
         $user = new User;
-        $criteria = new CDbCriteria;
         $criteria = $user->dbCriteria;
         $criteria->order = "create_time DESC";
         if (!empty($params['name']))
@@ -18,7 +18,8 @@
             $criteria->addCondition('mobile_phone = \'' . $params['phone'] . '\'');
         if (!empty($params['mail']))
             $criteria->addSearchCondition('email', $params['mail']);
-       	$count = User::model()->cache()->count($criteria);
+
+        $count = $user->count($criteria);
         $pages = new CPagination($count);
         $pages->currentPage = empty($pageNum) ? 0 : $pageNum - 1;
         $pages->pageSize = empty($numPerPage) ? 20 : $numPerPage;
@@ -26,141 +27,90 @@
         $user = $user->cache()->findAll($criteria);
         $this->render("index", array('userList'=>$user, 'params'=>$params, 'pages'=>$pages));
     }
-	/**
-	 * æ·»åŠ ç”¨æˆ·åˆ—è¡¨
-	 *
-	 *
-	 */
-		public function actionAddUser($id=null)
-		{
-			$user=new User;
 
+    /**
+     * ÐÞ¸ÄÓÃ»§
+     * @param integer $id
+     */
+    public function actionEdit($id = null)
+    {
+        $user = new User;
+        if (!empty($id))
+            $user = $user->cache()->findByPk($id);
 
+        if (isset($_POST['Form']))
+        {
+            if (!empty($_POST['Form']['id']))
+                $user = $user->cache()->findByPk($_POST['Form']['id']);
 
-		    if (isset($_POST['Form']))
-		    {
+            if (empty($user->score))
+                $user->score = 0;
 
+            // ÃÜÂëÖØÖÃ
+            if (!empty($user->password) && empty($_POST['Form']['password']))
+                $user->password = md5(trim($_POST['Form']['password']));
 
-		        $user->first = 1;
-		        $user->score = 0;
-		        $user->accumulation_price = 0;
-		        $user->receive_id = 0;
-		        $user->receive_count = 0;
-		        $user->create_time = Yii::app()->params['timestamp'];
-		        $user->update_time = Yii::app()->params['timestamp'];
-		        $user->next_order = 1;
-		        $user->login_time = 0;
-		        $user->last_ip = "";
+            $user->attributes = $_POST['Form'];
 
-		        $user->attributes = $_POST['Form'];
-		        $user->password = md5($user->password);
+            if (empty($user->first)) $user->first = 1;
+            if (empty($user->accumulation_price)) $user->accumulation_price = 0;
+            if (empty($user->receive_id)) $user->receive_id = 0;
+            if (empty($user->receive_count)) $user->receive_count = 0;
+            if (empty($user->next_order)) $user->next_order = 1;
+            if (empty($user->login_time)) $user->login_time = 0;
+            if (empty($user->last_ip)) $user->last_ip = 0;
+            if (empty($user->create_time)) $user->create_time = Yii::app()->params['timestamp'];
+            $user->update_time = Yii::app()->params['timestamp'];
 
-		        if ($user->save())
-		        {
-		            $this->success('æ·»åŠ æ–°ç”¨æˆ·æˆåŠŸï¼Œç”¨æˆ·åï¼š'.$user->name);
+            // ÊÖ»úºÅÂëÎ¨Ò»ÐÔÑéÖ¤
+            if ($user->mobile_phone != trim($_POST['Form']['mobile_phone']))
+            {
+                $sql = "SELECT COUNT(*) FROM fanwe_user WHERE mobile_phone = :phone";
+                $command = Yii::app()->db->createCommand($sql);
+                $count = $command->queryScalar(array(":phone"=>$_POST['Form']['mobile_phone']));
+                if ($count > 0)
+                    $this->error("ÊÖ»úºÅÂëÎ¨Ò»");
+            }
 
-		            $this->refresh();
-		        }
-			     else
-	            {
-	                $error = array_shift($user->getErrors());
-	                $message = 'é”™è¯¯ï¼š'.$error[0];
-	                $this->error($message);
-	            }
-		    }
+            if ($user->save())
+                $this->success("ÐÞ¸Ä³É¹¦", array('navTabId'=>'user-index'));
+            else
+                $this->error('´íÎó£º'.Dumper::dumpAsString($user->getErrors(), 10, true));
+        }
 
-		    $area = Area::model()->findAllByAttributes(array("parent_id"=>0));
-		    $this->render('editUser', array(
-		        'areaList'=>$area,
-		    	'user'=>$user
-		    ));
+        $this->render("edit", array('user'=>$user));
+    }
 
-		}
+    /**
+     * É¾³ýÓÃ»§
+     * @param array $id
+     */
+    public function actionDel(array $id = array())
+    {
+        if ( $id === null)
+            $this->error('²ÎÊý´«µÝ´íÎó');
 
-	/**
-	 * ä¿®æ”¹ç”¨æˆ·åˆ—è¡¨
-	 *
-	 *
-	 */
+        // ×éºÏ³É×Ö·û´®
+        $id = implode(',', $id);
+        $sql = "DELETE FROM {{user}} WHERE id IN ({$id})";
+        $this->success('É¾³ý³É¹¦', array('navTabId'=>'user-index'));
+    }
 
-		public function actionEdit($id = null)
-	    {
-	        if (empty($id))
-	            $id = $_POST['Form']['id'];
-	        if (empty($id))
-	            $this->error("å‚æ•°ä¼ é€’é”™è¯¯");
-	        $user = User::model()->cache()->findByPk($id);
-	        if (isset($_POST['Form']))
-	        {
-	            $user->attributes = $_POST['Form'];
-	            // ä¿å­˜ä¸å­˜åœ¨ ä¸­çš„å±žæ€§
-	            $user->score = $_POST['Form']['score'];
-	            // å¯†ç é‡ç½®
-	            $_POST['Form']['re_pwd'] = trim($_POST['Form']['re_pwd']);
-	            if (!empty($_POST['Form']['re_pwd']))
-	                $user->password = md5(trim($_POST['Form']['re_pwd']));
-
-	            // æ‰‹æœºå·ç å”¯ä¸€æ€§éªŒè¯
-	            if ($user->mobile_phone != trim($_POST['Form']['mobile_phone']))
-	            {
-	                $sql = "SELECT COUNT(*) FROM fanwe_user WHERE mobile_phone = :phone";
-	                $command = Yii::app()->db->createCommand($sql);
-	                $count = $command->queryScalar(array(":phone"=>$_POST['Form']['mobile_phone']));
-	                if ($count > 0)
-	                    $this->error("æ‰‹æœºå·ç å·²è¢«æ³¨å†Œ");
-	            }
-
-	            if ($user->save())
-	                $this->success("ä¿®æ”¹æˆåŠŸ", array('navTabId'=>'user-index'));
-	            else
-	            {
-	                $this->error('é”™è¯¯ï¼š'.Dumper::dumpAsString($user->getErrors(), 10, true));
-	            }
-	        }
-
-	        $this->render("edit", array('user'=>$user));
-	    }
-
-	/**
-	 * ä¿®æ”¹ç§¯åˆ†
-	 *
-	 *
-	 */
-	 public function actionChangeScore($id = null, $score = null)
-   	 {
+    /**
+     * ÐÞ¸Ä»ý·Ö
+     * @param integer $id
+     * @param integer $score
+     */
+    public function actionChangeScore($id = null, $score = null)
+    {
         if (empty($id) || empty($score))
-            $this->error("å‚æ•°ä¼ é€’é”™è¯¯");
+            $this->error("²ÎÊý´«µÝ´íÎó");
 
         $sql = "UPDATE ll_erp_user SET score = :score WHERE id = :id";
         $command = Yii::app()->db->createCommand($sql);
         $count = $command->execute(array(":id"=>$id, ":score"=>$score));
-        $this->success("ä¿®æ”¹æˆåŠŸ", array('navTabId'=>'user-index'));
-    	}
+        $this->success("ÐÞ¸Ä³É¹¦", array('navTabId'=>'user-index'));
+    }
 
-
-
-	/**
-	 * åˆ é™¤ç”¨æˆ·åˆ—è¡¨
-	 *
-	 *
-	 */
-		public function actionDelete(array $id = array())
-		{
-			if (empty($id))
-	            $this->error('å‚æ•°ä¼ é€’é”™è¯¯');
-	        if (count($id) > 1)
-	            $this->error('æš‚ä¸èƒ½æ‰¹é‡åˆ é™¤');
-	        else
-	            $id = $id[0];
-
-	        $users = User::model();
-	        $count = $users->deleteByPk($id);
-	        if ($count > 0)
-	            $this->success('åˆ é™¤æˆåŠŸ', array('navTabId'=>'user-index'));
-	        else
-	        {
-	            $error = array_shift($ad->getErrors());
-	            $this->error('é”™è¯¯ï¼š'.$error[0]);
-	        }
-		}
-	}
+}
+?>
