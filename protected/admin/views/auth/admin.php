@@ -22,7 +22,7 @@ $this->widget('widget.Search', array(
     <table class="table" width="100%" layoutH="138">
         <thead>
             <tr>
-                <th width="20"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
+                <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
                 <th width="100">管理员</th>
                 <th width="100">权限组</th>
                 <th>最后登录时间</th>

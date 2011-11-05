@@ -4,11 +4,11 @@
 <div class="pageContent">
     <div class="panelBar" style="width: 100%">
         <ul class="toolBar">
-            <li><a class="add" href="<?php echo $this->createUrl("auth/editItem") ?>" target="dialog" width="350" height="250" resizable="false" maxable="false" mask="true" title="添加权限。"><span>添加权限</span></a></li>
+            <li><a class="add" href="<?php echo $this->createUrl("auth/editItem") ?>" target="dialog" width="400" height="250" resizable="false" maxable="false" mask="true" title="添加权限。"><span>添加权限</span></a></li>
             <li><a class="delete" href="<?php echo $this->createUrl("auth/delItem"); ?>" target="selectedTodo" title="确定删除选定数据吗？" rel="id[]" ><span>删除选定</span></a></li>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH="75">
+    <table class="table" width="100%" layoutH="100">
     <thead>
         <tr>
             <th width="20"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
@@ -44,6 +44,5 @@
     </table>
     <?php $this->widget('widget.Pager', array(
         'pages'=>$pages,
-        'style'=>'width: 700px',
     )); ?>
 </div>
