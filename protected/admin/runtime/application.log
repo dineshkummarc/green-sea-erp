@@ -1350,3 +1350,51 @@ in D:\Program Files\wamp\www\green-sea-erp\admin.php (13)
 2011/11/04 20:34:18 [warning] [application] Failed to set unsafe attribute "memo" of "Order".
 in D:\Program Files\wamp\www\green-sea-erp\protected\admin\controllers\OrderController.php (108)
 in D:\Program Files\wamp\www\green-sea-erp\admin.php (13)
+2011/11/05 01:09:11 [error] [php] include(AdminRole.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory (D:\wamp2.2\www\framework\YiiBase.php:421)
+Stack trace:
+#0 D:\wamp2.2\www\green-sea-erp\protected\admin\controllers\AuthController.php(16): spl_autoload_call()
+#1 unknown(0): AuthController->actionAdmin()
+#2 D:\wamp2.2\www\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs()
+#3 D:\wamp2.2\www\framework\web\actions\CInlineAction.php(48): CInlineAction->runWithParamsInternal()
+#4 D:\wamp2.2\www\framework\web\CController.php(300): CInlineAction->runWithParams()
+#5 D:\wamp2.2\www\framework\web\CController.php(278): AuthController->runAction()
+#6 D:\wamp2.2\www\framework\web\CController.php(257): AuthController->runActionWithFilters()
+#7 D:\wamp2.2\www\framework\web\CWebApplication.php(277): AuthController->run()
+#8 D:\wamp2.2\www\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#9 D:\wamp2.2\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#10 D:\wamp2.2\www\green-sea-erp\admin.php(13): CWebApplication->run()
+REQUEST_URI=/green-sea-erp/admin.php?r=auth/admin&_=1320455350888
+in D:\wamp2.2\www\green-sea-erp\protected\admin\controllers\AuthController.php (16)
+in D:\wamp2.2\www\green-sea-erp\admin.php (13)
+2011/11/05 01:09:23 [error] [php] include(AdminRole.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory (D:\wamp2.2\www\framework\YiiBase.php:421)
+Stack trace:
+#0 D:\wamp2.2\www\green-sea-erp\protected\admin\controllers\AuthController.php(16): spl_autoload_call()
+#1 unknown(0): AuthController->actionAdmin()
+#2 D:\wamp2.2\www\framework\web\actions\CAction.php(104): ReflectionMethod->invokeArgs()
+#3 D:\wamp2.2\www\framework\web\actions\CInlineAction.php(48): CInlineAction->runWithParamsInternal()
+#4 D:\wamp2.2\www\framework\web\CController.php(300): CInlineAction->runWithParams()
+#5 D:\wamp2.2\www\framework\web\CController.php(278): AuthController->runAction()
+#6 D:\wamp2.2\www\framework\web\CController.php(257): AuthController->runActionWithFilters()
+#7 D:\wamp2.2\www\framework\web\CWebApplication.php(277): AuthController->run()
+#8 D:\wamp2.2\www\framework\web\CWebApplication.php(136): CWebApplication->runController()
+#9 D:\wamp2.2\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#10 D:\wamp2.2\www\green-sea-erp\admin.php(13): CWebApplication->run()
+REQUEST_URI=/green-sea-erp/admin.php?r=auth/admin&_=1320455363797
+in D:\wamp2.2\www\green-sea-erp\protected\admin\controllers\AuthController.php (16)
+in D:\wamp2.2\www\green-sea-erp\admin.php (13)
+2011/11/05 01:27:10 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "login".' in D:\wamp2.2\www\framework\web\CController.php:477
+Stack trace:
+#0 D:\wamp2.2\www\framework\web\CController.php(262): CController->missingAction('login')
+#1 D:\wamp2.2\www\framework\web\CWebApplication.php(277): CController->run('login')
+#2 D:\wamp2.2\www\framework\web\CWebApplication.php(136): CWebApplication->runController('site/login')
+#3 D:\wamp2.2\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#4 D:\wamp2.2\www\green-sea-erp\admin.php(13): CApplication->run()
+#5 {main} REQUEST_URI=/green-sea-erp/admin.php?r=site/login
+2011/11/05 01:27:25 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "login".' in D:\wamp2.2\www\framework\web\CController.php:477
+Stack trace:
+#0 D:\wamp2.2\www\framework\web\CController.php(262): CController->missingAction('login')
+#1 D:\wamp2.2\www\framework\web\CWebApplication.php(277): CController->run('login')
+#2 D:\wamp2.2\www\framework\web\CWebApplication.php(136): CWebApplication->runController('site/login')
+#3 D:\wamp2.2\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#4 D:\wamp2.2\www\green-sea-erp\admin.php(13): CApplication->run()
+#5 {main} REQUEST_URI=/green-sea-erp/admin.php?r=site/login

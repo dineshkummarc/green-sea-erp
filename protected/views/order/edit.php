@@ -125,7 +125,7 @@ var models = <?php echo json_encode($models); ?>;
                 <div id="sign_up"><label>是否签约：</label><span><?php echo $model['sign_up'] ? '是' : '否'; ?></span></div>
             </div>
             <div id="head_img" class="model-image">
-                <a href="<?php echo $model['head_img']; ?>" class="imgWindow" title="点击查看大图"><img src="<?php echo $model['head_img_thumb']; ?>" /></a>
+                <a href="<?php echo $model['head_img']; ?>" class="imgWindow" title="点击查看大图" ><img src="<?php echo $model['head_img_thumb']; ?>" /></a>
             </div>
         </div>
     </div>
