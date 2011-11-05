@@ -91,7 +91,7 @@ function status(val)
 	        <?php endforeach; endif; ?>
         </tbody>
     </table>
-    <?php $this->widget('widget.Pager', array(
-        'pages'=>$pages,
-    )); ?>
 </div>
+<?php $this->widget('widget.Pager', array(
+    'pages'=>$pages,
+)); ?>

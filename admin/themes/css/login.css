@@ -6,32 +6,48 @@ html, body {
     font-size:12px; 
     line-height:100%; 
     font-family:Arial, sans-serif; 
-    background: none repeat scroll 0 0 #E6EFF7; 
+    background: none repeat scroll 0 0 #e5e5e5; 
 }
-
+input{
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
 .submit {
-    cursor: pointer;
+font-family: Verdana, Arial, sans-serif;
+display: inline-block;
+background: #459300 url('../default/images/bg-button-green.gif') top left repeat-x !important;
+border: 1px solid #459300 !important;
+padding: 5px 10px 5px 10px !important;
+color: white !important;
+font-size: 12px !important;
+cursor: pointer;
 }
 
 #login {
     background: none repeat scroll 0 0 #FFFFFF;
-    border: 1px solid #007399;
+    border: 1px solid #ccc;
     margin: 90px auto 0; 
     padding-bottom: 10px;
     text-align: center; 
     width: 600px;
+    -moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
 }
 
 #login_header { 
     width: 580px;
-    line-height: 20px;
+    line-height: 30px;
     text-align: left;
     margin-bottom: 10px;
     padding: 10px;
     background: none repeat scroll 0 0 #0099CC;
-    color: #FFFFFF;
     font-size: 16px;
     font-weight: bold;
+    background: #E5E5E5 url('../default/images/bg-content-box.gif') top left repeat-x;
+    margin-top: 1px;
+    height: 30px;
 }
 
 .form {
@@ -60,6 +76,10 @@ html, body {
 }
 
 .form .text {
+	padding: 6px;
+	font-size: 13px;
+	border: 1px solid #D5D5D5;
+	color: #333;
     border-width: 1px;
     border-style: solid;
     border-color: #A2BAC0 #B8D0D6 #B8D0D6 #A2BAC0;

@@ -24,6 +24,19 @@ class User extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * @return User the static model class
 	 */
+	public function cache($duration = null, $dependency = null)
+	{
+	    if ($duration === null)
+	        $duration = 3600 * 12 * 7;
+	    if ($dependency === null)
+	        $dependency = new CDbCacheDependency("SELECT COUNT(*), MAX(update_time) FROM ".$this->tableName());
+	    return parent::cache($duration, $dependency);
+	}
+	
+	
+	
+	
+	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);

@@ -37,6 +37,7 @@ class OrderController extends Controller
         if ($sort == 'time')$criteria->order = 'create_time DESC';
 		else if ($sort == 'status')$criteria->order = 'status ASC';
 		else $criteria->order = "status asc, create_time desc";
+
 		$orders = Order::model()->cache()->findAll($criteria);
 //		if ($sort != null)
 //            $this->success('aaa', array('navTabId'=>'order-goods'));
@@ -148,46 +149,46 @@ class OrderController extends Controller
 	 */
 	public function actionShootScene($id = null)
 	{
-		$orders = new Order;
+		$order = new Order;
 
 		if (!empty($id))
-			$orders = $orders->model()->findByPk($id);
+			$order = $order->model()->findByPk($id);
 
 		if (isset($_POST['Form']))
         {
             if (!empty($_POST['Form']['id']))
             {
                 $message = '修改成功';
-                $orders = $orders->findByPk($_POST['Form']['id']);
+                $order = $order->findByPk($_POST['Form']['id']);
             }
             else
             {
                 $message = '添加成功';
             }
-            $orders->attributes = $_POST['Form'];
-            $orders->shoot_notice=serialize($_POST['Form']['shoot_notice']);
-            $orders->width=serialize($_POST['Form']['width']);
+            $order->attributes = $_POST['Form'];
+            $order->shoot_notice=serialize($_POST['Form']['shoot_notice']);
+            $order->width=serialize($_POST['Form']['width']);
 
-            if ($orders->save())
-                $this->success($message, array('navTabId'=>'order-index'));
+            if ($order->save())
+                $this->success($message, array('navTabId'=>'order-goods'));
             else
             {
-                $error = array_shift($orders->getErrors());
+                $error = array_shift($order->getErrors());
                 $message = '错误：'.$error[0];
                 $this->error($message);
             }
         }
-        $shoot = unserialize($orders->shoot_notice);
+        $shoot = unserialize($order->shoot_notice);
 
         $shootType = $this->loadShootType();
-		$shootTypeList = unserialize($orders->width);
-        $shootNotice = $this->getShootNotice();
+		$shootTypeList = unserialize($order->width);
+        $shootNotice = Order::getShootNotice();
 		$this->render('shoot_scene',array(
 			'shoot'	=> $shoot,
 			'shootType' => $shootType,
 			'shootTypeList' => $shootTypeList,
 			'shootNotice' => $shootNotice,
-			'orders' => $orders
+			'orders' => $order
 		));
 	}
 	/**

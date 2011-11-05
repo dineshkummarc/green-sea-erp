@@ -2,10 +2,45 @@
 class Controller extends CController
 {
     public $layout = false;
-//    public $compareExclude = array(
-//	    'site'=>array('error', 'login', 'logout', 'captcha', ),
-//	    'test'=>array('*'),
-//	);
+    public $compareExclude = array(
+	    'site'=>array('error', 'login', 'logout', 'captcha', ),
+	    'test'=>array('*'),
+	);
+    /**
+     * 验证是否有权限执行这个action
+     * @see CController::beforeAction()
+     */
+    protected function beforeAction($action)
+	{
+	    //Yii::app()->cache->flush();
+	    $controller = strtolower($this->id);
+	    $actionId = strtolower($action->id);
+	    if (isset($this->compareExclude[$controller]))
+	    {
+	        $exclude = $this->compareExclude[$controller];
+	        if (in_array('*', $exclude) || in_array($actionId, $exclude)) return true;
+	    }
+	    $isAjax = isset($this->actionParams['isAjax']) ? $this->actionParams['isAjax'] : false;
+	    $tabid = isset($this->actionParams['tabid']) ? $this->actionParams['tabid'] : "";
+
+	    $user = Yii::app()->user;
+	    // login required
+        if ($user->isGuest)
+        {
+            if (Yii::app()->request->urlReferrer == null || Yii::app()->request->urlReferrer === Yii::app()->homeUrl)
+                $this->redirect(array('site/login'), false);
+            else
+                $this->error('登陆超时，请重新登陆！', array(), 301);
+            return false;
+        }
+        // check access
+	    $authName = $this->id.'/'.$action->id;
+        if ($user->checkAccess($authName))
+            return true;
+        else
+            $this->error('您没有权限执行本操作', array('navTabId'=>$tabid));
+        return true;
+	}
 
     public function createUrl($route = '', $params = array(), $ampersand = '&')
 	{
