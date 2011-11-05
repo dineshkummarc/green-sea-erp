@@ -20,23 +20,7 @@
  */
 class User extends CActiveRecord
 {
-	/**
-	 * Returns the static model of the specified AR class.
-	 * @return User the static model class
-	 */
-	public function cache($duration = null, $dependency = null)
-	{
-	    if ($duration === null)
-	        $duration = 3600 * 12 * 7;
-	    if ($dependency === null)
-	        $dependency = new CDbCacheDependency("SELECT COUNT(*), MAX(update_time) FROM ".$this->tableName());
-	    return parent::cache($duration, $dependency);
-	}
-	
-	
-	
-	
-	
+
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -61,9 +45,17 @@ class User extends CActiveRecord
 	    ScoreLog::log($score, $reason);
 	}
 
-	public function getArea()
+	/**
+	 * Returns the static model of the specified AR class.
+	 * @return User the static model class
+	 */
+	public function cache($duration = null, $dependency = null)
 	{
-
+	    if ($duration === null)
+	        $duration = 3600 * 12 * 7;
+	    if ($dependency === null)
+	        $dependency = new CDbCacheDependency("SELECT COUNT(*), MAX(update_time) FROM ".$this->tableName());
+	    return parent::cache($duration, $dependency);
 	}
 
 	/**
@@ -82,13 +74,14 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, mobile_phone, password, receive_id, area_id, create_time, login_time', 'required'),
+			array('name, mobile_phone, password, receive_id, score, area_id, create_time, login_time', 'required'),
 			array('name, mobile_phone', 'length', 'max'=>20),
 			array('password', 'length', 'max'=>32),
 			array('score, qq, receive_id, area_id, create_time, login_time, receive_count', 'length', 'max'=>10),
 			array('email, wangwang', 'length', 'max'=>30),
 			array('page', 'length', 'max'=>100),
 			array('last_ip', 'length', 'max'=>15),
+			array('mobile_phone, page, qq, wangwang', 'safe'=>true),
 		);
 	}
 

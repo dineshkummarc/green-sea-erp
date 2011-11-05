@@ -1,10 +1,13 @@
 <?php
 class UserController extends Controller
 {
-	/**
-	*用户列单
-	*/
- public function actionIndex(array $params = array(), $pageNum = null, $numPerPage = null)
+    /**
+     * 用户列表
+     * @param array $params
+     * @param integer $pageNum
+     * @param integer $numPerPage
+     */
+    public function actionIndex(array $params = array(), $pageNum = null, $numPerPage = null)
     {
         $user = new User;
         $criteria = $user->dbCriteria;
@@ -15,6 +18,7 @@ class UserController extends Controller
             $criteria->addCondition('mobile_phone = \'' . $params['phone'] . '\'');
         if (!empty($params['mail']))
             $criteria->addSearchCondition('email', $params['mail']);
+
         $count = $user->count($criteria);
         $pages = new CPagination($count);
         $pages->currentPage = empty($pageNum) ? 0 : $pageNum - 1;
@@ -23,25 +27,40 @@ class UserController extends Controller
         $user = $user->cache()->findAll($criteria);
         $this->render("index", array('userList'=>$user, 'params'=>$params, 'pages'=>$pages));
     }
-		/**
-	*修改用户
-	*/
+
+    /**
+     * 修改用户
+     * @param integer $id
+     */
     public function actionEdit($id = null)
     {
-        if (empty($id))
-            $id = $_POST['Form']['id'];
-        if (empty($id))
-            $this->error("参数传递错误");
-        $user = User::model()->cache()->findByPk($id);
+        $user = new User;
+        if (!empty($id))
+            $user = $user->cache()->findByPk($id);
+
         if (isset($_POST['Form']))
         {
-            $user->attributes = $_POST['Form'];
-            // 保存不存在rules中的属性
-            $user->score = $_POST['Form']['score'];
+            if (!empty($_POST['Form']['id']))
+                $user = $user->cache()->findByPk($_POST['Form']['id']);
+
+            if (empty($user->score))
+                $user->score = 0;
+
             // 密码重置
-            $_POST['Form']['re_pwd'] = trim($_POST['Form']['re_pwd']);
-            if (!empty($_POST['Form']['re_pwd']))
-                $user->password = md5(trim($_POST['Form']['re_pwd']));
+            if (!empty($user->password) && empty($_POST['Form']['password']))
+                $user->password = md5(trim($_POST['Form']['password']));
+
+            $user->attributes = $_POST['Form'];
+
+            if (empty($user->first)) $user->first = 1;
+            if (empty($user->accumulation_price)) $user->accumulation_price = 0;
+            if (empty($user->receive_id)) $user->receive_id = 0;
+            if (empty($user->receive_count)) $user->receive_count = 0;
+            if (empty($user->next_order)) $user->next_order = 1;
+            if (empty($user->login_time)) $user->login_time = 0;
+            if (empty($user->last_ip)) $user->last_ip = 0;
+            if (empty($user->create_time)) $user->create_time = Yii::app()->params['timestamp'];
+            $user->update_time = Yii::app()->params['timestamp'];
 
             // 手机号码唯一性验证
             if ($user->mobile_phone != trim($_POST['Form']['mobile_phone']))
@@ -50,47 +69,38 @@ class UserController extends Controller
                 $command = Yii::app()->db->createCommand($sql);
                 $count = $command->queryScalar(array(":phone"=>$_POST['Form']['mobile_phone']));
                 if ($count > 0)
-                    $this->error("手机号码已被注册");
+                    $this->error("手机号码唯一");
             }
 
             if ($user->save())
                 $this->success("修改成功", array('navTabId'=>'user-index'));
             else
-            {
                 $this->error('错误：'.Dumper::dumpAsString($user->getErrors(), 10, true));
-            }
         }
 
         $this->render("edit", array('user'=>$user));
     }
-    
+
     /**
-	*删除用户
-	*/
+     * 删除用户
+     * @param array $id
+     */
     public function actionDel(array $id = array())
     {
         if ( $id === null)
             $this->error('参数传递错误');
 
-        // 批量删除
-        if (count($id) > 1)
-        {
-            // 组合成字符串
-            $id = implode(',', $id);
-            if (User::model()->deleteAll("id in ({$id})") > 0)
-                $this->success('删除成功', array('navTabId'=>'user-index'));
-            else
-                $this->error('删除失败，请联系管理员');
-        }
-        else
-        {
-            $id = $id[0];
-            if (User::model()->deleteByPk($id) > 0)
-                $this->success('删除成功', array('navTabId'=>'user-index'));
-            else
-                $this->error('删除失败，请联系管理员');
-        }
+        // 组合成字符串
+        $id = implode(',', $id);
+        $sql = "DELETE FROM {{user}} WHERE id IN ({$id})";
+        $this->success('删除成功', array('navTabId'=>'user-index'));
     }
+
+    /**
+     * 修改积分
+     * @param integer $id
+     * @param integer $score
+     */
     public function actionChangeScore($id = null, $score = null)
     {
         if (empty($id) || empty($score))
@@ -101,42 +111,6 @@ class UserController extends Controller
         $count = $command->execute(array(":id"=>$id, ":score"=>$score));
         $this->success("修改成功", array('navTabId'=>'user-index'));
     }
-	
-    
-	public function actionAddUser($id=null)
-	{
-		$user=new User;
-   		 if (isset($_POST['Form']))
-   		 {
-        	$user->first = 1;
-        	$user->score = 0;
-	        $user->accumulation_price = 0;
-	        $user->receive_id = 0;
-	        $user->receive_count = 0;
-	        $user->create_time = Yii::app()->params['timestamp'];
-	        $user->update_time = Yii::app()->params['timestamp'];
-	        $user->next_order = 1;
-	        $user->login_time = 0;
-	        $user->last_ip = "";
-	        $user->attributes = $_POST['Form'];
-	        $user->password = md5($user->password);
-	        if ($user->save())
-	        {
-	            $this->success('添加新用户成功，用户名：'.$user->name);
-	            $this->refresh();
-	        }
-	     	else
-            {
-                $error = array_shift($user->getErrors());
-                $message = '错误：'.$error[0];
-                $this->error($message);
-            }
-	    }
-	    $area = Area::model()->findAllByAttributes(array("parent_id"=>0));
-	    $this->render('editUser', array(
-	        'areaList'=>$area,
-	     'user'=>$user
-	    ));
-	}
+
 }
 ?>
