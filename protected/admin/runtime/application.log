@@ -1802,3 +1802,23 @@ in F:\Make\wamp\www\green-sea-erp\admin.php (13)
 2011/11/05 06:49:41 [warning] [application] Failed to set unsafe attribute "oage" of "User".
 in F:\Make\wamp\www\green-sea-erp\protected\admin\controllers\UserController.php (38)
 in F:\Make\wamp\www\green-sea-erp\admin.php (13)
+2011/11/05 11:52:22 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'll_erp.ll_erp_admin' doesn't exist. The SQL statement executed was: SHOW COLUMNS FROM `ll_erp_admin`.
+in F:\Make\wamp\www\green-sea-erp\protected\admin\models\Admin.php (27)
+in F:\Make\wamp\www\green-sea-erp\protected\admin\components\AdminIdentity.php (19)
+in F:\Make\wamp\www\green-sea-erp\protected\admin\components\LoginForm.php (33)
+2011/11/05 11:52:22 [error] [exception.CDbException] exception 'CDbException' with message 'The table "{{admin}}" for active record class "Admin" cannot be found in the database.' in F:\Make\wamp\www\framework\db\ar\CActiveRecord.php:2276
+Stack trace:
+#0 F:\Make\wamp\www\framework\db\ar\CActiveRecord.php(372): CActiveRecordMetaData->__construct(Object(Admin))
+#1 F:\Make\wamp\www\green-sea-erp\protected\admin\models\Admin.php(27): CActiveRecord::model('Admin')
+#2 F:\Make\wamp\www\green-sea-erp\protected\admin\components\AdminIdentity.php(19): Admin::model()
+#3 F:\Make\wamp\www\green-sea-erp\protected\admin\components\LoginForm.php(33): AdminIdentity->authenticate()
+#4 F:\Make\wamp\www\green-sea-erp\protected\admin\controllers\SiteController.php(36): LoginForm->login()
+#5 F:\Make\wamp\www\framework\web\actions\CInlineAction.php(50): SiteController->actionLogin()
+#6 F:\Make\wamp\www\framework\web\CController.php(300): CInlineAction->runWithParams(Array)
+#7 F:\Make\wamp\www\framework\web\CController.php(278): CController->runAction(Object(CInlineAction))
+#8 F:\Make\wamp\www\framework\web\CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 F:\Make\wamp\www\framework\web\CWebApplication.php(277): CController->run('login')
+#10 F:\Make\wamp\www\framework\web\CWebApplication.php(136): CWebApplication->runController('site/login')
+#11 F:\Make\wamp\www\framework\base\CApplication.php(158): CWebApplication->processRequest()
+#12 F:\Make\wamp\www\green-sea-erp\admin.php(13): CApplication->run()
+#13 {main} REQUEST_URI=/green-sea-erp/admin.php?r=site/login
