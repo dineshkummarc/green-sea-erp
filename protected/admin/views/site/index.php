@@ -17,6 +17,7 @@
     <script src="admin/js/jquery.cookie.js" type="text/javascript"></script>
     <script src="admin/js/jquery.validate.js" type="text/javascript"></script>
     <script src="admin/js/jquery.bgiframe.js" type="text/javascript"></script>
+    <script src="admin/js/admin.js" type="text/javascript"></script>
     <script src="admin/uploadify/scripts/swfobject.js" type="text/javascript"></script>
     <script src="admin/uploadify/scripts/jquery.uploadify.v2.1.0.js" type="text/javascript"></script>
     <script src="admin/keditor/kindeditor.js" type="text/javascript"></script>
