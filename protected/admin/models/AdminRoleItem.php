@@ -68,7 +68,7 @@ class AdminRoleItem extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('rule, parent_id, description, update_time', 'required'),
-			array('rule', 'length', 'max'=>20),
+			array('rule', 'length', 'max'=>50),
 			array('parent_id, update_time', 'length', 'max'=>10),
 			array('description', 'length', 'max'=>100),
 		);

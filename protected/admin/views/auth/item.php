@@ -1,3 +1,11 @@
+<?php $this->widget('widget.Search', array(
+    'panleStyle'=>'width: 890px;',
+	'params'=>array('id'=>$role->id),
+    'searchCondition'=>array(
+    	'名称：'=>array('type'=>'text', 'name'=>'name', 'defaultValue'=>empty($params['name']) ? '' : $params['name'], 'alt'=>'支持模糊搜索'),
+
+    ),
+)); ?>
 <div class="pageHeader" style="width: 100%">
     <strong>部门管理- <?php echo $role->name; ?></strong>
 </div>
@@ -8,7 +16,7 @@
             <li><a class="delete" href="<?php echo $this->createUrl("auth/delItem"); ?>" target="selectedTodo" title="确定删除选定数据吗？" rel="id[]" ><span>删除选定</span></a></li>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH="100">
+    <table class="table" width="100%" layoutH="160">
     <thead>
         <tr>
             <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
