@@ -1,7 +1,7 @@
 <div class="pageContent">
     <div class="panelBar" width="100%">
         <ul class="toolBar">
-            <li><a class="add" href="<?php echo $this->createUrl("auth/editRole") ?>" target="dialog" width="300" height="180" resizable="false" maxable="false" mask="true" title="添加权限组"><span>添加权限组</span></a></li>
+            <li><a class="add" href="<?php echo $this->createUrl("auth/editRole") ?>" target="dialog" width="300" height="180" resizable="false" maxable="false" mask="true" title="添加权限组"><span>添加部门</span></a></li>
             <li><a class="delete" href="<?php echo $this->createUrl("auth/delRole"); ?>" target="selectedTodo" title="确定删除选定数据吗？" rel="id[]" ><span>删除选定</span></a></li>
             <li><a class="icon" href="<?php echo $this->createUrl("auth/admin") ?>" target="navTab" rel="auth-admin"><span>管理员列表</span></a></li>
         </ul>
@@ -10,7 +10,7 @@
         <thead>
             <tr>
                 <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
-                <th>权限组</th>
+                <th>所属部门</th>
                 <th width="80">管理员数量</th>
                 <th width="80">状态</th>
                 <th width="200">操作</th>
@@ -34,7 +34,7 @@
                 <td>
                     <a href="<?php echo $this->createUrl("auth/delRole", array('id'=>$role->id)); ?>" target="ajaxTodo" title="删除权限组将会导致其下属管理员删除，是否删除">删除</a>
                     <a href="<?php echo $this->createUrl("auth/editRole", array('id'=>$role->id)); ?>" target="dialog" width="300" height="180" resizable="false" maxable="false" mask="true" title="修改权限组">修改</a>
-                    <a href="<?php echo $this->createUrl("auth/item", array('id'=>$role->id)); ?>" target="navTab" rel="auth-role-config">权限配置</a>
+                    <a href="<?php echo $this->createUrl("auth/item", array('id'=>$role->id)); ?>" target="navTab" rel="auth-role-config">部门分配</a>
                 </td>
             </tr>
             <?php endforeach; ?>

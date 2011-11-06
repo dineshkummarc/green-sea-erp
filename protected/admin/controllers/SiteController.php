@@ -16,13 +16,13 @@ class SiteController extends Controller
             ),
         );
     }
-    
+
     public function actionIndex()
     {
-    	$admin = Admin::model()->cache()->findAll('id ='.Yii::app()->user->id);
+    	$admin = Admin::model()->cache()->findByPk(Yii::app()->user->id);
     	$this->render("index", array('admin'=>$admin));
     }
-    
+
     /**
      * 后台登陆
      */

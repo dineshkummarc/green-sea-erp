@@ -16,10 +16,12 @@ class AdminIdentity extends CUserIdentity
 
     public function authenticate()
     {
-        $admin = Admin::model()->cache()->findByAttributes(array('name' => $this->name, 'status'=>1));
-        if ($admin === null)
-            $this->errorCode=self::ERROR_USERNAME_INVALID;
-        else if ($admin->password != md5(trim($this->password)))
+        $admin = Admin::model()->cache()->findByAttributes(array('number' => $this->name, 'status'=>1));
+        if ($admin === null) {
+        	$admin = Admin::model()->cache()->findByAttributes(array('name' => $this->name, 'status'=>1));
+        	if ($admin === null)
+        	 $this->errorCode=self::ERROR_USERNAME_INVALID;
+        }else if ($admin->password != md5(trim($this->password)))
             $this->errorCode=self::ERROR_PASSWORD_INVALID;
         else
         {

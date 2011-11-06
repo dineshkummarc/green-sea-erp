@@ -67,8 +67,8 @@ class AdminRoleItem extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, parent_id, description, update_time', 'required'),
-			array('name', 'length', 'max'=>20),
+			array('rule, parent_id, description, update_time', 'required'),
+			array('rule', 'length', 'max'=>20),
 			array('parent_id, update_time', 'length', 'max'=>10),
 			array('description', 'length', 'max'=>100),
 		);
@@ -92,7 +92,7 @@ class AdminRoleItem extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
+			'rule' => 'Rule',
 			'parent_id' => 'Parent',
 			'description' => 'Description',
 			'update_time' => 'Update Time',
