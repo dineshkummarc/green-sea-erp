@@ -16,15 +16,15 @@ $(function(){
 		{
 			$this.next().remove();
 		}
-	}); 
+	});
 });
 </script>
 <div class="pageContent">
     <form action="<?php echo $this->createUrl(''); ?>" class="pageForm required-validate"
         enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);" method="post">
-        <div class="pageFormContent" layoutH="138">
+        <div class="pageFormContent" layoutH="60">
             <input type="hidden" name="Form[id]" value="<?php echo !empty($orderGoods->id) ? $orderGoods->id : ''; ?>" />
-            
+
             <div class="unit">
                 <label>类型</label>
                 <select name="Form[type]" class="goods-type" default="<?php echo isset($orderGoods->type) ? $orderGoods->type : 1; ?>">

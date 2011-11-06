@@ -51,7 +51,6 @@
     <script src="admin/js/dwz.effects.js" type="text/javascript"></script>
     <script src="admin/js/dwz.panel.js" type="text/javascript"></script>
     <script src="admin/js/dwz.checkbox.js" type="text/javascript"></script>
-    <script src="admin/js/dwz.history.js" type="text/javascript"></script>
     <script src="admin/js/dwz.combox.js" type="text/javascript"></script>
     <script src="admin/js/dwz.regional.zh.js" type="text/javascript"></script>
 
@@ -114,7 +113,6 @@
 							<li><a>模特管理</a>
 								<ul>
 									<li><a href="<?php echo $this->createUrl('model/index');?>" target="navTab" rel="model-index">模特列表</a></li>
-									<li><a href="<?php echo $this->createUrl('model/edit');?>" target="dialog" width="400" height="500" rel="model-edit">添加模特</a></li>
 								</ul>
 							</li>
 						</ul>
