@@ -1,8 +1,8 @@
-<?php
+ï»¿<?php
 class UserController extends Controller
 {
     /**
-     * ÓÃ»§ÁĞ±í
+     * ç”¨æˆ·åˆ—è¡¨
      * @param array $params
      * @param integer $pageNum
      * @param integer $numPerPage
@@ -29,7 +29,7 @@ class UserController extends Controller
     }
 
     /**
-     * ĞŞ¸ÄÓÃ»§
+     * ä¿®æ”¹ç”¨æˆ·
      * @param integer $id
      */
     public function actionEdit($id = null)
@@ -46,7 +46,7 @@ class UserController extends Controller
             if (empty($user->score))
                 $user->score = 0;
 
-            // ÃÜÂëÖØÖÃ
+            // å¯†ç é‡ç½®
             if (!empty($user->password) && empty($_POST['Form']['password']))
                 $user->password = md5(trim($_POST['Form']['password']));
 
@@ -62,54 +62,54 @@ class UserController extends Controller
             if (empty($user->create_time)) $user->create_time = Yii::app()->params['timestamp'];
             $user->update_time = Yii::app()->params['timestamp'];
 
-            // ÊÖ»úºÅÂëÎ¨Ò»ĞÔÑéÖ¤
+            // æ‰‹æœºå·ç å”¯ä¸€æ€§éªŒè¯
             if ($user->mobile_phone != trim($_POST['Form']['mobile_phone']))
             {
                 $sql = "SELECT COUNT(*) FROM fanwe_user WHERE mobile_phone = :phone";
                 $command = Yii::app()->db->createCommand($sql);
                 $count = $command->queryScalar(array(":phone"=>$_POST['Form']['mobile_phone']));
                 if ($count > 0)
-                    $this->error("ÊÖ»úºÅÂëÎ¨Ò»");
+                    $this->error("æ‰‹æœºå·ç å”¯ä¸€");
             }
 
             if ($user->save())
-                $this->success("ĞŞ¸Ä³É¹¦", array('navTabId'=>'user-index'));
+                $this->success("ä¿®æ”¹æˆåŠŸ", array('navTabId'=>'user-index'));
             else
-                $this->error('´íÎó£º'.Dumper::dumpAsString($user->getErrors(), 10, true));
+                $this->error('é”™è¯¯ï¼š'.Dumper::dumpAsString($user->getErrors(), 10, true));
         }
 
         $this->render("edit", array('user'=>$user));
     }
 
     /**
-     * É¾³ıÓÃ»§
+     * åˆ é™¤ç”¨æˆ·
      * @param array $id
      */
     public function actionDel(array $id = array())
     {
         if ( $id === null)
-            $this->error('²ÎÊı´«µİ´íÎó');
+            $this->error('å‚æ•°ä¼ é€’é”™è¯¯');
 
-        // ×éºÏ³É×Ö·û´®
+        // ç»„åˆæˆå­—ç¬¦ä¸²
         $id = implode(',', $id);
         $sql = "DELETE FROM {{user}} WHERE id IN ({$id})";
-        $this->success('É¾³ı³É¹¦', array('navTabId'=>'user-index'));
+        $this->success('åˆ é™¤æˆåŠŸ', array('navTabId'=>'user-index'));
     }
 
     /**
-     * ĞŞ¸Ä»ı·Ö
+     * ä¿®æ”¹ç§¯åˆ†
      * @param integer $id
      * @param integer $score
      */
     public function actionChangeScore($id = null, $score = null)
     {
         if (empty($id) || empty($score))
-            $this->error("²ÎÊı´«µİ´íÎó");
+            $this->error("å‚æ•°ä¼ é€’é”™è¯¯");
 
         $sql = "UPDATE ll_erp_user SET score = :score WHERE id = :id";
         $command = Yii::app()->db->createCommand($sql);
         $count = $command->execute(array(":id"=>$id, ":score"=>$score));
-        $this->success("ĞŞ¸Ä³É¹¦", array('navTabId'=>'user-index'));
+        $this->success("ä¿®æ”¹æˆåŠŸ", array('navTabId'=>'user-index'));
     }
 
 }
