@@ -1,5 +1,5 @@
 <div class="pageHeader" style="width: 100%">
-    <strong>权限配置 - <?php echo $role->name; ?></strong>
+    <strong>部门管理- <?php echo $role->name; ?></strong>
 </div>
 <div class="pageContent">
     <div class="panelBar" style="width: 100%">
@@ -22,7 +22,7 @@
         <?php if ($allItems !== null) foreach ($allItems as $item): ?>
         <tr>
             <td><input type="checkbox" name="id[]" value="<?php echo $item->id; ?>" /></td>
-            <td><?php echo $item->name; ?></td>
+            <td><?php echo $item->rule; ?></td>
             <td><?php echo $item->description; ?></td>
             <td>
                 <?php if ($item->isAssign): ?>

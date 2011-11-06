@@ -19,7 +19,7 @@ class AuthController extends Controller
         $criteria = new CDbCriteria();
 
         if ( !empty($role_id))
-            $criteria->addCondition("Role.id = {$role_id}");
+            $criteria->addCondition("role_id = {$role_id}");
         else
             $role_id = 0;
         //
@@ -32,10 +32,9 @@ class AuthController extends Controller
         $pages->pageSize = $numPerPage !== null ? $numPerPage : 10;
         $pages->applyLimit($criteria);
 
-        $criteria->select = array('id', 'name', 'login_time', 'login_count', 'INET_NTOA(last_ip) as last_ip', 'role_id', 'city_id', 'is_supper', 'status');
+        $criteria->select = array('id', 'number', 'name', 'login_time', 'login_count', 'INET_NTOA(last_ip) as last_ip', 'role_id', 'city_id', 'is_supper', 'status');
 
         $list = $model->cache()->findAll($criteria);
-
         $this->render("admin", array( 'list'=>$list, 'roles'=>$roles, 'pages'=>$pages, 'role_id'=>$role_id ));
     }
 
@@ -263,7 +262,7 @@ class AuthController extends Controller
         $count = $command->execute(array(":id"=>$id, ":status"=>$status, ":update_time"=>Yii::app()->params['timestamp']));
 
         if ($count > 0)
-            $this->success('修改成功', array('navTabId'=>'admin'));
+            $this->success('修改成功', array('navTabId'=>'auth-role'));
         else
         {
             $this->error('错误，请联系管理员');
@@ -318,7 +317,7 @@ class AuthController extends Controller
             $item->update_time = Yii::app()->params['timestamp'];
 
             if ($item->save())
-                $this->success($message, array('navTabId'=>'admin'));
+                $this->success($message, array('navTabId'=>'auth-role'));
             else
             {
                 $error = array_shift($item->getErrors());
@@ -349,7 +348,7 @@ class AuthController extends Controller
         AdminRoleItem::model()->deleteAll("parent_id = {$id}");
 
         if (AdminRoleItem::model()->deleteByPk($id) > 0)
-            $this->success('删除成功', array('navTabId'=>'admin'));
+            $this->success('删除成功', array('navTabId'=>'auth-role'));
         else
             $this->error('错误！');
     }

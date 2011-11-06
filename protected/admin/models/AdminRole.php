@@ -60,7 +60,7 @@ class AdminRole extends CActiveRecord
 			array('name', 'length', 'max'=>20),
 		);
 	}
-	
+
 	/**
 	 * 获取当前角色组管理员总数
 	 */
@@ -68,6 +68,20 @@ class AdminRole extends CActiveRecord
 	{
 	    $count = Admin::model()->cache()->count(array("condition"=>"role_id = ".$this->id));
         return $count;
+	}
+
+	/**
+	 * 获取会员角色组
+	 */
+	public function getByUser($id = null)
+	{
+		$sql = "SELECT * FROM {{admin_role_child}} WHERE role_id = ".$id;
+		$command = Yii::app()->db->createCommand($sql);
+		$childs = $command->queryAll();
+		foreach($childs as $child ) {
+			$role = AdminRoleItem::model()->cache()->findAll(array('condition'=>"id = ".$child['item_id']));
+		}
+        return $role;
 	}
 
 	/**
