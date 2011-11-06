@@ -11,7 +11,6 @@
     <!--[if IE]>
     <link href="themes/css/ieHack.css" rel="stylesheet" type="text/css" />
     <![endif]-->
-
     <script src="admin/js/speedup.js" type="text/javascript"></script>
     <script src="admin/js/jquery-1.4.4.js" type="text/javascript"></script>
     <script src="admin/js/jquery.cookie.js" type="text/javascript"></script>
@@ -86,9 +85,7 @@
 				</ul>
 			</div>
 			<!-- navMenu -->
-
 		</div>
-
 		<div id="leftside">
 			<div id="sidebar_s">
 				<div class="collapse">
