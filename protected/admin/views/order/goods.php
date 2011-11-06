@@ -5,6 +5,7 @@
 	            <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
 	            <th width="80">订单号</th>
 	            <th width="30">季节</th>
+	            <th width="30">性别</th>
 	            <th width="150">类型</th>
 	            <th width="80">拍摄类型</th>
 	            <th width="80">拍摄风格</th>
@@ -29,7 +30,14 @@
 	            	if ($season == 2)echo "夏";
 	            	if ($season == 3)echo "冬";
 	            ?></td>
-	            <td><?php if ($orderGoods->type == 0)echo $orderGoods->type_name;else echo $orderGoods->Type->name; ?></td>
+	            <td><?php
+	            	$sex = $orderGoods->sex;
+	            	if ($sex == 0)echo "不限";
+	            	if ($sex == 1)echo "男";
+	            	if ($sex == 2)echo "女";
+	            	if ($sex == 3)echo "情侣";
+	            ?></td>
+	            <td><?php echo $orderGoods->type_name;?></td>
 	            <td><?php echo $orderGoods->ShootType->name; ?></td>
 	            <td><?php if ($orderGoods->style == 0)echo "不限";else echo $orderGoods->Style->name; ?></td>
 	            <td><?php echo $orderGoods->count; ?></td>

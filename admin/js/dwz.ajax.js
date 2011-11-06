@@ -329,25 +329,40 @@ $.fn.extend({
 		});
 	},
 	dwzExport: function($p){
-		function _doExport($this) {
-			var $p = $this.attr("targetType") == "dialog" ? $.pdialog.getCurrent() : navTab.getCurrentPanel();
-			var $form = $("#pagerForm", $p);
-			var url = $this.attr("href");
-			window.location = url+(url.indexOf('?') == -1 ? "?" : "&")+$form.serialize();
+		function _getIds(selectedIds, targetType){
+			var ids = "";
+			var $box = targetType == "dialog" ? $.pdialog.getCurrent() : navTab.getCurrentPanel();
+			$box.find("input:checked").filter("[name='"+selectedIds+"']").each(function(i){
+				var val = $(this).val();
+				ids += i==0 ? val : ","+val;
+			});
+			return ids;
 		}
-		
+		function _doExport($this,ids) {
+			var url = $this.attr("href");
+			window.location = url+"&id="+ids;
+		}
 		return this.each(function(){
 			var $this = $(this);
+			var selectedIds = $this.attr("rel") || "ids";
+
 			$this.click(function(event){
+				var ids = _getIds(selectedIds, $this.attr("targetType"));
+				if (!ids) {
+					alertMsg.error($this.attr("warn") || DWZ.msg("alertSelectMsg"));
+					return false;
+				}
 				var title = $this.attr("title");
 				if (title) {
 					alertMsg.confirm(title, {
-						okCall: function(){_doExport($this);}
+						okCall: function(){_doExport($this,ids);}
 					});
-				} else {_doExport($this);}
+				} else {_doExport($this,ids);}
 			
 				event.preventDefault();
+				return false;
 			});
+			
 		});
 	}
 });

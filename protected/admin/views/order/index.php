@@ -18,7 +18,7 @@ function status(val)
 	    'panleStyle'=>'width: 100%;',
 	    'searchCondition'=>array(
 	        '订单号：'=>array('type'=>'text', 'name'=>'params[sn]', 'defaultValue'=>empty($params['sn']) ? '' : $params['sn'], 'alt'=>'支持模糊搜索'),
-	        '客户名：'=>array('type'=>'text', 'name'=>'params[user_name]', 'defaultValue'=>empty($params['user_name']) ? '' : $params['user_name']),
+	        '客户名：'=>array('type'=>'text', 'name'=>'params[user_name]', 'defaultValue'=>empty($params['user_name']) ? '' : $params['user_name'], 'alt'=>'支持模糊搜索'),
 	        '状态：'=>array('type'=>'select', 'name'=>'params[status]', 'defaultValue'=>empty($params['status']) ? '' : $params['status'],
 	            'options'=>array(
 					'未付款'=>'1',
@@ -35,6 +35,11 @@ function status(val)
 	        ),
 	    ),
 	)); ?>
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="icon" href="<?php echo $this->createUrl("order/StorageGoodsExcel"); ?>" target="dwzExport" targetType="navTab" title="确实要导出这些记录吗?" rel="id[]"><span>导出EXCEL</span></a></li>
+		</ul>
+	</div>
     <table class="list" width="100%">
     	<thead>
 	        <tr>
@@ -58,7 +63,7 @@ function status(val)
 	        <tr>
 	            <td><input type="checkbox" name="id[]" value="<?php echo $order->id ?>" /></td>
 	            <td><?php echo $order->user_name; ?></td>
-	            <td><?php echo $order->User->wangwang; ?></td>
+	            <td><?php echo !empty($order->User->wangwang) ? $order->User->wangwang : ''; ?></td>
 	            <td><?php echo $order->sn; ?></td>
 	            <td><?php echo $order->total_price; ?></td>
 	            <td><?php echo date('Y-m-d H:i:s', $order->create_time); ?></td>
