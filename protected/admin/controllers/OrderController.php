@@ -430,7 +430,7 @@ class OrderController extends Controller
 
         $idList=explode(",",$id);
 
-		$phpExcelPath = Yii::getPathOfAlias('system.vendors');
+		$phpExcelPath = Yii::getPathOfAlias('Application.components');
 		spl_autoload_unregister(array('YiiBase','autoload'));
 		include($phpExcelPath . DIRECTORY_SEPARATOR . 'PHPExcel.php');
 
