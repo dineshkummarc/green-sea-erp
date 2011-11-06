@@ -11,7 +11,7 @@
     <table class="table" width="100%" layoutH="100">
     <thead>
         <tr>
-            <th width="20"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
+            <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
             <th width="150">授权模块名</th>
             <th>描述</th>
             <th width="120">状态</th>
@@ -25,9 +25,9 @@
             <td><?php echo $item->rule; ?></td>
             <td><?php echo $item->description; ?></td>
             <td>
-                <?php if ($item->isAssign): ?>
+                <?php if ($item->getIsAssign($role->id)): ?>
                 已授权&nbsp;&nbsp;&nbsp;
-                <a href="<?php echo $this->createUrl('auth/revoke', array('id'=>$item->id, 'roleId'=>$role->id)) ; ?>" target="ajaxTodo">撤销授权</a>
+                <a href="<?php echo $this->createUrl('auth/repeal', array('id'=>$item->id, 'roleId'=>$role->id)) ; ?>" target="ajaxTodo">撤销授权</a>
                 <?php elseif ($item->isInherit): echo '继承';
                 else: ?>
                 未授权&nbsp;&nbsp;&nbsp;

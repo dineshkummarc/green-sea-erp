@@ -36,11 +36,11 @@ class AdminRoleItem extends CActiveRecord
 	}
 
 	// 是否授权
-    public function getIsAssign()
+    public function getIsAssign($id)
 	{
-	    $sql = "SELECT COUNT(*) FROM {{admin_role_child}} WHERE `item_id` = :id";
+	    $sql = "SELECT COUNT(*) FROM {{admin_role_child}} WHERE `item_id` = :id AND role_id = :roleId";
 	    $command = Yii::app()->db->createCommand($sql);
-	    return $command->queryScalar(array(":id"=>$this->id));
+	    return $command->queryScalar(array(":id"=>$this->id, ":roleId"=>$id));
 	}
 
 	// 是否继承
@@ -82,6 +82,7 @@ class AdminRoleItem extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+		    'Role'=>array(self::MANY_MANY, 'AdminRole', '{{admin_role_child}}(item_id, role_id)'),
 		);
 	}
 

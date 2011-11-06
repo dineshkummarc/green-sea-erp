@@ -15,7 +15,7 @@
                 <select name="Form[parent_id]" class="combox" default="<?php echo $item->parent_id ?>">
                     <option value="0">无</option>
                     <?php foreach($allItems as $val): ?>
-                    <option value="<?php echo $val->id ?>"><?php echo $val->name ?></option>
+                    <option value="<?php echo $val->id ?>"><?php echo $val->rule ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
