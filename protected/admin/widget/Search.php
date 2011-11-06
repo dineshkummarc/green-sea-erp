@@ -3,6 +3,7 @@ class Search extends CWidget
 {
     public $panleStyle = '';
     public $searchSubmit = '';
+    public $params = array();
     public $searchCondition = array();
     public $lineSpace = 3;
 

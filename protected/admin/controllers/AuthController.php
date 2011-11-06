@@ -29,7 +29,7 @@ class AuthController extends Controller
 
         $pages = new CPagination($count);
         $pages->currentPage = $pageNum !== null ? $pageNum - 1 : 0;
-        $pages->pageSize = $numPerPage !== null ? $numPerPage : 10;
+        $pages->pageSize = $numPerPage !== null ? $numPerPage : 20;
         $pages->applyLimit($criteria);
 
         $criteria->select = array('id', 'number', 'name', 'login_time', 'login_count', 'INET_NTOA(last_ip) as last_ip', 'role_id', 'city_id', 'is_supper', 'status');
@@ -276,19 +276,19 @@ class AuthController extends Controller
      * @param integer $numPerPage
      * @param integer $pageNum
      */
-    public function actionItem($id = null, $numPerPage = null, $pageNum = null)
+    public function actionItem($id = null, $name = null, $numPerPage = null, $pageNum = null)
     {
         if ( $id === null)
             $this->error('参数传递错误');
-
         $role = AdminRole::model()->cache()->findByPk($id);
         $model = new AdminRoleItem;
         $criteria = new CDbCriteria();
-
+        if (!empty($name))
+            $criteria->addCondition("t.description like '%{$name}%'");
         $count = $model->count();
         $pages = new CPagination($count);
         $pages->currentPage = $pageNum !== null ? $pageNum - 1 : 0;
-        $pages->pageSize = $numPerPage !== null ? $numPerPage : 10;
+        $pages->pageSize = $numPerPage !== null ? $numPerPage : 20;
         $pages->applyLimit($criteria);
 
         $allItems = $model->cache()->findAll($criteria);

@@ -1,5 +1,5 @@
 <div class="pageHeader">
-    <form onsubmit="return navTabSearch(this);" rel="pagerForm" action="<?php echo $this->controller->createUrl($this->searchSubmit) ?>" method="post">
+    <form onsubmit="return navTabSearch(this);" rel="pagerForm" action="<?php echo $this->controller->createUrl($this->searchSubmit, $this->params) ?>" method="post">
         <div class="searchBar">
             <ul class="searchContent">
                 <?php foreach ($this->searchCondition as $key=>$val): ?>
