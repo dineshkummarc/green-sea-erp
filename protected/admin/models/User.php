@@ -89,7 +89,7 @@ class User extends CActiveRecord
 			array('email, wangwang', 'length', 'max'=>30),
 			array('page', 'length', 'max'=>100),
 			array('last_ip', 'length', 'max'=>15),
-			array('mobile_phone, page, qq, wangwang', 'safe'=>true),
+			//array('mobile_phone, page, qq, wangwang', 'safe'=>true),
 		);
 	}
 

@@ -14,7 +14,7 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="add" href="<?php echo $this->createUrl("model/edit"); ?>" target="dialog" width="400" height="500" ><span>添加</span></a></li>
+			<li><a class="add" href="<?php echo $this->createUrl("model/edit"); ?>" target="dialog" width="400" height="500" mask="true" ><span>添加</span></a></li>
 			<li class="line">line</li>
 			<li><a class="delete" href="<?php echo $this->createUrl("model/del"); ?>" target="ajaxTodo" title="确定要删除吗?"><span>删除</span></a></li>
 		</ul>
@@ -49,7 +49,7 @@
 		        <td><?php echo $model->Area->name; ?></td>
 		        <td><?php echo $model->level; ?></td>
 		        <td align="center">
-		            <a href="<?php echo $this->createUrl("model/edit", array('id'=>$model->id)); ?>" target="dialog" width="400" height="500" >修改</a> |
+		            <a href="<?php echo $this->createUrl("model/edit", array('id'=>$model->id)); ?>" target="dialog" width="400" height="500" mask="true" >修改</a> |
 		            <a href="<?php echo $this->createUrl("model/del", array('id'=>$model->id)); ?>" target="ajaxTodo" title="删除" >删除</a>
 		        </td>
 		    </tr>
