@@ -3,7 +3,7 @@ foreach($roles as $role)
     $options[$role->name] = $role->id;
 $this->widget('widget.Search', array(
     'searchCondition'=>array(
-        '权限组：'=>array(
+        '部门：'=>array(
         	'type'=>'select',
         	'name'=>'role_id',
             'defaultValue'=>$role_id,
@@ -16,15 +16,16 @@ $this->widget('widget.Search', array(
         <ul class="toolBar">
             <li><a class="add" href="<?php echo $this->createUrl("auth/editAdmin") ?>" target="dialog" width="300" height="300" mask="true" title="添加管理员"><span>添加管理员</span></a></li>
             <li><a class="delete" href="<?php echo $this->createUrl("auth/delAdmin"); ?>" target="selectedTodo" title="确定删除选定管理员？" rel="id[]" ><span>删除选定</span></a></li>
-            <li><a class="icon" href="<?php echo $this->createUrl("auth/role") ?>" target="navTab" rel="auth-role"><span>权限组列表</span></a></li>
+            <li><a class="icon" href="<?php echo $this->createUrl("auth/role") ?>" target="navTab" rel="auth-role"><span>部门列表</span></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH="138">
         <thead>
             <tr>
                 <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
-                <th width="100">管理员</th>
-                <th width="100">权限组</th>
+                <th width="100">工号</th>
+                <th width="100">姓名</th>
+                <th width="100">部门</th>
                 <th>最后登录时间</th>
                 <th width="80">登录次数</th>
                 <th width="100">最后登录IP</th>
@@ -36,8 +37,9 @@ $this->widget('widget.Search', array(
             <?php if ($list !== null) foreach($list as $admin) : ?>
             <tr>
                 <td><input type="checkbox" name="id[]" value="<?php echo $admin->id; ?>" /></td>
+                <td><?php echo $admin->number; ?></td>
                 <td><?php echo $admin->name; ?></td>
-                <td><?php echo isset($admin->Role->name) ? $admin->Role->name : $admin->is_supper == 1 ? '超级管理员' : '无'; ?></td>
+                <td><?php echo isset($admin->Role->name) ? $admin->Role->name : ($admin->is_supper == 1 ? '超级管理员' : '无'); ?></td>
                 <td><?php echo date('Y-m-d H:i', $admin->login_time); ?></td>
                 <td><?php echo $admin->login_count; ?></td>
                 <td><?php echo $admin->last_ip; ?></td>

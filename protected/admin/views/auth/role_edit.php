@@ -3,7 +3,7 @@
         <div class="pageFormContent" layoutH="60">
             <input type="hidden" name="Form[id]" value="<?php echo $role->id; ?>" />
             <div class="unit">
-                <label>权限组名</label>
+                <label>部门名称</label>
                 <input name="Form[name]" class="required" type="text" value="<?php echo $role->name; ?>" alt="权限组不能为空" />
             </div>
             <div class="unit">

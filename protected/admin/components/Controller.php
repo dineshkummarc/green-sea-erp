@@ -26,7 +26,7 @@ class Controller extends CController
 	    // login required
         if ($user->isGuest)
         {
-            if (Yii::app()->request->urlReferrer == null || Yii::app()->request->urlReferrer === Yii::app()->homeUrl)
+            if (empty(Yii::app()->request->urlReferrer) || Yii::app()->request->urlReferrer === Yii::app()->homeUrl)
                 $this->redirect(array('site/login'), false);
             else
                 $this->error('登陆超时，请重新登陆！', array(), 301);

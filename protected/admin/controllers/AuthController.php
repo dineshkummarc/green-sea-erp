@@ -19,7 +19,7 @@ class AuthController extends Controller
         $criteria = new CDbCriteria();
 
         if ( !empty($role_id))
-            $criteria->addCondition("Role.id = {$role_id}");
+            $criteria->addCondition("role_id = {$role_id}");
         else
             $role_id = 0;
         //
@@ -32,10 +32,9 @@ class AuthController extends Controller
         $pages->pageSize = $numPerPage !== null ? $numPerPage : 10;
         $pages->applyLimit($criteria);
 
-        $criteria->select = array('id', 'name', 'login_time', 'login_count', 'INET_NTOA(last_ip) as last_ip', 'role_id', 'city_id', 'is_supper', 'status');
+        $criteria->select = array('id', 'number', 'name', 'login_time', 'login_count', 'INET_NTOA(last_ip) as last_ip', 'role_id', 'city_id', 'is_supper', 'status');
 
         $list = $model->cache()->findAll($criteria);
-
         $this->render("admin", array( 'list'=>$list, 'roles'=>$roles, 'pages'=>$pages, 'role_id'=>$role_id ));
     }
 
@@ -263,7 +262,7 @@ class AuthController extends Controller
         $count = $command->execute(array(":id"=>$id, ":status"=>$status, ":update_time"=>Yii::app()->params['timestamp']));
 
         if ($count > 0)
-            $this->success('修改成功', array('navTabId'=>'admin'));
+            $this->success('修改成功', array('navTabId'=>'auth-role'));
         else
         {
             $this->error('错误，请联系管理员');
@@ -293,6 +292,7 @@ class AuthController extends Controller
         $pages->applyLimit($criteria);
 
         $allItems = $model->cache()->findAll($criteria);
+
         $this->render('item', array('role'=>$role, 'allItems'=>$allItems, 'pages'=>$pages));
     }
 
@@ -318,7 +318,7 @@ class AuthController extends Controller
             $item->update_time = Yii::app()->params['timestamp'];
 
             if ($item->save())
-                $this->success($message, array('navTabId'=>'admin'));
+                $this->success($message, array('navTabId'=>'auth-role-config'));
             else
             {
                 $error = array_shift($item->getErrors());
@@ -346,12 +346,17 @@ class AuthController extends Controller
         else
             $id = $id[0];
         // 连带删除子项
-        AdminRoleItem::model()->deleteAll("parent_id = {$id}");
+        $sql = "DELETE FROM {{admin_role_item}} WHERE `parent_id` = :id";
+        $command = Yii::app()->db->createCommand($sql);
+        $count = $command->execute(array(":id"=>$id));
 
-        if (AdminRoleItem::model()->deleteByPk($id) > 0)
-            $this->success('删除成功', array('navTabId'=>'admin'));
+        $sql = "DELETE FROM {{admin_role_item}} WHERE `id` = :id";
+        $command = Yii::app()->db->createCommand($sql);
+        $count = $command->execute(array(":id"=>$id));
+        if ($count > 0)
+            $this->success('删除成功', array('navTabId'=>'auth-role-config'));
         else
-            $this->error('错误！');
+             $this->error('错误！');
     }
 
     /**
@@ -396,12 +401,14 @@ class AuthController extends Controller
     {
     	if ( $id === null || $roleId === null)
         	$this->error('参数传递错误');
-
         $sql = "DELETE FROM {{admin_role_child}} WHERE `item_id` = :item_id AND `role_id` = :role_id";
         $command = Yii::app()->db->createCommand($sql);
         $count = $command->execute(array(":item_id"=>$id, ":role_id"=>$roleId));
-        $this->success('撤销授权成功', array('auth-role-config'));
-    }
 
+        if ($count > 0)
+            $this->success('撤销授权成功', array('auth-role-config'));
+        else
+            $this->error('撤销授权失败');
+    }
 }
 ?>

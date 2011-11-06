@@ -4,7 +4,7 @@
             <input type="hidden" name="Form[id]" value="<?php echo $item->id; ?>" />
             <div class="unit">
                 <label>权限名</label>
-                <input name="Form[name]" class="required" type="text" sizt="50" value="<?php echo $item->name; ?>" alt="权限组不能为空" />
+                <input name="Form[rule]" class="required" type="text" sizt="50" value="<?php echo $item->rule; ?>" alt="权限组不能为空" />
             </div>
             <div class="unit">
                 <label>描述</label>
@@ -15,7 +15,7 @@
                 <select name="Form[parent_id]" class="combox" default="<?php echo $item->parent_id ?>">
                     <option value="0">无</option>
                     <?php foreach($allItems as $val): ?>
-                    <option value="<?php echo $val->id ?>"><?php echo $val->name ?></option>
+                    <option value="<?php echo $val->id ?>"><?php echo $val->rule ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
