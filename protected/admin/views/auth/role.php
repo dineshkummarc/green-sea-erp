@@ -34,7 +34,7 @@
                 <td>
                     <a href="<?php echo $this->createUrl("auth/delRole", array('id'=>$role->id)); ?>" target="ajaxTodo" title="删除权限组将会导致其下属管理员删除，是否删除">删除</a>
                     <a href="<?php echo $this->createUrl("auth/editRole", array('id'=>$role->id)); ?>" target="dialog" width="300" height="180" resizable="false" maxable="false" mask="true" title="修改权限组">修改</a>
-                    <a href="<?php echo $this->createUrl("auth/item", array('id'=>$role->id)); ?>" target="navTab" rel="auth-role-config">部门分配</a>
+                    <a href="<?php echo $this->createUrl("auth/item", array('id'=>$role->id)); ?>" target="navTab" rel="auth-role-config">权限分配</a>
                 </td>
             </tr>
             <?php endforeach; ?>

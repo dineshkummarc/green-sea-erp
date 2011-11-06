@@ -346,13 +346,13 @@ class AuthController extends Controller
         else
             $id = $id[0];
         // 连带删除子项
-        $sql = "DELETE {{admin_role_item}} WHERE `parent_id` = :id";
+        $sql = "DELETE FROM {{admin_role_item}} WHERE `parent_id` = :id";
         $command = Yii::app()->db->createCommand($sql);
-        $count = $command->excute(array(":id"=>$id));
+        $count = $command->execute(array(":id"=>$id));
 
-        $sql = "DELETE {{admin_role_item}} WHERE `id` = :id";
+        $sql = "DELETE FROM {{admin_role_item}} WHERE `id` = :id";
         $command = Yii::app()->db->createCommand($sql);
-        $count = $command->excute(array(":id"=>$id));
+        $count = $command->execute(array(":id"=>$id));
         if ($count > 0)
             $this->success('删除成功', array('navTabId'=>'auth-role-config'));
         else
@@ -401,15 +401,14 @@ class AuthController extends Controller
     {
     	if ( $id === null || $roleId === null)
         	$this->error('参数传递错误');
-        $sql = "DELETE {{admin_role_child}} WHERE `item_id` = :item_id AND `role_id` = :role_id";
+        $sql = "DELETE FROM {{admin_role_child}} WHERE `item_id` = :item_id AND `role_id` = :role_id";
         $command = Yii::app()->db->createCommand($sql);
-        $count = $command->excute(array(":item_id"=>$id, ":role_id"=>$roleId));
+        $count = $command->execute(array(":item_id"=>$id, ":role_id"=>$roleId));
 
         if ($count > 0)
             $this->success('撤销授权成功', array('auth-role-config'));
         else
             $this->error('撤销授权失败');
     }
-
 }
 ?>
