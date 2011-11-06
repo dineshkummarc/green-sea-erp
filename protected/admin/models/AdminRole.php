@@ -92,6 +92,7 @@ class AdminRole extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+		    'Items'=>array(self::MANY_MANY, 'AdminRoleItem', '{{admin_role_child}}(role_id, item_id)'),
 		);
 	}
 
