@@ -397,7 +397,7 @@ class AuthController extends Controller
      * @param integer $id
      * @param integer $roleId
      */
-    public function actionRepeal($id = null, $roleId = null)
+    public function actionRevoke($id = null, $roleId = null)
     {
     	if ( $id === null || $roleId === null)
         	$this->error('参数传递错误');
