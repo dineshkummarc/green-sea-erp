@@ -1,4 +1,4 @@
-<div class="pageContent" width="100%" layoutH="65">
+<div class="pageContent" width="100%" layoutH="27">
     <table class="list" width="100%">
     	<thead>
 	        <tr>
@@ -42,7 +42,7 @@
 	        <?php endforeach; endif; ?>
         </tbody>
     </table>
-    <?php $this->widget('widget.Pager', array(
-        'pages'=>$pages,
-    )); ?>
 </div>
+<?php $this->widget('widget.Pager', array(
+    'pages'=>$pages,
+)); ?>

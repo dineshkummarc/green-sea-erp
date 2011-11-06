@@ -47,8 +47,10 @@ class UserController extends Controller
                 $user->score = 0;
 
             // 密码重置
-            if (!empty($user->password) && empty($_POST['Form']['password']))
+            if (!empty($user->password) && !empty($_POST['Form']['password']))
                 $user->password = md5(trim($_POST['Form']['password']));
+            else
+                $_POST['Form']['password'] = $user->password;
 
             $user->attributes = $_POST['Form'];
 

@@ -13,7 +13,7 @@ function status(val)
 	});
 }
 </script>
-<div class="pageContent" width="100%" layoutH="0">
+<div class="pageContent" width="100%" layoutH="27">
 	<?php $this->widget('widget.Search', array(
 	    'panleStyle'=>'width: 100%;',
 	    'searchCondition'=>array(

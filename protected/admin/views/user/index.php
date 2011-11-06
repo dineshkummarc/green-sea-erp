@@ -6,7 +6,7 @@
         ),
 	)
 ); ?>
-<div class="pageContent  width="100%"  layoutH="90">
+<div class="pageContent  width="100%"  layoutH="89">
     <div class="panelBar" >
         <ul class="toolBar">
            <li><a class="add" href="<?php echo $this->createUrl("user/edit") ?>" target="dialog" width="350" height="320" mask="true" title="添加用户"><span>添加用户</span></a></li>
@@ -45,6 +45,6 @@
         <?php endforeach; ?>
     </table>
 </div>
-    <?php $this->widget('widget.Pager', array(
-        'pages'=>$pages,
-    )); ?>
+<?php $this->widget('widget.Pager', array(
+    'pages'=>$pages,
+)); ?>
