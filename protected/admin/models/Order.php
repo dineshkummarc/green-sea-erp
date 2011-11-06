@@ -25,6 +25,7 @@
  */
 class Order extends CActiveRecord
 {
+	public $shoot_type_list=array();//格式化类型列表
     /**
      * Returns the static model of the specified AR class.
      * @return Order the static model class
@@ -44,6 +45,63 @@ class Order extends CActiveRecord
         $sql = "UPDATE {{order}} SET status = :status WHERE id = :id";
         $command = Yii::app()->db->createCommand($sql);
         $command->execute(array(':status'=>$status, ':id'=>$id));
+    }
+    /**
+     * 物品总和
+     */
+    public function getGoodsCount()
+    {
+        $sql = "SELECT SUM( `count` ) FROM {{order_goods}} WHERE order_id = :id";
+        $command = Yii::app()->db->createCommand($sql);
+        return $command->queryScalar(array(':id'=>$this->id));
+    }
+    /**
+     * 拍摄 性别
+     */
+    public function getGoodsSex()
+    {
+        $sql = "SELECT sex FROM {{order_goods}} WHERE order_id = :id";
+        $command = Yii::app()->db->createCommand($sql);
+        $sex = $command->queryScalar(array(':id'=>$this->id));
+        if ($sex == 0)$sex="不限";
+        if ($sex == 1)$sex="男";
+        if ($sex == 2)$sex="女";
+        if ($sex == 3)$sex="情侣";
+        return $sex;
+    }
+    /**
+     * 拍摄 类型
+     */
+    public function getGoodsType()
+    {
+    	if (empty($this->typeFormat)) {//如果为空则取出
+    		$this->shootTypeFormat();
+    	}
+        $sql = "SELECT type_name,shoot_type FROM {{order_goods}} WHERE order_id = ".$this->id;
+        $command = Yii::app()->db->createCommand($sql);
+        $typeList = $command->queryAll();
+        $list='';
+		foreach($typeList as $key=>$type)
+		{
+//			if (strripos($list,$type['type_name']) == false) {
+				if ($key > 0) $list.=' -- ';
+				$list .= $type['type_name'].' / '.$this->shoot_type_list[$type['shoot_type']];
+//			}
+		}
+        return $list;
+    }
+    /**
+     * 格式化拍摄 类型
+     */
+    public function shootTypeFormat()
+    {
+    	$sql = "SELECT * FROM {{shoot_type}}";
+        $command = Yii::app()->db->createCommand($sql);
+        $typeList = $command->queryAll();
+        foreach($typeList as $type)
+        {
+			$this->shoot_type_list[$type['id']]=$type['name'];
+        }
     }
 
     /**

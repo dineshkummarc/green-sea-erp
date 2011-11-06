@@ -27,7 +27,7 @@
     <div class="panelBar">
         <ul class="toolBar">
             <li><a class="add" href="<?php echo $this->createUrl("order/StorageGoods",array('id'=>'','storage_id'=>$storage->id,'order_sn'=>$storage->Order->sn)) ?>" target="dialog" width="400" height="200" title="添加物品"><span>添加物品</span></a></li>
-            <li><a class="delete" href="<?php echo $this->createUrl("order/StorageGoodsDel"); ?>" target="selectedTodo" title="确定删除选定数据吗？" rel="id[]" ><span>删除选定</span></a></li>
+            <li><a class="delete" href="<?php echo $this->createUrl("order/StorageGoodsDel"); ?>" target="navTab" title="确定删除选定数据吗？" rel="id[]" ><span>删除选定</span></a></li>
         </ul>
     </div>
     <table class="list" width="100%">
