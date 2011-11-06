@@ -27,7 +27,7 @@
             <td>
                 <?php if ($item->getIsAssign($role->id)): ?>
                 已授权&nbsp;&nbsp;&nbsp;
-                <a href="<?php echo $this->createUrl('auth/repeal', array('id'=>$item->id, 'roleId'=>$role->id)) ; ?>" target="ajaxTodo">撤销授权</a>
+                <a href="<?php echo $this->createUrl('auth/revoke', array('id'=>$item->id, 'roleId'=>$role->id)) ; ?>" target="ajaxTodo">撤销授权</a>
                 <?php elseif ($item->isInherit): echo '继承';
                 else: ?>
                 未授权&nbsp;&nbsp;&nbsp;
