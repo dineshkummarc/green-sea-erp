@@ -430,7 +430,7 @@ class OrderController extends Controller
 
         $idList=explode(",",$id);
 
-		$phpExcelPath = Yii::getPathOfAlias('Application.components');
+		$phpExcelPath = Yii::getPathOfAlias('application.components');
 		spl_autoload_unregister(array('YiiBase','autoload'));
 		include($phpExcelPath . DIRECTORY_SEPARATOR . 'PHPExcel.php');
 
@@ -550,7 +550,7 @@ class OrderController extends Controller
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 		$objWriter->save('php://output');
 
-//		//恢复Yii自动加载功能
+		//恢复Yii自动加载功能
 		spl_autoload_register(array('YiiBase','autoload'));
 		Yii::app()->end();
 	}
