@@ -1,5 +1,5 @@
 <?php $this->widget('widget.Search', array(
-    'panleStyle'=>'width: 890px;',
+    'panleStyle'=>'width: 100%;',
 	'params'=>array('id'=>$role->id),
     'searchCondition'=>array(
     	'名称：'=>array('type'=>'text', 'name'=>'name', 'defaultValue'=>empty($params['name']) ? '' : $params['name'], 'alt'=>'支持模糊搜索'),

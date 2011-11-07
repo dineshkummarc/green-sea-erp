@@ -55,7 +55,7 @@ class AdminRole extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, update_time, status', 'required'),
-			array('status', 'numerical', 'integerOnly'=>true),
+			array('id, status', 'numerical', 'integerOnly'=>true),
 			array('id, update_time', 'length', 'max'=>10),
 			array('name', 'length', 'max'=>20),
 		);

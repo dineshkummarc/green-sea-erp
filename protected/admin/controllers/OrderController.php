@@ -259,6 +259,7 @@ class OrderController extends Controller
 			'storageGoodsList' => $storageGoodsList
 		));
 	}
+
 	/**
 	 * 仓储 物品
 	 */
@@ -550,8 +551,54 @@ class OrderController extends Controller
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 		$objWriter->save('php://output');
 
-//		//恢复Yii自动加载功能
+		//恢复Yii自动加载功能
 		spl_autoload_register(array('YiiBase','autoload'));
 		Yii::app()->end();
+	}
+	//订单排程
+	public function actionSchedule($id = null, $pageNum = 1, $numPerPage = 20)
+	{
+		$schedule = Schedule::model()->find(array('condition'=>"id=".$id));
+		if(empty($schedule))
+		{
+			$schedule = new Schedule();
+			$schedule -> order_id = $id;
+			$schedule -> shoot_time = Yii::app()->params['timestamp'];
+			$schedule -> shoot_site = '';
+			$schedule -> shoot_info = '';
+			$schedule -> stylist_id = 0;
+			$schedule -> model_id = 0;
+			$schedule -> memo = '';
+			$schedule->save();
+		}
+		if(!empty($schedule->Storage->id))
+		{
+			$criteria = new CDbCriteria();
+			$criteria->condition='storage_id = '.$schedule->Storage->id;
+
+			$count = StorageGoods::model()->count($criteria);
+	        $pages = new CPagination($count);
+	        $pages->currentPage = $pageNum - 1;
+	        $pages->pageSize = $numPerPage;
+	        $pages->applyLimit($criteria);
+
+			$storageGoodsList = StorageGoods::model()->findAll($criteria);
+
+			$this->render('schedule',array(
+				'id' => $id,
+				'pages' => $pages,
+				'schedule' => $schedule,
+				'storageGoodsList' => $storageGoodsList
+			));
+		}
+		$this->render('schedule',array(
+			'id' => $id,
+			'schedule' => $schedule
+		));
+	}
+
+	public function actionScheduleEdit()
+	{
+
 	}
 }
