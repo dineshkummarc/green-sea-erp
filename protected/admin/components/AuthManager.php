@@ -26,7 +26,6 @@ class AuthManager extends CApplicationComponent
         $action = $itemName[1];
         // 获取会员角色组
         $role = AdminRole::model()->getByUser($user['role_id']);
-        //Dumper::dump($role->items);Yii::app()->end();
         if ($role !== null) foreach ($role as $item)
         {
             // 获取会员角色组权限
