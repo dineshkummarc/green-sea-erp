@@ -74,7 +74,9 @@
             <td><textarea name="Form[memo]" class="text" style="width: 532px; height: 80px;"></textarea></td>
         </tr>
     </table>
+    <input type="hidden" id="submit" name="submit" value=""/>
     <input type="hidden" name="id" value="<?php //echo $id; ?>" />
     <input type="button" value="查看已添加的物品" onclick="window.location.href='<?php echo $this->createUrl("order/goodsList") ?>'" />
-    <input type="submit" value="保存" />
+    <input type="submit" value="保存并继续添加" onmousedown="javascript:document.getElementById('submit').value='1'"/>
+    <input type="submit" value="保存" onmousedown="javascript:document.getElementById('submit').value='0'"/>
 </form>

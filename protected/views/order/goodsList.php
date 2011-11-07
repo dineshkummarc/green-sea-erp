@@ -3,7 +3,7 @@
 <div class="step">选择付款方式</div>
 <div class="step">生成订单</div>
 <div class="clear"></div>
-<?php if (empty($goodsList)): ?>
+<?php  if (empty($goodsList)): ?>
 <div class="title">
     您还没有添加任何拍摄物品，请<a href="<?php echo $this->createUrl("order/goodsEdit") ?>">点击这里</a>进行添加。
 </div>
@@ -23,7 +23,7 @@
         <th width="50">金额</th>
         <th width="55">操作</th>
     </tr>
-    <?php if (!empty($goodsList)) foreach ($goodsList as $key=>$goods): ?>
+    <?php $sun=0;if  (!empty($goodsList)) foreach ($goodsList as $key=>$goods): ?>
     <tr>
         <td><?php echo $goods->type_name; ?></td>
         <td><?php echo $season[$goods->season]; ?></td>
@@ -31,13 +31,16 @@
         <td><?php echo $shootType[$goods->shoot_type] ?></td>
         <td><?php echo $styles[$goods->style]; ?></td>
         <td><?php echo $goods->count; ?></td>
+
         <td class="price"><?php $goods->price; ?></td>
+
         <td>
             <a href="<?php echo $this->createUrl("order/goodsEdit", array("id"=>$goods->id)) ?>">修改</a>
             <a href="<?php echo $this->createUrl("order/goodsDel", array("id"=>$goods->id)) ?>" onclick="return confirm('删除之后将不能恢复，确认删除？')">删除</a>
         </td>
     </tr>
     <?php endforeach; ?>
+
 </table>
 <?php if (!empty($goodsList)): ?>
 <div class="title">
