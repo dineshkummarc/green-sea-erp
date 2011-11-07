@@ -140,6 +140,8 @@ class OrderController extends Controller
 //		);
 	    if ($status == 2)//积分修改
 	    {
+	    	$sql = "UPDATE {{order}} SET status = :status, receive_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
+
 	        // 消费金额等积分
 	        $sql = "SELECT total_price FROM {{order}} WHERE id = $id";
 	        $data = Yii::app()->db->createCommand($sql)->query();
