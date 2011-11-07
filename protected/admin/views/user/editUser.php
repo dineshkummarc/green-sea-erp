@@ -1,5 +1,5 @@
 ﻿<div class="pageContent">
-	<form action="<?php echo $this->createUrl("user/addUser") ?>" method="post" onsubmit="return validateCallback(this, dialogAjaxDone);">
+	<form action="<?php echo $this->createUrl("user/adzdUser") ?>" method="post" onsubmit="return validateCallback(this, dialogAjaxDone);">
 	    <div class="pageFormContent" layoutH="60">
 	        <div class="unit">
 	            <label>客户名：</label><input type="text" name="Form[name]" class="required" value="<?php echo !empty($user->name) ? $user->name : ''; ?>"/>

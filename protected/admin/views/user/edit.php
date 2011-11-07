@@ -4,52 +4,52 @@
             <input type="hidden" name="Form[id]" value="<?php echo $user->id; ?>" />
             <?php if (!empty($user->id)): ?>
             <div class="unit">
-                <label>¿Í»§±àºÅ</label>
+                <label>å®¢æˆ·ç¼–å·</label>
                 <span class="unit">P<?php echo substr(strval($user->id + 1000),1,3); ?></span>
             </div>
             <?php endif; ?>
             <div class="unit">
-                <label>ÓÃ»§Ãû</label>
-                <span class="unit"><input type="text" name="Form[name]" class="required" value="<?php echo $user->name; ?>" alt="¿Í»§Ãû²»ÄÜÎª¿Õ" /></span>
+                <label>ç”¨æˆ·å</label>
+                <span class="unit"><input type="text" name="Form[name]" class="required" value="<?php echo $user->name; ?>" alt="å®¢æˆ·åä¸èƒ½ä¸ºç©º" /></span>
             </div>
             <div class="unit">
                 <?php if (!empty($user->password)): ?>
-                <label>ÃÜÂëÖØÖÃ</label>
+                <label>å¯†ç é‡ç½®</label>
                 <input id="pwdequal" type="text" name="Form[password]" />
                 <?php else: ?>
-                <label>ÃÜÂë</label>
-                <input id="pwdequal" type="text" name="Form[password]" class="required" alt="ÃÜÂë²»ÄÜÎª¿Õ" />
+                <label>å¯†ç </label>
+                <input id="pwdequal" type="text" name="Form[password]" class="required" alt="å¯†ç ä¸èƒ½ä¸ºç©º" />
                 <?php endif; ?>
             </div>
             <div class="unit">
-                <label>È·ÈÏÃÜÂë</label>
+                <label>ç¡®è®¤å¯†ç </label>
                 <input type="text" id="rePwd" equalto="#rePwd" />
             </div>
             <div class="unit">
-                <label>ÍúÍúºÅ</label>
+                <label>æ—ºæ—ºå·</label>
                 <input type="text" name="Form[wangwang]" value="<?php echo $user->wangwang; ?>" />
             </div>
            <div class="unit">
-                <label>QQºÅ</label>
-                <input type="text" name="Form[qq]" value="<?php echo $user->qq; ?>" class="required" alt="QQºÅÂë²»ÄÜÎª¿Õ" />
+                <label>QQå·</label>
+                <input type="text" name="Form[qq]" value="<?php echo $user->qq; ?>" class="required" alt="QQå·ç ä¸èƒ½ä¸ºç©º" />
             </div>
             <div class="unit">
-                <label>ÊÖ»úºÅÂë</label>
-                <input type="text" name="Form[mobile_phone]" value="<?php echo $user->mobile_phone; ?>" class="required" alt="ÊÖ»ú²»ÄÜÎª¿Õ" />
+                <label>æ‰‹æœºå·ç </label>
+                <input type="text" name="Form[mobile_phone]" value="<?php echo $user->mobile_phone; ?>" class="required" alt="æ‰‹æœºä¸èƒ½ä¸ºç©º" />
             </div>
             <div class="unit">
-                <label>ÌÔ±¦ÍøµØÖ·</label>
+                <label>æ·˜å®ç½‘åœ°å€</label>
                 <input type="text" name="Form[page]" value="<?php echo $user->page; ?>" />
             </div>
             <div class="unit">
-                <label>»áÔ±»ý·Ö</label>
-                <input type="text" name="Form[score]" value="<?php echo $user->score; ?>" class="required number" alt="»ý·Ö²»ÄÜÎª¿Õ£¬ÎªÊý×Ö" />
+                <label>ä¼šå‘˜ç§¯åˆ†</label>
+                <input type="text" name="Form[score]" value="<?php echo $user->score; ?>" class="required number" alt="ç§¯åˆ†ä¸èƒ½ä¸ºç©ºï¼Œä¸ºæ•°å­—" />
             </div>
         </div>
         <div class="formBar">
             <ul>
-                <li><div class="buttonActive"><div class="buttonContent"><button type="submit">±£´æ</button></div></div></li>
-                <li><div class="button"><div class="buttonContent"><button type="button" class="close">È¡Ïû</button></div></div></li>
+                <li><div class="buttonActive"><div class="buttonContent"><button type="submit">ä¿å­˜</button></div></div></li>
+                <li><div class="button"><div class="buttonContent"><button type="button" class="close">å–æ¶ˆ</button></div></div></li>
             </ul>
         </div>
     </form>

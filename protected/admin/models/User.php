@@ -33,8 +33,10 @@ class User extends CActiveRecord
 	 */
 	public function cache()
     {
-        $duration = 3600 * 24 * 7;
-        $dependency = new CDbCacheDependency('SELECT COUNT(*), MAX(update_time) FROM '.$this->tableName());
+        if ($duration === null)
+	        $duration = 3600 * 12 * 7;
+	    if ($dependency === null)
+        	$dependency = new CDbCacheDependency('SELECT COUNT(*), MAX(update_time) FROM '.$this->tableName());
         return parent::cache($duration, $dependency);
     }
 
@@ -51,19 +53,6 @@ class User extends CActiveRecord
 
 	    // 保存日志
 	    ScoreLog::log($score, $reason);
-	}
-
-	/**
-	 * Returns the static model of the specified AR class.
-	 * @return User the static model class
-	 */
-	public function cache($duration = null, $dependency = null)
-	{
-	    if ($duration === null)
-	        $duration = 3600 * 12 * 7;
-	    if ($dependency === null)
-	        $dependency = new CDbCacheDependency("SELECT COUNT(*), MAX(update_time) FROM ".$this->tableName());
-	    return parent::cache($duration, $dependency);
 	}
 
 	/**

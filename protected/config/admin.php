@@ -55,7 +55,7 @@ return array(
 			'enableProfiling'=>true,
 			'emulatePrepare' => true,
 			'username' => 'root',
-			'password' => '',
+			'password' => 'root',
 		    'tablePrefix' => 'll_erp_',
 			'charset' => 'utf8',
 		    'schemaCachingDuration'=>0,
