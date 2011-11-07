@@ -26,8 +26,7 @@
         <td><?php echo $order->getStatusText(); ?></td>
         <td align="center"><?php echo $order->following == 1 ? "是" : '否'; ?></td>
         <td align="center">
-            <!-- <a href="<?php echo $this->createUrl("order/editShootScene", array('id'=>$order->id)); ?>">修改</a> | -->
-            <a href="<?php echo $this->createUrl("order/print", array('id'=>$order->id)); ?>" target="_blank">打印</a> |
+            <a href="<?php echo $this->createUrl("order/print", array('id'=>$order->id)); ?>" target="_blank">打印</a>
             <?php if (!empty($order->down_url)): ?>
             | <a href="<?php echo $order->down_url; ?>" target="_blank">下载</a>
             <?php endif; ?>

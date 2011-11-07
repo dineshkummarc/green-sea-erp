@@ -310,12 +310,13 @@ div.info
 
 div.info div
 {
-    height: 32px;
+    margin-left: 95px;
     line-height: 32px;
 }
 
 div.info label
 {
+    margin-left: -95px;
     display: inline-block;
     *display: inline;
     width: 95px;
@@ -324,7 +325,7 @@ div.info label
 
 div.info span
 {
-    padding-left: 10px;
+    word-break:break-all;
 }
 
 div.detail

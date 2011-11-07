@@ -36,52 +36,6 @@ function orderInit()
             });
         }
     });
-//    var form = $(orderform);
-//    $("#addOrderGoods", form).click(function () {
-//        addOrderGoods($('#goodsTable'));
-//    });
-//    
-//    $("form select[filter=styles]", form).change(function () {
-//        changeStyle();
-//    });
-//    
-//    $("a[target=showModel]", form).click(function () {
-//        showModel(this.id);
-//    });
-//    
-//    $("a[target=selectModel]", form).click(function () {
-//        selectModel(this.id);
-//    });
-//    
-//    $("#addExample", form).fancybox({autoDimensions: false, width: 430, height: 180});
-//    
-//    $("#goods_season", form).change(function () {
-//        
-//    });
-//    
-//    $("#goods_sex", form).change(function () {
-//        
-//    });
-//    
-//    $("#shoot_type", form).change(function () {
-//        var $this = $(this);
-//        calcPrice($this.parent().parent());
-//    });
-//    
-//    $("#goods_style", form).change(function () {
-//        changeStyle();
-//    });
-//    
-//    $("#goods_count", form).keyup(function () {
-//        goodsCountValidator(this);
-//        calcPrice($(this).parent().parent());
-//    })
-//    .blur(function () {
-//        hideError(this);
-//    });
-//    
-//    $("a.imgWindow").fancybox({autoDimensions: false});
-    
     inputTip();
 }
 
@@ -116,19 +70,6 @@ function validateModel()
     if (selectedCount == 0)
     {
         alert("请选择模特");
-        return false;
-    }
-    return true;
-}
-
-function validateShootScene()
-{
-    var price = $("input[name='Form[total_price]']");
-    var numRegexp = /\d{1,}\.?\d{0,2}/;
-    if (!numRegexp.test(price.val()))
-    {
-        alert("请填写正确的价格");
-        price.select();
         return false;
     }
     return true;
