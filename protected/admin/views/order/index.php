@@ -37,7 +37,7 @@ function status(val)
 	)); ?>
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="icon" href="<?php echo $this->createUrl("order/StorageGoodsExcel"); ?>" target="dwzExport" targetType="navTab" title="确实要导出这些记录吗?" rel="id[]"><span>导出EXCEL</span></a></li>
+			<li><a class="icon" href="<?php echo $this->createUrl("order/OrderExcel"); ?>" target="dwzExport" targetType="navTab" title="确实要导出这些记录吗?" rel="id[]"><span>导出EXCEL</span></a></li>
 		</ul>
 	</div>
     <table class="list" width="100%">

@@ -340,7 +340,7 @@ $.fn.extend({
 		}
 		function _doExport($this,ids) {
 			var url = $this.attr("href");
-			window.location = url+"&id="+ids;
+			window.open(url+"&id="+ids);
 		}
 		return this.each(function(){
 			var $this = $(this);
