@@ -55,12 +55,12 @@ class AdminRole extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, update_time, status', 'required'),
-			array('status', 'numerical', 'integerOnly'=>true),
+			array('id, status', 'numerical', 'integerOnly'=>true),
 			array('id, update_time', 'length', 'max'=>10),
 			array('name', 'length', 'max'=>20),
 		);
 	}
-	
+
 	/**
 	 * 获取当前角色组管理员总数
 	 */
@@ -71,6 +71,20 @@ class AdminRole extends CActiveRecord
 	}
 
 	/**
+	 * 获取会员角色组
+	 */
+	public function getByUser($id = null)
+	{
+		$sql = "SELECT * FROM {{admin_role_child}} WHERE role_id = ".$id;
+		$command = Yii::app()->db->createCommand($sql);
+		$childs = $command->queryAll();
+		foreach($childs as $child ) {
+			$role = AdminRoleItem::model()->cache()->findAll(array('condition'=>"id = ".$child['item_id']));
+		}
+        return $role;
+	}
+
+	/**
 	 * @return array relational rules.
 	 */
 	public function relations()
@@ -78,6 +92,7 @@ class AdminRole extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+		    'Items'=>array(self::MANY_MANY, 'AdminRoleItem', '{{admin_role_child}}(role_id, item_id)'),
 		);
 	}
 

@@ -25,6 +25,7 @@
  */
 class Order extends CActiveRecord
 {
+	public $shoot_type_list=array();//格式化类型列表
     /**
      * Returns the static model of the specified AR class.
      * @return Order the static model class
@@ -44,6 +45,63 @@ class Order extends CActiveRecord
         $sql = "UPDATE {{order}} SET status = :status WHERE id = :id";
         $command = Yii::app()->db->createCommand($sql);
         $command->execute(array(':status'=>$status, ':id'=>$id));
+    }
+    /**
+     * 物品总和
+     */
+    public function getGoodsCount()
+    {
+        $sql = "SELECT SUM( `count` ) FROM {{order_goods}} WHERE order_id = :id";
+        $command = Yii::app()->db->createCommand($sql);
+        return $command->queryScalar(array(':id'=>$this->id));
+    }
+    /**
+     * 拍摄 性别
+     */
+    public function getGoodsSex()
+    {
+        $sql = "SELECT sex FROM {{order_goods}} WHERE order_id = :id";
+        $command = Yii::app()->db->createCommand($sql);
+        $sex = $command->queryScalar(array(':id'=>$this->id));
+        if ($sex == 0)$sex="不限";
+        if ($sex == 1)$sex="男";
+        if ($sex == 2)$sex="女";
+        if ($sex == 3)$sex="情侣";
+        return $sex;
+    }
+    /**
+     * 拍摄 类型
+     */
+    public function getGoodsType()
+    {
+    	if (empty($this->typeFormat)) {//如果为空则取出
+    		$this->shootTypeFormat();
+    	}
+        $sql = "SELECT type_name,shoot_type FROM {{order_goods}} WHERE order_id = ".$this->id;
+        $command = Yii::app()->db->createCommand($sql);
+        $typeList = $command->queryAll();
+        $list='';
+		foreach($typeList as $key=>$type)
+		{
+//			if (strripos($list,$type['type_name']) == false) {
+				if ($key > 0) $list.=' -- ';
+				$list .= $type['type_name'].' / '.$this->shoot_type_list[$type['shoot_type']];
+//			}
+		}
+        return $list;
+    }
+    /**
+     * 格式化拍摄 类型
+     */
+    public function shootTypeFormat()
+    {
+    	$sql = "SELECT * FROM {{shoot_type}}";
+        $command = Yii::app()->db->createCommand($sql);
+        $typeList = $command->queryAll();
+        foreach($typeList as $type)
+        {
+			$this->shoot_type_list[$type['id']]=$type['name'];
+        }
     }
 
     /**
@@ -76,12 +134,12 @@ class Order extends CActiveRecord
             array('sn, user_id, user_name, total_price, create_time, update_time, square, artwork, retouch, following, width, shoot_notice, typesetting, diff_color, status', 'required'),
             array('following, square, artwork, retouch, typesetting, diff_color, status', 'numerical', 'integerOnly'=>true),
             array('sn, user_name', 'length', 'max'=>20),
-            array('user_id, create_time, update_time, pay_time, receive_time, shoot_time, studio_shoot, outdoor_shoot', 'length', 'max'=>10),
+            array('user_id, create_time, update_time, pay_time, receive_time, shoot_begin_time, shoot_end_time, retouch_begin_time, retouch_end_time, studio_shoot, outdoor_shoot', 'length', 'max'=>10),
             array('pay_time, receive_time, shoot_time, studio_shoot, outdoor_shoot', 'default', 'value'=>0),
             array('logistics_sn', 'length', 'max'=>50),
             array('example_img, shoot_notice', 'length', 'max'=>200),
             array('total_price', 'length', 'max'=>6),
-            array('receive_address, other_comment, width, example_comment, other_comment', 'length', 'max'=>255),
+            array('receive_address, other_comment, width, example_comment, other_comment, down_url', 'length', 'max'=>255),
         );
     }
 
@@ -172,7 +230,10 @@ class Order extends CActiveRecord
             'update_time' => 'Update Time',
             'pay_time' => 'Pay Time',
             'receive_time' => 'Receive Time',
-            'shoot_time' => 'Shoot Time',
+            'shoot_begin_time' => 'Shoot Begin Time',
+            'shoot_end_time' => 'Shoot End Time',
+            'retouch_begin_time' => 'Retouch Begin Time',
+            'retouch_end_time' => 'Retouch End Time',
             'example_img' => 'Example Img',
             'example_comment' => 'Example Comment',
             'receive_address' => 'Receive Address',

@@ -14,7 +14,7 @@ class Controller extends CController
         {
             if (Yii::app()->user->id == 999)
 	            $this->redirect(array("order/index"));
-            $this->redirect(Yii::app()->homeUrl);
+            $this->redirect($this->createUrl("user/login"));
         }
         return true;
     }

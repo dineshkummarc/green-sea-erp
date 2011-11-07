@@ -3,8 +3,12 @@
         <div class="pageFormContent" layoutH="60">
             <input type="hidden" name="Form[id]" value="<?php echo $admin->id; ?>" />
             <div class="unit">
+            	<label>工号</label>
+                <input name="Form[number]" class="required" type="text" sizt="50" value="<?php echo $admin->number; ?>" alt="工号不能为空" />
+            </div>
+            <div class="unit">
                 <label>登录名</label>
-                <input name="Form[name]" class="required" type="text" sizt="50" value="<?php echo $admin->name; ?>" alt="登录名不能为空" />
+                <input name="Form[name]" class="required" type="text" sizt="50" value="<?php echo $admin->name; ?>" alt="姓名不能为空" />
             </div>
             <div class="unit">
                 <label>登录密码</label>

@@ -36,11 +36,11 @@ class AdminRoleItem extends CActiveRecord
 	}
 
 	// 是否授权
-    public function getIsAssign()
+    public function getIsAssign($id)
 	{
-	    $sql = "SELECT COUNT(*) FROM {{admin_role_child}} WHERE `item_id` = :id";
+	    $sql = "SELECT COUNT(*) FROM {{admin_role_child}} WHERE `item_id` = :id AND role_id = :roleId";
 	    $command = Yii::app()->db->createCommand($sql);
-	    return $command->queryScalar(array(":id"=>$this->id));
+	    return $command->queryScalar(array(":id"=>$this->id, ":roleId"=>$id));
 	}
 
 	// 是否继承
@@ -67,8 +67,8 @@ class AdminRoleItem extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, parent_id, description, update_time', 'required'),
-			array('name', 'length', 'max'=>20),
+			array('rule, parent_id, description, update_time', 'required'),
+			array('rule', 'length', 'max'=>50),
 			array('parent_id, update_time', 'length', 'max'=>10),
 			array('description', 'length', 'max'=>100),
 		);
@@ -82,6 +82,7 @@ class AdminRoleItem extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+		    'Role'=>array(self::MANY_MANY, 'AdminRole', '{{admin_role_child}}(item_id, role_id)'),
 		);
 	}
 
@@ -92,7 +93,7 @@ class AdminRoleItem extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
+			'rule' => 'Rule',
 			'parent_id' => 'Parent',
 			'description' => 'Description',
 			'update_time' => 'Update Time',

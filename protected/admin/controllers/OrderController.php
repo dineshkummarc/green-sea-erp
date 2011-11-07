@@ -10,10 +10,24 @@ class OrderController extends Controller
 	{
 		$criteria = new CDbCriteria;
 
+		if (!empty($params['start_time']) && !empty($params['end_time']))
+		{
+			$stare_time = strtotime($params['start_time']);
+			$end_time = strtotime($params['end_time']) + 24 * 3600;
+			$criteria->addCondition('create_time >= '.$stare_time.' and create_time < '.$end_time);
+		}elseif (!empty($params['start_time']))
+		{
+			$stare_time = strtotime($params['start_time']);
+			$criteria->addCondition('create_time >= '.$stare_time);
+		}elseif (!empty($params['end_time']))
+		{
+			$end_time = strtotime($params['end_time']) + 24 * 3600;
+			$criteria->addCondition('create_time < '.$end_time);
+		}
 	    if (!empty($params['sn']))
             $criteria->addSearchCondition('sn', $params['sn']);
         if (!empty($params['user_name']))
-            $criteria->addCondition('user_name = \'' . $params['user_name'] . '\'');
+            $criteria->addSearchCondition('user_name', $params['user_name']);
         if (!empty($params['status']) && $params['status'] > 0)
         {
             if ($params['status'] == 1)$criteria->addCondition('status = 1');
@@ -121,6 +135,12 @@ class OrderController extends Controller
                 $message = '添加成功';
             }
             $orderGoods->attributes = $_POST['Form'];
+			if ($_POST['Form']['type'] != 0)
+			{
+            	$sql = "SELECT name FROM {{goods_type}} WHERE id = :id";
+        		$command = Yii::app()->db->createCommand($sql);
+        		$orderGoods->type_name = $command->queryScalar(array(':id'=>$_POST['Form']['type']));
+			}
 
             if ($orderGoods->save())
                 $this->success($message, array('navTabId'=>'order-goods'));
@@ -250,6 +270,7 @@ class OrderController extends Controller
 			'storageGoodsList' => $storageGoodsList
 		));
 	}
+
 	/**
 	 * 仓储 物品
 	 */
@@ -410,5 +431,255 @@ class OrderController extends Controller
 	        'models'=>$models,
             'shootNotice'=>Order::getShootNotice()
 	    ));
+	}
+
+	/**
+	 * 将订单 数据导出到Excel
+	 */
+	public function actionOrderExcel($id = null)
+	{
+        if (empty($id))$this->error('参数传递错误！');
+
+        $idList=explode(",",$id);
+		$chinese = new Chinese;
+
+		$phpExcelPath = Yii::getPathOfAlias('application.components');
+		spl_autoload_unregister(array('YiiBase','autoload'));
+		include($phpExcelPath . DIRECTORY_SEPARATOR . 'PHPExcel.php');
+
+		$objPHPExcel = new PHPExcel();
+		$objActSheet = $objPHPExcel->getActiveSheet(0);
+		//标题样式
+		$objStyle = $objActSheet->getStyle('A1');
+		$objStyle->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+
+		$objActSheet->setTitle('订单');
+
+		$objActSheet->mergeCells('A1:J1');
+		$objActSheet->mergeCells('B2:D2');
+		$objActSheet->mergeCells('F2:H2');
+
+		$objActSheet->setCellValue('A1','订单汇总表');
+		$obj = $objActSheet->getStyle('A1');
+		$objStyle = $obj->getAlignment();
+		$objStyle->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$objStyle->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+		//设置字体
+		$objFont = $obj->getFont();
+		$objFont->setSize(20);
+		$objFont->setBold(true);
+		$objFont->getColor()->setARGB('000000');
+		//设置边框
+		$objBorder = $obj->getBorders();
+		$objBorder->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$objBorder->getTop()->getColor()->setARGB('000000'); // color
+		$objBorder->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$objBorder->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$objBorder->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		//设置填充色
+		$objFill = $obj->getFill();
+		$objFill->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$objFill->getStartColor()->setARGB('CCCCCC');
+
+		$objActSheet->setCellValue('A2','序号');
+		$objActSheet->setCellValue('B2','客户信息');
+		$objActSheet->setCellValue('E2','下单时间');
+		$objActSheet->setCellValue('F2','拍摄内容');
+		$objActSheet->setCellValue('I2','模特');
+		$objActSheet->setCellValue('J2','备注');
+
+		$objActSheet->setCellValue('A3','');
+		$objActSheet->setCellValue('B3','订单编号');
+		$objActSheet->setCellValue('C3','客户名称');
+		$objActSheet->setCellValue('D3','阿里旺旺');
+		$objActSheet->setCellValue('E3','');
+		$objActSheet->setCellValue('F3','数量');
+		$objActSheet->setCellValue('G3','性别');
+		$objActSheet->setCellValue('H3','类别/类型');
+		$objActSheet->setCellValue('I3','');
+		$objActSheet->setCellValue('J3','');
+
+		$objActSheet->getColumnDimension('E')->setWidth(20);
+		//同样式列表
+		$styleList = array(
+			'A2','B2','C2','D2','E2','F2','G2','H2','I2','J2',
+			'A3','B3','C3','D3','E3','F3','G3','H3','I3','J3',
+		);
+		foreach ($styleList as $style)
+		{
+			//设置居中
+			$obj = $objActSheet->getStyle($style);
+			$objStyle = $obj->getAlignment();
+			$objStyle->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+			$objStyle->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+			//设置填充色
+			$objFill = $obj->getFill();
+			$objFill->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+			$objFill->getStartColor()->setARGB('CCCCCC');
+
+			//设置边框
+			$objBorder = $obj->getBorders();
+			$objBorder->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+			$objBorder->getTop()->getColor()->setARGB('000000'); // color
+			$objBorder->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+			$objBorder->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+			$objBorder->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		}
+
+		$i = 4;
+		foreach ($idList as $key=>$id)
+		{
+			$list = '';
+			$data = Order::model()->findByPk($id);
+			if (!empty($data->Models))
+			{
+				foreach ($data->Models as $key=>$name)
+				{
+					if ($key > 0) $list.=',';
+					$list .= $name->nick_name;
+				}
+			}
+			$objActSheet
+				->setCellValue('A'.$i, $i-3)
+				->setCellValue('B'.$i, $data->sn)
+				->setCellValue('C'.$i, $data->user_name)
+				->setCellValue('D'.$i, !empty($data->User->wangwang)?$data->User->wangwang:'')//旺旺
+				->setCellValue('E'.$i, date('Y-m-d H:i:s', $data->create_time))
+				->setCellValue('F'.$i, $data->goodsCount)
+				->setCellValue('G'.$i, $data->goodsSex)
+				->setCellValue('H'.$i, $data->goodsType)
+				->setCellValue('I'.$i, $list)
+				->setCellValue('J'.$i, $data->memo);
+			$i += 1;
+		}
+
+		// Excel打开后显示的工作表
+		$objPHPExcel->setActiveSheetIndex(0);
+		//通浏览器输出Excel报表
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment;filename='.$chinese->convert("UTF-8", "gb2312","订单导出表.xls"));
+		header('Cache-Control: max-age=0');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		$objWriter->save('php://output');
+
+		//恢复Yii自动加载功能
+		spl_autoload_register(array('YiiBase','autoload'));
+		Yii::app()->end();
+	}
+	/**
+	 * 将物品 数据导出到Excel
+	 */
+	public function actionStorageGoodsExcel($order_id = null, $id = null)
+	{
+        if (empty($id))$this->error('参数传递错误！');
+
+        $idList=explode(",",$id);
+		$chinese = new Chinese;
+		$order = Order::model()->findByPk($order_id);
+
+		$phpExcelPath = Yii::getPathOfAlias('application.components');
+		spl_autoload_unregister(array('YiiBase','autoload'));
+		include($phpExcelPath . DIRECTORY_SEPARATOR . 'PHPExcel.php');
+
+		$objPHPExcel = new PHPExcel();
+		$objActSheet = $objPHPExcel->getActiveSheet(0);
+		//标题样式
+		$objStyle = $objActSheet->getStyle('A1');
+		$objStyle->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+
+		$objActSheet->setTitle('拍摄清单');
+
+		$objActSheet->mergeCells('A1:F1');
+		$objActSheet->mergeCells('A2:B2');
+		$objActSheet->mergeCells('C2:F2');
+
+		$objActSheet->setCellValue('A1','绿浪视觉拍摄清单');
+		$obj = $objActSheet->getStyle('A1');
+		$objStyle = $obj->getAlignment();
+		$objStyle->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$objStyle->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+		//设置字体
+		$objFont = $obj->getFont();
+		$objFont->setSize(20);
+		$objFont->setBold(true);
+		$objFont->getColor()->setARGB('000000');
+
+		$objActSheet->setCellValue('A2','入库单号：'.$order->sn);
+		$objActSheet->setCellValue('C2','客户名称：'.$order->user_name);
+
+		$i = 3;
+		foreach ($idList as $key=>$id)
+		{
+			$list = '';
+			$data = StorageGoods::model()->findByPk($id);
+			$objActSheet
+				->setCellValue('A'.$i, $i-2)
+				->setCellValue('B'.$i, $data->sn)
+				->setCellValue('C'.$i, $data->name)
+				->setCellValue('D'.$i, $data->ShootType->name);
+			$i += 1;
+		}
+
+		// Excel打开后显示的工作表
+		$objPHPExcel->setActiveSheetIndex(0);
+		//通浏览器输出Excel报表
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment;filename='.$chinese->convert("UTF-8", "gb2312","拍摄清单导出表.xls"));
+		header('Cache-Control: max-age=0');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		$objWriter->save('php://output');
+
+		//恢复Yii自动加载功能
+		spl_autoload_register(array('YiiBase','autoload'));
+		Yii::app()->end();
+	}
+
+
+	//订单排程
+	public function actionSchedule($id = null, $pageNum = 1, $numPerPage = 20)
+	{
+		$schedule = Schedule::model()->find(array('condition'=>"id=".$id));
+		if(empty($schedule))
+		{
+			$schedule = new Schedule();
+			$schedule -> order_id = $id;
+			$schedule -> shoot_time = Yii::app()->params['timestamp'];
+			$schedule -> shoot_site = '';
+			$schedule -> shoot_info = '';
+			$schedule -> stylist_id = 0;
+			$schedule -> model_id = 0;
+			$schedule -> memo = '';
+			$schedule->save();
+		}
+		if(!empty($schedule->Storage->id))
+		{
+			$criteria = new CDbCriteria();
+			$criteria->condition='storage_id = '.$schedule->Storage->id;
+
+			$count = StorageGoods::model()->count($criteria);
+	        $pages = new CPagination($count);
+	        $pages->currentPage = $pageNum - 1;
+	        $pages->pageSize = $numPerPage;
+	        $pages->applyLimit($criteria);
+
+			$storageGoodsList = StorageGoods::model()->findAll($criteria);
+
+			$this->render('schedule',array(
+				'id' => $id,
+				'pages' => $pages,
+				'schedule' => $schedule,
+				'storageGoodsList' => $storageGoodsList
+			));
+		}
+		$this->render('schedule',array(
+			'id' => $id,
+			'schedule' => $schedule
+		));
+	}
+
+	public function actionScheduleEdit()
+	{
+
 	}
 }

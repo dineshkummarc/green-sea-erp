@@ -453,7 +453,7 @@ class OrderController extends Controller
             $order->sn = $order->getSn();
             $order->user_id = $userInfo->id;
             $order->user_name = $userInfo->name;
-            //$order->total_price = $totalPrice;
+            $order->total_price = $totalPrice;
             $order->create_time = Yii::app()->params['timestamp'];
             $order->update_time = Yii::app()->params['timestamp'];
             $order->pay_time = 0;
