@@ -98,6 +98,10 @@
                 <label>运单号：</label>
                 <input type="text" name="Form[logistics_sn]" value="<?php echo !empty($orders->logistics_sn) ? $orders->logistics_sn : ''; ?>"/>
 			</div>
+            <div class="unit">
+                <label>下载链接：</label>
+                <input type="text" name="Form[down_url]" value="<?php echo !empty($orders->down_url) ? $orders->down_url : ''; ?>"/>
+            </div>
         </div>
         <div class="formBar">
             <ul>

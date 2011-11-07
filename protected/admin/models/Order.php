@@ -134,12 +134,12 @@ class Order extends CActiveRecord
             array('sn, user_id, user_name, total_price, create_time, update_time, square, artwork, retouch, following, width, shoot_notice, typesetting, diff_color, status', 'required'),
             array('following, square, artwork, retouch, typesetting, diff_color, status', 'numerical', 'integerOnly'=>true),
             array('sn, user_name', 'length', 'max'=>20),
-            array('user_id, create_time, update_time, pay_time, receive_time, shoot_time, studio_shoot, outdoor_shoot', 'length', 'max'=>10),
+            array('user_id, create_time, update_time, pay_time, receive_time, shoot_begin_time, shoot_end_time, retouch_begin_time, retouch_end_time, studio_shoot, outdoor_shoot', 'length', 'max'=>10),
             array('pay_time, receive_time, shoot_time, studio_shoot, outdoor_shoot', 'default', 'value'=>0),
             array('logistics_sn', 'length', 'max'=>50),
             array('example_img, shoot_notice', 'length', 'max'=>200),
             array('total_price', 'length', 'max'=>6),
-            array('receive_address, other_comment, width, example_comment, other_comment', 'length', 'max'=>255),
+            array('receive_address, other_comment, width, example_comment, other_comment, down_url', 'length', 'max'=>255),
         );
     }
 
@@ -230,7 +230,10 @@ class Order extends CActiveRecord
             'update_time' => 'Update Time',
             'pay_time' => 'Pay Time',
             'receive_time' => 'Receive Time',
-            'shoot_time' => 'Shoot Time',
+            'shoot_begin_time' => 'Shoot Begin Time',
+            'shoot_end_time' => 'Shoot End Time',
+            'retouch_begin_time' => 'Retouch Begin Time',
+            'retouch_end_time' => 'Retouch End Time',
             'example_img' => 'Example Img',
             'example_comment' => 'Example Comment',
             'receive_address' => 'Receive Address',

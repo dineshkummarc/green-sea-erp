@@ -10,6 +10,20 @@ class OrderController extends Controller
 	{
 		$criteria = new CDbCriteria;
 
+		if (!empty($params['start_time']) && !empty($params['end_time']))
+		{
+			$stare_time = strtotime($params['start_time']);
+			$end_time = strtotime($params['end_time']) + 24 * 3600;
+			$criteria->addCondition('create_time >= '.$stare_time.' and create_time < '.$end_time);
+		}elseif (!empty($params['start_time']))
+		{
+			$stare_time = strtotime($params['start_time']);
+			$criteria->addCondition('create_time >= '.$stare_time);
+		}elseif (!empty($params['end_time']))
+		{
+			$end_time = strtotime($params['end_time']) + 24 * 3600;
+			$criteria->addCondition('create_time < '.$end_time);
+		}
 	    if (!empty($params['sn']))
             $criteria->addSearchCondition('sn', $params['sn']);
         if (!empty($params['user_name']))
@@ -423,15 +437,16 @@ class OrderController extends Controller
 	}
 
 	/**
-	 * 将数据导出到Excel
+	 * 将订单 数据导出到Excel
 	 */
-	public function actionStorageGoodsExcel($id = null)
+	public function actionOrderExcel($id = null)
 	{
         if (empty($id))$this->error('参数传递错误！');
 
         $idList=explode(",",$id);
+		$chinese = new Chinese;
 
-		$phpExcelPath = Yii::getPathOfAlias('Application.components');
+		$phpExcelPath = Yii::getPathOfAlias('application.components');
 		spl_autoload_unregister(array('YiiBase','autoload'));
 		include($phpExcelPath . DIRECTORY_SEPARATOR . 'PHPExcel.php');
 
@@ -529,7 +544,7 @@ class OrderController extends Controller
 				}
 			}
 			$objActSheet
-				->setCellValue('A'.$i, $key+1)
+				->setCellValue('A'.$i, $i-3)
 				->setCellValue('B'.$i, $data->sn)
 				->setCellValue('C'.$i, $data->user_name)
 				->setCellValue('D'.$i, !empty($data->User->wangwang)?$data->User->wangwang:'')//旺旺
@@ -545,8 +560,8 @@ class OrderController extends Controller
 		// Excel打开后显示的工作表
 		$objPHPExcel->setActiveSheetIndex(0);
 		//通浏览器输出Excel报表
-		header('Content-Type: text/octet-stream');
-		header('Content-Disposition: attachment;filename="订单.xlsx"');
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment;filename='.$chinese->convert("UTF-8", "gb2312","订单导出表.xls"));
 		header('Cache-Control: max-age=0');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 		$objWriter->save('php://output');
@@ -555,6 +570,75 @@ class OrderController extends Controller
 		spl_autoload_register(array('YiiBase','autoload'));
 		Yii::app()->end();
 	}
+	/**
+	 * 将物品 数据导出到Excel
+	 */
+	public function actionStorageGoodsExcel($order_id = null, $id = null)
+	{
+        if (empty($id))$this->error('参数传递错误！');
+
+        $idList=explode(",",$id);
+		$chinese = new Chinese;
+		$order = Order::model()->findByPk($order_id);
+
+		$phpExcelPath = Yii::getPathOfAlias('application.components');
+		spl_autoload_unregister(array('YiiBase','autoload'));
+		include($phpExcelPath . DIRECTORY_SEPARATOR . 'PHPExcel.php');
+
+		$objPHPExcel = new PHPExcel();
+		$objActSheet = $objPHPExcel->getActiveSheet(0);
+		//标题样式
+		$objStyle = $objActSheet->getStyle('A1');
+		$objStyle->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+
+		$objActSheet->setTitle('拍摄清单');
+
+		$objActSheet->mergeCells('A1:F1');
+		$objActSheet->mergeCells('A2:B2');
+		$objActSheet->mergeCells('C2:F2');
+
+		$objActSheet->setCellValue('A1','绿浪视觉拍摄清单');
+		$obj = $objActSheet->getStyle('A1');
+		$objStyle = $obj->getAlignment();
+		$objStyle->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$objStyle->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+		//设置字体
+		$objFont = $obj->getFont();
+		$objFont->setSize(20);
+		$objFont->setBold(true);
+		$objFont->getColor()->setARGB('000000');
+
+		$objActSheet->setCellValue('A2','入库单号：'.$order->sn);
+		$objActSheet->setCellValue('C2','客户名称：'.$order->user_name);
+
+		$i = 3;
+		foreach ($idList as $key=>$id)
+		{
+			$list = '';
+			$data = StorageGoods::model()->findByPk($id);
+			$objActSheet
+				->setCellValue('A'.$i, $i-2)
+				->setCellValue('B'.$i, $data->sn)
+				->setCellValue('C'.$i, $data->name)
+				->setCellValue('D'.$i, $data->ShootType->name);
+			$i += 1;
+		}
+
+		// Excel打开后显示的工作表
+		$objPHPExcel->setActiveSheetIndex(0);
+		//通浏览器输出Excel报表
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment;filename='.$chinese->convert("UTF-8", "gb2312","拍摄清单导出表.xls"));
+		header('Cache-Control: max-age=0');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		$objWriter->save('php://output');
+
+		//恢复Yii自动加载功能
+		spl_autoload_register(array('YiiBase','autoload'));
+		Yii::app()->end();
+	}
+
+
 	//订单排程
 	public function actionSchedule($id = null, $pageNum = 1, $numPerPage = 20)
 	{

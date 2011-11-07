@@ -17,10 +17,7 @@ class UserController extends Controller
 	{
 	    if (!Yii::app()->user->isGuest)
 	    {
-	        if (Yii::app()->user->id == 999)
-                $this->redirect(array("order/index"));
-            else
-	            $this->redirect(array('user/info'));
+            $this->redirect(array("order/index"));
 	    }
 	    $this->layout = false;
 	    array_push($this->cssFiles, 'login.css');

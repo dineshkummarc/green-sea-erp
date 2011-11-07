@@ -3,7 +3,7 @@
 <div class="step">选择付款方式</div>
 <div class="step">生成订单</div>
 <div class="clear"></div>
-<form action="<?php $this->createUrl("order/shootScene") ?>" method="post" onsubmit="return validateShootScene()">
+<form action="<?php $this->createUrl("order/shootScene") ?>" method="post">
     <table class="table" cellpadding="0" cellspacing="0">
         <tr>
             <td colspan="2" style="background: #B3B3B3; text-align: center; color: #FFF; font-size: 14px;">拍摄要求</td>
@@ -129,12 +129,6 @@
         </tr>
         <tr>
             <td colspan="2"><textarea name="Form[memo]" class="text" style="width: 663px; height: 80px;"></textarea></td>
-        </tr>
-        <tr>
-            <td class="label">价格：</td>
-            <td>
-                <input type="text" name="Form[total_price]" class="input" />
-            </td>
         </tr>
         <tr>
             <td class="label">运单号：</td>

@@ -63,6 +63,7 @@ class AuthController extends Controller
                 $_POST['Form']['password'] = md5(trim($_POST['Form']['password']));
 
             $admin->attributes = $_POST['Form'];
+            if (empty($admin->city_id)) $admin->city_id = 178;
             $admin->update_time = Yii::app()->params['timestamp'];
             if ($admin->save())
                 $this->success($message, array('navTabId'=>'list'));
