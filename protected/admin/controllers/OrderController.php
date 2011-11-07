@@ -6,7 +6,7 @@ class OrderController extends Controller
 	 * @param unknown_type $pageNum
 	 * @param unknown_type $numPerPage
 	 */
-	public function actionIndex($pageNum = 1, $numPerPage = 20)
+	public function actionIndex(array $params = array(), $sort = null, $pageNum = 1, $numPerPage = 20)
 	{
 		$criteria = new CDbCriteria;
 
