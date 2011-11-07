@@ -10,6 +10,20 @@ class OrderController extends Controller
 	{
 		$criteria = new CDbCriteria;
 
+		if (!empty($params['start_time']) && !empty($params['end_time']))
+		{
+			$stare_time = strtotime($params['start_time']);
+			$end_time = strtotime($params['end_time']) + 24 * 3600;
+			$criteria->addCondition('create_time >= '.$stare_time.' and create_time < '.$end_time);
+		}elseif (!empty($params['start_time']))
+		{
+			$stare_time = strtotime($params['start_time']);
+			$criteria->addCondition('create_time >= '.$stare_time);
+		}elseif (!empty($params['end_time']))
+		{
+			$end_time = strtotime($params['end_time']) + 24 * 3600;
+			$criteria->addCondition('create_time < '.$end_time);
+		}
 	    if (!empty($params['sn']))
             $criteria->addSearchCondition('sn', $params['sn']);
         if (!empty($params['user_name']))
