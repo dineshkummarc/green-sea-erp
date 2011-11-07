@@ -135,7 +135,7 @@ class Order extends CActiveRecord
             array('following, square, artwork, retouch, typesetting, diff_color, status', 'numerical', 'integerOnly'=>true),
             array('sn, user_name', 'length', 'max'=>20),
             array('user_id, create_time, update_time, pay_time, receive_time, shoot_begin_time, shoot_end_time, retouch_begin_time, retouch_end_time, studio_shoot, outdoor_shoot', 'length', 'max'=>10),
-            array('pay_time, receive_time, shoot_time, studio_shoot, outdoor_shoot', 'default', 'value'=>0),
+            array('pay_time, receive_time, studio_shoot, outdoor_shoot', 'default', 'value'=>0),
             array('logistics_sn', 'length', 'max'=>50),
             array('example_img, shoot_notice', 'length', 'max'=>200),
             array('total_price', 'length', 'max'=>6),
@@ -197,6 +197,20 @@ class Order extends CActiveRecord
             $shootNotice = require($basePath . "/../config/shootnotice.php");
         }
 	    return $shootNotice;
+	}
+	/**
+	 * 返回拍摄状态
+	 * @var unknown_type
+	 */
+	public static function getShootStatus()
+	{
+	    $basePath = Yii::app()->basePath;
+        if ((int)strripos($basePath,'admin') == false) {
+            $orderType = require($basePath . "/config/orderType.php");
+        }else{
+            $orderType = require($basePath . "/../config/orderType.php");
+        }
+	    return $orderType;
 	}
 
     /**

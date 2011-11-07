@@ -52,14 +52,50 @@ class OrderController extends Controller
 		else if ($sort == 'status')$criteria->order = 'status ASC';
 		else $criteria->order = "status asc, create_time desc";
 
+
 		$orders = Order::model()->cache()->findAll($criteria);
-//		if ($sort != null)
-//            $this->success('aaa', array('navTabId'=>'order-goods'));
+
+		if ($orders != null)
+		{
+	        $sql = "SELECT SUM( `total_price` ) FROM {{order}} WHERE id in (".$this->orderId($orders).")";
+	        $command = Yii::app()->db->createCommand($sql);
+	        $money = $command->queryScalar();
+		}else {
+			$money = 0;
+		}
+		$shootStatus = $this->arrayReverse(Order::getShootStatus());
 		$this->render('index',array(
-			'params'=>$params,
+			'money' => $money,
+			'shootStatus' => $shootStatus,
+			'params' => $params,
 			'pages' => $pages,
 			'orders' => $orders
 		));
+	}
+	/**
+	 * 得到order id字符串
+	 */
+	public function orderId($list)
+	{
+		$str = '';
+		foreach ($list as $key=>$order)
+		{
+			if ($key > 0) $str .= ',';
+			$str .= $order->id;
+		}
+		return $str;
+	}
+	/**
+	 * $shootStatus数组反向
+	 */
+	public function arrayReverse($list)
+	{
+		$str = array();
+		foreach($list as $key=>$name)
+		{
+			$str[$name]=$key;
+		}
+		return $str;
 	}
 	/**
 	 * 订单 删除
@@ -84,13 +120,78 @@ class OrderController extends Controller
      * @param integer $id
      * @param integer $status
      */
-    public function actionOrderStatus($id = null, $status = 0)
+    public function actionOrderStatus($id = null, $status = null)
     {
         if (empty($id))
             $this->error("参数传递错误");
+//      return array(
+//		    1=>"未付款",
+//		    2=>"已付款、未收货",
+//		    3=>"已付款、已收货、待排程",
+//		    4=>"已付款、已收货、已排程",
+//		    5=>"拍摄中",
+//		    6=>"拍摄完成、待修图",
+//		    7=>"修图中",
+//		    8=>"修图完成、待上传",
+//		    9=>"可下载",
+//		    10=>"货物待寄出",
+//		    11=>"货物已寄出",
+//		    12=>"确认收货",
+//		);
+	    if ($status == 2)//积分修改
+	    {
+	        // 消费金额等积分
+	        $sql = "SELECT total_price FROM {{order}} WHERE id = $id";
+	        $data = Yii::app()->db->createCommand($sql)->query();
+            $data->bindColumn(1, $price);
+            if ($data->read() !== false) User::addScore((int)$price);
 
-//        Order::model()->updateByPk($id, array('status'=>$status));
-        $sql = "UPDATE {{order}} SET status = :status WHERE id = :id";
+            // 新客户送积分和累积消费积分
+            $sql = "SELECT first, accumulation_price FROM {{user}} WHERE id = " . Yii::app()->user->id;
+            $data = Yii::app()->db->createCommand($sql)->query();
+            $data->bindColumn(1, $first);
+            $data->bindColumn(2, $price);
+            if ($data->read() !== false)
+            {
+                // 如果为首次下单
+                if ($first == 1)
+                {
+                    User::addScore(1500, "首次下单积分奖励");
+                    // 清楚首次下单状态，防止重复奖励
+                    $sql = "UPDATE  {{user}} first = 0, update_time = :update_time WHERE id = " . Yii::app()->user->id;
+                    $command = Yii::app()->db->createCommand($sql);
+                    $command->bindParam(":update_time", Yii::app()->params['timestamp'], PDO::PARAM_INT);
+                    $command->execute();
+                }
+                // 如果累积消费大于等于5000，则额外赠送3000积分
+                if ((int)$price >= 5000)
+                {
+                    User::addScore(3000, "累积消费额外积分奖励");
+                    // 减去累积消费5000，防止重复奖励
+                    $sql = "UPDATE {{user}} SET accumulation_price = :price , update_time = :update_time WHERE id = " . Yii::app()->user->id;
+                    $command = Yii::app()->db->createCommand($sql);
+                    $command->bindParam(":price", strval($price - 5000), PDO::PARAM_STR);
+                    $command->bindParam(":update_time", Yii::app()->params['timestamp'], PDO::PARAM_INT);
+                    $command->execute();
+                }
+            }
+	    }
+        if ($status == 5)//拍摄中
+        {
+        	$sql = "UPDATE {{order}} SET status = :status, shoot_begin_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
+        }
+        if ($status == 6)//拍摄完成
+        {
+        	$sql = "UPDATE {{order}} SET status = :status, shoot_end_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
+        }
+        if ($status == 7)//修图中
+        {
+        	$sql = "UPDATE {{order}} SET status = :status, retouch_begin_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
+        }
+        if ($status == 8)//修图完成
+        {
+        	$sql = "UPDATE {{order}} SET status = :status, retouch_end_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
+        }
         $command = Yii::app()->db->createCommand($sql);
         $command->execute(array(":id"=>$id, ":status"=>$status));
 
@@ -190,7 +291,7 @@ class OrderController extends Controller
             $order->width=serialize($_POST['Form']['width']);
 
             if ($order->save())
-                $this->success($message, array('navTabId'=>'order-goods'));
+                $this->success($message, array('navTabId'=>'order-index'));
             else
             {
                 $error = array_shift($order->getErrors());
@@ -246,6 +347,7 @@ class OrderController extends Controller
         $storage = Storage::model()->find(array('condition'=>'order_id='.$id));
 
 		$criteria = new CDbCriteria;
+		$criteria->order = "sn ASC";
 		if (empty($storage))
 		{
 			$storage = new Storage;
@@ -293,7 +395,22 @@ class OrderController extends Controller
             {
                 $message = '添加成功';
             	$count = $_POST['Form']['count'];
-				for ($i = 1; $i <= $count; $i ++)
+
+            	$sql = "select MAX(sn) FROM {{storage_goods}} WHERE storage_id = :storage_id";
+            	$command = Yii::app()->db->createCommand($sql);
+            	$max = $command->queryScalar(array(':storage_id'=>$_POST['Form']['storage_id']));
+
+            	if ($max == null || $max == "")
+            	{
+            		$j = 1;
+            	}else{
+					$j = strrev($max);
+					$j = substr($j,0,3);
+					$j = (int)strrev($j) + 1;
+					$count += $j;
+            	}
+
+				for ($i = $j; $i <= $count; $i ++)
 				{
 				    $sn = substr(strval($i + 1000),1,3);
 				    $sn = $_POST['Form']['order_sn'] . $sn;
@@ -442,6 +559,10 @@ class OrderController extends Controller
 	{
         if (empty($id))$this->error('参数传递错误！');
 
+        $sql = "SELECT SUM( `total_price` ) FROM {{order}} WHERE id in (".$id.")";
+	    $command = Yii::app()->db->createCommand($sql);
+	    $money = $command->queryScalar();
+
         $idList=explode(",",$id);
 		$chinese = new Chinese;
 
@@ -457,7 +578,7 @@ class OrderController extends Controller
 
 		$objActSheet->setTitle('订单');
 
-		$objActSheet->mergeCells('A1:J1');
+		$objActSheet->mergeCells('A1:K1');
 		$objActSheet->mergeCells('B2:D2');
 		$objActSheet->mergeCells('F2:H2');
 
@@ -479,9 +600,9 @@ class OrderController extends Controller
 		$objBorder->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 		$objBorder->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 		//设置填充色
-		$objFill = $obj->getFill();
-		$objFill->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-		$objFill->getStartColor()->setARGB('CCCCCC');
+//		$objFill = $obj->getFill();
+//		$objFill->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+//		$objFill->getStartColor()->setARGB('CCCCCC');
 
 		$objActSheet->setCellValue('A2','序号');
 		$objActSheet->setCellValue('B2','客户信息');
@@ -489,6 +610,7 @@ class OrderController extends Controller
 		$objActSheet->setCellValue('F2','拍摄内容');
 		$objActSheet->setCellValue('I2','模特');
 		$objActSheet->setCellValue('J2','备注');
+		$objActSheet->setCellValue('K2','金额');
 
 		$objActSheet->setCellValue('A3','');
 		$objActSheet->setCellValue('B3','订单编号');
@@ -500,11 +622,15 @@ class OrderController extends Controller
 		$objActSheet->setCellValue('H3','类别/类型');
 		$objActSheet->setCellValue('I3','');
 		$objActSheet->setCellValue('J3','');
+		$objActSheet->setCellValue('K3',"￥".$money);
+		//设置字体
+		$objFont = $objActSheet->getStyle('K3')->getFont();
+		$objFont->setBold(true);
 
 		$objActSheet->getColumnDimension('E')->setWidth(20);
 		//同样式列表
 		$styleList = array(
-			'A2','B2','C2','D2','E2','F2','G2','H2','I2','J2',
+			'A2','B2','C2','D2','E2','F2','G2','H2','I2','J2','K2',
 			'A3','B3','C3','D3','E3','F3','G3','H3','I3','J3',
 		);
 		foreach ($styleList as $style)
@@ -515,10 +641,10 @@ class OrderController extends Controller
 			$objStyle->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 			$objStyle->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
-			//设置填充色
-			$objFill = $obj->getFill();
-			$objFill->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-			$objFill->getStartColor()->setARGB('CCCCCC');
+//			//设置填充色
+//			$objFill = $obj->getFill();
+//			$objFill->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+//			$objFill->getStartColor()->setARGB('#666666');
 
 			//设置边框
 			$objBorder = $obj->getBorders();
@@ -552,7 +678,8 @@ class OrderController extends Controller
 				->setCellValue('G'.$i, $data->goodsSex)
 				->setCellValue('H'.$i, $data->goodsType)
 				->setCellValue('I'.$i, $list)
-				->setCellValue('J'.$i, $data->memo);
+				->setCellValue('J'.$i, $data->memo)
+				->setCellValue('K'.$i, '￥'.$data->total_price);
 			$i += 1;
 		}
 
@@ -562,7 +689,7 @@ class OrderController extends Controller
 		header('Content-Type: application/octet-stream');
 		header('Content-Disposition: attachment;filename='.$chinese->convert("UTF-8", "gb2312","订单导出表.xls"));
 		header('Cache-Control: max-age=0');
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 		$objWriter->save('php://output');
 
 //		//恢复Yii自动加载功能
@@ -629,7 +756,7 @@ class OrderController extends Controller
 		header('Content-Type: application/octet-stream');
 		header('Content-Disposition: attachment;filename='.$chinese->convert("UTF-8", "gb2312","拍摄清单导出表.xls"));
 		header('Cache-Control: max-age=0');
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 		$objWriter->save('php://output');
 
 		//恢复Yii自动加载功能
