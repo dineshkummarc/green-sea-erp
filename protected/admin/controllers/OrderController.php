@@ -6,7 +6,7 @@ class OrderController extends Controller
 	 * @param unknown_type $pageNum
 	 * @param unknown_type $numPerPage
 	 */
-	public function actionIndex(array $params = array(), $pageNum = 1, $numPerPage = 20, $sort = null)
+	public function actionIndex($pageNum = 1, $numPerPage = 20)
 	{
 		$criteria = new CDbCriteria;
 
@@ -53,10 +53,7 @@ class OrderController extends Controller
 		else $criteria->order = "status asc, create_time desc";
 
 		$orders = Order::model()->cache()->findAll($criteria);
-//		if ($sort != null)
-//            $this->success('aaa', array('navTabId'=>'order-goods'));
 		$this->render('index',array(
-			'params'=>$params,
 			'pages' => $pages,
 			'orders' => $orders
 		));
