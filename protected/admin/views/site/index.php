@@ -3,7 +3,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=7" />
-    <title><?php echo Yii::app()->name?></title>
 
     <link href="admin/themes/default/style.css" rel="stylesheet" type="text/css" />
 	<link href="admin/themes/css/core.css" rel="stylesheet" type="text/css" />
@@ -83,6 +82,7 @@
     	});
     });
     </script>
+    <title><?php echo Yii::app()->name?></title>
 </head>
 
 <body scroll="no">
