@@ -39,10 +39,10 @@ class Schedule extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('order_id, shoot_time, stylist_id, model_id', 'required'),
-			array('order_id, shoot_time, stylist_id, model_id', 'length', 'max'=>10),
+			array('order_id, shoot_time, shoot_site, shoot_type, shoot_name', 'required'),
+			array('order_id, shoot_time, shoot_type', 'length', 'max'=>10),
 			array('shoot_site', 'length', 'max'=>50),
-			array('shoot_info', 'length', 'max'=>255),
+			array('shoot_name, stylist_name, model_name', 'length', 'max'=>20),
 			array('memo', 'safe'),
 		);
 	}
@@ -56,8 +56,7 @@ class Schedule extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'Order'=>array(self::BELONGS_TO, 'Order', 'order_id', 'select'=>'sn,user_name'),
-			'Admin'=>array(self::BELONGS_TO, 'Admin', 'stylist_id', 'select'=>'name,role_id'),
-			'Model'=>array(self::BELONGS_TO, 'Model', 'model_id', 'select'=>'nick_name'),
+			'ShootType'=>array(self::BELONGS_TO,'ShootType','shoot_type')
 		);
 	}
 
@@ -70,10 +69,11 @@ class Schedule extends CActiveRecord
 			'id' => 'ID',
 			'order_id' => 'Order',
 			'shoot_time' => 'Shoot Time',
+			'shoot_type' => 'Shoot Time',
 			'shoot_stie' => 'Shoot Site',
-			'shoot_info' => 'Shoot Info',
-			'stylist_id' => 'Stylist ID',
-			'model_id' => 'Model ID',
+			'shoot_name' => 'Shoot name',
+			'stylist_name' => 'Stylist name',
+			'model_name' => 'Model name',
 			'memo' => 'Memo',
 		);
 	}

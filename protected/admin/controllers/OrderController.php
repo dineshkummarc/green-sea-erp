@@ -773,46 +773,89 @@ class OrderController extends Controller
 
 
 	//订单排程
-	public function actionSchedule($id = null, $pageNum = 1, $numPerPage = 20)
+	public function actionSchedule($id = null, $type = null, $pageNum = 1, $numPerPage = 20)
 	{
-		$schedule = Schedule::model()->find(array('condition'=>"order_id = ".$id));
-		if(empty($schedule))
-		{
-			$schedule = new Schedule;
-			$schedule -> order_id = $id;
-			$schedule -> shoot_time = Yii::app()->params['timestamp'];
-			$schedule -> shoot_site = '';
-			$schedule -> shoot_info = '';
-			$schedule -> stylist_id = 0;
-			$schedule -> model_id = 0;
-			$schedule -> memo = '';
-			$schedule->save();
-		}
+		$criteria = new CDbCriteria();
+		$criteria->condition = "order_id =".$id;
+		if (!empty($type))
+			$criteria->addCondition("shoot_type =".$type);
+		$schedules = Schedule::model()->findAll($criteria);
+
+		$sql = "SELECT id, sn, user_name FROM {{order}} WHERE id = :Id";
+		$command = Yii::app()->db->createCommand($sql);
+		$order = (object)$command->queryRow(true, array(':Id'=>$id));
+
 		$sql = "SELECT * FROM {{storage}} WHERE order_id = :Id";
 		$command = Yii::app()->db->createCommand($sql);
 		$storage = (object)$command->queryRow(true, array(':Id'=>$id));
-		if(!empty($storage->id))
+		if(!empty($storage))
 		{
-			$sql = "SELECT *,count(distinct type_name)  FROM {{storage_goods}} WHERE storage_id = :Id GROUP BY type_name";
+			$sql = "SELECT * , count(DISTINCT shoot_type ) FROM {{storage_goods}} WHERE storage_id =:Id GROUP BY shoot_type";
 			$command = Yii::app()->db->createCommand($sql);
-			$storageGoodsList = $command->queryScalar(array(':Id'=>$storage->id));
-			$lists = (object)$storageGoodsList;
+			$lists = $command->queryAll(true, array(':Id'=>$storage->id));
+
 			$this->render('schedule',array(
-				'id' => $id,
+				'order' => $order,
+				'schedules' => $schedules,
+				'storage' => $storage,
+				'lists' => $lists
+			));
+		}
+
+	}
+
+	public function actionScheduleEdit($id = null, $orderId =null)
+	{
+		$schedule = new Schedule();
+		if ($id !== null)
+            $schedule = $schedule->findByPk($id);
+
+		if(isset($_POST['Form']))
+		{
+			$id = $_POST['Form']['id'];
+			if(!empty($id))
+			{
+				$schedule = $schedule->findByPk($id);
+				$message = "修改成功";
+			}
+			else
+				$message = "添加成功";
+			$schedule->attributes = $_POST['Form'];
+			$schedule->shoot_time = strtotime($_POST['Form']['shoot_time']);
+			if ($schedule->save())
+            {
+                $this->success($message,array('navTabId'=>'order-schedule','id'=>$orderId));
+            }
+            else
+            {
+                $error = array_shift($schedule->getErrors());
+	            $message = '错误：'.$error[0];
+	            $this->error($message);
+            }
+		}
+		$sql = "SELECT * FROM {{storage}} WHERE order_id = :Id";
+		$command = Yii::app()->db->createCommand($sql);
+		$storage = (object)$command->queryRow(true, array(':Id'=>$orderId));
+		if(!empty($storage))
+		{
+			$sql = "SELECT * , count(DISTINCT shoot_type ) FROM {{storage_goods}} WHERE storage_id =:Id GROUP BY shoot_type";
+			$command = Yii::app()->db->createCommand($sql);
+			$lists = $command->queryAll(true, array(':Id'=>$storage->id));
+
+			$this->render('schedule_edit',array(
+				'orderId' => $orderId,
 				'schedule' => $schedule,
 				'storage' => $storage,
 				'lists' => $lists
 			));
-			Yii::app()->end();
+			Yii:app()->end();
 		}
-		$this->render('schedule',array(
-			'id' => $id,
-			'schedule' => $schedule
-		));
-	}
 
-	public function actionScheduleEdit()
-	{
-		$this->render('schedule_edit');
+		$this->render('schedule_edit', array(
+			'orderId'=>$orderId,
+			'storage'=>$storage
+		));
+
+
 	}
 }
