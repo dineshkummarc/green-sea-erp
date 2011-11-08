@@ -26,6 +26,17 @@ class Admin extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 * 返回 用户名
+	 */
+	public function getAdminName($id)
+	{
+		if ($id == 0) return '';
+		$sql = "SELECT number FROM {{admin}} WHERE id = :id";
+		$command = Yii::app()->db->createCommand($sql);
+		return $command->queryScalar(array(':id'=>$id));
+	}
+
 
 	/**
 	 * 缓存

@@ -405,6 +405,7 @@ class OrderController extends Controller
         {
             // 获取相关数据
             $userInfo = User::model()->findByPk($user->id);
+            $admin_id = $userInfo->admin_id;//负责人ID
             $totalPrice = $user->getState("totalPrice");
 
             $order = new Order;
@@ -464,6 +465,10 @@ class OrderController extends Controller
                 $user->setState("nextOrder", $nextOrder);
                 $userInfo->next_order = $nextOrder;
                 $userInfo->save();
+
+                //添加订单追踪信息
+        		$order_track_id = OrderTrack::getOrderTrackId($id,$admin_id);
+
                 $this->success("订单添加成功");
                 $this->redirect(array('order/index'));
             }
