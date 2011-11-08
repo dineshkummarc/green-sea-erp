@@ -75,7 +75,11 @@ function status(val)
 	                &nbsp;
 	            	<a href="<?php echo $this->createUrl('order/ShootScene', array('id'=>$order->id)); ?>" target="dialog" mask="true" width="700" height="600" title="拍摄需求">需求</a>
 	                &nbsp;
+	                <?php if (Storage::getStorageBoolean($order->id) == null):?>
+	                <a href="<?php echo $this->createUrl('order/storage', array('id'=>$order->id)); ?>" target="navTab" a="仓储不存在，确定要创建吗？" rel="order-storage">仓储</a>
+	                <?php else:?>
 	                <a href="<?php echo $this->createUrl('order/storage', array('id'=>$order->id)); ?>" target="navTab" rel="order-storage">仓储</a>
+	                <?php endif;?>
 	                &nbsp;
 	                <a href="<?php echo $this->createUrl('order/schedule', array('id'=>$order->id)); ?>" target="navTab" rel="order-schedule">排程</a>
 	                &nbsp;

@@ -238,19 +238,30 @@ function initUI(_box){
 	$("a[target=navTab]", $p).each(function(){
 		$(this).click(function(event){
 			var $this = $(this);
-			var title = $this.attr("title") || $this.text();
-			var tabid = $this.attr("rel") || "_blank";
-			var fresh = eval($this.attr("fresh") || "true");
-			var external = eval($this.attr("external") || "false");
-			var url = unescape($this.attr("href")).replaceTmById($p);
-			DWZ.debug(url);
-			if (!url.isFinishedTm()) {
-				alertMsg.error($this.attr("warn") || DWZ.msg("alertSelectMsg"));
-				return false;
+			var a = $this.attr("a");
+			if (a != null) {
+				alertMsg.confirm(a, {
+					okCall: function(){_doAlert();}
+				});
+			} else {
+				_doAlert();
 			}
-			navTab.openTab(tabid, url,{title:title, fresh:fresh, external:external});
-
-			event.preventDefault();
+			return false;
+			function _doAlert()
+			{
+				var title = $this.attr("title") || $this.text();
+				var tabid = $this.attr("rel") || "_blank";
+				var fresh = eval($this.attr("fresh") || "true");
+				var external = eval($this.attr("external") || "false");
+				var url = unescape($this.attr("href")).replaceTmById($p);
+				DWZ.debug(url);
+				if (!url.isFinishedTm()) {
+					alertMsg.error($this.attr("warn") || DWZ.msg("alertSelectMsg"));
+					return false;
+				}
+				navTab.openTab(tabid, url,{title:title, fresh:fresh, external:external});
+				event.preventDefault();
+			}
 		});
 	});
 	// ajaxTodo
