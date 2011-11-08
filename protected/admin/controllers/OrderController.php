@@ -10,7 +10,6 @@ class OrderController extends Controller
 	{
 		$criteria = new CDbCriteria;
 
-		$shootStatus = $this->arrayReverse(Order::getShootStatus());//状态信息
 		if (!empty($params['start_time']) && !empty($params['end_time']))
 		{
 			$stare_time = strtotime($params['start_time']);
@@ -44,6 +43,7 @@ class OrderController extends Controller
 			$money = 0;
 		}
 
+		$shootStatus = $this->arrayReverse(Order::getShootStatus());//状态信息
 		$count = Order::model()->cache()->count($criteria);
         $pages = new CPagination($count);
         $pages->currentPage = $pageNum - 1;
@@ -130,10 +130,10 @@ class OrderController extends Controller
 //		    11=>"货物已寄出",
 //		    12=>"确认收货",
 //		);
+		$order_track_sql = null;//订单追踪sql
+
 	    if ($status == 2)//积分修改
 	    {
-	    	$sql = "UPDATE {{order}} SET status = :status, receive_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
-
 	        // 消费金额等积分
 	        $sql = "SELECT total_price FROM {{order}} WHERE id = $id";
 	        $data = Yii::app()->db->createCommand($sql)->query();
@@ -152,9 +152,9 @@ class OrderController extends Controller
                 {
                     User::addScore(1500, "首次下单积分奖励");
                     // 清楚首次下单状态，防止重复奖励
-                    $sql = "UPDATE  {{user}} first = 0, update_time = :update_time WHERE id = " . Yii::app()->user->id;
+                    $sql = "UPDATE  {{user}} SET first = 0, update_time = :update_time WHERE id = " . Yii::app()->user->id;
                     $command = Yii::app()->db->createCommand($sql);
-                    $command->bindParam(":update_time", Yii::app()->params['timestamp'], PDO::PARAM_INT);
+                    $command->bindValue(":update_time", Yii::app()->params['timestamp'], PDO::PARAM_INT);
                     $command->execute();
                 }
                 // 如果累积消费大于等于5000，则额外赠送3000积分
@@ -164,25 +164,49 @@ class OrderController extends Controller
                     // 减去累积消费5000，防止重复奖励
                     $sql = "UPDATE {{user}} SET accumulation_price = :price , update_time = :update_time WHERE id = " . Yii::app()->user->id;
                     $command = Yii::app()->db->createCommand($sql);
-                    $command->bindParam(":price", strval($price - 5000), PDO::PARAM_STR);
-                    $command->bindParam(":update_time", Yii::app()->params['timestamp'], PDO::PARAM_INT);
+                    $command->bindValue(":price", strval($price - 5000), PDO::PARAM_STR);
+                    $command->bindValue(":update_time", Yii::app()->params['timestamp'], PDO::PARAM_INT);
                     $command->execute();
                 }
             }
-	    }elseif ($status == 5)//拍摄中
+	    	$sql = "UPDATE {{order}} SET status = :status, receive_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
+	    }
+	    elseif ($status == 5)//拍摄中
         {
+        	$order_track_sql = "UPDATE {{order_track}} SET photographer_id = :user_id WHERE id = :id";
         	$sql = "UPDATE {{order}} SET status = :status, shoot_begin_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
-        }elseif ($status == 6)//拍摄完成
+        }
+        elseif ($status == 6)//拍摄完成
         {
+        	$order_track_sql = "UPDATE {{order_track}} SET photographer_id_2 = :user_id WHERE id = :id";
         	$sql = "UPDATE {{order}} SET status = :status, shoot_end_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
-        }elseif ($status == 7)//修图中
+        }
+        elseif ($status == 7)//修图中
         {
+        	$order_track_sql = "UPDATE {{order_track}} SET retouch_id = :user_id WHERE id = :id";
         	$sql = "UPDATE {{order}} SET status = :status, retouch_begin_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
-        }elseif ($status == 8)//修图完成
+        }
+        elseif ($status == 8)//修图完成
         {
+        	$order_track_sql = "UPDATE {{order_track}} SET retouch_id_2 = :user_id WHERE id = :id";
         	$sql = "UPDATE {{order}} SET status = :status, retouch_end_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
-        }else{
+        }
+        elseif ($status == 9)//可下载
+        {
+        	$order_track_sql = "UPDATE {{order_track}} SET deliver_id = :user_id WHERE id = :id";
         	$sql = "UPDATE {{order}} SET status = :status WHERE id = :id";
+		}
+        else{
+        	$sql = "UPDATE {{order}} SET status = :status WHERE id = :id";
+        }
+        if ($order_track_sql != null)
+        {
+        	//添加订单追踪信息
+        	$order_track_id = OrderTrack::getOrderTrackId($id);
+        	$command = Yii::app()->db->createCommand($order_track_sql);
+        	$command->execute(array(':user_id'=>Yii::app()->user->id,':id'=>$order_track_id));
+        }else{
+        	OrderTrack::getOrderTrackId($id);
         }
         $command = Yii::app()->db->createCommand($sql);
         $command->execute(array(":id"=>$id, ":status"=>$status));
@@ -803,5 +827,26 @@ class OrderController extends Controller
 	public function actionScheduleEdit()
 	{
 		$this->render('schedule_edit');
+	}
+	/**
+	 * 订单追踪
+	 * Enter description here ...
+	 */
+	public function actionOrderTrack($pageNum = 1, $numPerPage = 20)
+	{
+		$criteria = new CDbCriteria;
+
+		$count = OrderTrack::model()->count($criteria);
+        $pages = new CPagination($count);
+        $pages->currentPage = $pageNum - 1;
+        $pages->pageSize = $numPerPage;
+        $pages->applyLimit($criteria);
+
+		$orderTrackList = OrderTrack::model()->findAll($criteria);
+
+		$this->render('track',array(
+			'orderTrackList' => $orderTrackList,
+			'pages' => $pages,
+		));
 	}
 }

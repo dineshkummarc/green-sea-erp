@@ -22,6 +22,15 @@ class Storage extends CActiveRecord
 	}
 
 	/**
+	 * 判断 仓储是否存在
+	 */
+	public function getStorageBoolean($order_id)
+	{
+		$sql = "select id FROM {{storage}} WHERE order_id = :order_id";
+		$command = Yii::app()->db->createCommand($sql);
+		return $command->queryScalar(array(':order_id'=>$order_id));
+	}
+	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
