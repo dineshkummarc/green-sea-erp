@@ -15,16 +15,23 @@
 <form action="<?php echo $this->createUrl("order/goodsEdit") ?>" method="post" onsubmit="return validateGoods()">
     <table class="table" cellpadding="0" cellspacing="0">
         <tr>
+            <td class="label">拍摄类型</td>
             <td class="label">类别</td>
             <td class="label">季节</td>
             <td class="label">性别</td>
-            <td class="label">拍摄类型</td>
             <td class="label">拍摄风格</td>
             <td class="label">拍摄数量</td>
             <td class="label">备注</td>
         </tr>
         <?php for ($i = 0; $i < $_POST['count']; $i++): ?>
         <tr>
+            <td>
+                <select name="Form[<?php echo $i;?>][shoot_type]">
+                    <?php foreach ($shootType as $type): ?>
+                    <option value="<?php echo $type['id']; ?>"><?php echo $type['name']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
             <td>
                 <select id="goods-type" name="Form[<?php echo $i;?>][type]">
                     <?php foreach ($goodsType as $type): ?>
@@ -47,13 +54,6 @@
                     <option value="1">男</option>
                     <option value="2">女</option>
                     <option value="3">情侣</option>
-                </select>
-            </td>
-            <td>
-                <select name="Form[<?php echo $i;?>][shoot_type]">
-                    <?php foreach ($shootType as $type): ?>
-                    <option value="<?php echo $type['id']; ?>"><?php echo $type['name']; ?></option>
-                    <?php endforeach; ?>
                 </select>
             </td>
             <td>
