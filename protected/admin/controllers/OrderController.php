@@ -10,6 +10,7 @@ class OrderController extends Controller
 	{
 		$criteria = new CDbCriteria;
 
+		$shootStatus = $this->arrayReverse(Order::getShootStatus());//状态信息
 		if (!empty($params['start_time']) && !empty($params['end_time']))
 		{
 			$stare_time = strtotime($params['start_time']);
@@ -30,17 +31,18 @@ class OrderController extends Controller
             $criteria->addSearchCondition('user_name', $params['user_name']);
         if (!empty($params['status']) && $params['status'] > 0)
         {
-            if ($params['status'] == 1)$criteria->addCondition('status = 1');
-            if ($params['status'] == 2)$criteria->addCondition('status = 2');
-            if ($params['status'] == 3)$criteria->addCondition('status = 3');
-            if ($params['status'] == 4)$criteria->addCondition('status = 4');
-            if ($params['status'] == 5)$criteria->addCondition('status = 5');
-            if ($params['status'] == 6)$criteria->addCondition('status = 6');
-            if ($params['status'] == 7)$criteria->addCondition('status = 7');
-            if ($params['status'] == 8)$criteria->addCondition('status = 8');
-            if ($params['status'] == 9)$criteria->addCondition('status = 9');
-            if ($params['status'] == 10)$criteria->addCondition('status = 10');
+        	$criteria->addCondition('status = '.$params['status']);
         }
+        //计算金额
+		$orders = Order::model()->cache()->findAll($criteria);
+		if ($orders != null)
+		{
+	        $sql = "SELECT SUM( `total_price` ) FROM {{order}} WHERE id in (".$this->orderId($orders).")";
+	        $command = Yii::app()->db->createCommand($sql);
+	        $money = $command->queryScalar();
+		}else {
+			$money = 0;
+		}
 
 		$count = Order::model()->cache()->count($criteria);
         $pages = new CPagination($count);
@@ -52,18 +54,8 @@ class OrderController extends Controller
 		else if ($sort == 'status')$criteria->order = 'status ASC';
 		else $criteria->order = "status asc, create_time desc";
 
-
 		$orders = Order::model()->cache()->findAll($criteria);
 
-		if ($orders != null)
-		{
-	        $sql = "SELECT SUM( `total_price` ) FROM {{order}} WHERE id in (".$this->orderId($orders).")";
-	        $command = Yii::app()->db->createCommand($sql);
-	        $money = $command->queryScalar();
-		}else {
-			$money = 0;
-		}
-		$shootStatus = $this->arrayReverse(Order::getShootStatus());
 		$this->render('index',array(
 			'money' => $money,
 			'shootStatus' => $shootStatus,
@@ -177,22 +169,20 @@ class OrderController extends Controller
                     $command->execute();
                 }
             }
-	    }
-        if ($status == 5)//拍摄中
+	    }elseif ($status == 5)//拍摄中
         {
         	$sql = "UPDATE {{order}} SET status = :status, shoot_begin_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
-        }
-        if ($status == 6)//拍摄完成
+        }elseif ($status == 6)//拍摄完成
         {
         	$sql = "UPDATE {{order}} SET status = :status, shoot_end_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
-        }
-        if ($status == 7)//修图中
+        }elseif ($status == 7)//修图中
         {
         	$sql = "UPDATE {{order}} SET status = :status, retouch_begin_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
-        }
-        if ($status == 8)//修图完成
+        }elseif ($status == 8)//修图完成
         {
         	$sql = "UPDATE {{order}} SET status = :status, retouch_end_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
+        }else{
+        	$sql = "UPDATE {{order}} SET status = :status WHERE id = :id";
         }
         $command = Yii::app()->db->createCommand($sql);
         $command->execute(array(":id"=>$id, ":status"=>$status));
@@ -393,10 +383,21 @@ class OrderController extends Controller
             {
                 $message = '修改成功';
                 $storageGoods = $storageGoods->findByPk($_POST['Form']['id']);
+                $storageGoods->attributes = $_POST['Form'];
+	            if ($storageGoods->save())
+	                $this->success($message, array('navTabId'=>'order-storage'));
+	            else
+	            {
+	                $error = array_shift($storageGoods->getErrors());
+	                $message = '错误：'.$error[0];
+	                $this->error($message);
+	            }
             }
             else
             {
                 $message = '添加成功';
+                $storageGoods->attributes = $_POST['Form'];
+                $storageGoods->type_name = $storageGoods->ShootType->name;
             	$count = $_POST['Form']['count'];
 
             	$sql = "select MAX(sn) FROM {{storage_goods}} WHERE storage_id = :storage_id";
@@ -417,28 +418,20 @@ class OrderController extends Controller
 				{
 				    $sn = substr(strval($i + 1000),1,3);
 				    $sn = $_POST['Form']['order_sn'] . $sn;
-					$sql = "INSERT INTO {{storage_goods}} ( storage_id, sn, name, shoot_type, is_shoot) VALUES (:val1, :val2, :val3, :val4, :val5)";
+					$sql = "INSERT INTO {{storage_goods}} ( storage_id, sn, name, shoot_type, type_name, is_shoot) VALUES (:val1, :val2, :val3, :val4, :val5, :val6)";
 					$command = Yii::app()->db->createCommand($sql);
 					$command->execute(array(
 					    ":val1"=>$_POST['Form']['storage_id'],
 					    ":val2"=>$sn,
 					    ":val3"=>$_POST['Form']['name'],
 					    ":val4"=>$_POST['Form']['shoot_type'],
-					    ":val5"=>0,
+						":val5"=>$storageGoods->type_name,
+					    ":val6"=>0,
 					));
 				}
 		        $this->success($message, array('navTabId'=>'order-storage'));
             }
-            $storageGoods->attributes = $_POST['Form'];
 
-            if ($storageGoods->save())
-                $this->success($message, array('navTabId'=>'order-storage'));
-            else
-            {
-                $error = array_shift($storageGoods->getErrors());
-                $message = '错误：'.$error[0];
-                $this->error($message);
-            }
         }
         $shootTypes = ShootType::model()->findAll();
 		$this->render('storage_goods',array(
@@ -771,10 +764,10 @@ class OrderController extends Controller
 	//订单排程
 	public function actionSchedule($id = null, $pageNum = 1, $numPerPage = 20)
 	{
-		$schedule = Schedule::model()->find(array('condition'=>"id=".$id));
+		$schedule = Schedule::model()->find(array('condition'=>"order_id = ".$id));
 		if(empty($schedule))
 		{
-			$schedule = new Schedule();
+			$schedule = new Schedule;
 			$schedule -> order_id = $id;
 			$schedule -> shoot_time = Yii::app()->params['timestamp'];
 			$schedule -> shoot_site = '';
@@ -784,25 +777,22 @@ class OrderController extends Controller
 			$schedule -> memo = '';
 			$schedule->save();
 		}
-		if(!empty($schedule->Storage->id))
+		$sql = "SELECT * FROM {{storage}} WHERE order_id = :Id";
+		$command = Yii::app()->db->createCommand($sql);
+		$storage = (object)$command->queryRow(true, array(':Id'=>$id));
+		if(!empty($storage->id))
 		{
-			$criteria = new CDbCriteria();
-			$criteria->condition='storage_id = '.$schedule->Storage->id;
-
-			$count = StorageGoods::model()->count($criteria);
-	        $pages = new CPagination($count);
-	        $pages->currentPage = $pageNum - 1;
-	        $pages->pageSize = $numPerPage;
-	        $pages->applyLimit($criteria);
-
-			$storageGoodsList = StorageGoods::model()->findAll($criteria);
-
+			$sql = "SELECT *,count(distinct type_name)  FROM {{storage_goods}} WHERE storage_id = :Id GROUP BY type_name";
+			$command = Yii::app()->db->createCommand($sql);
+			$storageGoodsList = $command->queryScalar(array(':Id'=>$storage->id));
+			$lists = (object)$storageGoodsList;
 			$this->render('schedule',array(
 				'id' => $id,
-				'pages' => $pages,
 				'schedule' => $schedule,
-				'storageGoodsList' => $storageGoodsList
+				'storage' => $storage,
+				'lists' => $lists
 			));
+			Yii::app()->end();
 		}
 		$this->render('schedule',array(
 			'id' => $id,
@@ -812,6 +802,6 @@ class OrderController extends Controller
 
 	public function actionScheduleEdit()
 	{
-
+		$this->render('schedule_edit');
 	}
 }
