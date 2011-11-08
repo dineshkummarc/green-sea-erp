@@ -16,7 +16,7 @@
 		<ul class="toolBar">
 			<li><a class="add" href="<?php echo $this->createUrl("model/edit"); ?>" target="dialog" width="400" height="500" mask="true" ><span>添加</span></a></li>
 			<li class="line">line</li>
-			<li><a class="delete" href="<?php echo $this->createUrl("model/del"); ?>" target="ajaxTodo" title="确定要删除吗?"><span>删除</span></a></li>
+			<li><a class="delete" href="<?php echo $this->createUrl("model/del"); ?>" target="selectedTodo" rel="id[]" title="确定要删除吗?"><span>删除</span></a></li>
 		</ul>
 	</div>
 	<table class="table" width="100%" layoutH="138">

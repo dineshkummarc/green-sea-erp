@@ -336,6 +336,7 @@ function initUI(_box){
 	if ($.fn.selectedTodo) $("a[target=selectedTodo]", $p).selectedTodo();
 	if ($.fn.pagerForm) $("form[rel=pagerForm]", $p).pagerForm({parentBox:$p});
 	if ($.fn.dwzExport) $("a[target=dwzExport]", $p).dwzExport();
+	if ($.fn.ajaxTodo) $("a[target=ajaxTodo]", $p).ajaxTodo();
 	
 	$("span.changeBtn", $p).each(function () {
 	    $(this).click(function () {

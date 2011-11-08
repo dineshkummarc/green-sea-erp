@@ -11,8 +11,8 @@
                     <?php elseif(strtolower($val['type']) == 'select'): ?>
                     <select name="<?php echo $val['name']; ?>" default="<?php echo isset($val['defaultValue']) ? $val['defaultValue'] : 0; ?>" <?php echo isset($val['class']) ? "class=\"{$val['class']}\"" : ""; echo isset($val['style']) ? "style=\"{$val['style']}\"" : ""; ?> class="combox">
                         <option value="0">默认</option>
-                        <?php foreach ($val['options'] as $name=>$value): ?>
-                        <option value="<?php echo $value; ?>"><?php echo $name; ?></option>
+                        <?php foreach ($val['options'] as $name=>$key): ?>
+                        <option value="<?php echo $key; ?>"><?php echo $name; ?></option>
                         <?php endforeach; ?>
                     </select>
                     <?php endif; ?>

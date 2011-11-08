@@ -21,18 +21,7 @@ function status(val)
 	        '客户名：'=>array('type'=>'text', 'name'=>'params[user_name]', 'defaultValue'=>empty($params['user_name']) ? '' : $params['user_name'], 'alt'=>'支持模糊搜索'),
 
 	        '状态：'=>array('type'=>'select', 'name'=>'params[status]', 'defaultValue'=>empty($params['status']) ? '' : $params['status'],
-	            'options'=>array(
-					'未付款'=>'1',
-					'已付款、未收货'=>'2',
-					'已付款、已收货、待排程'=>'3',
-					'已付款、已收货、已排程'=>'4',
-					'拍摄中'=>'5',
-					'拍摄完成、修图中'=>'6',
-					'修图完成、可下载'=>'7',
-					'货物待寄出'=>'8',
-					'货物已寄出'=>'9',
-					'确认收货'=>'10',
-	            )
+	            'options'=>$shootStatus
 	        ),
 	        '时间查询：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[start_time]', 'defaultValue'=>empty($params['start_time']) ? '' : $params['start_time'],),
 	        '至：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[end_time]', 'defaultValue'=>empty($params['end_time']) ? '' : $params['end_time'],),
@@ -42,6 +31,8 @@ function status(val)
 	<div class="panelBar">
 		<ul class="toolBar">
 			<li><a class="icon" href="<?php echo $this->createUrl("order/OrderExcel"); ?>" target="dwzExport" targetType="navTab" title="确实要导出这些记录吗?" rel="id[]"><span>导出EXCEL</span></a></li>
+			<li class="line">line</li>
+			<li><a class="icon" ><span style="color:#F00"><?php echo "金额：￥".$money?></span></a></li>
 		</ul>
 	</div>
     <table class="list" width="100%">
@@ -73,16 +64,9 @@ function status(val)
 	            <td><?php echo date('Y-m-d H:i:s', $order->create_time); ?></td>
 	            <td>
 	            	<select class="combox" default="<?php echo $order->id.'-'.$order->status?>" name="status" change="status">
-					      <option value="<?php echo $order->id;?>-1">未付款</option>
-					      <option value="<?php echo $order->id;?>-2">已付款、未收货</option>
-					      <option value="<?php echo $order->id;?>-3">已付款、已收货、待排程</option>
-					      <option value="<?php echo $order->id;?>-4">已付款、已收货、已排程</option>
-					      <option value="<?php echo $order->id;?>-5">拍摄中</option>
-					      <option value="<?php echo $order->id;?>-6">拍摄完成、修图中</option>
-					      <option value="<?php echo $order->id;?>-7">修图完成、可下载</option>
-					      <option value="<?php echo $order->id;?>-8">货物待寄出</option>
-					      <option value="<?php echo $order->id;?>-9">货物已寄出</option>
-					      <option value="<?php echo $order->id;?>-10">确认收货</option>
+	            		<?php foreach ($shootStatus as $status=>$key):?>
+	            		<option value="<?php echo $order->id.'-'.$key;?>"><?php echo $status?></option>
+						<?php endforeach;?>
 					</select>
 	            </td>
 	            <td><?php echo $order->following == 1 ? "是" : '否'; ?></td>

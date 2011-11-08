@@ -135,9 +135,10 @@ class OrderController extends Controller
 	public function actionGoodsList($id = null)
 	{
 	    $goodsList = Yii::app()->user->getState("goodsList");
-	    if ($goodsList === null && $id !== null)
+	    if ($goodsList === null && $id !== null){
             $goodsList = OrderGoods::model()->findAllByAttributes(array("order_id"=>$orderId));
-        else if ($goodsList === null)
+
+	    }else if ($goodsList === null)
             $goodsList = array();
 
 	    $goodsType = GoodsType::model()->findAll();
@@ -213,6 +214,8 @@ class OrderController extends Controller
 
         if (isset($_POST['Form']))
         {
+			$submit = $_POST['submit'];
+
             if ($id === null)
             {
                 $id = $user->getState("lastGoodsId");
@@ -289,7 +292,19 @@ class OrderController extends Controller
             $user->setState("shootTypes", $shootTypes);
             $user->setState("modelStyles", $styles);
             $user->setState("goodsList", $goodsList);
-            $this->success("添加成功");
+
+            if($submit == 1)
+            {
+            	//保存并继续添加
+            	$this->success("添加成功，请继续添加");
+            	$this->refresh();
+            }
+            else
+            {
+            	//保存
+            	$this->success("添加成功");
+            }
+            //保存后跳转到订单物品列表
             $this->redirect(array("order/goodsList"));
         }
 
@@ -345,8 +360,7 @@ class OrderController extends Controller
     	        // 保存拍摄类型
                 if (!isset($shootTypes[$goods->shoot_type]))
                     $shootTypes[$goods->shoot_type] = $shootType[$goods->shoot_type]->name;
-
-                if (!empty($styles) && $styles[0] == 0)
+                if (!empty($styles) && in_array(0, $styles))
                     continue;
         	    if ($goods->style == 0)
                 {
@@ -415,7 +429,17 @@ class OrderController extends Controller
         $user = Yii::app()->user;
         $shootTypes = $user->getState('shootTypes');
         $selectedModels = $user->getState("selectedModels");
-        if ((isset($shootTypes[1]) || isset($shootTypes[2])) && empty($selectedModels))
+
+        //获取拍摄数量和
+        $goodsList = $user->getState("goodsList");
+		$result=0;
+        foreach ($goodsList as $goods)
+        {
+        	$result += (int)$goods->count;
+        }
+		$goodsCounts=$result;
+
+        if ((isset($shootTypes[1]) || isset($shootTypes[2])) && empty($selectedModels) && $goodsCounts >50)
             $this->redirect(array("order/selectModels", "id"=>$id));
 
         if (isset($_POST['Form']))

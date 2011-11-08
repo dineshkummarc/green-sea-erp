@@ -87,18 +87,17 @@ class ModelController extends Controller
         $this->render('edit', array('model'=>$model, 'areaList'=>$area, 'multiple'=>true));
     }
 
-    public function actionDel($id = null)
+    public function actionDel(array $id = array())
     {
-        if ($id === null)
-        {
-            $this->error('参数错误');
-            $this->redirect($this->createUrl('model/index'));
-        }
-        $sql = "DELETE FROM {{models}} WHERE id = :id";
+        if (empty($id))
+            $this->error('参数传递错误！');
+
+        $sqlIn = implode(',', $id);
+
+        $sql = "DELETE FROM {{models}} WHERE id in ($sqlIn)";
         $command = Yii::app()->db->createCommand($sql);
-        $command->execute(array(':id'=>$id));
+        $command->execute();
         $this->success('删除成功',array('navTabId'=>'model-index'));
-        $this->redirect($this->createUrl('model/index'));
     }
 
 }
