@@ -10,6 +10,7 @@ class OrderController extends Controller
 	{
 		$criteria = new CDbCriteria;
 
+		$shootStatus = $this->arrayReverse(Order::getShootStatus());//状态信息
 		if (!empty($params['start_time']) && !empty($params['end_time']))
 		{
 			$stare_time = strtotime($params['start_time']);
@@ -30,16 +31,7 @@ class OrderController extends Controller
             $criteria->addSearchCondition('user_name', $params['user_name']);
         if (!empty($params['status']) && $params['status'] > 0)
         {
-            if ($params['status'] == 1)$criteria->addCondition('status = 1');
-            if ($params['status'] == 2)$criteria->addCondition('status = 2');
-            if ($params['status'] == 3)$criteria->addCondition('status = 3');
-            if ($params['status'] == 4)$criteria->addCondition('status = 4');
-            if ($params['status'] == 5)$criteria->addCondition('status = 5');
-            if ($params['status'] == 6)$criteria->addCondition('status = 6');
-            if ($params['status'] == 7)$criteria->addCondition('status = 7');
-            if ($params['status'] == 8)$criteria->addCondition('status = 8');
-            if ($params['status'] == 9)$criteria->addCondition('status = 9');
-            if ($params['status'] == 10)$criteria->addCondition('status = 10');
+        	$criteria->addCondition('status = '.$params['status']);
         }
         //计算金额
 		$orders = Order::model()->cache()->findAll($criteria);
@@ -64,7 +56,6 @@ class OrderController extends Controller
 
 		$orders = Order::model()->cache()->findAll($criteria);
 
-		$shootStatus = $this->arrayReverse(Order::getShootStatus());
 		$this->render('index',array(
 			'money' => $money,
 			'shootStatus' => $shootStatus,
@@ -178,22 +169,20 @@ class OrderController extends Controller
                     $command->execute();
                 }
             }
-	    }
-        if ($status == 5)//拍摄中
+	    }elseif ($status == 5)//拍摄中
         {
         	$sql = "UPDATE {{order}} SET status = :status, shoot_begin_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
-        }
-        if ($status == 6)//拍摄完成
+        }elseif ($status == 6)//拍摄完成
         {
         	$sql = "UPDATE {{order}} SET status = :status, shoot_end_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
-        }
-        if ($status == 7)//修图中
+        }elseif ($status == 7)//修图中
         {
         	$sql = "UPDATE {{order}} SET status = :status, retouch_begin_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
-        }
-        if ($status == 8)//修图完成
+        }elseif ($status == 8)//修图完成
         {
         	$sql = "UPDATE {{order}} SET status = :status, retouch_end_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
+        }else{
+        	$sql = "UPDATE {{order}} SET status = :status WHERE id = :id";
         }
         $command = Yii::app()->db->createCommand($sql);
         $command->execute(array(":id"=>$id, ":status"=>$status));
