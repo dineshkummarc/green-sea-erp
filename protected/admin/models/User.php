@@ -46,9 +46,9 @@ class User extends CActiveRecord
 	    // 更新积分
 	    $sql = "UPDATE {{user}} SET score = :socre, update_time = :update_time WHERE id = :user_id";
 	    $command = Yii::app()->db->createCommand($sql);
-	    $command->bindParam(":socre", $score);
-	    $command->bindParam(":update_time", Yii::app()->params['timestamp']);
-	    $command->bindParam(":user_id", Yii::app()->user->id);
+	    $command->bindValue(":socre", $score);
+	    $command->bindValue(":update_time", Yii::app()->params['timestamp']);
+	    $command->bindValue(":user_id", Yii::app()->user->id);
 	    $command->execute();
 
 	    // 保存日志
