@@ -205,6 +205,8 @@ class OrderController extends Controller
         	$order_track_id = OrderTrack::getOrderTrackId($id);
         	$command = Yii::app()->db->createCommand($order_track_sql);
         	$command->execute(array(':user_id'=>Yii::app()->user->id,':id'=>$order_track_id));
+        }else{
+        	OrderTrack::getOrderTrackId($id);
         }
         $command = Yii::app()->db->createCommand($sql);
         $command->execute(array(":id"=>$id, ":status"=>$status));
