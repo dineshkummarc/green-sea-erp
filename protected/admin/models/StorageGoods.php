@@ -38,14 +38,14 @@ class StorageGoods extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('storage_id, sn, name, shoot_type, is_shoot', 'required'),
+			array('storage_id, sn, name, shoot_type, type_name, is_shoot', 'required'),
 			array('is_shoot', 'numerical', 'integerOnly'=>true),
 			array('storage_id, shoot_type', 'length', 'max'=>10),
-			array('sn', 'length', 'max'=>20),
+			array('sn, type_name', 'length', 'max'=>20),
 			array('name', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, storage_id, sn, name, shoot_type, is_shoot', 'safe', 'on'=>'search'),
+			array('id, storage_id, sn, name, shoot_type, type_name, is_shoot', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -72,6 +72,7 @@ class StorageGoods extends CActiveRecord
 			'sn' => 'Sn',
 			'name' => 'Name',
 			'shoot_type' => 'Shoot Type',
+			'type_name' => 'Type Name',
 			'is_shoot' => 'Is Shoot',
 		);
 	}
@@ -92,6 +93,7 @@ class StorageGoods extends CActiveRecord
 		$criteria->compare('sn',$this->sn,true);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('shoot_type',$this->shoot_type,true);
+		$criteria->compare('type_name',$this->type_name,true);
 		$criteria->compare('is_shoot',$this->is_shoot);
 
 		return new CActiveDataProvider($this, array(

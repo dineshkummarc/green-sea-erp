@@ -39,7 +39,7 @@ class Schedule extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('order_id, shoot_time, shoot_site, shoot_info, stylist_id, model_id, memo', 'required'),
+			array('order_id, shoot_time, stylist_id, model_id', 'required'),
 			array('order_id, shoot_time, stylist_id, model_id', 'length', 'max'=>10),
 			array('shoot_site', 'length', 'max'=>50),
 			array('shoot_info', 'length', 'max'=>255),
@@ -56,8 +56,8 @@ class Schedule extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'Order'=>array(self::BELONGS_TO, 'Order', 'order_id', 'select'=>'sn,user_name'),
-			'Admin'=>array(self::BELONGS_TO, 'Admin', 'stylist_id, model_id', 'select'=>'name'),
-			'Storage'=>array(self::BELONGS_TO, 'Storage', 'order_id', 'select'=>'id, order_id'),
+			'Admin'=>array(self::BELONGS_TO, 'Admin', 'stylist_id', 'select'=>'name,role_id'),
+			'Model'=>array(self::BELONGS_TO, 'Model', 'model_id', 'select'=>'nick_name'),
 		);
 	}
 
