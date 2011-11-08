@@ -41,6 +41,16 @@ class OrderController extends Controller
             if ($params['status'] == 9)$criteria->addCondition('status = 9');
             if ($params['status'] == 10)$criteria->addCondition('status = 10');
         }
+        //计算金额
+		$orders = Order::model()->cache()->findAll($criteria);
+		if ($orders != null)
+		{
+	        $sql = "SELECT SUM( `total_price` ) FROM {{order}} WHERE id in (".$this->orderId($orders).")";
+	        $command = Yii::app()->db->createCommand($sql);
+	        $money = $command->queryScalar();
+		}else {
+			$money = 0;
+		}
 
 		$count = Order::model()->cache()->count($criteria);
         $pages = new CPagination($count);
@@ -52,17 +62,8 @@ class OrderController extends Controller
 		else if ($sort == 'status')$criteria->order = 'status ASC';
 		else $criteria->order = "status asc, create_time desc";
 
-
 		$orders = Order::model()->cache()->findAll($criteria);
 
-		if ($orders != null)
-		{
-	        $sql = "SELECT SUM( `total_price` ) FROM {{order}} WHERE id in (".$this->orderId($orders).")";
-	        $command = Yii::app()->db->createCommand($sql);
-	        $money = $command->queryScalar();
-		}else {
-			$money = 0;
-		}
 		$shootStatus = $this->arrayReverse(Order::getShootStatus());
 		$this->render('index',array(
 			'money' => $money,
