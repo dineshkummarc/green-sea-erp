@@ -793,28 +793,33 @@ class OrderController extends Controller
 		if (!empty($type))
 			$criteria->addCondition("shoot_type =".$type);
 		$schedules = Schedule::model()->findAll($criteria);
-
+		//查询订单信息
 		$sql = "SELECT id, sn, user_name FROM {{order}} WHERE id = :Id";
 		$command = Yii::app()->db->createCommand($sql);
 		$order = (object)$command->queryRow(true, array(':Id'=>$id));
-
+		//查询订单是否入库
 		$sql = "SELECT * FROM {{storage}} WHERE order_id = :Id";
 		$command = Yii::app()->db->createCommand($sql);
-		$storage = (object)$command->queryRow(true, array(':Id'=>$id));
-		if(!empty($storage))
+		$storage = $command->queryRow(true, array(':Id'=>$id));
+		if($storage === false )
 		{
-			$sql = "SELECT * , count(DISTINCT shoot_type ) FROM {{storage_goods}} WHERE storage_id =:Id GROUP BY shoot_type";
-			$command = Yii::app()->db->createCommand($sql);
-			$lists = $command->queryAll(true, array(':Id'=>$storage->id));
-
-			$this->render('schedule',array(
+			$this->render('schedule', array(
 				'order' => $order,
-				'schedules' => $schedules,
-				'storage' => $storage,
-				'lists' => $lists
+				'schedules'=>$schedules
 			));
+			Yii::app()->end();
 		}
-
+		//通过入库单号查询入库单物品
+		$sql = "SELECT * FROM {{storage_goods}} WHERE storage_id =:Id";
+		$command = Yii::app()->db->createCommand($sql);
+		$lists = $command->queryAll(true, array(':Id'=>$storage->id));
+		$lists = (object)$lists;
+		$this->render('schedule',array(
+			'order' => $order,
+			'schedules' => $schedules,
+			'storage' => $storage,
+			'lists' => $lists
+		));
 	}
 
 	public function actionScheduleEdit($id = null, $orderId =null)
@@ -861,7 +866,7 @@ class OrderController extends Controller
 				'storage' => $storage,
 				'lists' => $lists
 			));
-			Yii:app()->end();
+			Yii::app()->end();
 		}
 
 		$this->render('schedule_edit', array(

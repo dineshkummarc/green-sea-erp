@@ -79,7 +79,7 @@ class AdminRole extends CActiveRecord
 		$command = Yii::app()->db->createCommand($sql);
 		$childs = $command->queryAll();
 		foreach($childs as $child ) {
-			$role = AdminRoleItem::model()->cache()->findAll(array('condition'=>"id = ".$child['item_id']));
+			$role[] = AdminRoleItem::model()->cache()->findAll(array('condition'=>"id = ".$child['item_id']));
 		}
         return $role;
 	}
