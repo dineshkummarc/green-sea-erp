@@ -18,26 +18,28 @@ class AdminIdentity extends CUserIdentity
     {
     	$sql = "SELECT id,name,password,is_supper FROM {{admin}} WHERE number = :name AND status = 1";
     	$command = Yii::app()->db->createCommand($sql);
-    	$admin = (object)$command->queryRow(true, array(':name'=>$this->name));
-    	if($admin === null)
+    	$admin = $command->queryRow(true, array(':name'=>$this->name));
+    	if($admin === false)
     	{
     		$sql = "SELECT id,name,password,is_supper FROM {{admin}} WHERE name = :name AND status = 1";
 	    	$command = Yii::app()->db->createCommand($sql);
-	    	$admin = (object)$command->queryRow(true, array(':name'=>$this->name));
-	    	if ($admin === null)
+	    	$admin = $command->queryRow(true, array(':name'=>$this->name));
+	    	if ($admin === false)
+	    	{
 	    		$this->errorCode=self::ERROR_USERNAME_INVALID;
-    	} else
-		{
-    		if($admin->password != md5(trim($this->password)))
-    			$this->errorCode=self::ERROR_PASSWORD_INVALID;
-    		else
-    		{
-    		    $this->_id=$admin->id;
-    			$this->username = $admin->name;
-    			$this->_isSupper = $admin->is_supper;
-    			$this->errorCode=self::ERROR_NONE;
-    		}
-		}
+	    		return false;
+	    	}
+    	}
+		$admin = (object)$admin;
+		if($admin->password != md5(trim($this->password)))
+    		$this->errorCode=self::ERROR_PASSWORD_INVALID;
+    	else
+    	{
+    		$this->_id=$admin->id;
+    		$this->username = $admin->name;
+    		$this->_isSupper = $admin->is_supper;
+    		$this->errorCode=self::ERROR_NONE;
+    	}
 
         return !$this->errorCode;
     }
