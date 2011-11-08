@@ -25,7 +25,6 @@ class User extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-
 	/**
 	 * 添加积分
 	 * @param integer $score 积分数量
@@ -39,8 +38,6 @@ class User extends CActiveRecord
         	$dependency = new CDbCacheDependency('SELECT COUNT(*), MAX(update_time) FROM '.$this->tableName());
         return parent::cache($duration, $dependency);
     }
-
-
 	public static function addScore($score, $reason = "下单送积分")
 	{
 	    // 更新积分
