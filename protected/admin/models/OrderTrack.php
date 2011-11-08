@@ -33,6 +33,9 @@ class OrderTrack extends CActiveRecord
 		$sql = "select id,admin_id FROM {{order_track}} WHERE order_id = :order_id";
 		$command = Yii::app()->db->createCommand($sql);
 		$track = $command->queryScalar(array('order_id'=>$order_id));
+
+		if ($admin_id == 0) $admin_id = Yii::app()->user->id;
+
 		if ($track['id'] == null || $track['id'] == "")
 		{
 			$orderTrack = new OrderTrack;
@@ -67,7 +70,7 @@ class OrderTrack extends CActiveRecord
 	 */
 	public function getStorage()
 	{
-		$sql = "select in_time,id,out_time FROM {{storage}} WHERE order_id = ".$this->order_id;
+		$sql = "select in_time,id,out_time,admin_id FROM {{storage}} WHERE order_id = ".$this->order_id;
 		$command = Yii::app()->db->createCommand($sql);
 		return $command->queryRow();
 	}
