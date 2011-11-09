@@ -30,11 +30,11 @@ class OrderTrack extends CActiveRecord
 	 */
 	public function getOrderTrackId($order_id, $admin_id = null)
 	{
-		$sql = "select id,admin_id FROM {{order_track}} WHERE order_id = :order_id";
+		$sql = "SELECT id,admin_id FROM ll_erp_order_track WHERE order_id = ".$order_id;
 		$command = Yii::app()->db->createCommand($sql);
-		$track = $command->queryScalar(array('order_id'=>$order_id));
+		$track = $command->queryRow();
 
-		if ($admin_id == 0) $admin_id = Yii::app()->user->id;
+		if ($admin_id == null) $admin_id = Yii::app()->user->id;
 
 		if ($track['id'] == null || $track['id'] == "")
 		{
@@ -47,16 +47,12 @@ class OrderTrack extends CActiveRecord
 			$orderTrack->retouch_id = 0;
 			$orderTrack->retouch_id_2 = 0;
 			$orderTrack->deliver_id = 0;
-
-			if ($admin_id != null)
-				$orderTrack->admin_id = $admin_id;
-			else
-				$orderTrack->admin_id = 0;
+			$orderTrack->admin_id = $admin_id;
 
 			$orderTrack->save();
 			return $orderTrack->id;
 		}else{
-			if ($track['admin_id'] == 0 && $admin_id != null)
+			if ($track['admin_id'] == 0)
 			{
 				$sql = "UPDATE {{order_track}} SET admin_id = :admin_id WHERE id = :id";
 				$command = Yii::app()->db->createCommand($sql);

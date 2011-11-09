@@ -30,14 +30,18 @@ class User extends CActiveRecord
 	 * @param integer $score 积分数量
 	 * @param string $reason 添加原因 默认：下单送积分
 	 */
-	public function cache()
-    {
-        if ($duration === null)
-	        $duration = 3600 * 12 * 7;
-	    if ($dependency === null)
-        	$dependency = new CDbCacheDependency('SELECT COUNT(*), MAX(update_time) FROM '.$this->tableName());
-        return parent::cache($duration, $dependency);
-    }
+	public function cache($duration = null, $dependency = null)
+	{
+	    if (empty($duration))
+	    {
+	        $duration = 3600 * 24;
+	    }
+	    if (empty($dependency))
+	    {
+	        $dependency = new CDbCacheDependency("SELECT COUNT(*), MAX(update_time) FROM ".$this->tableName());
+	    }
+	    return parent::cache($duration, $dependency);
+	}
 	public static function addScore($score, $reason = "下单送积分")
 	{
 	    // 更新积分
@@ -99,6 +103,7 @@ class User extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
+		    'admin_id'=>'AdminID',
 			'id' => 'ID',
 			'name' => 'Name',
 			'mobile_phone' => 'Mobile Phone',

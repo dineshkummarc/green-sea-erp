@@ -27,7 +27,38 @@ class Area extends CActiveRecord
 	{
 		return '{{area}}';
 	}
+	public function getAreaLevelAll($id)
+	{
+		$list = array();
+		$sql = "select id,name,parent_id FROM {{area}} WHERE id = ".$id;
+		$command = Yii::app()->db->createCommand($sql);
+		$area_3 = $command->queryRow();
 
+		$sql = "select id,name,parent_id FROM {{area}} WHERE id = ".$area_3['parent_id'];
+		$command = Yii::app()->db->createCommand($sql);
+		$area_2 = $command->queryRow();
+
+		$sql = "select id,name,parent_id FROM {{area}} WHERE id = ".$area_2['parent_id'];
+		$command = Yii::app()->db->createCommand($sql);
+		$area_1 = $command->queryRow();
+
+		$sql = "SELECT id,name,parent_id FROM {{area}} WHERE parent_id = ".$area_3['parent_id'];
+		$command = Yii::app()->db->createCommand($sql);
+		$list['3'] = $command->queryAll();
+
+		$sql = "select id,name,parent_id FROM {{area}} WHERE parent_id = ".$area_2['parent_id'];
+		$command = Yii::app()->db->createCommand($sql);
+		$list['2'] = $command->queryAll();
+
+		$sql = "select id,name,parent_id FROM {{area}} WHERE parent_id = ".$area_1['parent_id'];
+		$command = Yii::app()->db->createCommand($sql);
+		$list['1'] = $command->queryAll();
+
+		$list['default']['1'] = $area_1['id'];
+		$list['default']['2'] = $area_2['id'];
+		$list['default']['3'] = $area_3['id'];
+		return $list;
+	}
 	public function cache()
 	{
 	    $duration = 3600 * 24 * 30;

@@ -57,6 +57,7 @@
 	        $retouch_end_time = $orderTrack->Order->retouch_end_time;
 
 	        $shoot_begin_time = $orderTrack->Order->shoot_begin_time;
+	        $logistics_sn = $orderTrack->Order->logistics_sn
 	        ?>
 	        <tr>
 	            <td><input type="checkbox" name="id[]" value="" /></td>
