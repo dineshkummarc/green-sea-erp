@@ -6,7 +6,7 @@
         <input type="submit" value="提交" />
     </form>
 </div>
-<?php else: ?>
+<?php else: if ((int)$_POST['count'] <= 0) $_POST['count'] = 1; ?>
 <div class="step active">添加拍摄物品</div>
 <div class="step">填写拍摄要求</div>
 <div class="step">选择付款方式</div>
@@ -72,6 +72,7 @@
         <?php endfor; ?>
     </table>
     <input type="button" value="返回" onclick="window.location.href='<?php echo $this->createUrl("order/goodsEdit") ?>'" />
+    <input type="button" value="查看已添加物品" onclick="window.location.href='<?php echo $this->createUrl("order/goodsList") ?>'" />
     <input type="submit" value="保存" />
 </form>
 <?php endif; ?>

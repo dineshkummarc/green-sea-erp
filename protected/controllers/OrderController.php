@@ -208,6 +208,7 @@ class OrderController extends Controller
         {
             foreach ($_POST['Form'] as $form)
             {
+                if (empty($form['count'])) continue;
                 $id = $user->getState("lastGoodsId");
     	        if ($id === null)
     	        {
@@ -418,31 +419,8 @@ class OrderController extends Controller
             $order->update_time = Yii::app()->params['timestamp'];
             $order->pay_time = 0;
             $order->receive_time = 0;
-//            $order->shoot_time = 0;
             $order->receive_address = isset($userInfo->ReceiveAddress) ? $userInfo->ReceiveAddress->getFullAddress() : "";
             $order->status = 1;
-
-            // 分离不是订单数据表的数据，以及合并物品公共需求
-//            $goodsList = $user->getState("goodsList");
-//            if ($goodsList === null)
-//            {
-//                $this->error("发生错误，请重新下单");
-//                $this->redirect(array("order/index"));
-//            }
-//            $width = $_POST['Form']['width'];
-//            $detail_width = $_POST['Form']['detail_width'];
-//            foreach ($goodsList as $key=>$goods)
-//            {
-//                if (!empty($_POST['Form']['width']))
-//                {
-//                    $goods->width = $width[$goods->shoot_type];
-//	                $goods->detail_width = $detail_width[$goods->shoot_type];
-//                }
-//                $goodsList[$key] = $goods;
-//                $user->setState("goodsList", $goodsList);
-//            }
-
-//            unset($_POST['Form']['width'], $_POST['Form']['detail_width']);
 
             $order->attributes = $_POST['Form'];
             $order->width = serialize($order->width);
