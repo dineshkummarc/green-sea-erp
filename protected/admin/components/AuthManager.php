@@ -18,7 +18,6 @@ class AuthManager extends CApplicationComponent
     	$sql = "SELECT * FROM {{admin}} WHERE id = ".$userId;
     	$command = Yii::app()->db->createCommand($sql);
     	$user = $command->queryRow();
-
         if ($user['is_supper'] == 1) return true;
         // 获取controller and action
         $itemName = explode('/', strtolower($itemName));

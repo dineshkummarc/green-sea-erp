@@ -26,17 +26,20 @@ class OrderTrack extends CActiveRecord
 		return parent::model($className);
 	}
 	/**
-	 * 新建返回id
+	 * 新建 返回id
 	 */
-	public function getOrderTrackId($order_id)
+	public function getOrderTrackId($order_id, $admin_id = null)
 	{
-		$sql = "select id FROM {{order_track}} WHERE order_id = :order_id";
+		$sql = "select id,admin_id FROM {{order_track}} WHERE order_id = :order_id";
 		$command = Yii::app()->db->createCommand($sql);
-		$id = $command->queryScalar(array('order_id'=>$order_id));
-		if ($id == null || $id == "") {
+		$track = $command->queryScalar(array('order_id'=>$order_id));
+
+		if ($admin_id == 0) $admin_id = Yii::app()->user->id;
+
+		if ($track['id'] == null || $track['id'] == "")
+		{
 			$orderTrack = new OrderTrack;
 			$orderTrack->order_id = $order_id;
-			$orderTrack->admin_id = 0;
 			$orderTrack->storage_id = 0;
 			$orderTrack->storage_admin_id = 0;
 			$orderTrack->photographer_id = 0;
@@ -44,10 +47,22 @@ class OrderTrack extends CActiveRecord
 			$orderTrack->retouch_id = 0;
 			$orderTrack->retouch_id_2 = 0;
 			$orderTrack->deliver_id = 0;
+
+			if ($admin_id != null)
+				$orderTrack->admin_id = $admin_id;
+			else
+				$orderTrack->admin_id = 0;
+
 			$orderTrack->save();
 			return $orderTrack->id;
 		}else{
-			return $id;
+			if ($track['admin_id'] == 0 && $admin_id != null)
+			{
+				$sql = "UPDATE {{order_track}} SET admin_id = :admin_id WHERE id = :id";
+				$command = Yii::app()->db->createCommand($sql);
+        		$command->execute(array(":id"=>$track['id'], ":admin_id"=>$admin_id));
+			}
+			return $track['id'];
 		}
 	}
 	/**
@@ -55,7 +70,7 @@ class OrderTrack extends CActiveRecord
 	 */
 	public function getStorage()
 	{
-		$sql = "select in_time,id,out_time FROM {{storage}} WHERE order_id = ".$this->order_id;
+		$sql = "select in_time,id,out_time,admin_id FROM {{storage}} WHERE order_id = ".$this->order_id;
 		$command = Yii::app()->db->createCommand($sql);
 		return $command->queryRow();
 	}
