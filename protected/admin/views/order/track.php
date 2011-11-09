@@ -50,11 +50,13 @@
 	        $photographer_id_2 = $orderTrack->photographer_id_2;
 	        $retouch_id = $orderTrack->retouch_id;
 	        $retouch_id_2 = $orderTrack->retouch_id_2;
+	        $deliver_id = $orderTrack->deliver_id;
 
 	        $shoot_begin_time = $orderTrack->Order->shoot_begin_time;
 	        $shoot_end_time = $orderTrack->Order->shoot_end_time;
 	        $retouch_begin_time = $orderTrack->Order->retouch_begin_time;
 	        $retouch_end_time = $orderTrack->Order->retouch_end_time;
+	        $receive_time = $orderTrack->Order->receive_time;
 
 	        $shoot_begin_time = $orderTrack->Order->shoot_begin_time;
 	        $logistics_sn = $orderTrack->Order->logistics_sn
@@ -120,7 +122,9 @@
 	            </td><!-- 修完 -->
 	            <td></td><!-- 是否付款 -->
 	            <td></td><!-- 已修图 -->
-	            <td></td><!-- 已交图 -->
+	            <td>
+	            	<?php echo "<span style='font-weight:bold'>".Admin::getAdminName($deliver_id).'</span>';?><br/>
+	           	</td><!-- 已交图 -->
 	            <td></td><!-- A -->
 	            <td></td><!-- B -->
 	            <td></td><!-- C -->

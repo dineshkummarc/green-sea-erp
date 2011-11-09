@@ -31,7 +31,7 @@
 				});
 		    	</script>
 		    	<label>订单号：</label><input type="text" id="logistics_sn" value="" />&nbsp;&nbsp;&nbsp;
-		    	<a style="line-height:20px" id="submit" target="ajaxTodo">提交</a>
+		    	<a style="line-height:20px" id="submit" href="" target="ajaxTodo">提交</a>
 		    	<?php else:?>
 		    	<label>出库时间：</label>
 		    	<div style="line-height:20px"><?php echo date('Y-m-d H:i:s',$storage->out_time)?></div>
