@@ -99,6 +99,7 @@ class User extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
+		    'admin_id'=>'AdminID',
 			'id' => 'ID',
 			'name' => 'Name',
 			'mobile_phone' => 'Mobile Phone',
