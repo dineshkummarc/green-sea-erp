@@ -107,12 +107,12 @@
 	            </td><!-- 已拍摄 -->
 	            <td>
 	            	<?php echo $retouch_id != 0 ? "<span style='color:red'>✔</span>" : "";?>
-	            	<br /><?php echo Admin::getAdminName($retouch_id);?>
+	            	<br /><?php echo "<span style='font-weight:bold'>".Admin::getAdminName($retouch_id).'</span>';?>
 	            	<br /><?php echo $retouch_begin_time == 0 ? '' : date('Y-m-d H:s',$retouch_begin_time)?>
 	            </td><!-- 修中 -->
 	            <td>
 	            	<?php echo $retouch_id_2 != 0 ? "<span style='color:red'>✔</span>" : "";?>
-	            	<br /><?php echo Admin::getAdminName($retouch_id_2);?>
+	            	<br /><?php echo "<span style='font-weight:bold'>".Admin::getAdminName($retouch_id_2).'</span>';?>
 	            	<br /><?php echo $retouch_end_time == 0 ? '' : date('Y-m-d H:s',$retouch_end_time)?>
 	            </td><!-- 修完 -->
 	            <td><?php echo $orderTrack->Order->status >= 2 ? "<span style='color:red'>✔</span>" : "";?></td><!-- 是否付款 -->
