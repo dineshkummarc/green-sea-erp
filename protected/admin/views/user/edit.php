@@ -9,7 +9,7 @@
 
             <div class="unit" >
                 <label>所在省:</label>
-	            <select class="combox required" name="Form[area_1]" ref="w_combox_city" default="5" refUrl="<?php echo $this->createUrl('user/area');?>&type={value}">
+	            <select class="combox" name="Form[area_1]" ref="w_combox_city" default="5" refUrl="<?php echo $this->createUrl('user/area');?>&type={value}">
 
 					<?php if ($area_list != null):?>
 						<?php foreach ($area_list['1'] as $val):?>
@@ -39,7 +39,7 @@
 
             <div class="unit">
 	            <label>所在区:</label>
-				<select class="combox required" name="Form[area_id]" id="w_combox_area">
+				<select class="combox" name="Form[area_id]" id="w_combox_area">
 					<?php if ($area_list != null):?>
 						<?php foreach ($area_list['3'] as $val):?>
 						<option value="<?php echo $val['id']?>" <?php if ($val['id'] == $area_list['default']['3'])echo "selected";?>><?php echo $val['name']?></option>

@@ -492,7 +492,7 @@ class OrderController extends Controller
 				{
 				    $sn = substr(strval($i + 1000),1,3);
 				    $sn = $_POST['Form']['order_sn'] . $sn;
-					$sql = "INSERT INTO {{storage_goods}} ( storage_id, sn, name, shoot_type, type_name, is_shoot) VALUES (:val1, :val2, :val3, :val4, :val5, :val6)";
+					$sql = "INSERT INTO {{storage_goods}} ( storage_id, sn, name, shoot_type, is_shoot) VALUES (:val1, :val2, :val3, :val4, :val5)";
 					$command = Yii::app()->db->createCommand($sql);
 					$command->execute(array(
 					    ":val1"=>$_POST['Form']['storage_id'],
@@ -865,12 +865,25 @@ class OrderController extends Controller
 	/**
 	 * 获取排程
 	 */
+	public function getSchedule($id = null)
+	{
+		$sql = "SELECT shoot_time,model_id FROM {{schedule}} WHERE order_id = :Id";
+		$command = Yii::app()->db->createCommand($sql);
+		$schedules = $command->queryAll(false,array(':Id'=>$id));
+        return $schedules;
+	}
+
+/**
+	 * 获取模特
+	 */
 	public function getModel($id = null)
 	{
 		if(!empty($id))
-			$sql = "SELECT shoot_time, model_id FROM {{sechedule}} WHERE order_id =".$id;
+			$sql = "SELECT nick_name FROM {{models}} WHERE id =".$id;
+		else
+			$sql = "SELECT nick_name FROM {{models}}";
 		$command = Yii::app()->db->createCommand($sql);
-		$models = $command->queryAll();
+		$models = $command->queryScalar();
         return $models;
 	}
 }
