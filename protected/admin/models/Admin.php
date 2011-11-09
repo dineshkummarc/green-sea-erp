@@ -26,6 +26,17 @@ class Admin extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 * 返回 用户名
+	 */
+	public function getAdminName($id)
+	{
+		if ($id == 0) return '';
+		$sql = "SELECT number FROM {{admin}} WHERE id = :id";
+		$command = Yii::app()->db->createCommand($sql);
+		return $command->queryScalar(array(':id'=>$id));
+	}
+
 
 	/**
 	 * 缓存
@@ -61,11 +72,11 @@ class Admin extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, password, role_id, login_time, last_ip, login_count, is_supper, update_time, status', 'required'),
+			array('name, number, password, role_id, login_time, last_ip, login_count, is_supper, update_time, status', 'required'),
 			array('is_supper, status', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>30),
+			array('name', 'length', 'max'=>20),
 			array('password', 'length', 'max'=>32),
-			array('role_id, city_id, login_time, last_ip, login_count, update_time', 'length', 'max'=>10),
+			array('role_id, number, city_id, login_time, last_ip, login_count, update_time', 'length', 'max'=>10),
 		);
 	}
 
@@ -88,6 +99,7 @@ class Admin extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'number' => 'Number',
 			'name' => 'Name',
 			'password' => 'Password',
 			'role_id' => 'Role',

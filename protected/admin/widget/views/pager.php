@@ -1,4 +1,4 @@
-<form id="pagerForm" action="<?php echo $this->controller->createUrl(""); ?>" method="post" >
+<form id="pagerForm" action="<?php echo Yii::app()->request->url; ?>" method="post" >
     <input type="hidden" name="pageNum" value="1" />
     <input type="hidden" name="numPerPage" value="<?php echo $pages->pageSize; ?>" />
 </form>

@@ -10,7 +10,7 @@ class LoginForm extends CFormModel
     public function rules()
     {
         return array(
-            array('name', 'required', 'message'=>'管理账户不能为空'),
+            array('name', 'required', 'message'=>'帐号不能为空'),
             array('password', 'required', 'message'=>'管理密码不能为空'),
             array('verifyCode', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements(), 'message'=>'验证码不能为空'),
         );
@@ -19,7 +19,7 @@ class LoginForm extends CFormModel
     public function attributeLabels()
     {
         return array(
-            'name' => '管理账户：',
+            'name' => '工号、姓名：',
             'password' => '管理密码：',
             'verifyCode'=>'验证码：',
         );
@@ -41,7 +41,7 @@ class LoginForm extends CFormModel
                 return !Yii::app()->user->isGuest;
                 break;
             case AdminIdentity::ERROR_USERNAME_INVALID:
-                $this->addError('name', '管理账户不存在或者您的账户被禁用');
+                $this->addError('name', '帐号不存在或者您的账户被禁用');
                 return false;
                 break;
             case AdminIdentity::ERROR_PASSWORD_INVALID:

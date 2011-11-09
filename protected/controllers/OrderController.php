@@ -135,9 +135,10 @@ class OrderController extends Controller
 	public function actionGoodsList($id = null)
 	{
 	    $goodsList = Yii::app()->user->getState("goodsList");
-	    if ($goodsList === null && $id !== null)
+	    if ($goodsList === null && $id !== null){
             $goodsList = OrderGoods::model()->findAllByAttributes(array("order_id"=>$orderId));
-        else if ($goodsList === null)
+
+	    }else if ($goodsList === null)
             $goodsList = array();
 
 	    $goodsType = GoodsType::model()->findAll();
@@ -191,17 +192,9 @@ class OrderController extends Controller
 	 * 添加、修改拍摄物品
 	 * @param integer $id
 	 */
-	public function actionGoodsEdit($id = null)
+	public function actionGoodsEdit()
 	{
 	    $user = Yii::app()->user;
-	    // 获取session中的数据
-        $goodsList = $user->getState("goodsList");
-	    if ($id !== null && $goodsList !== null)
-            $goods = (object)$goodsList[$id];
-	    else if ($id !== null)
-	        $goods = OrderGoods::model()->findByPk($id);
-	    else
-	        $goods = new StdClass;
 
 	    $goodsType = GoodsType::model()->findAll();
 	    $result = array();
@@ -213,84 +206,68 @@ class OrderController extends Controller
 
         if (isset($_POST['Form']))
         {
-            if ($id === null)
+            foreach ($_POST['Form'] as $form)
             {
+                if (empty($form['count'])) continue;
                 $id = $user->getState("lastGoodsId");
     	        if ($id === null)
     	        {
     	            $id = 1;
     	        }
     	        $user->setState("lastGoodsId", $id + 1);
+
+                $goods = (object)$form;
+                if (!empty($goods->id))
+                    $id = $goods->id;
+                else
+                    $goods->id = $id;
+
+                $totalPrice = $user->getState("totalPrice");
+                if ($goods->type != 0)
+                    $goods->type_name = $goodsType[$goods->type]->name;
+
+                // TODO 添加价格计算
+                $price = 0;
+                $goods->price = $price;
+
+                if ($totalPrice === null)
+                    $totalPrice = $price;
+                else
+                    $totalPrice += $price;
+
+                $user->setState("totalPrice", $totalPrice);
+
+                // 检查订单中存在的拍摄类型
+                $shootTypes = $user->getState('shootTypes');
+                // 获取所有拍摄类型
+                $shootType = ShootType::model()->findAll();
+                foreach ($shootType as $type)
+                {
+                    $shootType[$type->id] = (object)$type->attributes;
+                }
+                // 保存拍摄类型
+                if (empty($shootTypes) || !isset($shootTypes[$goods->shoot_type]))
+                    $shootTypes[$goods->shoot_type] = $shootType[$goods->shoot_type]->name;
+
+                $styles = $user->getState('modelStyles');
+                if ($goods->style == 0)
+                {
+                    $styles = array();
+                    $styles[0] = 0;
+                }
+                else if (empty($styles) || ($goods->style != 0 && !isset($styles[$goods->type])) )
+                {
+                    $styles[$goods->type] = $goods->type;
+                }
+                // 保存到session
+                $goodsList[$id] = $goods;
+                $user->setState("shootTypes", $shootTypes);
+                $user->setState("modelStyles", $styles);
+                $user->setState("goodsList", $goodsList);
             }
 
-            $goods = (object)$_POST['Form'];
-            if (!empty($goods->id))
-                $id = $goods->id;
-            else
-                $goods->id = $id;
-
-            $totalPrice = $user->getState("totalPrice");
-            if ($goods->type != 0)
-                $goods->type_name = $goodsType[$goods->type]->name;
-            if (isset($_FILES["example_img"]))
-                $goods->example_img = $_FILES["example_img"];
-
-            // TODO 添加价格计算
-            $price = 0;
-            $goods->price = $price;
-
-            if ($totalPrice === null)
-                $totalPrice = $price;
-            else
-                $totalPrice += $price;
-
-            $user->setState("totalPrice", $totalPrice);
-
-            // 如果是从数据库取出来的
-//            if ($goods instanceof OrderGoods)
-//            {
-//                $goods->attributes = $goods;
-//                if (!$goods->save())
-//                {
-//                    $this->error(Dumper::dumpString($goods->getErrors()));
-//                    $this->redirect(array("order/edit", array('step'=>"goodsEdit", 'id'=>$id)));
-//                }
-//                $goods = (object)$goods->attributes;
-//            }
-//            else
-//            {
-//                $goodsList[$id] = $goods;
-//            }
-
-            // 检查订单中存在的拍摄类型
-            $shootTypes = $user->getState('shootTypes');
-            // 获取所有拍摄类型
-            $shootType = ShootType::model()->findAll();
-            foreach ($shootType as $type)
-            {
-                $shootType[$type->id] = (object)$type->attributes;
-            }
-            // 保存拍摄类型
-            if (empty($shootTypes) || !isset($shootTypes[$goods->shoot_type]))
-                $shootTypes[$goods->shoot_type] = $shootType[$goods->shoot_type]->name;
-
-            $styles = $user->getState('modelStyles');
-            if ($goods->style == 0)
-            {
-                $styles = array();
-                $styles[0] = 0;
-            }
-            else if (empty($styles) || ($goods->style != 0 && !isset($styles[$goods->type])) )
-            {
-                $styles[$goods->type] = $goods->type;
-            }
-            // 保存到session
-            $goodsList[$id] = $goods;
-            $user->setState("shootTypes", $shootTypes);
-            $user->setState("modelStyles", $styles);
-            $user->setState("goodsList", $goodsList);
-            $this->success("添加成功");
-            $this->redirect(array("order/goodsList"));
+        	$this->success("添加成功");
+        	$this->redirect(array("order/shootScene"));
         }
 
         if (isset($goods->attributes))
@@ -309,8 +286,6 @@ class OrderController extends Controller
         }
 
 	    $this->render("goodsEdit", array(
-	        'id'=>$id,
-	        'goods'=>$goods,
 	        'goodsType'=>$goodsType,
         	'shootType'=>$shootType,
 	    	'styles'=>$styles,
@@ -345,8 +320,7 @@ class OrderController extends Controller
     	        // 保存拍摄类型
                 if (!isset($shootTypes[$goods->shoot_type]))
                     $shootTypes[$goods->shoot_type] = $shootType[$goods->shoot_type]->name;
-
-                if (!empty($styles) && $styles[0] == 0)
+                if (!empty($styles) && in_array(0, $styles))
                     continue;
         	    if ($goods->style == 0)
                 {
@@ -415,13 +389,24 @@ class OrderController extends Controller
         $user = Yii::app()->user;
         $shootTypes = $user->getState('shootTypes');
         $selectedModels = $user->getState("selectedModels");
-        if ((isset($shootTypes[1]) || isset($shootTypes[2])) && empty($selectedModels))
+
+        //获取拍摄数量和
+        $goodsList = $user->getState("goodsList");
+		$result=0;
+        foreach ($goodsList as $goods)
+        {
+        	$result += (int)$goods->count;
+        }
+		$goodsCounts=$result;
+
+        if ((isset($shootTypes[1]) || isset($shootTypes[2])) && empty($selectedModels) && $goodsCounts >50)
             $this->redirect(array("order/selectModels", "id"=>$id));
 
         if (isset($_POST['Form']))
         {
             // 获取相关数据
             $userInfo = User::model()->findByPk($user->id);
+            $admin_id = $userInfo->admin_id;//负责人ID
             $totalPrice = $user->getState("totalPrice");
 
             $order = new Order;
@@ -429,36 +414,13 @@ class OrderController extends Controller
             $order->sn = $order->getSn();
             $order->user_id = $userInfo->id;
             $order->user_name = $userInfo->name;
-            //$order->total_price = $totalPrice;
+            $order->total_price = $totalPrice;
             $order->create_time = Yii::app()->params['timestamp'];
             $order->update_time = Yii::app()->params['timestamp'];
             $order->pay_time = 0;
             $order->receive_time = 0;
-            $order->shoot_time = 0;
             $order->receive_address = isset($userInfo->ReceiveAddress) ? $userInfo->ReceiveAddress->getFullAddress() : "";
             $order->status = 1;
-
-            // 分离不是订单数据表的数据，以及合并物品公共需求
-//            $goodsList = $user->getState("goodsList");
-//            if ($goodsList === null)
-//            {
-//                $this->error("发生错误，请重新下单");
-//                $this->redirect(array("order/index"));
-//            }
-//            $width = $_POST['Form']['width'];
-//            $detail_width = $_POST['Form']['detail_width'];
-//            foreach ($goodsList as $key=>$goods)
-//            {
-//                if (!empty($_POST['Form']['width']))
-//                {
-//                    $goods->width = $width[$goods->shoot_type];
-//	                $goods->detail_width = $detail_width[$goods->shoot_type];
-//                }
-//                $goodsList[$key] = $goods;
-//                $user->setState("goodsList", $goodsList);
-//            }
-
-//            unset($_POST['Form']['width'], $_POST['Form']['detail_width']);
 
             $order->attributes = $_POST['Form'];
             $order->width = serialize($order->width);
@@ -481,6 +443,10 @@ class OrderController extends Controller
                 $user->setState("nextOrder", $nextOrder);
                 $userInfo->next_order = $nextOrder;
                 $userInfo->save();
+
+                //添加订单追踪信息
+        		OrderTrack::getOrderTrackId($order->id,$admin_id);
+
                 $this->success("订单添加成功");
                 $this->redirect(array('order/index'));
             }

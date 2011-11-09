@@ -15,20 +15,20 @@ class AuthManager extends CApplicationComponent
      */
     public function checkAccess($itemName, $userId, $params=array ( ))
     {
-        $criteria = new CDbCriteria(array('select'=>'is_supper', 'condition'=>'id = :userId', 'params'=>array(':userId'=>$userId)));
-        $user = Admin::model()->find($criteria);
-        if ($user->is_supper == 1) return true;
+    	$sql = "SELECT * FROM {{admin}} WHERE id = ".$userId;
+    	$command = Yii::app()->db->createCommand($sql);
+    	$user = $command->queryRow();
+        if ($user['is_supper'] == 1) return true;
         // 获取controller and action
         $itemName = explode('/', strtolower($itemName));
         $controller = $itemName[0];
         $action = $itemName[1];
         // 获取会员角色组
-        $role = AdminRole::model()->getByUser($userId);
-        //Dumper::dump($role->items);Yii::app()->end();
-        if ($role !== null) foreach ($role->items as $item)
+        $role = AdminRole::model()->getByUser($user['role_id']);
+        if ($role !== null) foreach ($role as $item)
         {
             // 获取会员角色组权限
-            $item = explode('/', strtolower($item->name));
+            $item = explode('/', strtolower($item->rule));
             // 如果拥有当前控制器权限
             if ($item[0] === $controller)
             {

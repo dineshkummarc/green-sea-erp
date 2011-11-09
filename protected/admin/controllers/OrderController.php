@@ -6,28 +6,44 @@ class OrderController extends Controller
 	 * @param unknown_type $pageNum
 	 * @param unknown_type $numPerPage
 	 */
-	public function actionIndex(array $params = array(), $pageNum = 1, $numPerPage = 20, $sort = null)
+	public function actionIndex(array $params = array(), $sort = null, $pageNum = 1, $numPerPage = 20)
 	{
 		$criteria = new CDbCriteria;
 
+		if (!empty($params['start_time']) && !empty($params['end_time']))
+		{
+			$stare_time = strtotime($params['start_time']);
+			$end_time = strtotime($params['end_time']) + 24 * 3600;
+			$criteria->addCondition('create_time >= '.$stare_time.' and create_time < '.$end_time);
+		}elseif (!empty($params['start_time']))
+		{
+			$stare_time = strtotime($params['start_time']);
+			$criteria->addCondition('create_time >= '.$stare_time);
+		}elseif (!empty($params['end_time']))
+		{
+			$end_time = strtotime($params['end_time']) + 24 * 3600;
+			$criteria->addCondition('create_time < '.$end_time);
+		}
 	    if (!empty($params['sn']))
             $criteria->addSearchCondition('sn', $params['sn']);
         if (!empty($params['user_name']))
-            $criteria->addCondition('user_name = \'' . $params['user_name'] . '\'');
+            $criteria->addSearchCondition('user_name', $params['user_name']);
         if (!empty($params['status']) && $params['status'] > 0)
         {
-            if ($params['status'] == 1)$criteria->addCondition('status = 1');
-            if ($params['status'] == 2)$criteria->addCondition('status = 2');
-            if ($params['status'] == 3)$criteria->addCondition('status = 3');
-            if ($params['status'] == 4)$criteria->addCondition('status = 4');
-            if ($params['status'] == 5)$criteria->addCondition('status = 5');
-            if ($params['status'] == 6)$criteria->addCondition('status = 6');
-            if ($params['status'] == 7)$criteria->addCondition('status = 7');
-            if ($params['status'] == 8)$criteria->addCondition('status = 8');
-            if ($params['status'] == 9)$criteria->addCondition('status = 9');
-            if ($params['status'] == 10)$criteria->addCondition('status = 10');
+        	$criteria->addCondition('status = '.$params['status']);
         }
+        //计算金额
+		$orders = Order::model()->cache()->findAll($criteria);
+		if ($orders != null)
+		{
+	        $sql = "SELECT SUM( `total_price` ) FROM {{order}} WHERE id in (".$this->orderId($orders).")";
+	        $command = Yii::app()->db->createCommand($sql);
+	        $money = $command->queryScalar();
+		}else {
+			$money = 0;
+		}
 
+		$shootStatus = $this->arrayReverse(Order::getShootStatus());//状态信息
 		$count = Order::model()->cache()->count($criteria);
         $pages = new CPagination($count);
         $pages->currentPage = $pageNum - 1;
@@ -39,13 +55,39 @@ class OrderController extends Controller
 		else $criteria->order = "status asc, create_time desc";
 
 		$orders = Order::model()->cache()->findAll($criteria);
-//		if ($sort != null)
-//            $this->success('aaa', array('navTabId'=>'order-goods'));
+
 		$this->render('index',array(
-			'params'=>$params,
+			'money' => $money,
+			'shootStatus' => $shootStatus,
+			'params' => $params,
 			'pages' => $pages,
 			'orders' => $orders
 		));
+	}
+	/**
+	 * 得到order id字符串
+	 */
+	public function orderId($list)
+	{
+		$str = '';
+		foreach ($list as $key=>$order)
+		{
+			if ($key > 0) $str .= ',';
+			$str .= $order->id;
+		}
+		return $str;
+	}
+	/**
+	 * $shootStatus数组反向
+	 */
+	public function arrayReverse($list)
+	{
+		$str = array();
+		foreach($list as $key=>$name)
+		{
+			$str[$name]=$key;
+		}
+		return $str;
 	}
 	/**
 	 * 订单 删除
@@ -70,13 +112,102 @@ class OrderController extends Controller
      * @param integer $id
      * @param integer $status
      */
-    public function actionOrderStatus($id = null, $status = 0)
+    public function actionOrderStatus($id = null, $status = null)
     {
         if (empty($id))
             $this->error("参数传递错误");
+//      return array(
+//		    1=>"未付款",
+//		    2=>"已付款、未收货",
+//		    3=>"已付款、已收货、待排程",
+//		    4=>"已付款、已收货、已排程",
+//		    5=>"拍摄中",
+//		    6=>"拍摄完成、待修图",
+//		    7=>"修图中",
+//		    8=>"修图完成、待上传",
+//		    9=>"可下载",
+//		    10=>"货物待寄出",
+//		    11=>"货物已寄出",
+//		    12=>"确认收货",
+//		);
+		$order_track_sql = null;//订单追踪sql
 
-//        Order::model()->updateByPk($id, array('status'=>$status));
-        $sql = "UPDATE {{order}} SET status = :status WHERE id = :id";
+	    if ($status == 2)//积分修改
+	    {
+	        // 消费金额等积分
+	        $sql = "SELECT total_price FROM {{order}} WHERE id = $id";
+	        $data = Yii::app()->db->createCommand($sql)->query();
+            $data->bindColumn(1, $price);
+            if ($data->read() !== false) User::addScore((int)$price);
+
+            // 新客户送积分和累积消费积分
+            $sql = "SELECT first, accumulation_price FROM {{user}} WHERE id = " . Yii::app()->user->id;
+            $data = Yii::app()->db->createCommand($sql)->query();
+            $data->bindColumn(1, $first);
+            $data->bindColumn(2, $price);
+            if ($data->read() !== false)
+            {
+                // 如果为首次下单
+                if ($first == 1)
+                {
+                    User::addScore(1500, "首次下单积分奖励");
+                    // 清楚首次下单状态，防止重复奖励
+                    $sql = "UPDATE  {{user}} SET first = 0, update_time = :update_time WHERE id = " . Yii::app()->user->id;
+                    $command = Yii::app()->db->createCommand($sql);
+                    $command->bindValue(":update_time", Yii::app()->params['timestamp'], PDO::PARAM_INT);
+                    $command->execute();
+                }
+                // 如果累积消费大于等于5000，则额外赠送3000积分
+                if ((int)$price >= 5000)
+                {
+                    User::addScore(3000, "累积消费额外积分奖励");
+                    // 减去累积消费5000，防止重复奖励
+                    $sql = "UPDATE {{user}} SET accumulation_price = :price , update_time = :update_time WHERE id = " . Yii::app()->user->id;
+                    $command = Yii::app()->db->createCommand($sql);
+                    $command->bindValue(":price", strval($price - 5000), PDO::PARAM_STR);
+                    $command->bindValue(":update_time", Yii::app()->params['timestamp'], PDO::PARAM_INT);
+                    $command->execute();
+                }
+            }
+	    	$sql = "UPDATE {{order}} SET status = :status, receive_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
+	    }
+	    elseif ($status == 5)//拍摄中
+        {
+        	$order_track_sql = "UPDATE {{order_track}} SET photographer_id = :user_id WHERE id = :id";
+        	$sql = "UPDATE {{order}} SET status = :status, shoot_begin_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
+        }
+        elseif ($status == 6)//拍摄完成
+        {
+        	$order_track_sql = "UPDATE {{order_track}} SET photographer_id_2 = :user_id WHERE id = :id";
+        	$sql = "UPDATE {{order}} SET status = :status, shoot_end_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
+        }
+        elseif ($status == 7)//修图中
+        {
+        	$order_track_sql = "UPDATE {{order_track}} SET retouch_id = :user_id WHERE id = :id";
+        	$sql = "UPDATE {{order}} SET status = :status, retouch_begin_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
+        }
+        elseif ($status == 8)//修图完成
+        {
+        	$order_track_sql = "UPDATE {{order_track}} SET retouch_id_2 = :user_id WHERE id = :id";
+        	$sql = "UPDATE {{order}} SET status = :status, retouch_end_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
+        }
+        elseif ($status == 9)//可下载
+        {
+        	$order_track_sql = "UPDATE {{order_track}} SET deliver_id = :user_id WHERE id = :id";
+        	$sql = "UPDATE {{order}} SET status = :status WHERE id = :id";
+		}
+        else{
+        	$sql = "UPDATE {{order}} SET status = :status WHERE id = :id";
+        }
+        if ($order_track_sql != null)
+        {
+        	//添加订单追踪信息
+        	$order_track_id = OrderTrack::getOrderTrackId($id);
+        	$command = Yii::app()->db->createCommand($order_track_sql);
+        	$command->execute(array(':user_id'=>Yii::app()->user->id,':id'=>$order_track_id));
+        }else{
+        	OrderTrack::getOrderTrackId($id);
+        }
         $command = Yii::app()->db->createCommand($sql);
         $command->execute(array(":id"=>$id, ":status"=>$status));
 
@@ -124,6 +255,12 @@ class OrderController extends Controller
                 $message = '添加成功';
             }
             $orderGoods->attributes = $_POST['Form'];
+			if ($_POST['Form']['type'] != 0)
+			{
+            	$sql = "SELECT name FROM {{goods_type}} WHERE id = :id";
+        		$command = Yii::app()->db->createCommand($sql);
+        		$orderGoods->type_name = $command->queryScalar(array(':id'=>$_POST['Form']['type']));
+			}
 
             if ($orderGoods->save())
                 $this->success($message, array('navTabId'=>'order-goods'));
@@ -170,7 +307,7 @@ class OrderController extends Controller
             $order->width=serialize($_POST['Form']['width']);
 
             if ($order->save())
-                $this->success($message, array('navTabId'=>'order-goods'));
+                $this->success($message, array('navTabId'=>'order-index'));
             else
             {
                 $error = array_shift($order->getErrors());
@@ -226,6 +363,7 @@ class OrderController extends Controller
         $storage = Storage::model()->find(array('condition'=>'order_id='.$id));
 
 		$criteria = new CDbCriteria;
+		$criteria->order = "sn ASC";
 		if (empty($storage))
 		{
 			$storage = new Storage;
@@ -253,6 +391,7 @@ class OrderController extends Controller
 			'storageGoodsList' => $storageGoodsList
 		));
 	}
+
 	/**
 	 * 仓储 物品
 	 */
@@ -268,37 +407,54 @@ class OrderController extends Controller
             {
                 $message = '修改成功';
                 $storageGoods = $storageGoods->findByPk($_POST['Form']['id']);
+                $storageGoods->attributes = $_POST['Form'];
+	            if ($storageGoods->save())
+	                $this->success($message, array('navTabId'=>'order-storage'));
+	            else
+	            {
+	                $error = array_shift($storageGoods->getErrors());
+	                $message = '错误：'.$error[0];
+	                $this->error($message);
+	            }
             }
             else
             {
                 $message = '添加成功';
+                $storageGoods->attributes = $_POST['Form'];
             	$count = $_POST['Form']['count'];
-				for ($i = 1; $i <= $count; $i ++)
+
+            	$sql = "select MAX(sn) FROM {{storage_goods}} WHERE storage_id = :storage_id";
+            	$command = Yii::app()->db->createCommand($sql);
+            	$max = $command->queryScalar(array(':storage_id'=>$_POST['Form']['storage_id']));
+
+            	if ($max == null || $max == "")
+            	{
+            		$j = 1;
+            	}else{
+					$j = strrev($max);
+					$j = substr($j,0,3);
+					$j = (int)strrev($j) + 1;
+					$count += $j;
+            	}
+
+				for ($i = $j; $i <= $count; $i ++)
 				{
 				    $sn = substr(strval($i + 1000),1,3);
 				    $sn = $_POST['Form']['order_sn'] . $sn;
-					$sql = "INSERT INTO {{storage_goods}} ( storage_id, sn, name, shoot_type, is_shoot) VALUES (:val1, :val2, :val3, :val4, :val5)";
+					$sql = "INSERT INTO {{storage_goods}} ( storage_id, sn, name, shoot_type, type_name, is_shoot) VALUES (:val1, :val2, :val3, :val4, :val5, :val6)";
 					$command = Yii::app()->db->createCommand($sql);
 					$command->execute(array(
 					    ":val1"=>$_POST['Form']['storage_id'],
 					    ":val2"=>$sn,
 					    ":val3"=>$_POST['Form']['name'],
 					    ":val4"=>$_POST['Form']['shoot_type'],
-					    ":val5"=>0,
+						":val5"=>$storageGoods->type_name,
+					    ":val6"=>0,
 					));
 				}
 		        $this->success($message, array('navTabId'=>'order-storage'));
             }
-            $storageGoods->attributes = $_POST['Form'];
 
-            if ($storageGoods->save())
-                $this->success($message, array('navTabId'=>'order-storage'));
-            else
-            {
-                $error = array_shift($storageGoods->getErrors());
-                $message = '错误：'.$error[0];
-                $this->error($message);
-            }
         }
         $shootTypes = ShootType::model()->findAll();
 		$this->render('storage_goods',array(
@@ -413,5 +569,251 @@ class OrderController extends Controller
 	        'models'=>$models,
             'shootNotice'=>Order::getShootNotice()
 	    ));
+	}
+
+	/**
+	 * 将订单 数据导出到Excel
+	 */
+	public function actionOrderExcel($id = null)
+	{
+        if (empty($id))$this->error('参数传递错误！');
+
+        $sql = "SELECT SUM( `total_price` ) FROM {{order}} WHERE id in (".$id.")";
+	    $command = Yii::app()->db->createCommand($sql);
+	    $money = $command->queryScalar();
+
+        $idList=explode(",",$id);
+		$chinese = new Chinese;
+
+		$phpExcelPath = Yii::getPathOfAlias('application.components');
+		spl_autoload_unregister(array('YiiBase','autoload'));
+		include($phpExcelPath . DIRECTORY_SEPARATOR . 'PHPExcel.php');
+
+		$objPHPExcel = new PHPExcel();
+		$objActSheet = $objPHPExcel->getActiveSheet(0);
+		//标题样式
+		$objStyle = $objActSheet->getStyle('A1');
+		$objStyle->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+
+		$objActSheet->setTitle('订单');
+
+		$objActSheet->mergeCells('A1:K1');
+		$objActSheet->mergeCells('B2:D2');
+		$objActSheet->mergeCells('F2:H2');
+
+		$objActSheet->setCellValue('A1','订单汇总表');
+		$obj = $objActSheet->getStyle('A1');
+		$objStyle = $obj->getAlignment();
+		$objStyle->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$objStyle->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+		//设置字体
+		$objFont = $obj->getFont();
+		$objFont->setSize(20);
+		$objFont->setBold(true);
+		$objFont->getColor()->setARGB('000000');
+		//设置边框
+		$objBorder = $obj->getBorders();
+		$objBorder->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$objBorder->getTop()->getColor()->setARGB('000000'); // color
+		$objBorder->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$objBorder->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$objBorder->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		//设置填充色
+//		$objFill = $obj->getFill();
+//		$objFill->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+//		$objFill->getStartColor()->setARGB('CCCCCC');
+
+		$objActSheet->setCellValue('A2','序号');
+		$objActSheet->setCellValue('B2','客户信息');
+		$objActSheet->setCellValue('E2','下单时间');
+		$objActSheet->setCellValue('F2','拍摄内容');
+		$objActSheet->setCellValue('I2','模特');
+		$objActSheet->setCellValue('J2','备注');
+		$objActSheet->setCellValue('K2','金额');
+
+		$objActSheet->setCellValue('A3','');
+		$objActSheet->setCellValue('B3','订单编号');
+		$objActSheet->setCellValue('C3','客户名称');
+		$objActSheet->setCellValue('D3','阿里旺旺');
+		$objActSheet->setCellValue('E3','');
+		$objActSheet->setCellValue('F3','数量');
+		$objActSheet->setCellValue('G3','性别');
+		$objActSheet->setCellValue('H3','类别/类型');
+		$objActSheet->setCellValue('I3','');
+		$objActSheet->setCellValue('J3','');
+		$objActSheet->setCellValue('K3',"￥".$money);
+		//设置字体
+		$objFont = $objActSheet->getStyle('K3')->getFont();
+		$objFont->setBold(true);
+
+		$objActSheet->getColumnDimension('E')->setWidth(20);
+		//同样式列表
+		$styleList = array(
+			'A2','B2','C2','D2','E2','F2','G2','H2','I2','J2','K2',
+			'A3','B3','C3','D3','E3','F3','G3','H3','I3','J3',
+		);
+		foreach ($styleList as $style)
+		{
+			//设置居中
+			$obj = $objActSheet->getStyle($style);
+			$objStyle = $obj->getAlignment();
+			$objStyle->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+			$objStyle->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+//			//设置填充色
+//			$objFill = $obj->getFill();
+//			$objFill->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+//			$objFill->getStartColor()->setARGB('#666666');
+
+			//设置边框
+			$objBorder = $obj->getBorders();
+			$objBorder->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+			$objBorder->getTop()->getColor()->setARGB('000000'); // color
+			$objBorder->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+			$objBorder->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+			$objBorder->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		}
+
+		$i = 4;
+		foreach ($idList as $key=>$id)
+		{
+			$list = '';
+			$data = Order::model()->findByPk($id);
+			if (!empty($data->Models))
+			{
+				foreach ($data->Models as $key=>$name)
+				{
+					if ($key > 0) $list.=',';
+					$list .= $name->nick_name;
+				}
+			}
+			$objActSheet
+				->setCellValue('A'.$i, $i-3)
+				->setCellValue('B'.$i, $data->sn)
+				->setCellValue('C'.$i, $data->user_name)
+				->setCellValue('D'.$i, !empty($data->User->wangwang)?$data->User->wangwang:'')//旺旺
+				->setCellValue('E'.$i, date('Y-m-d H:i:s', $data->create_time))
+				->setCellValue('F'.$i, $data->goodsCount)
+				->setCellValue('G'.$i, $data->goodsSex)
+				->setCellValue('H'.$i, $data->goodsType)
+				->setCellValue('I'.$i, $list)
+				->setCellValue('J'.$i, $data->memo)
+				->setCellValue('K'.$i, '￥'.$data->total_price);
+			$i += 1;
+		}
+
+		// Excel打开后显示的工作表
+		$objPHPExcel->setActiveSheetIndex(0);
+		//通浏览器输出Excel报表
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment;filename='.$chinese->convert("UTF-8", "gb2312","订单导出表.xls"));
+		header('Cache-Control: max-age=0');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+		$objWriter->save('php://output');
+
+		//恢复Yii自动加载功能
+		spl_autoload_register(array('YiiBase','autoload'));
+		Yii::app()->end();
+	}
+	/**
+	 * 将物品 数据导出到Excel
+	 */
+	public function actionStorageGoodsExcel($order_id = null, $id = null)
+	{
+        if (empty($id))$this->error('参数传递错误！');
+
+        $idList=explode(",",$id);
+		$chinese = new Chinese;
+		$order = Order::model()->findByPk($order_id);
+
+		$phpExcelPath = Yii::getPathOfAlias('application.components');
+		spl_autoload_unregister(array('YiiBase','autoload'));
+		include($phpExcelPath . DIRECTORY_SEPARATOR . 'PHPExcel.php');
+
+		$objPHPExcel = new PHPExcel();
+		$objActSheet = $objPHPExcel->getActiveSheet(0);
+		//标题样式
+		$objStyle = $objActSheet->getStyle('A1');
+		$objStyle->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+
+		$objActSheet->setTitle('拍摄清单');
+
+		$objActSheet->mergeCells('A1:F1');
+		$objActSheet->mergeCells('A2:B2');
+		$objActSheet->mergeCells('C2:F2');
+
+		$objActSheet->setCellValue('A1','绿浪视觉拍摄清单');
+		$obj = $objActSheet->getStyle('A1');
+		$objStyle = $obj->getAlignment();
+		$objStyle->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$objStyle->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+		//设置字体
+		$objFont = $obj->getFont();
+		$objFont->setSize(20);
+		$objFont->setBold(true);
+		$objFont->getColor()->setARGB('000000');
+
+		$objActSheet->setCellValue('A2','入库单号：'.$order->sn);
+		$objActSheet->setCellValue('C2','客户名称：'.$order->user_name);
+
+		$i = 3;
+		foreach ($idList as $key=>$id)
+		{
+			$list = '';
+			$data = StorageGoods::model()->findByPk($id);
+			$objActSheet
+				->setCellValue('A'.$i, $i-2)
+				->setCellValue('B'.$i, $data->sn)
+				->setCellValue('C'.$i, $data->name)
+				->setCellValue('D'.$i, $data->ShootType->name);
+			$i += 1;
+		}
+
+		// Excel打开后显示的工作表
+		$objPHPExcel->setActiveSheetIndex(0);
+		//通浏览器输出Excel报表
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment;filename='.$chinese->convert("UTF-8", "gb2312","拍摄清单导出表.xls"));
+		header('Cache-Control: max-age=0');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+		$objWriter->save('php://output');
+
+		//恢复Yii自动加载功能
+		spl_autoload_register(array('YiiBase','autoload'));
+		Yii::app()->end();
+	}
+
+	/**
+	 * 订单追踪
+	 * Enter description here ...
+	 */
+	public function actionOrderTrack($pageNum = 1, $numPerPage = 20)
+	{
+		$criteria = new CDbCriteria;
+
+		$count = OrderTrack::model()->count($criteria);
+        $pages = new CPagination($count);
+        $pages->currentPage = $pageNum - 1;
+        $pages->pageSize = $numPerPage;
+        $pages->applyLimit($criteria);
+
+		$orderTrackList = OrderTrack::model()->findAll($criteria);
+
+		$this->render('track',array(
+			'orderTrackList' => $orderTrackList,
+			'pages' => $pages,
+		));
+	}
+
+	/**
+	 * 获取排程
+	 */
+	public function getModel($id = null)
+	{
+		if(!empty($id))
+			$sql = "SELECT shoot_time, model_id FROM {{sechedule}} WHERE order_id =".$id;
+		$command = Yii::app()->db->createCommand($sql);
+		$models = $command->queryAll();
+        return $models;
 	}
 }
