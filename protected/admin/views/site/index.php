@@ -124,6 +124,7 @@
 								<ul>
 									<li><a href="<?php echo $this->createUrl('order/index');?>" target="navTab" rel="order-index">订单列表</a></li>
 									<li><a href="<?php echo $this->createUrl('order/ordertrack');?>" target="navTab" rel="order-track">订单追踪</a></li>
+									<li><a href="<?php echo $this->createUrl('schedule/index');?>" target="navTab" rel="schedule-index">排程列表</a></li>
 								</ul>
 							</li>
 							<li><a>模特管理</a>

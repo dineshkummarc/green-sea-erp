@@ -421,7 +421,6 @@ class OrderController extends Controller
             {
                 $message = '添加成功';
                 $storageGoods->attributes = $_POST['Form'];
-                $storageGoods->type_name = $storageGoods->ShootType->name;
             	$count = $_POST['Form']['count'];
 
             	$sql = "select MAX(sn) FROM {{storage_goods}} WHERE storage_id = :storage_id";
@@ -784,98 +783,6 @@ class OrderController extends Controller
 		Yii::app()->end();
 	}
 
-
-	//订单排程
-	public function actionSchedule($id = null, $type = null, $pageNum = 1, $numPerPage = 20)
-	{
-		$criteria = new CDbCriteria();
-		$criteria->condition = "order_id =".$id;
-		if (!empty($type))
-			$criteria->addCondition("shoot_type =".$type);
-		$schedules = Schedule::model()->findAll($criteria);
-		//查询订单信息
-		$sql = "SELECT id, sn, user_name FROM {{order}} WHERE id = :Id";
-		$command = Yii::app()->db->createCommand($sql);
-		$order = (object)$command->queryRow(true, array(':Id'=>$id));
-		//查询订单是否入库
-		$sql = "SELECT * FROM {{storage}} WHERE order_id = :Id";
-		$command = Yii::app()->db->createCommand($sql);
-		$storage = $command->queryRow(true, array(':Id'=>$id));
-		if($storage === false )
-		{
-			$this->render('schedule', array(
-				'order' => $order,
-				'schedules'=>$schedules
-			));
-			Yii::app()->end();
-		}
-		//通过入库单号查询入库单物品
-		$sql = "SELECT * FROM {{storage_goods}} WHERE storage_id =:Id";
-		$command = Yii::app()->db->createCommand($sql);
-		$lists = $command->queryAll(true, array(':Id'=>$storage->id));
-		$lists = (object)$lists;
-		$this->render('schedule',array(
-			'order' => $order,
-			'schedules' => $schedules,
-			'storage' => $storage,
-			'lists' => $lists
-		));
-	}
-
-	public function actionScheduleEdit($id = null, $orderId =null)
-	{
-		$schedule = new Schedule();
-		if ($id !== null)
-            $schedule = $schedule->findByPk($id);
-
-		if(isset($_POST['Form']))
-		{
-			$id = $_POST['Form']['id'];
-			if(!empty($id))
-			{
-				$schedule = $schedule->findByPk($id);
-				$message = "修改成功";
-			}
-			else
-				$message = "添加成功";
-			$schedule->attributes = $_POST['Form'];
-			$schedule->shoot_time = strtotime($_POST['Form']['shoot_time']);
-			if ($schedule->save())
-            {
-                $this->success($message,array('navTabId'=>'order-schedule','id'=>$orderId));
-            }
-            else
-            {
-                $error = array_shift($schedule->getErrors());
-	            $message = '错误：'.$error[0];
-	            $this->error($message);
-            }
-		}
-		$sql = "SELECT * FROM {{storage}} WHERE order_id = :Id";
-		$command = Yii::app()->db->createCommand($sql);
-		$storage = (object)$command->queryRow(true, array(':Id'=>$orderId));
-		if(!empty($storage))
-		{
-			$sql = "SELECT * , count(DISTINCT shoot_type ) FROM {{storage_goods}} WHERE storage_id =:Id GROUP BY shoot_type";
-			$command = Yii::app()->db->createCommand($sql);
-			$lists = $command->queryAll(true, array(':Id'=>$storage->id));
-
-			$this->render('schedule_edit',array(
-				'orderId' => $orderId,
-				'schedule' => $schedule,
-				'storage' => $storage,
-				'lists' => $lists
-			));
-			Yii::app()->end();
-		}
-
-		$this->render('schedule_edit', array(
-			'orderId'=>$orderId,
-			'storage'=>$storage
-		));
-
-
-	}
 	/**
 	 * 订单追踪
 	 * Enter description here ...
@@ -896,5 +803,17 @@ class OrderController extends Controller
 			'orderTrackList' => $orderTrackList,
 			'pages' => $pages,
 		));
+	}
+
+	/**
+	 * 获取排程
+	 */
+	public function getModel($id = null)
+	{
+		if(!empty($id))
+			$sql = "SELECT shoot_time, model_id FROM {{sechedule}} WHERE order_id =".$id;
+		$command = Yii::app()->db->createCommand($sql);
+		$models = $command->queryAll();
+        return $models;
 	}
 }

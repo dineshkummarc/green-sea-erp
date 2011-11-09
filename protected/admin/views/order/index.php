@@ -81,7 +81,7 @@ function status(val)
 	                <a href="<?php echo $this->createUrl('order/storage', array('id'=>$order->id)); ?>" target="navTab" rel="order-storage">仓储</a>
 	                <?php endif;?>
 	                &nbsp;
-	                <a href="<?php echo $this->createUrl('order/schedule', array('id'=>$order->id)); ?>" target="navTab" rel="order-schedule">排程</a>
+	                <a href="<?php echo $this->createUrl('schedule/index', array('orderId'=>$order->id)); ?>" target="navTab" rel="schedule-index">排程</a>
 	                &nbsp;
 	            	<a target="_blank" href="<?php echo $this->createUrl('order/print', array('id'=>$order->id)); ?>">打印</a>
 	                &nbsp;
