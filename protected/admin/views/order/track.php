@@ -57,6 +57,7 @@
 	        $retouch_end_time = $orderTrack->Order->retouch_end_time;
 
 	        $shoot_begin_time = $orderTrack->Order->shoot_begin_time;
+	        $logistics_sn = $orderTrack->Order->logistics_sn
 	        ?>
 	        <tr>
 	            <td><input type="checkbox" name="id[]" value="" /></td>
@@ -90,7 +91,7 @@
 	            <td></td><!-- 处理 -->
 	            <td></td><!-- 完成 -->
 	            <td><?php echo $storage['out_time'] > 0 ? "<span style='color:red'>✔</span>" : "";?></td><!-- 出库 -->
-	            <td></td><!-- 运单号 -->
+	            <td><?php echo empty($logistics_sn)?'':$logistics_sn;?></td><!-- 运单号 -->
 	        </tr>
 	        <tr>
 	            <td>&nbsp;</td>
