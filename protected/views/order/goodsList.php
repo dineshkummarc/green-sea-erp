@@ -35,7 +35,6 @@
         <td class="price"><?php $goods->price; ?></td>
 
         <td>
-            <a href="<?php echo $this->createUrl("order/goodsEdit", array("id"=>$goods->id)) ?>">修改</a>
             <a href="<?php echo $this->createUrl("order/goodsDel", array("id"=>$goods->id)) ?>" onclick="return confirm('删除之后将不能恢复，确认删除？')">删除</a>
         </td>
     </tr>

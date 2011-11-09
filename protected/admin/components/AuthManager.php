@@ -18,7 +18,6 @@ class AuthManager extends CApplicationComponent
     	$sql = "SELECT * FROM {{admin}} WHERE id = ".$userId;
     	$command = Yii::app()->db->createCommand($sql);
     	$user = $command->queryRow();
-
         if ($user['is_supper'] == 1) return true;
         // 获取controller and action
         $itemName = explode('/', strtolower($itemName));
@@ -26,7 +25,6 @@ class AuthManager extends CApplicationComponent
         $action = $itemName[1];
         // 获取会员角色组
         $role = AdminRole::model()->getByUser($user['role_id']);
-        //Dumper::dump($role->items);Yii::app()->end();
         if ($role !== null) foreach ($role as $item)
         {
             // 获取会员角色组权限

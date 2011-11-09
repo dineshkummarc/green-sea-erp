@@ -421,7 +421,6 @@ class OrderController extends Controller
             {
                 $message = '添加成功';
                 $storageGoods->attributes = $_POST['Form'];
-                $storageGoods->type_name = $storageGoods->ShootType->name;
             	$count = $_POST['Form']['count'];
 
             	$sql = "select MAX(sn) FROM {{storage_goods}} WHERE storage_id = :storage_id";
@@ -784,50 +783,6 @@ class OrderController extends Controller
 		Yii::app()->end();
 	}
 
-
-	//订单排程
-	public function actionSchedule($id = null, $pageNum = 1, $numPerPage = 20)
-	{
-		$schedule = Schedule::model()->find(array('condition'=>"order_id = ".$id));
-		if(empty($schedule))
-		{
-			$schedule = new Schedule;
-			$schedule -> order_id = $id;
-			$schedule -> shoot_time = Yii::app()->params['timestamp'];
-			$schedule -> shoot_site = '';
-			$schedule -> shoot_info = '';
-			$schedule -> stylist_id = 0;
-			$schedule -> model_id = 0;
-			$schedule -> memo = '';
-			$schedule->save();
-		}
-		$sql = "SELECT * FROM {{storage}} WHERE order_id = :Id";
-		$command = Yii::app()->db->createCommand($sql);
-		$storage = (object)$command->queryRow(true, array(':Id'=>$id));
-		if(!empty($storage->id))
-		{
-			$sql = "SELECT *,count(distinct type_name)  FROM {{storage_goods}} WHERE storage_id = :Id GROUP BY type_name";
-			$command = Yii::app()->db->createCommand($sql);
-			$storageGoodsList = $command->queryScalar(array(':Id'=>$storage->id));
-			$lists = (object)$storageGoodsList;
-			$this->render('schedule',array(
-				'id' => $id,
-				'schedule' => $schedule,
-				'storage' => $storage,
-				'lists' => $lists
-			));
-			Yii::app()->end();
-		}
-		$this->render('schedule',array(
-			'id' => $id,
-			'schedule' => $schedule
-		));
-	}
-
-	public function actionScheduleEdit()
-	{
-		$this->render('schedule_edit');
-	}
 	/**
 	 * 订单追踪
 	 * Enter description here ...
@@ -848,5 +803,17 @@ class OrderController extends Controller
 			'orderTrackList' => $orderTrackList,
 			'pages' => $pages,
 		));
+	}
+
+	/**
+	 * 获取排程
+	 */
+	public function getModel($id = null)
+	{
+		if(!empty($id))
+			$sql = "SELECT shoot_time, model_id FROM {{sechedule}} WHERE order_id =".$id;
+		$command = Yii::app()->db->createCommand($sql);
+		$models = $command->queryAll();
+        return $models;
 	}
 }
