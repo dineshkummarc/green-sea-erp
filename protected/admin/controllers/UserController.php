@@ -9,7 +9,14 @@ class UserController extends Controller
      */
     public function actionIndex(array $params = array(), $pageNum = null, $numPerPage = null)
     {
+
         $user = new User;
+        $sheng = Area::model()->findAreaByLevel();
+    	$shi = Area::model()->findAreaByLevel(2);
+    	$qu = Area::model()->findAreaByLevel(3);
+   		$area['sheng'] = $sheng;
+    	$area['shi'] = $shi;
+    	$area['qu'] = $qu;
         $criteria = $user->dbCriteria;
         $criteria->order = "create_time DESC";
         if (!empty($params['name']))
@@ -18,70 +25,137 @@ class UserController extends Controller
             $criteria->addCondition('mobile_phone = \'' . $params['phone'] . '\'');
         if (!empty($params['mail']))
             $criteria->addSearchCondition('email', $params['mail']);
-
+		if(!empty($params['id']))
+			$criteria->addSearchCondition('id',intval(substr($params['id'], 1)));
         $count = $user->count($criteria);
         $pages = new CPagination($count);
         $pages->currentPage = empty($pageNum) ? 0 : $pageNum - 1;
         $pages->pageSize = empty($numPerPage) ? 20 : $numPerPage;
         $pages->applyLimit($criteria);
         $user = $user->cache()->findAll($criteria);
-        $this->render("index", array('userList'=>$user, 'params'=>$params, 'pages'=>$pages));
+        $this->render("index", array('userList'=>$user, 'params'=>$params, 'pages'=>$pages,'area'=>$area));
     }
 
     /**
-     * 修改用户
+     * 修改/添加用户
      * @param integer $id
      */
-    public function actionEdit($id = null)
-    {
-        $user = new User;
-        if (!empty($id))
-            $user = $user->cache()->findByPk($id);
+	public  function  actionEdit($id=null)
+	{
+			$user = new User;
+			// 获取省份信息
+	    	$sheng = Area::model()->findAreaByLevel();
+	    	$shi = Area::model()->findAreaByLevel(2);
+	    	$qu = Area::model()->findAreaByLevel(3);
+   			$area['sheng'] = $sheng;
+	    	$area['shi'] = $shi;
+	    	$area['qu'] = $qu;
+			$areas = Area::model()->cache()->findAll(array('condition'=>'parent_id = 0'));
+			if (!empty($id))
+			{
+					$user = $user->cache()->findByPk($id);
+					$receiver = UserReceive::model()->findByPk($user->receive_id);
+					if (empty($receiver))  $receiver = new UserReceive;
 
-        if (isset($_POST['Form']))
-        {
-            if (!empty($_POST['Form']['id']))
-                $user = $user->cache()->findByPk($_POST['Form']['id']);
+					if ($receiver->area_id == 0)
+						$area_list = null;
+					else
+						$area_list = Area::getAreaLevelAll($receiver->area_id);
+			}
+			else
+			{
+				$area_list = null;
+				 $receiver = new UserReceive;
+			}
+	        if (isset($_POST['Form']))
+        	{
+        		    if($_POST['Form']['area_1']=="all")
+        		    {
+        		    		$message="请选择省份";
+        		    		$this->error($message);
+        		    }
+        	      	if($_POST['Form']['area_2']=="all")
+        		    {
+        		    		$message="请选择市区";
+        		    		$this->error($message);
+        		    }
+        	        if($_POST['Form']['area_id']=="all")
+        		    {
+        		    		$message="请选择具体地区";
+        		    		$this->error($message);
+        		    }
+        			if (!empty($_POST['Form']['id']))
+        				$user = $user->cache()->findByPk($_POST['Form']['id']);
+        		    if (!empty($_POST['Form']['id']) && trim($_POST['Form']['password']) == "")
+                			$_POST['Form']['password'] = $user->password;
+            		else
+                			$_POST['Form']['password'] = md5(trim($_POST['Form']['password']));
+	        		$phone1 = trim($_POST['Form']['phone-1']);
+	                $phone2 = trim($_POST['Form']['phone-2']);
+	                $phone3 = trim($_POST['Form']['phone-3']);
+                    unset($_POST['Form']['phone-1'], $_POST['Form']['phone-2'], $_POST['Form']['phone-3']);
+                	if (empty($phone1) && empty($phone2))
+                    		$_POST['Form']['phone'] = "";
+                	else
+                    		$_POST['Form']['phone'] = $phone1 . "-" . $phone2;
+                	if (!empty($phone) && empty($phone3))
+                	{
+                    		 $_POST['Form']['phone'] .= "-" . $phone3;
+                	}
+                	$_POST['Form']['phone'] = trim($_POST['Form']['phone']);
+                	$user->attributes = $_POST['Form'];
+                	$user->first = 1;
+                	$user->admin_id=Yii::app()->user->id;
+					$user->accumulation_price = 0;
+					$user->receive_id = 0;
+					$user->receive_count = 0;
+					$user->next_order = 1;
+					$user->login_time = 0;
+					$user->last_ip = 0;
+					$user->create_time = Yii::app()->params['timestamp'];
+					if($user->save())
+					{
 
-            if (empty($user->score))
-                $user->score = 0;
+								$receiver->attributes = $_POST['Form'];
+								$receiver->user_id=$user->id;
+								$receiver->receive_name=$user->name;
+								if($receiver->save())
+								{
+										$user->receive_count+1;
+										$user->receive_id=$receiver->id;
+										$user->save();
+										 if (!empty($_POST['Form']['id']))
+										 {
+										 		$message="修改成功";
+										 		$this->success($message,array('navTabId'=>'user-index') );
+										 }
+		 								else
+		 								{
+					 							$message="添加成功";
+												$this->success($message,array('navTabId'=>'user-index') );
+		 								}
+								}
+								else
+								{
+										$error = array_shift($receiver->getErrors());
+										 if (!empty($_POST['Form']['id']))  $message="修改失败".$error[0];
+										 			else
+										 					$message="添加失败";
+										$this->error($message);
+								}
 
-            // 密码重置
-            if (!empty($user->password) && !empty($_POST['Form']['password']))
-                $user->password = md5(trim($_POST['Form']['password']));
-            else
-                $_POST['Form']['password'] = $user->password;
+					}
+					else
+					{
+								$error = array_shift($user->getErrors());
+								$message="修改失败".$error[0];
+								$this->error($message);
+					}
+        	}
+        		$this->render("edit", array('user'=>$user,'area'=>$area,'areas'=>$areas,'area_list'=>$area_list,'receiver'=>$receiver));
+	}
 
-            $user->attributes = $_POST['Form'];
 
-            if (empty($user->first)) $user->first = 1;
-            if (empty($user->accumulation_price)) $user->accumulation_price = 0;
-            if (empty($user->receive_id)) $user->receive_id = 0;
-            if (empty($user->receive_count)) $user->receive_count = 0;
-            if (empty($user->next_order)) $user->next_order = 1;
-            if (empty($user->login_time)) $user->login_time = 0;
-            if (empty($user->last_ip)) $user->last_ip = 0;
-            if (empty($user->create_time)) $user->create_time = Yii::app()->params['timestamp'];
-            $user->update_time = Yii::app()->params['timestamp'];
-
-            // 手机号码唯一性验证
-            if ($user->mobile_phone != trim($_POST['Form']['mobile_phone']))
-            {
-                $sql = "SELECT COUNT(*) FROM fanwe_user WHERE mobile_phone = :phone";
-                $command = Yii::app()->db->createCommand($sql);
-                $count = $command->queryScalar(array(":phone"=>$_POST['Form']['mobile_phone']));
-                if ($count > 0)
-                    $this->error("手机号码唯一");
-            }
-
-            if ($user->save())
-                $this->success("修改成功", array('navTabId'=>'user-index'));
-            else
-                $this->error('错误：'.Dumper::dumpAsString($user->getErrors(), 10, true));
-        }
-
-        $this->render("edit", array('user'=>$user));
-    }
 
     /**
      * 删除用户
@@ -95,6 +169,8 @@ class UserController extends Controller
         // 组合成字符串
         $id = implode(',', $id);
         $sql = "DELETE FROM {{user}} WHERE id IN ({$id})";
+        $command = Yii::app()->db->createCommand($sql);
+        $count = $command->execute();
         $this->success('删除成功', array('navTabId'=>'user-index'));
     }
 
@@ -113,6 +189,30 @@ class UserController extends Controller
         $count = $command->execute(array(":id"=>$id, ":score"=>$score));
         $this->success("修改成功", array('navTabId'=>'user-index'));
     }
-
+    public function actionArea($type)
+    {
+		if ($type == 'all')
+		{
+			$areas =  Area::model()->cache()->findAll(array('condition'=>'parent_id = 0'));
+			echo json_encode($this->AreaFormat($areas));
+//			print_r ($this->AreaFormat($areas));
+			return;
+		}else{
+			$areas =  Area::model()->cache()->findAll(array('condition'=>'parent_id = '.$type));
+			echo json_encode($this->AreaFormat($areas));
+//			print_r ($this->AreaFormat($areas));
+			return;
+		}
+    }
+    public function AreaFormat($areas)
+    {
+    	$list = array();
+		foreach ($areas as $area)
+		{
+			$list[$area->id][0] = $area->id;
+			$list[$area->id][1] = $area->name;
+		}
+		return $list;
+    }
 }
 ?>
