@@ -19,6 +19,12 @@ class ShootType extends CActiveRecord
 		return parent::model($className);
 	}
 
+	public function getShootName($id)
+	{
+		$sql ="SELECT name FROM {{shoot_type}} WHERE id = :id";
+		$command = Yii::app()->db->createCommand($sql);
+		return $command->queryScalar(array(':id'=>$id));
+	}
 	/**
 	 * @return string the associated database table name
 	 */
