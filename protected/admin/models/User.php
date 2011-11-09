@@ -32,6 +32,7 @@ class User extends CActiveRecord
 	 */
 	public function cache()
     {
+    	$duration = "";$dependency="";
         if ($duration === null)
 	        $duration = 3600 * 12 * 7;
 	    if ($dependency === null)
