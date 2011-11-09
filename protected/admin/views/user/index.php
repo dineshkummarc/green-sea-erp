@@ -17,7 +17,7 @@
     <table class="table" width="100%" >
     <thead>
         <tr>
-            <th width="20"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
+            <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
             <th>用户编号</th>
             <th>用户名</th>
             <th>旺旺号</th>
@@ -28,8 +28,8 @@
             <th >详细信息</th>
             <th>操作</th>
         </tr>
-        </thead>
-        <tbody>
+      </thead>
+      <tbody>
         <?php if (!empty($userList)) foreach ($userList as $user): ?>
         <tr>
             <td><input type="checkbox" name="id[]" value="<?php echo $user->id ?>" /></td>
@@ -55,8 +55,8 @@
                 <a href="<?php echo $this->createUrl('user/del', array('id'=>$user->id)); ?>" target="ajaxTodo" title="相对应的数据也将删除，确认删除？">删除</a>
             </td>
         </tr>
-        </tbody>
         <?php endforeach; ?>
+      </tbody>
     </table>
 </div>
 <?php $this->widget('widget.Pager', array(
