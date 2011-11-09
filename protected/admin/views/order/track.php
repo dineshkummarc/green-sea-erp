@@ -4,13 +4,13 @@
 	        <tr>
 	            <th width="30"></th>
 	            <th colspan="2">客户信息</th>
-	            <th rowspan="2">确认拍摄</th>
+	            <th rowspan="2">确认<br/>拍摄</th>
 	            <th colspan="2">入库状态</th>
 	            <th>拍摄时间</th>
 	            <th>模特</th>
 	            <th colspan="2">拍摄状态</th>
 	            <th colspan="2">修图状态</th>
-	            <th rowspan="2">是否付款</th>
+	            <th rowspan="2">是否<br/>付款</th>
 	            <th colspan="2">是否交图</th>
 	            <th colspan="3">满意度</th>
 	            <th colspan="2">反馈处理</th>
