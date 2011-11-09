@@ -34,7 +34,16 @@ class Order extends CActiveRecord
     {
         return parent::model($className);
     }
-
+	/**
+	 * 返回订单编号
+	 * @param unknown_type $order_id
+	 */
+    public function getLogisticsSn($order_id)
+    {
+		$sql = "SELECT logistics_sn FROM {{order}} WHERE id = ".$order_id;
+		$command = Yii::app()->db->createCommand($sql);
+		return $command->queryScalar();
+    }
     /**
      * 修改状态
      * @param integer $id

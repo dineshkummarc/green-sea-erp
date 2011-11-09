@@ -391,7 +391,59 @@ class OrderController extends Controller
 			'storageGoodsList' => $storageGoodsList
 		));
 	}
+	/**
+	 * 仓储 修改
+	 * Enter description here ...
+	 * @param unknown_type $id
+	 */
+	public function actionStorageEdit($id = null)
+	{
+		$storage = new Storage;
+		$order = new Order;
 
+		if (!empty($id))
+		{
+			$storage = $storage->model()->findByPk($id);
+			$order = $order->model()->cache()->findByPk($storage->order_id);
+		}
+
+		if (isset($_POST['Form']))
+        {
+            if (!empty($_POST['Form']['storage_id']) && !empty($_POST['Form']['order_id']))
+            {
+                $message = '修改成功';
+                $storage = $storage->findByPk($_POST['Form']['storage_id']);
+                $order = $order->findByPk($_POST['Form']['order_id']);
+            }
+            else
+            {
+                $message = '添加成功';
+            }
+            $storage->out_time = strtotime($_POST['Form']['out_time']);
+            $order->logistics_sn = $_POST['Form']['logistics_sn'];
+            $order->update_time = Yii::app()->params['timestamp'];
+
+            if ($storage->save() && $order->save())
+                $this->success($message, array('navTabId'=>'order-storage'));
+            else
+            {
+                $error = array_shift($storage->getErrors());
+                $message = '错误：'.$error[0];
+                $this->error($message);
+            }
+        }
+		$this->render('storage_edit',array(
+			'order' => $order,
+			'storage' => $storage
+		));
+	}
+	/**
+	 * 仓储 删除
+	 * Enter description here ...
+	 */
+	public function actionStorageDel($id = null)
+	{
+	}
 	/**
 	 * 仓储 物品
 	 */
@@ -434,9 +486,8 @@ class OrderController extends Controller
 					$j = strrev($max);
 					$j = substr($j,0,3);
 					$j = (int)strrev($j) + 1;
-					$count += $j;
+					$count += $j - 1;
             	}
-
 				for ($i = $j; $i <= $count; $i ++)
 				{
 				    $sn = substr(strval($i + 1000),1,3);
@@ -448,7 +499,7 @@ class OrderController extends Controller
 					    ":val2"=>$sn,
 					    ":val3"=>$_POST['Form']['name'],
 					    ":val4"=>$_POST['Form']['shoot_type'],
-						":val5"=>$storageGoods->type_name,
+						":val5"=>ShootType::getShootName($_POST['Form']['shoot_type']),
 					    ":val6"=>0,
 					));
 				}
@@ -467,14 +518,20 @@ class OrderController extends Controller
     /**
      * 仓储入库 提交
      */
-    public function actionStorageOut($id = null)
+    public function actionStorageOut($id = null,$logistics_sn)
     {
         if (empty($id))
             $this->error('参数传递错误');
+        if (empty($logistics_sn))
+            $this->error('订单号不能为空');
 
         $storage = Storage::model()->findByPk($id);
         $storage->out_time = Yii::app()->params['timestamp'];
-        if ($storage->save())
+
+        $order = Order::model()->cache()->findByPk($storage->order_id);
+        $order->logistics_sn = $logistics_sn;
+
+        if ($storage->save() && $order->save())
             $this->success('修改成功', array('navTabId'=>'order-storage'));
         else
         {
