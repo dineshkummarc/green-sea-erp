@@ -57,7 +57,6 @@
 	        $retouch_end_time = $orderTrack->Order->retouch_end_time;
 
 	        $shoot_begin_time = $orderTrack->Order->shoot_begin_time;
-
 	        ?>
 	        <tr>
 	            <td><input type="checkbox" name="id[]" value="" /></td>
@@ -95,10 +94,10 @@
 	        </tr>
 	        <tr>
 	            <td>&nbsp;</td>
-	            <td></td><!-- 客户编号 -->
+	            <td><?php echo "<span style='font-weight:bold'>".Admin::getAdminName($orderTrack->admin_id).'</span>';?></td><!-- 客户编号 -->
 	            <td></td><!-- 客户名称 -->
 	            <td></td><!-- 确认拍摄 -->
-	            <td></td><!-- 时间 -->
+	            <td><?php echo "<span style='font-weight:bold'>".Admin::getAdminName($storage['admin_id']).'</span>';?></td><!-- 时间 -->
 	            <td></td><!-- 数量 -->
 	            <td></td><!-- 拍摄时间 -->
 	            <td></td><!-- 模特 -->

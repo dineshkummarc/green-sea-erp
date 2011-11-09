@@ -418,7 +418,7 @@ class OrderController extends Controller
             $order->update_time = Yii::app()->params['timestamp'];
             $order->pay_time = 0;
             $order->receive_time = 0;
-            $order->shoot_time = 0;
+//            $order->shoot_time = 0;
             $order->receive_address = isset($userInfo->ReceiveAddress) ? $userInfo->ReceiveAddress->getFullAddress() : "";
             $order->status = 1;
 
@@ -467,7 +467,7 @@ class OrderController extends Controller
                 $userInfo->save();
 
                 //添加订单追踪信息
-        		$order_track_id = OrderTrack::getOrderTrackId($id,$admin_id);
+        		OrderTrack::getOrderTrackId($order->id,$admin_id);
 
                 $this->success("订单添加成功");
                 $this->redirect(array('order/index'));
