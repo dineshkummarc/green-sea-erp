@@ -29,7 +29,7 @@
 			<div class="unit">
 				<label>摄影师：</label>
 				<select name="Form[shoot_id]" class="combox required" default="<?php echo !empty($model->shoot_id) ? $model->shoot_id : 0; ?>">
-					<option value="0">请选择</option>
+					<option value="0">未选择</option>
                 	<?php foreach ($shootList as $list):?>
                     <option value="<?php echo $list['id']?>"><?php echo $list['name']?></option>
                     <?php endforeach;?>
@@ -38,7 +38,7 @@
 			<div class="unit">
 				<label>造型师：</label>
 				<select name="Form[stylist_id]" class="combox" default="<?php echo !empty($model->stylist_id) ? $model->stylist_id : 0; ?>">
-					<option value="0">请选择</option>
+					<option value="0">未选择</option>
                 	<?php foreach ($styleList as $list):?>
                     <option value="<?php echo $list['id']?>"><?php echo $list['name']?></option>
                     <?php endforeach;?>
@@ -47,6 +47,7 @@
 			<div class="unit">
 				<label>模特：</label>
 				<select name="Form[model_id]" class="combox" default="<?php echo !empty($model->model_id) ? $model->model_id : 0; ?>">
+					<option value="0">未选择</option>
                 	<?php foreach ($modelList as $list):?>
                     <option value="<?php echo $list['id']?>"><?php echo $list['nick_name']?></option>
                     <?php endforeach;?>

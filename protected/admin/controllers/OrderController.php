@@ -375,7 +375,7 @@ class OrderController extends Controller
 			if($storage->save()){
 				$sql = "UPDATE {{order}} SET status = 3 WHERE id = :id";
 	            $command = Yii::app()->db->createCommand($sql);
-	            $count = $command->excute(array(':id'=> $id));
+	            $count = $command->execute(array(':id'=> $id));
 			}
 		}
 		$criteria->condition='storage_id = '.$storage->id;
@@ -895,9 +895,9 @@ class OrderController extends Controller
 	 */
 	public function getSchedule($id = null)
 	{
-		$sql = "SELECT shoot_time,model_id FROM {{schedule}} WHERE order_id = :Id";
+		$sql = "SELECT shoot_type,model_id,shoot_time FROM {{schedule}} WHERE order_id = :Id";
 		$command = Yii::app()->db->createCommand($sql);
-		$schedules = $command->queryAll(false,array(':Id'=>$id));
+		$schedules = $command->queryAll(true,array(':Id'=>$id));
         return $schedules;
 	}
 
@@ -911,11 +911,10 @@ class OrderController extends Controller
 		else
 			$sql = "SELECT nick_name FROM {{models}}";
 		$command = Yii::app()->db->createCommand($sql);
-		$models = $command->queryScalar();
+		$models = $command->queryAll();
         return $models;
 	}
-
-/**
+	/**
 	 * 获取拍摄类型
 	 */
 	public function getType($id = null)
