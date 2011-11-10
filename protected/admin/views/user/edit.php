@@ -1,4 +1,19 @@
-
+<script type="text/javascript">
+var Area = <?php $this->getArea(); ?>;
+function changeArea(id)
+{
+    var result = new Array();
+    result.push(['all', '请选择']);
+    for (i = 0; i < Area.length; i++)
+    {
+        if (Area[i].parent == id)
+        {
+            result.push([Area[i].id, Area[i].name]);
+        }
+    }
+    return result;
+}
+</script>
 <div class="pageContent">
     <form action="<?php echo $this->createUrl(''); ?>"  class="pageFormrequiredd-validate" onsubmit="return validateCallback(this, dialogAjaxDone);" method="post">
         <div class="pageFormContent" layoutH="60">
@@ -9,44 +24,38 @@
 
             <div class="unit" >
                 <label>所在省:</label>
-	            <select class="combox" name="Form[area_1]" ref="w_combox_city" default="5" refUrl="<?php echo $this->createUrl('user/area');?>&type={value}">
-
-					<?php if ($area_list != null):?>
-						<?php foreach ($area_list['1'] as $val):?>
-						<option value="<?php echo $val['id']?>" <?php if ($val['id'] == $area_list['default']['1'])echo "selected";?>><?php echo $val['name']?></option>
-						<?php endforeach;?>
-					<?php else:?>
-						<option value="all">所有省市</option>
-						<?php foreach ($areas as $val):?>
-						<option value="<?php echo $val->id?>" ><?php echo $val->name?></option>
-						<?php endforeach;?>
-					<?php endif;?>
+	            <select class="combox" change="changeArea" default="<?php echo !isset($area_list['default']['1'])?'all':$area_list['default']['1']?>" name="Form[area_1]" ref="Form[area_2]" >
+				<option value="all">请选择</option>
+				<?php if (isset($area_list['default']['1'])):?>
+					<?php foreach ($area_list['1'] as $val):?>
+					<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
+					<?php endforeach;?>
+				<?php else:?>
+					<?php foreach ($area['sheng'] as $val):?>
+					<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
+					<?php endforeach;?>
+				<?php endif;?>
 				</select>
             </div>
 
             <div class="unit">
 	            <label>所在市:</label>
-				<select class="combox" name="Form[area_2]" id="w_combox_city" ref="w_combox_area" refUrl="<?php echo $this->createUrl('user/area');?>&type={value}">
-					<?php if ($area_list != null):?>
-						<?php foreach ($area_list['2'] as $val):?>
-						<option value="<?php echo $val['id']?>" <?php if ($val['id'] == $area_list['default']['2'])echo "selected";?>><?php echo $val['name']?></option>
-						<?php endforeach;?>
-					<?php else:?>
-					<option value="all">所有城市</option>
-					<?php endif;?>
+				<select class="combox" name="Form[area_2]" default="<?php echo !isset($area_list['default']['2'])?'all':$area_list['default']['2']?>" ref="Form[area_id]" change="changeArea">
+				<option value="all">请选择</option>
+				<?php if (isset($area_list['default']['2'])) foreach ($area_list['2'] as $val):?>
+				<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
+				<?php endforeach;?>
 				</select>
             </div>
 
             <div class="unit">
 	            <label>所在区:</label>
-				<select class="combox" name="Form[area_id]" id="w_combox_area">
-					<?php if ($area_list != null):?>
-						<?php foreach ($area_list['3'] as $val):?>
-						<option value="<?php echo $val['id']?>" <?php if ($val['id'] == $area_list['default']['3'])echo "selected";?>><?php echo $val['name']?></option>
-						<?php endforeach;?>
-					<?php else:?>
-					<option value="all">所有区县</option>
-					<?php endif;?>
+				<select class="combox" name="Form[area_id]" default="<?php echo !isset($area_list['default']['3'])?'all':$area_list['default']['2']?>">
+				<option value="all">请选择</option>
+				<?php if (isset($area_list['default']['3'])) foreach ($area_list['3'] as $val):?>
+				<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
+				<?php endforeach;?>
+				</select>
 				</select>
             </div>
 

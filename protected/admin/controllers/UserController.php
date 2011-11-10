@@ -45,11 +45,7 @@ class UserController extends Controller
 			$user = new User;
 			// 获取省份信息
 	    	$sheng = Area::model()->findAreaByLevel();
-	    	$shi = Area::model()->findAreaByLevel(2);
-	    	$qu = Area::model()->findAreaByLevel(3);
    			$area['sheng'] = $sheng;
-	    	$area['shi'] = $shi;
-	    	$area['qu'] = $qu;
 			$areas = Area::model()->cache()->findAll(array('condition'=>'parent_id = 0'));
 			if (!empty($id))
 			{
@@ -152,7 +148,7 @@ class UserController extends Controller
 								$this->error($message);
 					}
         	}
-        		$this->render("edit", array('user'=>$user,'area'=>$area,'areas'=>$areas,'area_list'=>$area_list,'receiver'=>$receiver));
+        	$this->render("edit", array('user'=>$user,'area'=>$area,'area_list'=>$area_list,'receiver'=>$receiver));
 	}
 
 
@@ -209,10 +205,21 @@ class UserController extends Controller
     	$list = array();
 		foreach ($areas as $area)
 		{
-			$list[$area->id][0] = $area->id;
-			$list[$area->id][1] = $area->name;
+			$list[] = array('id'=>$area->id,'name'=>$area->name,'parent'=>$area->parent_id,);
 		}
 		return $list;
+    }
+    public function getArea()
+    {
+    	$sql = "SELECT id,name,parent_id FROM {{area}}";
+    	$command = Yii::app()->db->createCommand($sql);
+        $areas = $command->queryAll();
+        $result = array();
+        foreach ($areas as $area)
+        {
+            $result[] = array('id'=>$area['id'], 'name'=>$area['name'], 'parent'=>$area['parent_id']);
+        }
+        echo CJSON::encode($result);
     }
 }
 ?>

@@ -10,7 +10,11 @@ class OrderController extends Controller
 	{
 		$criteria = new CDbCriteria;
 
-		if (!empty($params['start_time']) && !empty($params['end_time']))
+
+		if (!empty($params['logistics_sn']))
+		{
+			$criteria->addSearchCondition('logistics_sn', $params['logistics_sn']);
+		}elseif (!empty($params['start_time']) && !empty($params['end_time']))
 		{
 			$stare_time = strtotime($params['start_time']);
 			$end_time = strtotime($params['end_time']) + 24 * 3600;
@@ -134,41 +138,41 @@ class OrderController extends Controller
 
 	    if ($status == 2)//积分修改
 	    {
-	        // 消费金额等积分
-	        $sql = "SELECT total_price FROM {{order}} WHERE id = $id";
-	        $data = Yii::app()->db->createCommand($sql)->query();
-            $data->bindColumn(1, $price);
-            if ($data->read() !== false) User::addScore((int)$price);
-
-            // 新客户送积分和累积消费积分
-            $sql = "SELECT first, accumulation_price FROM {{user}} WHERE id = " . Yii::app()->user->id;
-            $data = Yii::app()->db->createCommand($sql)->query();
-            $data->bindColumn(1, $first);
-            $data->bindColumn(2, $price);
-            if ($data->read() !== false)
-            {
-                // 如果为首次下单
-                if ($first == 1)
-                {
-                    User::addScore(1500, "首次下单积分奖励");
-                    // 清楚首次下单状态，防止重复奖励
-                    $sql = "UPDATE  {{user}} SET first = 0, update_time = :update_time WHERE id = " . Yii::app()->user->id;
-                    $command = Yii::app()->db->createCommand($sql);
-                    $command->bindValue(":update_time", Yii::app()->params['timestamp'], PDO::PARAM_INT);
-                    $command->execute();
-                }
-                // 如果累积消费大于等于5000，则额外赠送3000积分
-                if ((int)$price >= 5000)
-                {
-                    User::addScore(3000, "累积消费额外积分奖励");
-                    // 减去累积消费5000，防止重复奖励
-                    $sql = "UPDATE {{user}} SET accumulation_price = :price , update_time = :update_time WHERE id = " . Yii::app()->user->id;
-                    $command = Yii::app()->db->createCommand($sql);
-                    $command->bindValue(":price", strval($price - 5000), PDO::PARAM_STR);
-                    $command->bindValue(":update_time", Yii::app()->params['timestamp'], PDO::PARAM_INT);
-                    $command->execute();
-                }
-            }
+//	        // 消费金额等积分
+//	        $sql = "SELECT total_price FROM {{order}} WHERE id = $id";
+//	        $data = Yii::app()->db->createCommand($sql)->query();
+//            $data->bindColumn(1, $price);
+//            if ($data->read() !== false) User::addScore((int)$price);
+//
+//            // 新客户送积分和累积消费积分
+//            $sql = "SELECT first, accumulation_price FROM {{user}} WHERE id = " . Yii::app()->user->id;
+//            $data = Yii::app()->db->createCommand($sql)->query();
+//            $data->bindColumn(1, $first);
+//            $data->bindColumn(2, $price);
+//            if ($data->read() !== false)
+//            {
+//                // 如果为首次下单
+//                if ($first == 1)
+//                {
+//                    User::addScore(1500, "首次下单积分奖励");
+//                    // 清楚首次下单状态，防止重复奖励
+//                    $sql = "UPDATE  {{user}} SET first = 0, update_time = :update_time WHERE id = " . Yii::app()->user->id;
+//                    $command = Yii::app()->db->createCommand($sql);
+//                    $command->bindValue(":update_time", Yii::app()->params['timestamp'], PDO::PARAM_INT);
+//                    $command->execute();
+//                }
+//                // 如果累积消费大于等于5000，则额外赠送3000积分
+//                if ((int)$price >= 5000)
+//                {
+//                    User::addScore(3000, "累积消费额外积分奖励");
+//                    // 减去累积消费5000，防止重复奖励
+//                    $sql = "UPDATE {{user}} SET accumulation_price = :price , update_time = :update_time WHERE id = " . Yii::app()->user->id;
+//                    $command = Yii::app()->db->createCommand($sql);
+//                    $command->bindValue(":price", strval($price - 5000), PDO::PARAM_STR);
+//                    $command->bindValue(":update_time", Yii::app()->params['timestamp'], PDO::PARAM_INT);
+//                    $command->execute();
+//                }
+//            }
 	    	$sql = "UPDATE {{order}} SET status = :status, receive_time = '".Yii::app()->params['timestamp']."' WHERE id = :id";
 	    }
 	    elseif ($status == 5)//拍摄中
@@ -896,7 +900,7 @@ class OrderController extends Controller
         return $schedules;
 	}
 
-/**
+	/**
 	 * 获取模特
 	 */
 	public function getModel($id = null)
