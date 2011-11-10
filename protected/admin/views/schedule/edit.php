@@ -20,9 +20,9 @@
             </div>
             <div class="unit">
                 <label>拍摄类型：</label>
-                <select name="Form[shoot_type]" class="combox required" default="<?php echo !empty($model->shoot_type) ? $model->shoot_type : 1; ?>">
+                <select name="Form[shoot_type]" class="combox required" default="<?php echo !empty($model->shoot_type) ? $model->shoot_type : 0; ?>">
                 	<?php foreach ($typeList as $list):?>
-                    <option value="<?php echo $list['id']?>"><?php echo $list['name']?></option>
+                    <option value="<?php echo $list['shoot_type']?>"><?php $array =$this->getType($list['shoot_type']); foreach($array as $val ) echo $val['name'];?></option>
                     <?php endforeach;?>
                 </select>
             </div>

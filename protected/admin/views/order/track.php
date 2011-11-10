@@ -1,4 +1,10 @@
 <div class="pageContent" width="100%" layoutH="27">
+	<?php $this->widget('widget.Search', array(
+	    'panleStyle'=>'width: 100%;',
+	    'searchCondition'=>array(
+	        '客户编号：'=>array('type'=>'text', 'name'=>'params[user_sn]', 'defaultValue'=>empty($params['user_sn']) ? '' : $params['user_sn']),
+	    ),
+	)); ?>
     <table class="list" id="list" width="1300px">
     	<thead>
 	        <tr>
@@ -64,7 +70,7 @@
 	        <tr>
 	            <td><input type="checkbox" name="id[]" value="" /></td>
 	            <td>
-	            	<?php echo substr(strval($orderTrack->Order->user_id + 1000),1,3)?>
+	            	<?php echo 'P'.substr(strval($orderTrack->Order->user_id + 1000),1,3)?>
 	            	<br /><?php echo "<span style='font-weight:bold'>".Admin::getAdminName($orderTrack->admin_id).'</span>';?>
 	            </td><!-- 客户编号 -->
 	            <td><?php echo $orderTrack->Order->user_name?></td><!-- 客户名称 -->
@@ -78,7 +84,7 @@
 	            </td><!-- 数量 -->
 	            <td>
 	            	<?php $schedules = $this->getSchedule($orderTrack->Order->id);
-	            		if($schedules === false) echo "";
+	            		if($schedules === false) echo "未排程";
 	            		else{ foreach($schedules as $schedule ){
 		            		echo !empty($schedule['0']) ? date("Y-m-d H:i", $schedule['0']) : '';
 		            	}
@@ -86,7 +92,7 @@
 	            </td><!-- 拍摄时间 -->
 	            <td>
 	            	<?php $schedules = $this->getSchedule($orderTrack->Order->id);
-	            		if($schedules === false) echo "ss";
+	            		if($schedules === false) echo "未排程";
 	            		else{ foreach($schedules as $schedule )
 	            		{
 		            		if(!empty($schedule['1'])){

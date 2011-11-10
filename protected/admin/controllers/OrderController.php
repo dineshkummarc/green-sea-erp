@@ -492,7 +492,7 @@ class OrderController extends Controller
 				{
 				    $sn = substr(strval($i + 1000),1,3);
 				    $sn = $_POST['Form']['order_sn'] . $sn;
-					$sql = "INSERT INTO {{storage_goods}} ( storage_id, sn, name, shoot_type, is_shoot) VALUES (:val1, :val2, :val3, :val4, :val5)";
+					$sql = "INSERT INTO {{storage_goods}} ( storage_id, sn, name, shoot_type, type_name, is_shoot) VALUES (:val1, :val2, :val3, :val4, :val5, :val6)";
 					$command = Yii::app()->db->createCommand($sql);
 					$command->execute(array(
 					    ":val1"=>$_POST['Form']['storage_id'],
@@ -839,14 +839,36 @@ class OrderController extends Controller
 		spl_autoload_register(array('YiiBase','autoload'));
 		Yii::app()->end();
 	}
-
 	/**
 	 * 订单追踪
 	 * Enter description here ...
 	 */
-	public function actionOrderTrack($pageNum = 1, $numPerPage = 20)
+	public function actionOrderTrack(array $params = array(), $pageNum = 1, $numPerPage = 20)
 	{
 		$criteria = new CDbCriteria;
+		if (!empty($params['user_sn']))
+		{
+			$user_p = substr($params['user_sn'],0,1);
+			if ($user_p == 'p' || $user_p == 'P')
+			{
+				$user_id = (int)substr($params['user_sn'],1);
+
+				$sql = "SELECT id FROM {{order}} WHERE user_id = ".$user_id;
+				$command = Yii::app()->db->createCommand($sql);
+				$order_id_list = $command->queryAll();
+
+				$condition = "";
+				foreach ($order_id_list as $key=>$order)
+				{
+					if ($key > 0) $condition .= ' or ';
+	            	$condition .= 'order_id = '.$order['id'];
+				}
+				if ($condition == "") $condition = "order_id = ".$params['user_sn'];
+				$criteria->condition = $condition;
+			}else{
+				$this->error("客户编号必须以\"p\"或\"P\"开头");
+			}
+		}
 
 		$count = OrderTrack::model()->count($criteria);
         $pages = new CPagination($count);
@@ -857,6 +879,7 @@ class OrderController extends Controller
 		$orderTrackList = OrderTrack::model()->findAll($criteria);
 
 		$this->render('track',array(
+			'params' => $params,
 			'orderTrackList' => $orderTrackList,
 			'pages' => $pages,
 		));
