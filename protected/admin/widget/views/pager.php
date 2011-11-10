@@ -12,7 +12,7 @@
             </select>
         <span>共<?php echo $pages->itemCount; ?>条记录</span>
     </div>
-    <div class="pagination" targetType="navTab"
+    <div class="pagination" targetType="navTab" rel="jbsxBox"
         totalCount="<?php echo $pages->itemCount; ?>"
         numPerPage="<?php echo $pages->pageSize; ?>"
         pageNumShown="3"

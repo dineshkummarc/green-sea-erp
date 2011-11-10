@@ -84,7 +84,7 @@
 	            </td><!-- 数量 -->
 	            <td>
 	            	<?php $schedules = $this->getSchedule($orderTrack->Order->id);
-	            		if($schedules === false) echo "";
+	            		if($schedules === false) echo "未排程";
 	            		else{ foreach($schedules as $schedule ){
 		            		echo !empty($schedule['0']) ? date("Y-m-d H:i", $schedule['0']) : '';
 		            	}
@@ -92,7 +92,7 @@
 	            </td><!-- 拍摄时间 -->
 	            <td>
 	            	<?php $schedules = $this->getSchedule($orderTrack->Order->id);
-	            		if($schedules === false) echo "ss";
+	            		if($schedules === false) echo "未排程";
 	            		else{ foreach($schedules as $schedule )
 	            		{
 		            		if(!empty($schedule['1'])){
