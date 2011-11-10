@@ -43,9 +43,6 @@ class UserController extends Controller
 	public  function  actionEdit($id=null)
 	{
 			$user = new User;
-			// 获取省份信息
-	    	$sheng = Area::model()->findAreaByLevel();
-   			$area['sheng'] = $sheng;
 			if (!empty($id))
 			{
 					$user = $user->cache()->findByPk($id);
@@ -59,22 +56,22 @@ class UserController extends Controller
 			}
 			else
 			{
-				$area_list = null;
+				$area_list = Area::getAreaLevelAll(0);
 				 $receiver = new UserReceive;
 			}
 	        if (isset($_POST['Form']))
         	{
-        		    if($_POST['Form']['area_1']=="all")
+        		    if($_POST['Form']['area_1']==0)
         		    {
         		    		$message="请选择省份";
         		    		$this->error($message);
         		    }
-        	      	if($_POST['Form']['area_2']=="all")
+        	      	if($_POST['Form']['area_2']==0)
         		    {
         		    		$message="请选择市区";
         		    		$this->error($message);
         		    }
-        	        if($_POST['Form']['area_id']=="all")
+        	        if($_POST['Form']['area_id']==0)
         		    {
         		    		$message="请选择具体地区";
         		    		$this->error($message);
@@ -147,7 +144,7 @@ class UserController extends Controller
 								$this->error($message);
 					}
         	}
-        	$this->render("edit", array('user'=>$user,'area'=>$area,'area_list'=>$area_list,'receiver'=>$receiver));
+        	$this->render("edit", array('user'=>$user,'area_list'=>$area_list,'receiver'=>$receiver));
 	}
 
 
@@ -184,41 +181,29 @@ class UserController extends Controller
         $count = $command->execute(array(":id"=>$id, ":score"=>$score));
         $this->success("修改成功", array('navTabId'=>'user-index'));
     }
-    public function actionArea($type)
+
+    public function actionArea($id)
     {
-        if ($type == 'all')
+        if ($id == '0')
         {
+        	//array('statusCode'=>200, 'message'=>$message)
             $areas =  Area::model()->cache()->findAll(array('condition'=>'parent_id = 0'));
-            echo json_encode($this->AreaFormat($areas));
-//            print_r ($this->AreaFormat($areas));
+            echo CJSON::encode($this->AreaFormat($areas));
             return;
         }else{
-            $areas =  Area::model()->cache()->findAll(array('condition'=>'parent_id = '.$type));
-            echo json_encode($this->AreaFormat($areas));
-//            print_r ($this->AreaFormat($areas));
+            $areas =  Area::model()->cache()->findAll(array('condition'=>'parent_id = '.$id));
+            echo CJSON::encode($this->AreaFormat($areas));
             return;
         }
     }
     public function AreaFormat($areas)
     {
     	$list = array();
-		foreach ($areas as $area)
+		foreach ($areas as $key=>$area)
 		{
-			$list[] = array('id'=>$area->id,'name'=>$area->name,'parent'=>$area->parent_id,);
+			$list[] = array('id'=>$area->id,'name'=>$area->name);
 		}
 		return $list;
-    }
-    public function getArea()
-    {
-    	$sql = "SELECT id,name,parent_id FROM {{area}}";
-    	$command = Yii::app()->db->createCommand($sql);
-        $areas = $command->queryAll();
-        $result = array();
-        foreach ($areas as $area)
-        {
-            $result[] = array('id'=>$area['id'], 'name'=>$area['name'], 'parent'=>$area['parent_id']);
-        }
-        echo CJSON::encode($result);
     }
 }
 ?>

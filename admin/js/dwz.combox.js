@@ -23,7 +23,7 @@
 			return this.each(function(){
 				var box = $(this);
 				var selector = $(op.selector, box);
-
+				
 				box.append('<input type="hidden" class="'+selector.attr("class")+'" name="' + selector.attr("name") + '" value="'+selector.attr("value")+'"/>').data("title", selector.text());
 				allSelectBox.push(box.attr("id"));
 				$(op.selector, box).click(function(){
@@ -56,34 +56,92 @@
 				$(">a", this).click(function(event){
 					var $this = $(this);
 					var property = $(":hidden", box);
-					var change = eval(selector.attr("change"));
-					if ($.isFunction(change)) {
-						var param = box.attr("param");
-						var rel = box.attr("rel");
-						var args = (!rel && param)?DWZ.jsonEval("{"+param + ":" + $this.attr("value")+"}"):$this.attr("value");
-						var options = change.call(selector[0], args);
-						if (options == false)
-						{
-						    event.preventDefault();
-						    return false;
-						}
-						if(rel) {
-							var html = "";
-							for (var i = 0; i < options.length; i++) {
-								html += "<li><a href=\"#\" value=\"" + options[i][0] + "\">" + options[i][1] + "</a></li>";
-							}
-							var relObj = $(".combox").find(">div[name='" + rel + "']");
-							options = $("#op"+relObj.attr("id")).html(html);
-							$(">li", options).comboxOption($(">a", relObj), relObj);
-							$(">li>a:first", options).trigger("click");
-//								if (relObj.attr("rel")) setTimeout(function(){$(">a:first", relObj).trigger("click")}, 100);
-						}
+					var param = box.attr("param");
+					var rel = box.attr("rel");
+					var args = (!rel && param)?DWZ.jsonEval("{"+param + ":" + $this.attr("value")+"}"):$this.attr("value");
+					var isAjax = box.attr("isAjax");
+					if (isAjax)
+					{
+						var url = box.attr("url");
+						$.ajax({
+							url: url,
+							type: "POST",
+							data: {id: $this.attr("value")},
+							dataType: "JSON",
+							success: function(json){
+								success(json);
+							},
+							error: DWZ.ajaxError
+						});
+					}else{
+						change();
 					}
-					$this.parent().parent().find(".selected").removeClass("selected");
-                    $this.addClass("selected");
-                    selector.text($this.text());
-					property.attr("value", $this.attr("value"));
-					event.preventDefault();
+					function change()
+					{
+						var change = eval(selector.attr("change"));
+						if ($.isFunction(change)) {
+							var options = false;
+							options = change.call(selector[0], args);
+							if (options == false)
+							{
+							    event.preventDefault();
+							    return false;
+							}
+							if(rel) {
+								var html = "";
+								for (var i = 0; i < options.length; i++) {
+									html += "<li><a href=\"#\" value=\"" + options[i][0] + "\">" + options[i][1] + "</a></li>";
+								}
+								var relObj = $(".combox").find(">div[name='" + rel + "']");
+								options = $("#op"+relObj.attr("id")).html(html);
+								$(">li", options).comboxOption($(">a", relObj), relObj);
+								$(">li>a:first", options).trigger("click");
+	//								if (relObj.attr("rel")) setTimeout(function(){$(">a:first", relObj).trigger("click")}, 100);
+							}
+						}
+						$this.parent().parent().find(".selected").removeClass("selected");
+	                    $this.addClass("selected");
+	                    selector.text($this.text());
+						property.attr("value", $this.attr("value"));
+						event.preventDefault();
+					}
+					function success(json)
+					{
+						if (isAjax) {
+							var options = false;
+							
+							var result = new Array();
+						    result.push(['0', '请选择']);
+						    var json = $.parseJSON(json);
+						    
+						    for (i = 0; i < json.length; i++)
+						    {
+						        result.push([json[i].id, json[i].name]);
+						    }
+						    options = result;
+							if (options == false)
+							{
+							    event.preventDefault();
+							    return false;
+							}
+							if(rel) {
+								var html = "";
+								for (var i = 0; i < options.length; i++) {
+									html += "<li><a href=\"#\" value=\"" + options[i][0] + "\">" + options[i][1] + "</a></li>";
+								}
+								var relObj = $(".combox").find(">div[name='" + rel + "']");
+								options = $("#op"+relObj.attr("id")).html(html);
+								$(">li", options).comboxOption($(">a", relObj), relObj);
+								$(">li>a:first", options).trigger("click");
+	//								if (relObj.attr("rel")) setTimeout(function(){$(">a:first", relObj).trigger("click")}, 100);
+							}
+						}
+						$this.parent().parent().find(".selected").removeClass("selected");
+	                    $this.addClass("selected");
+	                    selector.text($this.text());
+						property.attr("value", $this.attr("value"));
+						event.preventDefault();
+					}
 				});
 			});
 			box.removeData("title");
@@ -105,8 +163,10 @@
 				    label = $($("option",$this).get(0)).text();
 				var ref = $this.attr("ref");
 				var param = $this.attr("param");
+				var isAjax = $this.attr("isAjax");
+				var url = $this.attr("url");
 				var cid = Math.round(Math.random()*10000000);
-				var select = '<div class="combox"><div id="'+ cid +'" class="select"' + (ref?' rel="' + ref + '"' : '') + ' name="' + name + '"' + (param ? ' param="' + param+'"' : '') + '>';
+				var select = '<div class="combox"><div id="'+ cid +'" class="select"' + (ref?' rel="' + ref + '"' : '') + ' name="' + name + '"' + (param ? ' param="' + param+'"' : '') + (isAjax ? ' isAjax="' + isAjax+'"' : '') + (url ? ' url="' + url+'"' : '') + '>';
 				select += '<a href="javascript:" class="'+$this.attr("class")+'" name="' + name +'" value="' + value + '" change="' + ($this.attr("change")?$this.attr("change"):"")+ '">' + label +'</a></div></div>'
 				if ($this.hasClass('required')) select += '<span style="color: red">*</span>';
 				var options = '<ul class="comboxop" id="op'+ cid +'">';

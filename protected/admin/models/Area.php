@@ -30,6 +30,13 @@ class Area extends CActiveRecord
 	public function getAreaLevelAll($id)
 	{
 		$list = array();
+		if ($id == 0)
+		{
+			$sql = "select id,name,parent_id FROM {{area}} WHERE parent_id = 0";
+			$command = Yii::app()->db->createCommand($sql);
+			$list['1'] = $command->queryAll();
+			return $list;
+		}
 		$sql = "select id,name,parent_id FROM {{area}} WHERE id = ".$id;
 		$command = Yii::app()->db->createCommand($sql);
 		$area_3 = $command->queryRow();
