@@ -28,7 +28,7 @@
 	            <th>客户名称</th>
 	            <th>时间</th>
 	            <th>数量</th>
-	            <th>拍摄类型&nbsp;|&nbsp;拍摄模特&nbsp;|&nbsp;拍摄时间</th>
+	            <th>拍摄类型&nbsp;&nbsp;|&nbsp;&nbsp;拍摄模特&nbsp;&nbsp;|&nbsp;&nbsp;拍摄时间</th>
 	            <th>拍摄中</th>
 	            <th>已拍摄</th>
 	            <th>修中</th>

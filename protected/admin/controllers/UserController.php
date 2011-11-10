@@ -100,6 +100,7 @@ class UserController extends Controller
                 	$_POST['Form']['phone'] = trim($_POST['Form']['phone']);
                 	$user->attributes = $_POST['Form'];
                 	$user->first = 1;
+                	$user->area_id = 0;
                 	$user->admin_id=Yii::app()->user->id;
 					$user->accumulation_price = 0;
 					$user->receive_id = 0;
