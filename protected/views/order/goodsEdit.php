@@ -28,46 +28,47 @@
             <td>
                 <select name="Form[<?php echo $i;?>][shoot_type]">
                     <?php foreach ($shootType as $type): ?>
-                    <option value="<?php echo $type['id']; ?>"><?php echo $type['name']; ?></option>
+                    <option value="<?php echo $type['id']; ?>" <?php if (isset($goods->shoot_type) && $goods->shoot_type == $type['id']) echo "selected"; ?>><?php echo $type['name']; ?></option>
                     <?php endforeach; ?>
                 </select>
             </td>
             <td>
                 <select id="goods-type" name="Form[<?php echo $i;?>][type]">
                     <?php foreach ($goodsType as $type): ?>
-                    <option value="<?php echo $type->id ?>"><?php echo $type->name; ?></option>
+                    <option value="<?php echo $type->id ?>" <?php if (isset($goods->type) && $goods->type == $type->id) echo "selected"; ?>><?php echo $type->name; ?></option>
                     <?php endforeach; ?>
                     <option value="0">自定义</option>
                 </select>
             </td>
             <td>
                 <select name="Form[<?php echo $i;?>][season]">
-                    <option value="0">不限</option>
-                    <option value="1">春秋</option>
-                    <option value="2">夏</option>
-                    <option value="3">冬</option>
+                    <option value="0" <?php if (isset($goods->season) && $goods->season == 0) echo "selected"; ?>>不限</option>
+                    <option value="1" <?php if (isset($goods->season) && $goods->season == 1) echo "selected"; ?>>春秋</option>
+                    <option value="2" <?php if (isset($goods->season) && $goods->season == 2) echo "selected"; ?>>夏</option>
+                    <option value="3" <?php if (isset($goods->season) && $goods->season == 3) echo "selected"; ?>>冬</option>
                 </select>
             </td>
             <td>
                 <select name="Form[<?php echo $i;?>][sex]">
-                    <option value="0">不限</option>
-                    <option value="1">男</option>
-                    <option value="2">女</option>
-                    <option value="3">情侣</option>
+                    <option value="0" <?php if (isset($goods->sex) && $goods->sex == 0) echo "selected"; ?>>不限</option>
+                    <option value="1" <?php if (isset($goods->sex) && $goods->sex == 1) echo "selected"; ?>>男</option>
+                    <option value="2" <?php if (isset($goods->sex) && $goods->sex == 2) echo "selected"; ?>>女</option>
+                    <option value="3" <?php if (isset($goods->sex) && $goods->sex == 3) echo "selected"; ?>>情侣</option>
                 </select>
             </td>
             <td>
                 <select name="Form[<?php echo $i;?>][style]">
                     <option value="0">不限</option>
                     <?php foreach ($styles as $style): ?>
-                    <option value="<?php echo $style['id']; ?>"><?php echo $style['name']; ?></option>
+                    <option value="<?php echo $style['id']; ?>" <?php if (isset($goods->style) && $goods->style == $style['id']) echo "selected"; ?>><?php echo $style['name']; ?></option>
                     <?php endforeach; ?>
                 </select>
             </td>
             <td>
-                <input id="goods-count" type="text" name="Form[<?php echo $i;?>][count]" class="input" style="width: 100px;" tip="只能填数字" />
+                <input type="hidden" name="Form[<?php echo $i;?>][id]" value="<?php echo $id; ?>" />
+                <input id="goods-count" type="text" name="Form[<?php echo $i;?>][count]" class="input" style="width: 60px;" tip="只能填数字" value="<?php if (isset($goods->count)) echo $goods->count; ?>" />
             </td>
-            <td><textarea name="Form[<?php echo $i;?>][memo]" class="text" style="width: 150px; height: 80px;"></textarea></td>
+            <td><textarea name="Form[<?php echo $i;?>][memo]" class="text" style="width: 150px; height: 80px;"><?php if (isset($goods->memo)) echo $goods->memo; ?></textarea></td>
         </tr>
         <?php endfor; ?>
     </table>

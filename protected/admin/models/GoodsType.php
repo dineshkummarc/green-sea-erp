@@ -19,6 +19,13 @@ class GoodsType extends CActiveRecord
 		return parent::model($className);
 	}
 
+	public function cache($duration = null, $dependency = null)
+	{
+	    $duration = 3600 * 24;
+	    $dependency = new CDbCacheDependency("SELECT COUNT(*) FROM {{goods_type}}");
+	    return parent::cache($duration, $dependency);
+	}
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -62,5 +69,16 @@ class GoodsType extends CActiveRecord
 			'name' => 'Name',
 			'price' => 'Price',
 		);
+	}
+
+	public static function getType()
+	{
+        $goodsType = GoodsType::model()->cache()->findAll();
+	    $result = array();
+        foreach ($goodsType as $type)
+        {
+            $result[$type->id] = (object)$type->attributes;
+        }
+        return $result;
 	}
 }

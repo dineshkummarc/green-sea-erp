@@ -69,4 +69,15 @@ class ShootType extends CActiveRecord
 			'width' => 'Width',
 		);
 	}
+
+	public static function getType()
+	{
+	    $shootType = ShootType::model()->findAll();
+	    $result = array();
+        foreach ($shootType as $type)
+        {
+            $result[$type->id] = (object)$type->attributes;
+        }
+        return $result;
+	}
 }
