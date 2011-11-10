@@ -268,12 +268,22 @@ var navTab = {
 		if (flag && url) {
 			$tab.data("reloadFlag", null);
 			var $panel = this._getPanel($tab.attr("tabid"));
-			
+
 			if ($tab.hasClass("external")){
 				navTab.openExternal(url, $panel);
 			}else {
-				$panel.loadUrl(url, {}, function(){navTab._loadUrlCallback($panel);});
+			    var data = {};
+		        var pagerData = $("div.pagination", $panel);
+		        if (pagerData.length>0)
+		        {
+		            data.pageNum = pagerData.attr("currentPage");
+		            data.numPerPage = pagerData.attr("numPerPage");
+		        }
+				$panel.loadUrl(url, data, function(){
+					navTab._loadUrlCallback($panel);
+				});
 			}
+			
 		}
 	},
 	reloadFlag: function(tabid){
@@ -285,24 +295,19 @@ var navTab = {
 	},
 	reload: function(url, options){
 		var op = $.extend({data:{}, navTabId:"", callback:null}, options);
-		var $tab = op.navTabId ? this._getTab(op.navTabId) : this._getTabs().eq(this._currentIndex);
 		var $panel =  op.navTabId ? this._getPanel(op.navTabId) : this._getPanels().eq(this._currentIndex);
-		
 		if ($panel){
 			if (!url) {
+				var $tab = op.navTabId ? this._getTab(op.navTabId) : this._getTabs().eq(this._currentIndex);
 				url = $tab.attr("url");
 			}
+			var pagerData = $("form[rel=pagerForm]", $panel).serializeArray();
+			if (pagerData) op.data = $.extend(op.data, pagerData);
 			if (url) {
-				if ($tab.hasClass("external")) {
-					navTab.openExternal(url, $panel);
-				} else {
-					$panel.ajaxUrl({
-						type:"POST", url:url, data:op.data, callback:function(response){
-							navTab._loadUrlCallback($panel);
-							if ($.isFunction(op.callback)) op.callback(response);
-						}
-					});
-				}
+				$panel.loadUrl(url, op.data, function(response){
+					navTab._loadUrlCallback($panel);
+					if ($.isFunction(op.callback)) op.callback(response);
+				});
 			}
 		}
 	},

@@ -19,7 +19,7 @@ $this->widget('widget.Search', array(
             <li><a class="icon" href="<?php echo $this->createUrl("auth/role") ?>" target="navTab" rel="auth-role"><span>部门列表</span></a></li>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH="138">
+    <table class="list" width="100%" layoutH="115">
         <thead>
             <tr>
                 <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>

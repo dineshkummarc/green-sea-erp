@@ -14,19 +14,17 @@
 		),
     ),
 )); endif;?>
-<div class="pageContent">
-	<div class="panelBar">
-		<ul class="toolBar">
-			<li><a class="add" href="<?php echo $this->createUrl("schedule/edit",array('orderId'=>$orderId)); ?>" target="dialog" width="400" height="500" mask="true" rel="id[]" ><span>添加</span></a></li>
-			<li class="line">line</li>
-			<li><a class="delete" href="<?php echo $this->createUrl("schedule/del"); ?>" target="selectedTodo" rel="id[]" title="确定要删除吗?"><span>删除</span></a></li>
-		</ul>
-	</div>
-	<table class="table" width="100%" layoutH="160">
+<div class="panelBar">
+<ul class="toolBar">
+	<li><a class="icon" href="<?php echo $this->createUrl("schedule/order"); ?>" target="navTab" ><span>未排程订单</span></a></li>
+	<li class="line">line</li>
+	</ul>
+</div>
+	<table class="list" width="100%" layoutH="140">
 		<thead>
 			<tr>
 				<th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
-				<th width="100">订单</th>
+				<th width="150">订单</th>
 				<th width="80">拍摄类型</th>
 				<th width="120">拍摄时间</th>
 				<th width="100">拍摄场地</th>
@@ -38,29 +36,30 @@
 		</thead>
 		<tbody>
 			<?php if (empty($models) && !isset($models)): ?>
-	        <tr>
-	            <td colspan="10">无数据</td>
-	        </tr>
-		    <?php else:  $models = (object)$models; foreach ($models as $model): ?>
-		    <tr>
-		    	<td><input type="checkbox" name="id[]" value="<?php echo $model->id ?>" /></td>
-		        <td><?php echo "[ ".$model->Order->sn." ]".$model->Order->user_name; ?></td>
-		        <td><?php $type = $this->getType($model->shoot_type); echo $type['0']['name']; ?></td>
-		        <td><?php echo date("Y-m-d H:i",$model->shoot_time); ?></td>
-		        <td><?php echo $model->shoot_site; ?></td>
-		        <td><?php $admin = $this->getAdmin($model->shoot_id,null); echo !empty($admin['0']['name']) ? $admin['0']['name'] : '';?></td>
-		        <td><?php $models = $this->getModel($model->model_id); $admin = $this->getAdmin($model->stylist_id,null); echo !empty($models['0']['nick_name']) ? $models['0']['nick_name'] : ''; echo !empty($admin['0']['name']) ? " / ".$admin['0']['name'] : '';?></td>
-		        <td><?php echo !empty($model->memo) ? $model->memo : ''; ?></td>
-		        <td align="center">
-		        	<a href="<?php echo $this->createUrl('schedule/index', array('orderId'=>$model->order_id)); ?>" target="navTab" rel="schedule-index">查看</a> |
-		            <a href="<?php echo $this->createUrl("schedule/edit", array('id'=>$model->id, 'orderId'=>$model->order_id)); ?>" target="dialog" width="400" height="500" mask="true" >修改</a> |
-		            <a href="<?php echo $this->createUrl("schedule/del", array('id'=>$model->id)); ?>" target="ajaxTodo" title="删除" >删除</a>
-		        </td>
-		    </tr>
-		    <?php endforeach; endif; ?>
-		</tbody>
-	</table>
-    <?php if(isset($pages)): $this->widget('widget.Pager', array(
+        <tr>
+            <td colspan="9">无数据</td>
+        </tr>
+	    <?php else:  $models = (object)$models; foreach ($models as $model): ?>
+	    <tr>
+	    	<td><input type="checkbox" name="id[]" value="<?php echo $model->id ?>" /></td>
+	        <td><?php foreach ($this->getOrder($model->order_id) as $val) { echo "[ ".$val['sn']." ]".$val['user_name']; }?></td>
+	        <td><?php $type = $this->getType($model->shoot_type); echo $type['0']['name']; ?></td>
+	        <td><?php echo date("Y-m-d H:i",$model->shoot_time); ?></td>
+	        <td><?php echo $model->shoot_site; ?></td>
+	        <td><?php $admin = $this->getAdmin($model->shoot_id,null); echo !empty($admin['0']['name']) ? $admin['0']['name'] : '';?></td>
+	        <td><?php $models = $this->getModel($model->model_id); $admin = $this->getAdmin($model->stylist_id,null); echo !empty($models['0']['nick_name']) ? $models['0']['nick_name'] : ''; echo !empty($admin['0']['name']) ? " / ".$admin['0']['name'] : '';?></td>
+	        <td><?php echo !empty($model->memo) ? $model->memo : ''; ?></td>
+	        <td align="center">
+	        	<a href="<?php echo $this->createUrl('schedule/index', array('orderId'=>$model->order_id)); ?>" target="navTab" rel="schedule-index">查看</a> |
+	            <a href="<?php echo $this->createUrl("schedule/edit", array('id'=>$model->id, 'orderId'=>$model->order_id)); ?>" target="dialog" width="400" height="500" mask="true" >修改</a> |
+	            <a href="<?php echo $this->createUrl("schedule/del", array('id'=>$model->id)); ?>" target="ajaxTodo" title="删除" >删除</a>
+	        </td>
+	    </tr>
+	    <?php endforeach; endif; ?>
+	</tbody>
+</table>
+<?php if(isset($pages)): $this->widget('widget.Pager', array(
         'pages'=>$pages,
     )); endif;?>
-</div>
+
+
