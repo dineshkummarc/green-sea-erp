@@ -419,6 +419,7 @@ class OrderController extends Controller
             $order->receive_time = 0;
             $order->receive_address = isset($userInfo->ReceiveAddress) ? $userInfo->ReceiveAddress->getFullAddress() : "";
             $order->status = 1;
+            $order->logistics_sn = $_POST['Form']['logistics_sn1'].' '.$_POST['Form']['logistics_sn2'];
 
             $order->attributes = $_POST['Form'];
             $order->width = serialize($order->width);
