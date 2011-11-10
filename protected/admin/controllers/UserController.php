@@ -46,7 +46,6 @@ class UserController extends Controller
 			// 获取省份信息
 	    	$sheng = Area::model()->findAreaByLevel();
    			$area['sheng'] = $sheng;
-			$areas = Area::model()->cache()->findAll(array('condition'=>'parent_id = 0'));
 			if (!empty($id))
 			{
 					$user = $user->cache()->findByPk($id);

@@ -104,7 +104,7 @@ function changeArea(id)
             </div>
             <div class="unit">
                 <label>确认密码</label>
-                <input type="password" id="rePwd" equalto="#rePwd" />
+                <input type="password" id="rePwd" equalto="#pwdequal" />
             </div>
             <div class="unit">
                 <label>旺旺号</label>
