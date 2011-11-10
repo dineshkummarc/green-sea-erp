@@ -397,7 +397,7 @@ class OrderController extends Controller
         }
 		$goodsCounts=$result;
 
-        if ((isset($shootTypes[1]) || isset($shootTypes[2])) && empty($selectedModels) && $goodsCounts >50)
+        if ((isset($shootTypes[1]) || isset($shootTypes[2])) && empty($selectedModels) && $goodsCounts >= 50)
             $this->redirect(array("order/selectModels", "id"=>$id));
 
         if (isset($_POST['Form']))
