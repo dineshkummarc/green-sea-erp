@@ -14,9 +14,10 @@
            <li><a class="delete" href="<?php echo $this->createUrl("user/del"); ?>" target="selectedTodo" title="优惠券也会删除，确定删除选定数据吗？" rel="id[]" ><span>删除选定</span></a></li>
         </ul>
     </div>
-    <table class="list" width="100%" >
+    <table class="table" width="100%" >
+    <thead>
         <tr>
-            <th width="20"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
+            <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
             <th>用户编号</th>
             <th>用户名</th>
             <th>旺旺号</th>
@@ -27,6 +28,8 @@
             <th >详细信息</th>
             <th>操作</th>
         </tr>
+      </thead>
+      <tbody>
         <?php if (!empty($userList)) foreach ($userList as $user): ?>
         <tr>
             <td><input type="checkbox" name="id[]" value="<?php echo $user->id ?>" /></td>
@@ -53,6 +56,7 @@
             </td>
         </tr>
         <?php endforeach; ?>
+      </tbody>
     </table>
 </div>
 <?php $this->widget('widget.Pager', array(
