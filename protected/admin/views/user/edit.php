@@ -1,17 +1,16 @@
 <script type="text/javascript">
-var Area = <?php $this->getArea(); ?>;
-function changeArea(id)
+function changeArea(id, name)
 {
-    var result = new Array();
-    result.push(['all', '请选择']);
-    for (i = 0; i < Area.length; i++)
-    {
-        if (Area[i].parent == id)
-        {
-            result.push([Area[i].id, Area[i].name]);
-        }
-    }
-    return result;
+//    var result = new Array();
+//    result.push(['all', '请选择']);
+//    for (i = 0; i < Area.length; i++)
+//    {
+//        if (Area[i].parent == id)
+//        {
+//            result.push([Area[i].id, Area[i].name]);
+//        }
+//    }
+//    return result;
 }
 </script>
 <div class="pageContent">
@@ -24,24 +23,18 @@ function changeArea(id)
 
             <div class="unit" >
                 <label>所在省:</label>
-	            <select class="combox" change="changeArea" default="<?php echo !isset($area_list['default']['1'])?'all':$area_list['default']['1']?>" name="Form[area_1]" ref="Form[area_2]" >
-				<option value="all">请选择</option>
-				<?php if (isset($area_list['default']['1'])):?>
-					<?php foreach ($area_list['1'] as $val):?>
-					<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
-					<?php endforeach;?>
-				<?php else:?>
-					<?php foreach ($area['sheng'] as $val):?>
-					<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
-					<?php endforeach;?>
-				<?php endif;?>
+	            <select class="combox" isAjax="true" url="<?php echo $this->createUrl("user/area"); ?>" default="<?php echo !isset($area_list['default']['1'])?'0':$area_list['default']['1']?>" name="Form[area_1]" ref="Form[area_2]" >
+				<option value="0">请选择</option>
+				<?php foreach ($area_list['1'] as $val):?>
+				<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
+				<?php endforeach;?>
 				</select>
             </div>
 
             <div class="unit">
 	            <label>所在市:</label>
-				<select class="combox" name="Form[area_2]" default="<?php echo !isset($area_list['default']['2'])?'all':$area_list['default']['2']?>" ref="Form[area_id]" change="changeArea">
-				<option value="all">请选择</option>
+				<select class="combox" name="Form[area_2]" isAjax="true" url="<?php echo $this->createUrl("user/area"); ?>" default="<?php echo !isset($area_list['default']['2'])?'0':$area_list['default']['2']?>" ref="Form[area_id]">
+				<option value="0">请选择</option>
 				<?php if (isset($area_list['default']['2'])) foreach ($area_list['2'] as $val):?>
 				<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
 				<?php endforeach;?>
@@ -50,8 +43,8 @@ function changeArea(id)
 
             <div class="unit">
 	            <label>所在区:</label>
-				<select class="combox" name="Form[area_id]" default="<?php echo !isset($area_list['default']['3'])?'all':$area_list['default']['2']?>">
-				<option value="all">请选择</option>
+				<select class="combox" name="Form[area_id]" default="<?php echo !isset($area_list['default']['3'])?'0':$area_list['default']['3']?>">
+				<option value="0">请选择</option>
 				<?php if (isset($area_list['default']['3'])) foreach ($area_list['3'] as $val):?>
 				<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
 				<?php endforeach;?>
