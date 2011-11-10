@@ -190,9 +190,7 @@ class UserController extends Controller
     {
         if ($id == '0')
         {
-        	//array('statusCode'=>200, 'message'=>$message)
-            $areas =  Area::model()->cache()->findAll(array('condition'=>'parent_id = 0'));
-            echo CJSON::encode($this->AreaFormat($areas));
+            echo CJSON::encode(array('status'=>0));
             return;
         }else{
             $areas =  Area::model()->cache()->findAll(array('condition'=>'parent_id = '.$id));
