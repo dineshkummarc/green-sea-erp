@@ -102,21 +102,23 @@ class UserController extends Controller
 			}
  			else
  			{
-				$user->create_time = Yii::app()->params['timestamp'];
+
 			 	$message="添加成功";
+			 	$user->first = 1;
+            	$user->area_id = 0;
+            	$user->admin_id=Yii::app()->user->id;
+				$user->accumulation_price = 0;
+				$user->receive_id = 0;
+				$user->receive_count = 0;
+				$user->next_order = 1;
+				$user->login_time = 0;
+				$user->last_ip = 0;
+				$user->create_time = Yii::app()->params['timestamp'];
  			}
+
             $user->attributes = $_POST['Form'];
 
             $_POST['Form']['phone'] = trim($_POST['Form']['phone']);
-            $user->first = 1;
-            $user->area_id = 0;
-            $user->admin_id=Yii::app()->user->id;
-			$user->accumulation_price = 0;
-			$user->receive_id = 0;
-			$user->receive_count = 0;
-			$user->next_order = 1;
-			$user->login_time = 0;
-			$user->last_ip = 0;
 			$user->update_time = Yii::app()->params['timestamp'];
 
 			if($user->save())
@@ -135,10 +137,8 @@ class UserController extends Controller
 				else
 				{
 					$error = array_shift($receiver->getErrors());
-					if (!empty($_POST['Form']['id']))
-					$message="修改失败".$error[0];
-					else $message="添加失败";
-					$this->error($message);
+                	$message = '添加失败：'.$error[0];
+                	$this->error($message);
 				}
 			}
 			else
