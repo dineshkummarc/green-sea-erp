@@ -60,7 +60,10 @@ class UserController extends Controller
             $user->next_order = 1;
             $user->login_time = 0;
             $user->last_ip = 0;
-            $user->create_time = Yii::app()->params['timestamp'];
+            $user->area_id = 178;
+            if (empty($user->create_time))
+                $user->create_time = Yii::app()->params['timestamp'];
+            $user->update_time = Yii::app()->params['timestamp'];
             if($user->save())
             {
                 if (!empty($_POST['Form']['id']))

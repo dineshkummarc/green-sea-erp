@@ -14,7 +14,7 @@
            <li><a class="delete" href="<?php echo $this->createUrl("user/del"); ?>" target="selectedTodo" title="优惠券也会删除，确定删除选定数据吗？" rel="id[]" ><span>删除选定</span></a></li>
         </ul>
     </div>
-    <table class="table" width="100%" >
+    <table class="list" width="100%" >
     <thead>
         <tr>
             <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>

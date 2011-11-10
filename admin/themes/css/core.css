@@ -637,3 +637,11 @@ a.btnAttach{background-position: -183px 0}
     vertical-align:middle;
 }
 /**/
+div.pic_width 
+{
+    float: left;
+}
+div.pic_width div
+{
+    line-height: 20px;
+}

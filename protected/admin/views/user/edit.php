@@ -15,15 +15,15 @@
             <div class="unit">
                 <?php if (!empty($user->password)): ?>
                 <label>密码重置</label>
-                <input id="pwdequal" type="text" name="Form[password]"  />
+                <input id="pwdequal" type="password" name="Form[password]"  />
                 <?php else: ?>
                 <label>密码</label>
-                <input id="pwdequal" type="text" name="Form[password]" class="required" alt="密码不能为空" />
+                <input id="pwdequal" type="password" name="Form[password]" class="required" alt="密码不能为空" />
                 <?php endif; ?>
             </div>
             <div class="unit">
                 <label>确认密码</label>
-                <input type="text" id="rePwd" equalto="#rePwd" />
+                <input type="password" id="rePwd" equalto="#rePwd" />
             </div>
             <div class="unit">
                 <label>旺旺号</label>
