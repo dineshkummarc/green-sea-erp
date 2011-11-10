@@ -18,7 +18,8 @@ function status(val)
 	    'panleStyle'=>'width: 100%; height: 50px;',
 	    'searchCondition'=>array(
 	        '订单号：'=>array('type'=>'text', 'name'=>'params[sn]', 'defaultValue'=>empty($params['sn']) ? '' : $params['sn'], 'alt'=>'支持模糊搜索'),
-	        '客户名：'=>array('type'=>'text', 'name'=>'params[user_name]', 'defaultValue'=>empty($params['user_name']) ? '' : $params['user_name'], 'alt'=>'支持模糊搜索'),
+	        '运单号：'=>array('type'=>'text', 'name'=>'params[logistics_sn]', 'defaultValue'=>empty($params['logistics_sn']) ? '' : $params['logistics_sn'], 'alt'=>'支持模糊搜索'),
+			'客户名：'=>array('type'=>'text', 'name'=>'params[user_name]', 'defaultValue'=>empty($params['user_name']) ? '' : $params['user_name'], 'alt'=>'支持模糊搜索'),
 
 	        '状态：'=>array('type'=>'select', 'name'=>'params[status]', 'defaultValue'=>empty($params['status']) ? '' : $params['status'],
 	            'options'=>$shootStatus
@@ -42,11 +43,12 @@ function status(val)
 	            <th width="80" >客户名</th>
 	            <th width="80">旺旺号</th>
 	            <th width="50">订单号</th>
-	            <th width="50">合同金额</th>
-	            <th width="80"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('sort'=>'time'));?>">下单时间</a></th>
-	            <th width="120"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('sort'=>'status'));?>">当前状态</a></th>
-	            <th width="40">是否跟拍</th>
-	            <th width="250">操作</th>
+	            <th width="60">合同金额</th>
+	            <th width="120"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('sort'=>'time'));?>">下单时间</a></th>
+	            <th width="180"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('sort'=>'status'));?>">当前状态</a></th>
+	            <th width="60">是否跟拍</th>
+	            <th width="60">运单号</th>
+	            <th>操作</th>
 	        </tr>
         </thead>
         <tbody>
@@ -70,6 +72,7 @@ function status(val)
 					</select>
 	            </td>
 	            <td><?php echo $order->following == 1 ? "是" : '否'; ?></td>
+	            <td><?php echo empty($order->logistics_sn)?'':$order->logistics_sn?></td>
 	            <td>
 	            	<a href="<?php echo $this->createUrl('order/goods', array('id'=>$order->id)); ?>" target="navTab" rel="order-goods">订单物品</a>
 	                &nbsp;

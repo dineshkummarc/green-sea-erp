@@ -16,8 +16,9 @@
 )); endif;?>
 <div class="panelBar">
 <ul class="toolBar">
-	<li><a class="icon" href="<?php echo $this->createUrl("schedule/order"); ?>" target="navTab" ><span>未排程订单</span></a></li>
+	<li><a class="add" href="<?php echo $this->createUrl("schedule/edit", array('orderId'=>$orderId)); ?>" target="dialog" width="400" height="500" mask="true" ><span>添加排程</span></a></li>
 	<li class="line">line</li>
+	<li><a class="icon" href="<?php echo $this->createUrl("schedule/order"); ?>" target="navTab" ><span>未排程订单</span></a></li>
 	</ul>
 </div>
 	<table class="list" width="100%" layoutH="140">
@@ -37,7 +38,7 @@
 		<tbody>
 			<?php if (empty($models) && !isset($models)): ?>
         <tr>
-            <td colspan="9">无数据</td>
+            <td colspan="9">订单未排程</td>
         </tr>
 	    <?php else:  $models = (object)$models; foreach ($models as $model): ?>
 	    <tr>

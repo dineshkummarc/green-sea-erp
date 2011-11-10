@@ -1,6 +1,87 @@
+<script type="text/javascript">
+var Area = <?php $this->getArea(); ?>;
+function changeArea(id)
+{
+    var result = new Array();
+    result.push(['all', '请选择']);
+    for (i = 0; i < Area.length; i++)
+    {
+        if (Area[i].parent == id)
+        {
+            result.push([Area[i].id, Area[i].name]);
+        }
+    }
+    return result;
+}
+</script>
 <div class="pageContent">
     <form action="<?php echo $this->createUrl(''); ?>"  class="pageFormrequiredd-validate" onsubmit="return validateCallback(this, dialogAjaxDone);" method="post">
         <div class="pageFormContent" layoutH="60">
+            <div class="unit">
+                <label>收货人姓名</label>
+                <span class="unit"><input type="text" name="Form[receive_name]" class="required" value="<?php  echo!empty($receiver->receive_name)?$receiver->receive_name:null   ?>" alt="收货人姓名不能为空" /></span>
+            </div>
+
+            <div class="unit" >
+                <label>所在省:</label>
+	            <select class="combox" change="changeArea" default="<?php echo !isset($area_list['default']['1'])?'all':$area_list['default']['1']?>" name="Form[area_1]" ref="Form[area_2]" >
+				<option value="all">请选择</option>
+				<?php if (isset($area_list['default']['1'])):?>
+					<?php foreach ($area_list['1'] as $val):?>
+					<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
+					<?php endforeach;?>
+				<?php else:?>
+					<?php foreach ($area['sheng'] as $val):?>
+					<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
+					<?php endforeach;?>
+				<?php endif;?>
+				</select>
+            </div>
+
+            <div class="unit">
+	            <label>所在市:</label>
+				<select class="combox" name="Form[area_2]" default="<?php echo !isset($area_list['default']['2'])?'all':$area_list['default']['2']?>" ref="Form[area_id]" change="changeArea">
+				<option value="all">请选择</option>
+				<?php if (isset($area_list['default']['2'])) foreach ($area_list['2'] as $val):?>
+				<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
+				<?php endforeach;?>
+				</select>
+            </div>
+
+            <div class="unit">
+	            <label>所在区:</label>
+				<select class="combox" name="Form[area_id]" default="<?php echo !isset($area_list['default']['3'])?'all':$area_list['default']['2']?>">
+				<option value="all">请选择</option>
+				<?php if (isset($area_list['default']['3'])) foreach ($area_list['3'] as $val):?>
+				<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
+				<?php endforeach;?>
+				</select>
+				</select>
+            </div>
+
+            <div class="unit">
+	            <label>电话号码:</label>
+	            <?php $phone = explode('-', $receiver->phone); ?>
+	            <input type="text" name="Form[phone-1]" class="required" style="width: 50px" value="<?php echo empty($phone[1]) ? '' : $phone[0] ?>"/>
+	            <span style="float: left;">-</span>
+	            <input type="text" name="Form[phone-2]" class="required" style="width: 120px" value="<?php echo empty($phone[1]) ? $phone[0] : $phone[1] ?>"/>
+	            <span style="float: left;">-</span>
+	            <input type="text" name="Form[phone-3]" style="width: 50px" value="<?php echo empty($phone[2]) ? '' : $phone[2] ?>"/>
+	            <span class="form-require">*</span>
+	            <span class="form-prompt">区号-电话号码-分机</span>
+        </div>
+
+
+          <div class="unit">
+	            <label>详细地址:</label>
+	            <textarea name="Form[street]" class="required" style="width: 300px; height: 50px;" ><?php  echo!empty($receiver->	street)?$receiver->	street:null   ?></textarea>
+	            <span class="form-prompt">不需要重复填写省/市/区</span>
+        	</div>
+
+            <div class="unit" >
+            <label>邮政编码:</label>
+            <input type="text" name="Form[postalcode]" class="required" style="width: 80px"  value="<?php  echo!empty($receiver->postalcode)?$receiver->postalcode:null   ?>"   />
+            </div>
             <input type="hidden" name="Form[id]" value="<?php echo $user->id; ?>" />
             <?php if (!empty($user->id)): ?>
             <div class="unit">
@@ -23,7 +104,7 @@
             </div>
             <div class="unit">
                 <label>确认密码</label>
-                <input type="password" id="rePwd" equalto="#rePwd" />
+                <input type="password" id="rePwd" equalto="#pwdequal" />
             </div>
             <div class="unit">
                 <label>旺旺号</label>
