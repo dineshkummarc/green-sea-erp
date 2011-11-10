@@ -96,15 +96,15 @@ function changeArea(id)
             <div class="unit">
                 <?php if (!empty($user->password)): ?>
                 <label>密码重置</label>
-                <input id="pwdequal" type="text" name="Form[password]"  />
+                <input id="pwdequal" type="password" name="Form[password]"  />
                 <?php else: ?>
                 <label>密码</label>
-                <input id="pwdequal" type="text" name="Form[password]" class="required" alt="密码不能为空" />
+                <input id="pwdequal" type="password" name="Form[password]" class="required" alt="密码不能为空" />
                 <?php endif; ?>
             </div>
             <div class="unit">
                 <label>确认密码</label>
-                <input type="text" id="rePwd" equalto="#rePwd" />
+                <input type="password" id="rePwd" equalto="#rePwd" />
             </div>
             <div class="unit">
                 <label>旺旺号</label>
@@ -127,7 +127,7 @@ function changeArea(id)
                 <input type="text" name="Form[score]" value="<?php echo $user->score; ?>" class="required number" alt="积分不能为空，为数字" />
             </div>
         </div>
-             <div class="formBar">
+            <div class="formBar">
             <ul>
                 <li><div class="buttonActive"><div class="buttonContent"><button type="submit">确定 </button></div></div></li>
                 <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
@@ -135,7 +135,6 @@ function changeArea(id)
         </div>
     </form>
 </div>
-
 
 
 

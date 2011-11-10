@@ -496,15 +496,14 @@ class OrderController extends Controller
 				{
 				    $sn = substr(strval($i + 1000),1,3);
 				    $sn = $_POST['Form']['order_sn'] . $sn;
-					$sql = "INSERT INTO {{storage_goods}} ( storage_id, sn, name, shoot_type, type_name, is_shoot) VALUES (:val1, :val2, :val3, :val4, :val5, :val6)";
+					$sql = "INSERT INTO {{storage_goods}} ( storage_id, sn, name, shoot_type,is_shoot) VALUES (:val1, :val2, :val3, :val4, :val5)";
 					$command = Yii::app()->db->createCommand($sql);
 					$command->execute(array(
 					    ":val1"=>$_POST['Form']['storage_id'],
 					    ":val2"=>$sn,
 					    ":val3"=>$_POST['Form']['name'],
 					    ":val4"=>$_POST['Form']['shoot_type'],
-						":val5"=>ShootType::getShootName($_POST['Form']['shoot_type']),
-					    ":val6"=>0,
+					    ":val5"=>0,
 					));
 				}
 		        $this->success($message, array('navTabId'=>'order-storage'));
@@ -912,5 +911,25 @@ class OrderController extends Controller
 		$command = Yii::app()->db->createCommand($sql);
 		$models = $command->queryScalar();
         return $models;
+	}
+
+/**
+	 * 获取拍摄类型
+	 */
+	public function getType($id = null)
+	{
+		if(!empty($id))
+			$sql = "SELECT * FROM {{shoot_type}} WHERE id =".$id;
+		else
+			$sql = "SELECT * FROM {{shoot_type}}";
+		$command = Yii::app()->db->createCommand($sql);
+		$types = $command->queryAll();
+		if ($types === false)
+		{
+			return false;
+		}
+		else{
+			return $types;
+		}
 	}
 }

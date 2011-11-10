@@ -12,7 +12,7 @@
     您已经添加了下列拍摄物品，如果需要添加更多，请<a href="<?php echo $this->createUrl("order/goodsEdit") ?>">点击这里</a>进行添加。
 </div>
 <?php endif; ?>
-<table id="goodsTable" class="list" cellpadding="0" cellspacing="0">
+<table id="goodsTable" class="list" cellpadding="0" cellspacing="0" width="600">
     <tr class="head">
         <th width="85">类别</th>
         <th width="40">季节</th>
@@ -31,10 +31,9 @@
         <td><?php echo $shootType[$goods->shoot_type] ?></td>
         <td><?php echo $styles[$goods->style]; ?></td>
         <td><?php echo $goods->count; ?></td>
-
         <td class="price"><?php $goods->price; ?></td>
-
         <td>
+            <a href="<?php echo $this->createUrl("order/goodsEdit", array("id"=>$goods->id)) ?>">修改</a>
             <a href="<?php echo $this->createUrl("order/goodsDel", array("id"=>$goods->id)) ?>" onclick="return confirm('删除之后将不能恢复，确认删除？')">删除</a>
         </td>
     </tr>

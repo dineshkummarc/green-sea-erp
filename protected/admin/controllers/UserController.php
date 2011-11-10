@@ -12,11 +12,11 @@ class UserController extends Controller
 
         $user = new User;
         $sheng = Area::model()->findAreaByLevel();
-    	$shi = Area::model()->findAreaByLevel(2);
-    	$qu = Area::model()->findAreaByLevel(3);
-   		$area['sheng'] = $sheng;
-    	$area['shi'] = $shi;
-    	$area['qu'] = $qu;
+        $shi = Area::model()->findAreaByLevel(2);
+        $qu = Area::model()->findAreaByLevel(3);
+           $area['sheng'] = $sheng;
+        $area['shi'] = $shi;
+        $area['qu'] = $qu;
         $criteria = $user->dbCriteria;
         $criteria->order = "create_time DESC";
         if (!empty($params['name']))
@@ -25,8 +25,8 @@ class UserController extends Controller
             $criteria->addCondition('mobile_phone = \'' . $params['phone'] . '\'');
         if (!empty($params['mail']))
             $criteria->addSearchCondition('email', $params['mail']);
-		if(!empty($params['id']))
-			$criteria->addSearchCondition('id',intval(substr($params['id'], 1)));
+        if(!empty($params['id']))
+            $criteria->addSearchCondition('id',intval(substr($params['id'], 1)));
         $count = $user->count($criteria);
         $pages = new CPagination($count);
         $pages->currentPage = empty($pageNum) ? 0 : $pageNum - 1;
@@ -187,18 +187,18 @@ class UserController extends Controller
     }
     public function actionArea($type)
     {
-		if ($type == 'all')
-		{
-			$areas =  Area::model()->cache()->findAll(array('condition'=>'parent_id = 0'));
-			echo json_encode($this->AreaFormat($areas));
-//			print_r ($this->AreaFormat($areas));
-			return;
-		}else{
-			$areas =  Area::model()->cache()->findAll(array('condition'=>'parent_id = '.$type));
-			echo json_encode($this->AreaFormat($areas));
-//			print_r ($this->AreaFormat($areas));
-			return;
-		}
+        if ($type == 'all')
+        {
+            $areas =  Area::model()->cache()->findAll(array('condition'=>'parent_id = 0'));
+            echo json_encode($this->AreaFormat($areas));
+//            print_r ($this->AreaFormat($areas));
+            return;
+        }else{
+            $areas =  Area::model()->cache()->findAll(array('condition'=>'parent_id = '.$type));
+            echo json_encode($this->AreaFormat($areas));
+//            print_r ($this->AreaFormat($areas));
+            return;
+        }
     }
     public function AreaFormat($areas)
     {

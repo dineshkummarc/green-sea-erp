@@ -45,7 +45,7 @@
 
             <div class="unit">
                 <label>图片宽度(高度自适应)：</label>
-                <div style="float: left;">
+                <div class="pic_width">
                 <?php foreach ($shootTypeList as $key=>$type):?>
                 <div><?php echo $shootType[$key] ?></div>
                 <div>
