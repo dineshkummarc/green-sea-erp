@@ -376,7 +376,11 @@ class OrderController extends Controller
 			$storage -> in_time = Yii::app()->params['timestamp'];
 			$storage -> out_time = 0;
 
-			$storage->save();
+			if($storage->save()){
+				$sql = "UPDATE {{order}} SET status = 3 WHERE id = :id";
+	            $command = Yii::app()->db->createCommand($sql);
+	            $count = $command->execute(array(':id'=> $id));
+			}
 		}
 		$criteria->condition='storage_id = '.$storage->id;
 
@@ -456,6 +460,9 @@ class OrderController extends Controller
 		$storageGoods = new StorageGoods;
 		if (!empty($id))
 			$storageGoods = $storageGoods->model()->findByPk($id);
+			$sql = "SELECT shoot_type FROM {{order_goods}} WHERE order_id =:Id GROUP BY shoot_type";
+			$command = Yii::app()->db->createCommand($sql);
+			$shootTypes = $command->queryAll(true, array(':Id'=>$id));
 
 		if (isset($_POST['Form']))
         {
@@ -510,7 +517,6 @@ class OrderController extends Controller
             }
 
         }
-        $shootTypes = ShootType::model()->findAll();
 		$this->render('storage_goods',array(
 			'order_sn' => $order_sn,
 			'storage_id' => $storage_id,
@@ -893,9 +899,9 @@ class OrderController extends Controller
 	 */
 	public function getSchedule($id = null)
 	{
-		$sql = "SELECT shoot_time,model_id FROM {{schedule}} WHERE order_id = :Id";
+		$sql = "SELECT shoot_type,model_id,shoot_time FROM {{schedule}} WHERE order_id = :Id";
 		$command = Yii::app()->db->createCommand($sql);
-		$schedules = $command->queryAll(false,array(':Id'=>$id));
+		$schedules = $command->queryAll(true,array(':Id'=>$id));
         return $schedules;
 	}
 
@@ -909,11 +915,10 @@ class OrderController extends Controller
 		else
 			$sql = "SELECT nick_name FROM {{models}}";
 		$command = Yii::app()->db->createCommand($sql);
-		$models = $command->queryScalar();
+		$models = $command->queryAll();
         return $models;
 	}
-
-/**
+	/**
 	 * 获取拍摄类型
 	 */
 	public function getType($id = null)

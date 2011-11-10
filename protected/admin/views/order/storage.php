@@ -30,7 +30,7 @@
 					$(this).attr('href',"<?php echo $this->createUrl('order/StorageOut', array('id'=>$storage->id));?>"+"&logistics_sn="+$logistics_sn)
 				});
 		    	</script>
-		    	<label>订单号：</label><input type="text" id="logistics_sn" value="" />&nbsp;&nbsp;&nbsp;
+		    	<label>交图运单号：</label><input type="text" id="logistics_sn" value="" />&nbsp;&nbsp;&nbsp;
 		    	<a style="line-height:20px" id="submit" href="" target="ajaxTodo">提交</a>
 		    	<?php else:?>
 		    	<label>出库时间：</label>
@@ -39,7 +39,7 @@
 		    </div>
 		    <?php if ($storage->out_time != 0):?>
 		    <div class="unit">
-		    	<label>订单号：</label>
+		    	<label>交图运单号：</label>
 		    	<div style="line-height:20px"><?php echo Order::getLogisticsSn($storage->order_id)?></div>
 		    </div>
 		    <?php endif;?>
@@ -47,7 +47,7 @@
 	</div>
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a class="add" href="<?php echo $this->createUrl("order/StorageGoods",array('id'=>'','storage_id'=>$storage->id,'order_sn'=>$storage->Order->sn)) ?>" target="dialog" width="400" height="200" title="添加物品"><span>添加物品</span></a></li>
+            <li><a class="add" href="<?php echo $this->createUrl("order/StorageGoods",array('id'=>$id,'storage_id'=>$storage->id,'order_sn'=>$storage->Order->sn)) ?>" target="dialog" width="400" height="200" title="添加物品"><span>添加物品</span></a></li>
             <li><a class="delete" href="<?php echo $this->createUrl("order/StorageGoodsDel"); ?>" target="selectedTodo" title="确定删除选定数据吗？" rel="id[]" ><span>删除选定</span></a></li>
             <li class="line">line</li>
 			<li><a class="icon" href="<?php echo $this->createUrl("order/StorageGoodsExcel",array('order_id'=>$storage->order_id)); ?>" target="dwzExport" targetType="navTab" title="确实要导出这些记录吗?" rel="id[]"><span>导出EXCEL</span></a></li>

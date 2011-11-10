@@ -572,6 +572,7 @@ class OrderController extends Controller
 	        $goods->id = null;
 	        $goods->order_id = $id;
 	        $goods->status = 2;
+	        $goods->type_name = 0;
 	        if (empty($goods->real_count))
 	            $goods->real_count = 0;
             if (empty($goods->shoot_count))
