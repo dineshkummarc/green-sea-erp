@@ -848,15 +848,26 @@ class OrderController extends Controller
 		$criteria = new CDbCriteria;
 		if (!empty($params['user_sn']))
 		{
-			$sql = "SELECT id FROM {{order}} WHERE user_id = ".$params['user_sn'];
-			$command = Yii::app()->db->createCommand($sql);
-			$order_id_list = $command->queryAll();
-			foreach ($order_id_list as $key=>$order_id)
+			$user_p = substr($params['user_sn'],0,1);
+			if ($user_p == 'p' || $user_p == 'P')
 			{
-				if ($key > 0) $condition .= ' and ';
-            	$condition .= $order_id;
+				$user_id = (int)substr($params['user_sn'],1);
+
+				$sql = "SELECT id FROM {{order}} WHERE user_id = ".$user_id;
+				$command = Yii::app()->db->createCommand($sql);
+				$order_id_list = $command->queryAll();
+
+				$condition = "";
+				foreach ($order_id_list as $key=>$order)
+				{
+					if ($key > 0) $condition .= ' or ';
+	            	$condition .= 'order_id = '.$order['id'];
+				}
+				if ($condition == "") $condition = "order_id = ".$params['user_sn'];
+				$criteria->condition = $condition;
+			}else{
+				$this->error("客户编号必须以\"p\"或\"P\"开头");
 			}
-			$criteria->condition = $condition;
 		}
 
 		$count = OrderTrack::model()->count($criteria);
@@ -868,6 +879,7 @@ class OrderController extends Controller
 		$orderTrackList = OrderTrack::model()->findAll($criteria);
 
 		$this->render('track',array(
+			'params' => $params,
 			'orderTrackList' => $orderTrackList,
 			'pages' => $pages,
 		));
