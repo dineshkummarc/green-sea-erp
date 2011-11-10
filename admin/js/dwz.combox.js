@@ -113,10 +113,12 @@
 							var result = new Array();
 						    result.push(['0', '请选择']);
 						    var json = $.parseJSON(json);
-						    
-						    for (i = 0; i < json.length; i++)
+						    if(json.status != 0)
 						    {
-						        result.push([json[i].id, json[i].name]);
+							    for (i = 0; i < json.length; i++)
+							    {
+							        result.push([json[i].id, json[i].name]);
+							    }
 						    }
 						    options = result;
 							if (options == false)
