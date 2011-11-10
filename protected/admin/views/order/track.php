@@ -1,5 +1,11 @@
 <div class="pageContent" width="100%" layoutH="27">
     <table class="list" id="list" width="1300px">
+		<?php $this->widget('widget.Search', array(
+		    'panleStyle'=>'width: 100%;',
+		    'searchCondition'=>array(
+		        '客户编号：'=>array('type'=>'text', 'name'=>'params[user_sn]', 'defaultValue'=>empty($params['user_sn']) ? '' : $params['user_sn']),
+		    ),
+		)); ?>
     	<thead>
 	        <tr>
 	            <th width="30"></th>
@@ -64,7 +70,7 @@
 	        <tr>
 	            <td><input type="checkbox" name="id[]" value="" /></td>
 	            <td>
-	            	<?php echo substr(strval($orderTrack->Order->user_id + 1000),1,3)?>
+	            	<?php echo 'P'.substr(strval($orderTrack->Order->user_id + 1000),1,3)?>
 	            	<br /><?php echo "<span style='font-weight:bold'>".Admin::getAdminName($orderTrack->admin_id).'</span>';?>
 	            </td><!-- 客户编号 -->
 	            <td><?php echo $orderTrack->Order->user_name?></td><!-- 客户名称 -->

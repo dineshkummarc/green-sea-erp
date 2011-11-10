@@ -492,7 +492,7 @@ class OrderController extends Controller
 				{
 				    $sn = substr(strval($i + 1000),1,3);
 				    $sn = $_POST['Form']['order_sn'] . $sn;
-					$sql = "INSERT INTO {{storage_goods}} ( storage_id, sn, name, shoot_type, is_shoot) VALUES (:val1, :val2, :val3, :val4, :val5)";
+					$sql = "INSERT INTO {{storage_goods}} ( storage_id, sn, name, shoot_type, type_name, is_shoot) VALUES (:val1, :val2, :val3, :val4, :val5, :val6)";
 					$command = Yii::app()->db->createCommand($sql);
 					$command->execute(array(
 					    ":val1"=>$_POST['Form']['storage_id'],
@@ -839,14 +839,25 @@ class OrderController extends Controller
 		spl_autoload_register(array('YiiBase','autoload'));
 		Yii::app()->end();
 	}
-
 	/**
 	 * 订单追踪
 	 * Enter description here ...
 	 */
-	public function actionOrderTrack($pageNum = 1, $numPerPage = 20)
+	public function actionOrderTrack(array $params = array(), $pageNum = 1, $numPerPage = 20)
 	{
 		$criteria = new CDbCriteria;
+		if (!empty($params['user_sn']))
+		{
+			$sql = "SELECT id FROM {{order}} WHERE user_id = ".$params['user_sn'];
+			$command = Yii::app()->db->createCommand($sql);
+			$order_id_list = $command->queryAll();
+			foreach ($order_id_list as $key=>$order_id)
+			{
+				if ($key > 0) $condition .= ' and ';
+            	$condition .= $order_id;
+			}
+			$criteria->condition = $condition;
+		}
 
 		$count = OrderTrack::model()->count($criteria);
         $pages = new CPagination($count);
