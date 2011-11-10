@@ -131,9 +131,15 @@
             <td colspan="2"><textarea name="Form[memo]" class="text" style="width: 663px; height: 80px;"></textarea></td>
         </tr>
         <tr>
+            <td class="label">物流公司：</td>
+            <td>
+                <input type="text" name="Form[logistics_sn1]" class="input" />
+            </td>
+        </tr>
+        <tr>
             <td class="label">运单号：</td>
             <td>
-                <input type="text" name="Form[logistics_sn]" class="input" />
+                <input type="text" name="Form[logistics_sn2]" class="input" />
             </td>
         </tr>
     </table>
