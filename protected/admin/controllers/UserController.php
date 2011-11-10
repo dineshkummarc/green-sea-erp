@@ -108,7 +108,8 @@ class UserController extends Controller
 					$user->next_order = 1;
 					$user->login_time = 0;
 					$user->last_ip = 0;
-					$user->create_time = Yii::app()->params['timestamp'];
+					$user->create_time = !empty($_POST['Form']['create_time']) ? $_POST['Form']['create_time'] : Yii::app()->params['timestamp'];
+					$user->update_time = Yii::app()->params['timestamp'];
 					if($user->save())
 					{
 
@@ -134,9 +135,10 @@ class UserController extends Controller
 								else
 								{
 										$error = array_shift($receiver->getErrors());
-										 if (!empty($_POST['Form']['id']))  $message="修改失败".$error[0];
-										 			else
-										 					$message="添加失败";
+										 if (!empty($_POST['Form']['id']))
+										 	$message="修改失败".$error[0];
+										else
+											$message="添加失败";
 										$this->error($message);
 								}
 
