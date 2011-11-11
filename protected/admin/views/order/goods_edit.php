@@ -24,7 +24,7 @@ $(function(){
         enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);" method="post">
         <div class="pageFormContent" layoutH="60">
             <input type="hidden" name="Form[id]" value="<?php echo !empty($orderGoods->id) ? $orderGoods->id : ''; ?>" />
-
+            <input type="hidden" name="Form[order_id]" value="<?php echo $orderId; ?>" />
             <div class="unit">
                 <label>类型</label>
                 <select name="Form[type]" class="goods-type" default="<?php echo isset($orderGoods->type) ? $orderGoods->type : 1; ?>">
@@ -75,7 +75,7 @@ $(function(){
             </div>
             <div class="unit">
                 <label>备注</label>
-                <textarea class="require textInput valid" style="width: 400px; height: 100px;" maxlength="200" name="Form[memo]"><?php echo !empty($orderGoods->memo) ? $orderGoods->memo : ''; ?></textarea>
+                <textarea class="require textInput valid" style="width: 200px; height: 50px;" maxlength="200" name="Form[memo]"><?php echo !empty($orderGoods->memo) ? $orderGoods->memo : ''; ?></textarea>
             </div>
         </div>
         <div class="formBar">

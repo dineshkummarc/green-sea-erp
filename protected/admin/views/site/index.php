@@ -72,6 +72,7 @@
     <script type="text/javascript">
     $(function(){
     	DWZ.init("admin/dwz.frag.xml", {
+    		loginUrl:"<?php echo $this->createUrl('site/login'); ?>",
     		statusCode:{ok:200, error:300, timeout:301}, //【可选】
     		pageInfo:{pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderDirection"}, //【可选】
     		debug:false,	// 调试模式 【true|false】
