@@ -71,11 +71,20 @@ class ShootType extends CActiveRecord
 		);
 	}
 
-	public static function getType()
+	public static function getType($fomatter = false)
 	{
 	    $sql = "SELECT id, name FROM {{shoot_type}}";
 		$command = Yii::app()->db->createCommand($sql);
 		$result = $command->queryAll();
+		if ($fomatter)
+		{
+		    $result2 = array();
+		    foreach ($result as $val)
+		    {
+		        $result2[$val['id']] = $val;
+		    }
+		    $result = $result2;
+		}
         return $result;
 	}
 }
