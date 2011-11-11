@@ -2,11 +2,12 @@
 	<div class="panel" [defH="200"|minH="100"] style="width:400px;">
 		<h1>仓储信息</h1>
 	    <div class="pageFormContent">
-
 		    <?php if ($storage->out_time != 0):?>
     		<div class="panelBar">
 		        <ul class="toolBar">
 		            <li><a class="edit" href="<?php echo $this->createUrl("order/Storageedit",array('id'=>$storage->id)) ?>" target="dialog" width="400" height="170" title="修改仓储"><span>修改仓储</span></a></li>
+					<li class="line">line</li>
+					<li><a class="delete" end="true" tabId="order-storage" href="<?php echo $this->createUrl("order/StorageDel",array('id'=>$storage->id)); ?>" target="ajaxTodo" title="关联物品也将删除，确定删除仓储？"><span>删除仓储</span></a></li>
 				</ul>
     		</div>
     		<?php endif;?>
@@ -39,7 +40,7 @@
 		    </div>
 		    <?php if ($storage->out_time != 0):?>
 		    <div class="unit">
-		    	<label>交图运单号：</label>
+		    	<label>运单号：</label>
 		    	<div style="line-height:20px"><?php echo Order::getLogisticsSn($storage->order_id)?></div>
 		    </div>
 		    <?php endif;?>

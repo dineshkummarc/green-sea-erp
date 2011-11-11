@@ -308,6 +308,8 @@ $.fn.extend({
 		return this.each(function(){
 			var $this = $(this);
 			$this.click(function(event){
+				var end = $this.attr("end");
+				
 				var url = unescape($this.attr("href")).replaceTmById($(event.target).parents(".unitBox:first"));
 				DWZ.debug(url);
 				if (!url.isFinishedTm()) {
@@ -318,6 +320,11 @@ $.fn.extend({
 				if (title) {
 					alertMsg.confirm(title, {
 						okCall: function(){
+							if(end)
+							{
+								var tabId = $this.attr("tabId");
+								navTab.closeTab(tabId);
+							}
 							ajaxTodo(url, $this.attr("callback"));
 						}
 					});
