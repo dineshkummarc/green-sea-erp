@@ -27,4 +27,4 @@
     </tr>
     <?php endforeach; ?>
 </table>
-<?php $this->widget('widget.Pager', array('pages'=>$pages, 'params'=>$params)); ?>
+<?php $this->widget('widget.Pager', array('pages'=>$pages)); ?>
