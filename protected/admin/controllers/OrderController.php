@@ -100,7 +100,6 @@ class OrderController extends Controller
     	if ($id === null)
 	    {
 	        $this->error("删除失败，发生错误");
-	        $this->redirect(array('order/index'));
 	    }
 	    // 删除订单物品
         OrderGoods::model()->deleteAllByAttributes(array('order_id'=>$id));
@@ -289,21 +288,6 @@ class OrderController extends Controller
 	}
 
 	/**
-	 * 仓储物品 删除
-	 */
-    public function actionStorageGoodsDel(array $id = array())
-    {
-        if (empty($id))
-            $this->error('参数传递错误！');
-
-        $sqlIn = implode(',', $id);
-
-        $sql = "DELETE FROM {{order_goods}} WHERE id in ($sqlIn)";
-        $command = Yii::app()->db->createCommand($sql);
-        $count = $command->execute();
-        $this->success('删除成功', array('navTabId'=>'order-storage'));
-    }
-	/**
 	 * 订单需求 修改
 	 */
 	public function actionShootScene($id = null)
@@ -470,6 +454,15 @@ class OrderController extends Controller
 	 */
 	public function actionStorageDel($id = null)
 	{
+		if ($id == null)
+	    {
+	        $this->error("删除失败，发生错误");
+	    }
+	    //删除仓储
+	    Storage::model()->deleteByPk($id);
+	    // 删除订单物品
+        StorageGoods::model()->deleteAllByAttributes(array('storage_id'=>$id));
+	    $this->success('删除成功', array('navTabId'=>'order-index'));
 	}
 	/**
 	 * 仓储 物品
@@ -562,7 +555,7 @@ class OrderController extends Controller
             $this->success('修改成功', array('navTabId'=>'order-storage'));
         else
         {
-            $error = array_shift($storage->getErrors());
+            $error = array_shift($order->getErrors());
             $message = '错误：'.$error[0];
             $this->error($message);
         }

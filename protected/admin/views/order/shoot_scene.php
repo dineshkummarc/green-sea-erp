@@ -92,7 +92,7 @@
 			</div>
             <div class="unit">
                 <label>价格：</label>
-                <input type="text" name="Form[total_price]" value="<?php echo !empty($orders->total_price) ? $orders->total_price : '0'; ?>" class="required" />
+                <input type="text" maxlength="6" name="Form[total_price]" value="<?php echo !empty($orders->total_price) ? $orders->total_price : '0'; ?>" class="required" />
 			</div>
             <div class="unit">
                 <label>运单号：</label>
