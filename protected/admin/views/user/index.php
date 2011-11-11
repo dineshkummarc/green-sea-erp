@@ -1,12 +1,12 @@
 <?php $this->widget('widget.Search', array(
+	'panleStyle'=>'width: 100%; height: 50px;',
     'searchCondition'=>array(
-		'用户编号'=>array('type'=>'text','name'=>'params[id]', 'defaultValue'=>empty($params['id'])? '' : $params['id']),
-        '用户名：'=>array('type'=>'text', 'name'=>'params[name]', 'defaultValue'=>empty($params['name']) ? '' : $params['name'], 'alt'=>'支持模糊搜索'),
+    	'用户名：'=>array('type'=>'text', 'name'=>'params[name]', 'defaultValue'=>empty($params['name']) ? '' : $params['name'], 'alt'=>'支持模糊搜索'),
+    	'邮箱：'=>array('type'=>'text', 'name'=>'params[mail]', 'defaultValue'=>empty($params['mail']) ? '' : $params['mail'], 'alt'=>'支持模糊搜索'),
+    	'用户编号'=>array('type'=>'text','name'=>'params[id]', 'defaultValue'=>empty($params['id'])? '' : $params['id']),
         '手机号：'=>array('type'=>'text', 'name'=>'params[phone]', 'defaultValue'=>empty($params['phone']) ? '' : $params['phone']),
-        '邮箱：'=>array('type'=>'text', 'name'=>'params[mail]', 'defaultValue'=>empty($params['mail']) ? '' : $params['mail'], 'alt'=>'支持模糊搜索'),
-        ),
-	)
-); ?>
+	),
+)); ?>
 <div class="pageContent  width="100%"  layoutH="89">
     <div class="panelBar" >
         <ul class="toolBar">

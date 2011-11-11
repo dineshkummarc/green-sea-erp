@@ -1,14 +1,14 @@
-<div class="pageContent" width="100%" layoutH="27">
-	<?php $this->widget('widget.Search', array(
-	    'panleStyle'=>'width: 600px; height: 50px;',
-	    'searchCondition'=>array(
-	        '客户编号：'=>array('type'=>'text', 'name'=>'params[user_sn]', 'defaultValue'=>empty($params['user_sn']) ? '' : $params['user_sn'], 'alt'=>'字母开头'),
-	        '客户名：'=>array('type'=>'text',  'name'=>'params[user_name]', 'defaultValue'=>empty($params['user_name']) ? '' : $params['user_name'], 'alt'=>'支持模糊查询'),
+<?php $this->widget('widget.Search', array(
+    'panleStyle'=>'width: 600px; height: 50px;',
+    'searchCondition'=>array(
+        '客户编号：'=>array('type'=>'text', 'name'=>'params[user_sn]', 'defaultValue'=>empty($params['user_sn']) ? '' : $params['user_sn'], 'alt'=>'字母开头'),
+        '客户名：'=>array('type'=>'text',  'name'=>'params[user_name]', 'defaultValue'=>empty($params['user_name']) ? '' : $params['user_name'], 'alt'=>'支持模糊查询'),
 
-	        '时间查询：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[start_time]', 'defaultValue'=>empty($params['start_time']) ? '' : $params['start_time'],),
-	        '至：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[end_time]', 'defaultValue'=>empty($params['end_time']) ? '' : $params['end_time'],),
-		),
-	)); ?>
+        '时间查询：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[start_time]', 'defaultValue'=>empty($params['start_time']) ? '' : $params['start_time'],),
+        '至：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[end_time]', 'defaultValue'=>empty($params['end_time']) ? '' : $params['end_time'],),
+	),
+)); ?>
+<div class="pageContent" width="100%" layoutH="113">
     <table class="list" id="list" width="1300px">
     	<thead>
 	        <tr>
@@ -73,13 +73,13 @@
 	            <td><input type="checkbox" name="id[]" value="" /></td>
 	            <td>
 	            	<?php echo 'P'.substr(strval($orderTrack->Order->user_id + 1000),1,3)?>
-	            	<br /><?php echo "<span style='font-weight:bold'>".Admin::getAdminName($orderTrack->admin_id).'</span>';?>
+	            	<br /><?php !empty($orderTrack->admin_id) ? Admin::getAdminName($orderTrack->admin_id) : '';?>
 	            </td><!-- 客户编号 -->
 	            <td><?php echo $orderTrack->Order->user_name?></td><!-- 客户名称 -->
-	            <td><?php echo $orderTrack->photographer_id !=0 ? "<span style='color:red'>✔</span>" : "";?></td><!-- 确认拍摄 -->
+	            <td><?php echo $orderTrack->photographer_id !=0 ? "<span style='color:red'>✔ </span>" : "";?></td><!-- 确认拍摄 -->
 	            <td>
-	            	<?php $storage = $orderTrack->getStorage(); echo empty($storage)?'无仓储':date('m-d H:i',$storage['in_time']);?>
-	            	<br /><span style='font-weight:bold'><?php echo Admin::getAdminName($storage['admin_id']);?></span>
+	            	<?php $storage = $orderTrack->getStorage(); echo empty($storage) ? '无仓储' : date('m-d H:i',$storage['in_time']);?>
+	            	<br /><?php !empty($orderTrack->admin_id) ? Admin::getAdminName($orderTrack->admin_id) : '';?>
 	            </td><!-- 时间 -->
 	            <td>
 	            	<?php if (empty($storage)) echo '无仓储'; else{ $count = $orderTrack->getStorageGoodsCount($storage['id']); echo empty($count)?'0':$count;}?>
@@ -90,50 +90,35 @@
 	            		if(($schedules === false) && !isset($schedules)): echo "未排程";
 	            		else : foreach($schedules as $schedule):?>
 	            		<P style="text-align:center;line-height:20px;">
-	            			<span><?php if(!empty($schedule['shoot_type'])) { $result = $this->getType($schedule['shoot_type']); foreach($result as $val ) { echo !empty($val['name']) ? $val['name'] : '类型未定'; }} else { echo "类型未定"; } ;?></span>
-	            			&nbsp;&nbsp;<span><?php if(!empty($schedule['model_id'])) { $result = $this->getModel($schedule['model_id']); foreach($result as $val ) { echo !empty($val['nick_name']) ? $val['nick_name'] : '模特未定'; }} else { echo "模特未定"; } ;?></span>
+	            			<span><?php echo !empty($schedule['shoot_type']) ?  ShootType::getShootName($schedule['shoot_type']) : '类型未定';?></span>
+	            			&nbsp;&nbsp;<span><?php echo !empty($model['model_id']) ? Models::getModelName($model['model_id']) : '模特未定';?></span>
 	            			&nbsp;&nbsp;<span><?php echo !empty($schedule['shoot_time']) ? date("m-d H:i",$schedule['shoot_time']) : '时间未定'; ?></span>
 	            		</p>
 	            	<?php endforeach; endif; ?>
-	            	<!--<?php $schedules = $this->getSchedule($orderTrack->Order->id);
-	            		if($schedules === false) echo "未排程";
-	            		else{ foreach($schedules as $schedule ){
-		            		echo !empty($schedule['0']) ? date("m-d H:i", $schedule['0']) : '时间未定';
-		            	}
-	            	}?>
-	            	<?php $schedules = $this->getSchedule($orderTrack->Order->id);
-	            		if($schedules === false) echo "未排程";
-	            		else{ foreach($schedules as $schedule )
-	            		{
-		            		if(!empty($schedule['1'])){
-		            			$model = $this->getModel($schedule['1']);
-		            				echo !empty($model) ? $model : '';
-		            		}
-	            	}}?>
-	            --></td><!-- 拍排程信息 -->
+	            </td><!-- 拍排程信息 -->
 	            <td>
-	            	<?php echo $photographer_id != 0 ? "<span style='color:red'>✔</span>" : "";?>
-	            	<br/><?php echo "<span style='font-weight:bold'>".Admin::getAdminName($photographer_id).'</span>';?>
+	            	<?php echo $photographer_id != 0 ? "<span style='color:red'>✔ </span>" : " ";?>
+	            	<?php !empty($photographer_id) ? Admin::getAdminName($photographer_id) : '';?>
 	            	<br/><?php echo $shoot_begin_time == 0 ? '' : date('m-d H:i',$shoot_begin_time)?>
 	            </td><!-- 拍摄中 -->
 	            <td>
-	            	<?php echo $photographer_id_2 != 0 ? "<span style='color:red'>✔</span>" : "";?>
-	            	<br /><?php echo "<span style='font-weight:bold'>".Admin::getAdminName($photographer_id_2).'</span>';?>
+	            	<?php echo $photographer_id_2 != 0 ? "<span style='color:red'>✔ </span>" : "";?>
+	            	<?php !empty($photographer_id_2) ? Admin::getAdminName($photographer_id_2) : '';?>
 	            	<br /><?php echo $shoot_end_time == 0 ? '' : date('m-d H:i',$shoot_end_time)?>
 	            </td><!-- 已拍摄 -->
 	            <td>
-	            	<?php echo $retouch_id != 0 ? "<span style='color:red'>✔</span>" : "";?>
-	            	<br /><?php echo "<span style='font-weight:bold'>".Admin::getAdminName($retouch_id).'</span>';?>
+	            	<?php echo $retouch_id != 0 ? "<span style='color:red'>✔ </span>" : "";?>
+	            	<?php !empty($retouch_id) ? Admin::getAdminName($retouch_id) : '';?>
 	            	<br /><?php echo $retouch_begin_time == 0 ? '' : date('m-d H:i',$retouch_begin_time)?>
 	            </td><!-- 修中 -->
 	            <td>
-	            	<?php echo $retouch_id_2 != 0 ? "<span style='color:red'>✔</span>" : "";?>
-	            	<br /><?php echo "<span style='font-weight:bold'>".Admin::getAdminName($retouch_id_2).'</span>';?>
+	            	<?php echo $retouch_id_2 != 0 ? "<span style='color:red'>✔ </span>" : "";?>
+	            	<?php !empty($retouch_id_2) ? Admin::getAdminName($retouch_id_2) : '';?>
 	            	<br /><?php echo $retouch_end_time == 0 ? '' : date('m-d H:i',$retouch_end_time)?>
 	            </td><!-- 修完 -->
-	            <td><?php echo $orderTrack->Order->status >= 2 ? "<span style='color:red'>✔</span>" : "";?></td><!-- 是否付款 -->
-	            <td><?php echo $orderTrack->retouch_id_2 != 0 ? "<span style='color:red'>✔</span>" : "";?></td><!-- 已修图 -->
-	            <td><?php echo $orderTrack->Order->status >= 9 ? "<span style='color:red'>✔</span>" : "";?></td><!-- 已交图 -->
+	            <td><?php echo $orderTrack->Order->status >= 2 ? "<span style='color:red'>✔ </span>" : "";?></td><!-- 是否付款 -->
+	            <td><?php echo $orderTrack->retouch_id_2 != 0 ? "<span style='color:red'>✔ </span>" : "";?></td><!-- 已修图 -->
+	            <td><?php echo $orderTrack->Order->status >= 9 ? "<span style='color:red'>✔ </span>" : "";?></td><!-- 已交图 -->
 	            <td></td><!-- A -->
 	            <td></td><!-- B -->
 	            <td></td><!-- C -->

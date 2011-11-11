@@ -13,22 +13,22 @@ function status(val)
 	});
 }
 </script>
-<div class="pageContent" width="100%" layoutH="27">
-	<?php $this->widget('widget.Search', array(
-	    'panleStyle'=>'width: 100%; height: 50px;',
-	    'searchCondition'=>array(
-	        '订单号：'=>array('type'=>'text', 'name'=>'params[sn]', 'defaultValue'=>empty($params['sn']) ? '' : $params['sn'], 'alt'=>'支持模糊搜索'),
-	        '运单号：'=>array('type'=>'text', 'name'=>'params[logistics_sn]', 'defaultValue'=>empty($params['logistics_sn']) ? '' : $params['logistics_sn'], 'alt'=>'支持模糊搜索'),
-			'客户名：'=>array('type'=>'text', 'name'=>'params[user_name]', 'defaultValue'=>empty($params['user_name']) ? '' : $params['user_name'], 'alt'=>'支持模糊搜索'),
+<?php $this->widget('widget.Search', array(
+    'panleStyle'=>'width: 1000px; height: 50px;',
+    'searchCondition'=>array(
+        '订单号：'=>array('type'=>'text', 'name'=>'params[sn]', 'defaultValue'=>empty($params['sn']) ? '' : $params['sn'], 'alt'=>'支持模糊搜索'),
+        '运单号：'=>array('type'=>'text', 'name'=>'params[logistics_sn]', 'defaultValue'=>empty($params['logistics_sn']) ? '' : $params['logistics_sn'], 'alt'=>'支持模糊搜索'),
+		'客户名：'=>array('type'=>'text', 'name'=>'params[user_name]', 'defaultValue'=>empty($params['user_name']) ? '' : $params['user_name'], 'alt'=>'支持模糊搜索'),
 
-	        '状态：'=>array('type'=>'select', 'name'=>'params[status]', 'defaultValue'=>empty($params['status']) ? '' : $params['status'],
-	            'options'=>$shootStatus
-	        ),
-	        '时间查询：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[start_time]', 'defaultValue'=>empty($params['start_time']) ? '' : $params['start_time'],),
-	        '至：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[end_time]', 'defaultValue'=>empty($params['end_time']) ? '' : $params['end_time'],),
+        '状态：'=>array('type'=>'select', 'name'=>'params[status]', 'defaultValue'=>empty($params['status']) ? '' : $params['status'],
+            'options'=>$shootStatus
+        ),
+        '时间查询：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[start_time]', 'defaultValue'=>empty($params['start_time']) ? '' : $params['start_time'],),
+        '至：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[end_time]', 'defaultValue'=>empty($params['end_time']) ? '' : $params['end_time'],),
 
-	    ),
-	)); ?>
+    ),
+)); ?>
+<div class="pageContent" width="100%" layoutH="114">
 	<div class="panelBar">
 		<ul class="toolBar">
 			<li><a class="icon" href="<?php echo $this->createUrl("order/OrderExcel"); ?>" target="dwzExport" targetType="navTab" title="确实要导出这些记录吗?" rel="id[]"><span>导出EXCEL</span></a></li>

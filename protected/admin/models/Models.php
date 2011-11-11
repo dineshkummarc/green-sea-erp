@@ -52,6 +52,31 @@ class Models extends CActiveRecord
 	}
 
 	/**
+	 * 获取模特
+	 */
+	public static function getModel()
+	{
+		if(!empty($id))
+			$sql = "SELECT id, nick_name FROM {{models}} WHERE id =".$id;
+		else
+			$sql = "SELECT id, nick_name FROM {{models}}";
+		$command = Yii::app()->db->createCommand($sql);
+		$models = $command->queryAll();
+        return $models;
+	}
+	/**
+	 * 获取模特姓名
+	 */
+	public static function getModelName($id = null)
+	{
+		if(!empty($id))
+			$sql = "SELECT nick_name FROM {{models}} WHERE id =".$id;
+		$command = Yii::app()->db->createCommand($sql);
+		$models = $command->queryScalar();
+        return $models;
+	}
+
+	/**
 	 * @return array validation rules for model attributes.
 	 */
 	public function rules()

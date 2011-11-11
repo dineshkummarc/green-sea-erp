@@ -944,37 +944,4 @@ class OrderController extends Controller
 		$schedules = $command->queryAll(true,array(':Id'=>$id));
         return $schedules;
 	}
-
-	/**
-	 * 获取模特
-	 */
-	public function getModel($id = null)
-	{
-		if(!empty($id))
-			$sql = "SELECT nick_name FROM {{models}} WHERE id =".$id;
-		else
-			$sql = "SELECT nick_name FROM {{models}}";
-		$command = Yii::app()->db->createCommand($sql);
-		$models = $command->queryAll();
-        return $models;
-	}
-	/**
-	 * 获取拍摄类型
-	 */
-	public function getType($id = null)
-	{
-		if(!empty($id))
-			$sql = "SELECT * FROM {{shoot_type}} WHERE id =".$id;
-		else
-			$sql = "SELECT * FROM {{shoot_type}}";
-		$command = Yii::app()->db->createCommand($sql);
-		$types = $command->queryAll();
-		if ($types === false)
-		{
-			return false;
-		}
-		else{
-			return $types;
-		}
-	}
 }

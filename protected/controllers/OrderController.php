@@ -196,6 +196,7 @@ class OrderController extends Controller
         {
             foreach ($_POST['Form'] as $form)
             {
+                $form['count'] = trim($form['count']);
                 if (empty($form['count'])) continue;
                 if (empty($form['id']))
                 {
@@ -566,12 +567,8 @@ class OrderController extends Controller
 
 	        $orderGoods = new OrderGoods;
 	        $orderGoods->attributes = (array)$goods;
-//	        Dumper::dump($goods);Yii::app()->end();
-	        if (!$orderGoods->save())
-	        {
-	            $this->error(Dumper::dumpString($orderGoods->getErrors()));
-	            return false;
-	        }
+	        // 忽略订单物品的保存错误
+	        if (!$orderGoods->save()) continue;
 	    }
 	    return true;
 	}
