@@ -120,13 +120,14 @@ class OrderController extends Controller
 	public function actionGoodsList($id = null)
 	{
 	    $goodsList = Yii::app()->user->getState("goodsList");
-	    if ($goodsList === null && $id !== null){
+	    if ($goodsList === null && $id !== null)
+	    {
             $goodsList = OrderGoods::model()->findAllByAttributes(array("order_id"=>$orderId));
-
-	    }else if ($goodsList === null)
+	    }
+	    else if ($goodsList === null)
             $goodsList = array();
 
-	    $goodsType = GoodsType::model()->findAll();
+        $goodsType = GoodsType::model()->findAll();
 	    $result = array();
         foreach ($goodsType as $type)
         {
