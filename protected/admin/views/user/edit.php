@@ -18,23 +18,22 @@ function changeArea(id, name)
         <div class="pageFormContent" layoutH="60">
             <div class="unit">
                 <label>收货人姓名</label>
-                <span class="unit"><input type="text" name="Form[receive_name]" class="required" value="<?php  echo!empty($receiver->receive_name)?$receiver->receive_name:null   ?>" alt="收货人姓名不能为空" /></span>
+                <span class="unit"><input type="text" name="Form[receive_name]" class="required" value="<?php echo !empty($receiver->receive_name) ? $receiver->receive_name : '' ;  ?>" alt="收货人姓名不能为空" /></span>
             </div>
             <div class="unit">
 	            <label>电话号码:</label>
 	            <?php $phone = explode('-', $receiver->phone); ?>
-	            <input type="text" name="Form[phone-1]" class="required" style="width: 50px" value="<?php echo empty($phone[1]) ? '' : $phone[0] ?>"/>
+	            <input type="text" name="Form[phone-1]" style="width: 50px" value="<?php echo empty($phone[1]) ? '' : $phone[0] ?>"/>
 	            <span style="float: left;">-</span>
-	            <input type="text" name="Form[phone-2]" class="required" style="width: 120px" value="<?php echo empty($phone[1]) ? $phone[0] : $phone[1] ?>"/>
+	            <input type="text" name="Form[phone-2]" style="width: 120px" value="<?php echo empty($phone[1]) ? $phone[0] : $phone[1] ?>"/>
 	            <span style="float: left;">-</span>
 	            <input type="text" name="Form[phone-3]" style="width: 50px" value="<?php echo empty($phone[2]) ? '' : $phone[2] ?>"/>
-	            <span class="form-require">*</span>
 	            <span class="form-prompt">区号-电话号码-分机</span>
 	        </div>
             <div class="unit" >
                 <label>客户地址:</label>
                 <span style="clear:both;">
-	            <select class="combox" isAjax="true" url="<?php echo $this->createUrl("user/area"); ?>" default="<?php echo !isset($area_list['default']['1'])?'0':$area_list['default']['1']?>" name="Form[area_1]" ref="Form[area_2]" >
+	            <select class="combox" isAjax="true" url="<?php echo $this->createUrl("user/area"); ?>" default="<?php echo !isset($area_list['default']['1']) ? '0' : $area_list['default']['1'];?>" name="Form[area_1]" ref="Form[area_2]" >
 					<option value="0">选择省份</option>
 					<?php foreach ($area_list['1'] as $val):?>
 					<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
@@ -103,7 +102,7 @@ function changeArea(id, name)
             </div>
             <div class="unit">
                 <label>手机号码</label>
-                <input type="text" name="Form[mobile_phone]" value="<?php echo $user->mobile_phone; ?>" class="required" alt="手机不能为空" />
+                <input type="text" name="Form[mobile_phone]" value="<?php echo $user->mobile_phone; ?>" alt="手机不能为空" />
             </div>
             <div class="unit">
                 <label>淘宝网地址</label>
