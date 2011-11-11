@@ -79,7 +79,7 @@
 	            <td><?php echo $orderTrack->photographer_id !=0 ? "<span style='color:red'>✔ </span>" : "";?></td><!-- 确认拍摄 -->
 	            <td>
 	            	<?php $storage = $orderTrack->getStorage(); echo empty($storage) ? '无仓储' : date('m-d H:i',$storage['in_time']);?>
-	            	<br /><?php !empty($orderTrack->admin_id) ? Admin::getAdminName($orderTrack->admin_id) : '';?>
+	            	<br /><?php echo !empty($orderTrack->admin_id) ? Admin::getAdminName($orderTrack->admin_id) : '';?>
 	            </td><!-- 时间 -->
 	            <td>
 	            	<?php if (empty($storage)) echo '无仓储'; else{ $count = $orderTrack->getStorageGoodsCount($storage['id']); echo empty($count)?'0':$count;}?>
