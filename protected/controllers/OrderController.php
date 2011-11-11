@@ -570,7 +570,11 @@ class OrderController extends Controller
 	        $orderGoods = new OrderGoods;
 	        $orderGoods->attributes = (array)$goods;
 	        // 忽略订单物品的保存错误
-	        if (!$orderGoods->save()) continue;
+	        if (!$orderGoods->save())
+	        {
+	            $this->error(Dumper::dumpString($orderGoods->getErrors()));
+	            $this->refresh();
+	        }
 	    }
 	    return true;
 	}
