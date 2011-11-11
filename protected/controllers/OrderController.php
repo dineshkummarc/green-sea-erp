@@ -375,7 +375,7 @@ class OrderController extends Controller
 	 * 添加、修改拍摄需求
 	 * @param integet $id 订单ID
 	 */
-	public function actionShootScene($id = null)
+	public function actionShootScene($id = null, $save = true)
 	{
         $user = Yii::app()->user;
         $shootTypes = $user->getState('shootTypes');
@@ -388,9 +388,9 @@ class OrderController extends Controller
             if ($goods->shoot_type == 1 || $goods->shoot_type == 2 || $goods->shoot_type == 5)
         	    $goodsCounts += (int)$goods->count;
 
-        if ( empty($selectedModels) && (isset($shootTypes[1]) || isset($shootTypes[2]) || isset($shootTypes[5])) && $goodsCounts >= 50)
+        if ( !$save && (isset($shootTypes[1]) || isset($shootTypes[2]) || isset($shootTypes[5])) && $goodsCounts >= 50)
             $this->redirect(array("order/selectModels"));
-        else
+        elseif ($selectedModels === null)
             $user->setState("selectedModels", array());
 
         if (isset($_POST['Form']))
