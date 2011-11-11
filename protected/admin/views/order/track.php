@@ -73,7 +73,7 @@
 	            <td><input type="checkbox" name="id[]" value="" /></td>
 	            <td>
 	            	<?php echo 'P'.substr(strval($orderTrack->Order->user_id + 1000),1,3)?>
-	            	<br /><?php !empty($orderTrack->admin_id) ? Admin::getAdminName($orderTrack->admin_id) : '';?>
+	            	<br /><?php echo Admin::getAdminName($orderTrack->admin_id);?>
 	            </td><!-- 客户编号 -->
 	            <td><?php echo $orderTrack->Order->user_name?></td><!-- 客户名称 -->
 	            <td><?php echo $orderTrack->photographer_id !=0 ? "<span style='color:red'>✔ </span>" : "";?></td><!-- 确认拍摄 -->
