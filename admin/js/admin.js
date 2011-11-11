@@ -151,7 +151,7 @@ function initialize($map)
 	marker = new google.maps.Marker({
 	    position: myLatlng,
 	    draggable: true,
-	    map: map,
+	    map: map
 	});
   	document.getElementById("mapAddress").value=$mapStr['0']+','+$mapStr['1'];
     google.maps.event.addListener(marker, "dragend", function(event) {
