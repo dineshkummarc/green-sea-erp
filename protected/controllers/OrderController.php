@@ -410,11 +410,11 @@ class OrderController extends Controller
             $order->width = serialize($order->width);
             $order->shoot_notice = serialize($order->shoot_notice);
 
-//            $transaction = Yii::app()->db->beginTransaction();
+            $transaction = Yii::app()->db->beginTransaction();
             // 保存订单、订单物品、模特
             if ($order->save() && $this->saveGoods($order->id, $order->sn) && $this->saveModel($order->id))
             {
-//                $transaction->commit();
+                $transaction->commit();
                 // 保存完毕，清空session
                 $user->setState("shootTypes", null);
                 $user->setState("totalPrice", null);
@@ -438,7 +438,7 @@ class OrderController extends Controller
             }
             else
             {
-//                $transaction->rollBack();
+                $transaction->rollBack();
                 $this->error(Dumper::dumpString($order->getErrors()));
                 $this->refresh();
             }
@@ -570,7 +570,11 @@ class OrderController extends Controller
 	        $orderGoods = new OrderGoods;
 	        $orderGoods->attributes = (array)$goods;
 	        // 忽略订单物品的保存错误
-	        if (!$orderGoods->save()) continue;
+	        if (!$orderGoods->save())
+	        {
+	            $this->error(Dumper::dumpString($orderGoods->getErrors()));
+	            $this->refresh();
+	        }
 	    }
 	    return true;
 	}

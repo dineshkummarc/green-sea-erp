@@ -8,7 +8,7 @@
         <tr>
             <td colspan="2" style="background: #B3B3B3; text-align: center; color: #FFF; font-size: 14px;">拍摄要求</td>
         </tr>
-        <?php if ( isset($selectedShootType[1]) || isset($selectedShootType[2]) ): // 存在模特拍摄的情况下 ?>
+        <?php if ( isset($selectedShootType[1]) || isset($selectedShootType[2]) || isset($selectedShootType[5]) ): // 存在模特拍摄的情况下 ?>
         <?php if (isset($selectedShootType[1])): ?>
         <tr>
             <td class="label">棚拍背景：</td>
