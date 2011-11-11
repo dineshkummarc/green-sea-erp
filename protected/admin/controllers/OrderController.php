@@ -288,21 +288,6 @@ class OrderController extends Controller
 	}
 
 	/**
-	 * 仓储物品 删除
-	 */
-    public function actionStorageGoodsDel(array $id = array())
-    {
-        if (empty($id))
-            $this->error('参数传递错误！');
-
-        $sqlIn = implode(',', $id);
-
-        $sql = "DELETE FROM {{order_goods}} WHERE id in ($sqlIn)";
-        $command = Yii::app()->db->createCommand($sql);
-        $count = $command->execute();
-        $this->success('删除成功', array('navTabId'=>'order-storage'));
-    }
-	/**
 	 * 订单需求 修改
 	 */
 	public function actionShootScene($id = null)
