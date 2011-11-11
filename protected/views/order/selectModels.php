@@ -3,7 +3,7 @@
 <div class="step">选择付款方式</div>
 <div class="step">生成订单</div>
 <div class="clear"></div>
-<form id="model-form" action="<?php echo $this->createUrl("order/selectModels", array("id"=>$orderId)); ?>"
+<form id="model-form" action="<?php echo $this->createUrl("order/selectModels"); ?>"
         onsubmit="return validateModel()" method="post">
     <div class="models">
         <h2>B类模特</h2>
@@ -14,7 +14,7 @@
                 <?php echo $model->nick_name; ?>
             </div>
             <div class="action">
-                <label><input type="checkbox" name="Form[models][]" value="<?php echo $model->id; ?>" <?php if (isset($selectedModels[$model->id])) echo "checked"; ?> /> 选择</label>
+                <label><input type="checkbox" name="Form[models][]" value="<?php echo $model->id; ?>" <?php if (in_array($model->id, $selectedModels)) echo "checked"; ?> /> 选择</label>
                 &nbsp;&nbsp;&nbsp;<a href="<?php echo $this->createUrl("model/show", array('id'=>$model->id)) ?>" target="_blank">查看详情</a>
             </div>
         </div>

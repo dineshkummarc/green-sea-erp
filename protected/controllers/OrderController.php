@@ -328,7 +328,7 @@ class OrderController extends Controller
 	 * 选择模特
 	 * @param integet $id 订单ID
 	 */
-	public function actionSelectModels($id = null)
+	public function actionSelectModels()
 	{
 	    $user = Yii::app()->user;
 	    if (isset($_POST['Form']))
@@ -357,7 +357,6 @@ class OrderController extends Controller
 	    $models = $user->getState("selectedModels");
 
 	    $this->render("selectModels", array(
-	        "orderId"=>$id,
 	    	"selectedModels"=>$models,
 	    	"models"=>$modelArr
 	    ));
@@ -375,15 +374,15 @@ class OrderController extends Controller
 
         //获取拍摄数量和
         $goodsList = $user->getState("goodsList");
-		$result=0;
+		$goodsCounts=0;
         foreach ($goodsList as $goods)
-        {
-        	$result += (int)$goods->count;
-        }
-		$goodsCounts=$result;
+            if ($goods->shoot_type == 1 || $goods->shoot_type == 2 || $goods->shoot_type == 5)
+        	    $goodsCounts += (int)$goods->count;
 
-        if ((isset($shootTypes[1]) || isset($shootTypes[2])) && empty($selectedModels) && $goodsCounts >= 50)
+        if ((isset($shootTypes[1]) || isset($shootTypes[2]) || isset($shootTypes[5])) && $goodsCounts >= 50)
             $this->redirect(array("order/selectModels", "id"=>$id));
+        else
+            $user->setState("selectedModels", null);
 
         if (isset($_POST['Form']))
         {
