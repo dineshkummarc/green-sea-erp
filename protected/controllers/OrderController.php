@@ -331,6 +331,15 @@ class OrderController extends Controller
 	public function actionSelectModels()
 	{
 	    $user = Yii::app()->user;
+	    $goodsList = $user->getState("goodsList");
+		$goodsCounts=0;
+        foreach ($goodsList as $goods)
+            if ($goods->shoot_type == 1 || $goods->shoot_type == 2 || $goods->shoot_type == 5)
+        	    $goodsCounts += (int)$goods->count;
+
+        if (!isset($shootTypes[1]) && !isset($shootTypes[2]) && !isset($shootTypes[5]) && $goodsCounts < 50)
+            $this->redirect(array("order/shootScene"));
+
 	    if (isset($_POST['Form']))
 	    {
 	        if (empty($_POST['Form']['models']))
@@ -355,7 +364,7 @@ class OrderController extends Controller
 	        $modelArr[$model->id] = (object)$model->attributes;
 	    }
 	    $models = $user->getState("selectedModels");
-
+        if ($models === null) $models = array();
 	    $this->render("selectModels", array(
 	    	"selectedModels"=>$models,
 	    	"models"=>$modelArr
@@ -379,10 +388,10 @@ class OrderController extends Controller
             if ($goods->shoot_type == 1 || $goods->shoot_type == 2 || $goods->shoot_type == 5)
         	    $goodsCounts += (int)$goods->count;
 
-        if ((isset($shootTypes[1]) || isset($shootTypes[2]) || isset($shootTypes[5])) && $goodsCounts >= 50)
-            $this->redirect(array("order/selectModels", "id"=>$id));
+        if ( empty($selectedModels) && (isset($shootTypes[1]) || isset($shootTypes[2]) || isset($shootTypes[5])) && $goodsCounts >= 50)
+            $this->redirect(array("order/selectModels"));
         else
-            $user->setState("selectedModels", null);
+            $user->setState("selectedModels", array());
 
         if (isset($_POST['Form']))
         {
@@ -451,22 +460,6 @@ class OrderController extends Controller
 	        "selectedShootType"=>$selectedShootType,
 	        "shootNotice"=>$shootNotice
 	    ));
-	}
-
-	public function actionEditShootScene($id)
-	{
-	    if (isset($_POST['id']))
-	    {
-	        $sql = "UPDATE {{order}} SET `memo` = :memo, `update_time` = :time WHERE `id` = :id";
-	        $command = Yii::app()->db->createCommand($sql);
-	        $command->execute(array(':id'=>$_POST['id'], ':memo'=>$_POST['memo'], ':time'=>Yii::app()->params['timestamp']));
-	        $this->success("修改成功");
-            $this->redirect(array('order/index'));
-	    }
-	    $sql = "SELECT `memo` FROM {{order}} WHERE id = :id";
-	    $command = Yii::app()->db->createCommand($sql);
-	    $memo = $command->queryScalar(array(':id'=>$id));
-	    $this->render('editShootScene', array('memo'=>$memo, 'id'=>$id));
 	}
 
 	/**
@@ -590,7 +583,7 @@ class OrderController extends Controller
 	        $this->refresh();
 	    }
         $models = Yii::app()->user->getState("selectedModels");
-        if ($models === null) return true;
+        if (empty($models)) return true;
         foreach ($models as $model)
         {
             $orderModel = new OrderModel;
