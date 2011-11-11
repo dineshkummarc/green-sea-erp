@@ -3,7 +3,6 @@
         enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);" method="post">
         <div class="pageFormContent" layoutH="60">
             <input type="hidden" name="Form[id]" value="<?php echo !empty($orders->id) ? $orders->id : ''; ?>" />
-
             <div class="unit">
                 <label>棚拍背景</label>
                 <select name="Form[studio_shoot]" class="combox required" default="<?php echo !empty($orders->studio_shoot) ? $orders->studio_shoot : 0; ?>">
