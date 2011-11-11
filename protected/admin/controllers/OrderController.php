@@ -118,15 +118,15 @@ class OrderController extends Controller
         $command = Yii::app()->db->createCommand($sql);
         $count = $command->execute();
         //订单排程
-        $sql = "DELETE FROM {{schedule}} WHEREW order_id = ".$id;
+        $sql = "DELETE FROM {{schedule}} WHERE order_id = ".$id;
         $command = Yii::app()->db->createCommand($sql);
         $count = $command->execute();
         //订单仓储
-        $sql = "DELETE FROM {{storage}} WHEREW order_id = ".$id;
+        $sql = "DELETE FROM {{storage}} WHERE order_id = ".$id;
         $command = Yii::app()->db->createCommand($sql);
         $count = $command->execute();
         //仓储物品
-        $sql = "DELETE FROM {{storage_goods}} WHEREW storage_id = (SELECT id FROM {{storage}} WHERE order_id =".$id.") ";
+        $sql = "DELETE FROM {{storage_goods}} WHERE storage_id = (SELECT id FROM {{storage}} WHERE order_id =".$id.") ";
         $command = Yii::app()->db->createCommand($sql);
         $count = $command->execute();
 
