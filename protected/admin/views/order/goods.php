@@ -1,3 +1,10 @@
+<div class="panelBar">
+<ul class="toolBar">
+	<li><a class="add" href="<?php echo $this->createUrl("order/goodsEdit", array('orderId'=>$orderId)); ?>" target="dialog" width="500" height="400" mask="true" title="添加订单物品" ><span>添加订单物品</span></a></li>
+	<li class="line">line</li>
+	<li><a class="delete" href="<?php echo $this->createUrl("order/goodsDel"); ?>" target="selectedTodo" title="确定删除选定管理员？" rel="id[]" ><span>删除选定</span></a></li>
+	</ul>
+</div>
 <div class="pageContent" width="100%" layoutH="27">
     <table class="list" width="100%">
     	<thead>
@@ -43,8 +50,8 @@
 	            <td><?php echo $orderGoods->count; ?></td>
 	            <td><?php echo $orderGoods->memo; ?></td>
 	            <td>
-	            	<a href="<?php echo $this->createUrl('order/goodsedit', array('id'=>$orderGoods->id)); ?>" target="dialog" mask="true" width="600" height="400" title="修改物品">修改</a>
-	                &nbsp;
+	            	<a href="<?php echo $this->createUrl('order/goodsEdit', array('id'=>$orderGoods->id)); ?>" target="dialog" mask="true" width="500" height="400" title="修改物品">修改</a> |
+	            	<a href="<?php echo $this->createUrl("order/goodsDel", array('id'=>$orderGoods->id)); ?>" target="ajaxTodo" title="确定删除改管理员？">删除</a>
 	            </td>
 	        </tr>
 	        <?php endforeach; endif; ?>

@@ -37,7 +37,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<?php if (empty($models) && !isset($models)): ?>
+		<?php if (empty($models)): ?>
         <tr>
             <td colspan="9">订单未排程</td>
         </tr>
@@ -45,7 +45,7 @@
 	    <tr>
 	    	<td><input type="checkbox" name="id[]" value="<?php echo $model->id ?>" /></td>
 	        <td><?php foreach ($this->getOrder($model->order_id) as $val) { echo "[ ".$val['sn']." ]".$val['user_name']; }?></td>
-	        <td><?php echo ShootType::getShootName($model->shoot_type); ?></td>
+	        <td><?php if(!empty($model->shoot_type) && $model->shoot_type != 0){ echo ShootType::getShootName($model->shoot_type); }?></td>
 	        <td><?php echo date("Y-m-d H:i",$model->shoot_time); ?></td>
 	        <td><?php echo $model->shoot_site; ?></td>
 	        <td><?php echo !empty($model->shoot_id) ? Admin::getAdminName($model->shoot_id) : '';?></td>

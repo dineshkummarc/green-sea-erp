@@ -21,10 +21,10 @@
 	        <td ><?php echo "[ ".$order['sn']." ]".$order['user_name']; ?></td>
 	        <td>
 	        	<div class="unit">
-	        		<?php $typeList = $this->getShootType($order['id']); ?>
 	                <select name="" class="combox" default="">
+	                	<?php $typeList =$this->getShootType($order['id']); ?>
 	                	<?php foreach ($typeList as $list):?>
-	                    <option value="<?php echo $list['shoot_type']?>"><?php $array =$this->getType($list['shoot_type']); foreach($array as $val ){ echo $val['name'];}?></option>
+	                    <option value="<?php echo $list['shoot_type']?>"><?php echo ShootType::getShootName($list['shoot_type'])?></option>
 	                    <?php endforeach;?>
 	                </select>
 	            </div>

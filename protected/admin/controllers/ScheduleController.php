@@ -102,9 +102,6 @@ class ScheduleController extends Controller
 
             // 格式化时间
             $model->shoot_time = strtotime($_POST['Form']['shoot_time']);
-//            $model->shoot_id = !empty($_POST['Form']['shoot_id']) ? $_POST['Form']['shoot_id'] : 0;
-//            $model->stylist_id = !empty($_POST['Form']['stylist_id']) ? $_POST['Form']['stylist_id'] : 0;
-//            $model->model_id = !empty($_POST['Form']['model_id']) ? $_POST['Form']['model_id'] : 0;
             if ($model->save())
             {
             	$sql = "UPDATE {{order}} SET status = 4 WHERE id = :id";

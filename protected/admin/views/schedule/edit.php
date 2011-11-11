@@ -1,3 +1,24 @@
+<script type="text/javascript">
+$(function(){
+	$("#diy").change(function () {
+		var $this = $(this);
+		if ($this.val() == 0)
+		{
+			var input = $("<input type='text' />")
+			.attr("name", "Form[model_name]")
+			.attr("class", "required textInput valid")
+			.width(100)
+			.css("margin-left", 5);
+			$this.after(input);
+			inputTip(input);
+		}
+		else if ($this.next().length > 0)
+		{
+			$this.next().remove();
+		}
+	});
+});
+</script>
 <div class="pageContent">
     <form action="<?php echo $this->createUrl(''); ?>" class="pageForm required-validate"
         enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);" method="post">
@@ -20,7 +41,7 @@
             </div>
             <div class="unit">
                 <label>拍摄类型：</label>
-                <select name="Form[shoot_type]" class="combox required" default="<?php echo !empty($model->shoot_type) ? $model->shoot_type : 0; ?>">
+                <select name="Form[shoot_type]" class="combox required" <?php echo !empty($model->shoot_type) ? 'default="'.$model->shoot_type : ''; ?> >
                 	<?php if(!empty($model->order_id)): foreach ($typeList as $list):?>
                     <option value="<?php echo $list['shoot_type']?>"><?php echo ShootType::getShootName($list['shoot_type']);?></option>
                     <?php endforeach; else: foreach (ShootType::getType() as $val):?>
@@ -30,7 +51,7 @@
             </div>
 			<div class="unit">
 				<label>摄影师：</label>
-				<select name="Form[shoot_id]" class="combox required" default="<?php echo !empty($model->shoot_id) ? $model->shoot_id : 0; ?>">
+				<select name="Form[shoot_id]" class="combox required" <?php echo !empty($model->shoot_id) ? 'default="'.$model->shoot_id : ''; ?> >
 					<option value="0">未选择</option>
                 	<?php foreach ($shootList as $list):?>
                     <option value="<?php echo $list['id']?>"><?php echo $list['name']?></option>
@@ -39,7 +60,7 @@
 			</div>
 			<div class="unit">
 				<label>造型师：</label>
-				<select name="Form[stylist_id]" class="combox" default="<?php echo !empty($model->stylist_id) ? $model->stylist_id : 0; ?>">
+				<select name="Form[stylist_id]" class="combox" <?php echo !empty($model->stylist_id) ? 'default="'.$model->stylist_id : ''; ?> >
 					<option value="0">未选择</option>
                 	<?php foreach ($styleList as $list):?>
                     <option value="<?php echo $list['id']?>"><?php echo $list['name']?></option>
@@ -48,7 +69,7 @@
 			</div>
 			<div class="unit">
 				<label>模特：</label>
-				<select name="Form[model_id]" class="combox" default="<?php echo !empty($model->model_id) ? $model->model_id : 0; ?>">
+				<select name="Form[model_id]" class="combox" id="diy" <?php echo !empty($model->model_id) ? 'default="'.$model->model_id : ''; ?> >
 					<option value="0">未选择</option>
                 	<?php foreach ($modelList as $list):?>
                     <option value="<?php echo $list['id']?>"><?php echo $list['nick_name']?></option>

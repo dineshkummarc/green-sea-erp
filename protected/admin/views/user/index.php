@@ -18,13 +18,13 @@
     <thead>
         <tr>
             <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
-            <th width="80">用户编号</th>
-            <th>用户名</th>
-            <th>旺旺号</th>
-            <th >QQ号</th>
-            <th >手机号码</th>
-            <th width="220">淘宝网地址</th>
-            <th >剩余积分</th>
+            <th width="60">用户编号</th>
+            <th width="100">用户名</th>
+            <th width="150">旺旺号</th>
+            <th width="100">QQ号</th>
+            <th width="100">手机号码</th>
+            <th width="150">淘宝网地址</th>
+            <th width="100">剩余积分</th>
             <th >详细信息</th>
             <th width="100">操作</th>
         </tr>
@@ -51,7 +51,7 @@
 					<?php echo !empty ($user->ReceiveAddress->street)?$user->ReceiveAddress->street:null ?>
             </td>
             <td>
-                <a href="<?php echo $this->createUrl('user/edit', array('id'=>$user->id)) ?>" target="dialog" width="630" height="350" mask="true" title="修改">修改</a>
+                <a href="<?php echo $this->createUrl('user/edit', array('id'=>$user->id)) ?>" target="dialog" width="630" height="350" mask="true" title="修改">修改</a> |
                 <a href="<?php echo $this->createUrl('user/del', array('id'=>$user->id)); ?>" target="ajaxTodo" title="相对应的数据也将删除，确认删除？">删除</a>
             </td>
         </tr>

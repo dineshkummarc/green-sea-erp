@@ -233,6 +233,7 @@ class OrderController extends Controller
 
 		$orderGoodsList = OrderGoods::model()->findAll($criteria);
 		$this->render('goods',array(
+			'orderId'=>$id,
 			'pages' => $pages,
 			'orderGoodsList' => $orderGoodsList
 		));
@@ -240,7 +241,7 @@ class OrderController extends Controller
 	/**
 	 * 订单物品 修改
 	 */
-	public function actionGoodsEdit($id = null)
+	public function actionGoodsEdit($id = null,$orderId = null)
 	{
 		$orderGoods = new OrderGoods;
 
@@ -279,12 +280,29 @@ class OrderController extends Controller
         $shootTypes = ShootType::model()->findAll();
         $types = GoodsType::model()->findAll();
 		$this->render('goods_edit',array(
+			'orderId'=>$orderId,
 			'styles' => $styles,
 			'shootTypes' => $shootTypes,
 			'types' => $types,
 			'orderGoods' => $orderGoods
 		));
 	}
+
+	/**
+	 * 仓储物品 删除
+	 */
+    public function actionStorageGoodsDel(array $id = array())
+    {
+        if (empty($id))
+            $this->error('参数传递错误！');
+
+        $sqlIn = implode(',', $id);
+
+        $sql = "DELETE FROM {{order_goods}} WHERE id in ($sqlIn)";
+        $command = Yii::app()->db->createCommand($sql);
+        $count = $command->execute();
+        $this->success('删除成功', array('navTabId'=>'order-storage'));
+    }
 	/**
 	 * 订单需求 修改
 	 */
