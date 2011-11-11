@@ -136,7 +136,7 @@
 	            <td></td><!-- 处理 -->
 	            <td></td><!-- 完成 -->
 	            <td><?php echo $storage['out_time'] > 0 ? "<span style='color:red'>✔</span>" : "";?></td><!-- 出库 -->
-	            <td></td><!-- 运单号 -->
+	            <td><?php echo !empty($orderTrack->Order->logistics_sn) ? $orderTrack->Order->logistics_sn : ''; ?></td><!-- 运单号 -->
 	        </tr>
 	        <?php endforeach; endif; ?>
         </tbody>

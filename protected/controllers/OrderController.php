@@ -9,37 +9,22 @@ class OrderController extends Controller
     /**
      * 订单列表
      */
-	public function actionIndex($sort = '', $logistics = '', $page = 1, $size = 20)
+	public function actionIndex($page = 1, $size = 20)
 	{
 	    $order = Order::model();
 	    $criteria = new CDbCriteria;
 	    $criteria->select = '*';
 	    if (Yii::app()->user->id != 999)
 	        $criteria->condition = "user_id = " . Yii::app()->user->id;
-
-        if (!empty($logistics))
-            $criteria->addCondition("logistics_sn like '%{$logistics}%'");
 	    $count = $order->count($criteria);
         $pages = new CPagination($count);
         $pages->currentPage = $page - 1;
         $pages->pageSize = $size;
         $pages->applyLimit($criteria);
-        $params = array();
-        if ($sort === 'time')
-        {
-            $params['sort'] = 'time';
-            $criteria->order = 'create_time DESC';
-        }
-        elseif ($sort === 'status')
-        {
-            $params['sort'] = 'status';
-            $criteria->order = 'status ASC';
-        }
-        else
-            $criteria->order = 'create_time DESC, status ASC';
+        $criteria->order = 'create_time DESC, status ASC';
 
         $orderList = $order->findAll($criteria);
-		$this->render('index', array('orderList'=>$orderList, 'pages'=>$pages, 'params'=>$params));
+		$this->render('index', array('orderList'=>$orderList, 'pages'=>$pages));
 	}
 
 	/**

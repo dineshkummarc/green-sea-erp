@@ -5,38 +5,6 @@
                 <label>收货人姓名</label>
                 <span class="unit"><input type="text" name="Form[receive_name]" class="required" value="<?php  echo!empty($receiver->receive_name)?$receiver->receive_name:null   ?>" alt="收货人姓名不能为空" /></span>
             </div>
-
-            <div class="unit" >
-                <label>所在省:</label>
-	            <select class="combox" isAjax="true" url="<?php echo $this->createUrl("user/area"); ?>" default="<?php echo !isset($area_list['default']['1'])?'0':$area_list['default']['1']?>" name="Form[area_1]" ref="Form[area_2]" >
-				<option value="0">请选择</option>
-				<?php foreach ($area_list['1'] as $val):?>
-				<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
-				<?php endforeach;?>
-				</select>
-            </div>
-
-            <div class="unit">
-	            <label>所在市:</label>
-				<select class="combox" name="Form[area_2]" isAjax="true" url="<?php echo $this->createUrl("user/area"); ?>" default="<?php echo !isset($area_list['default']['2'])?'0':$area_list['default']['2']?>" ref="Form[area_id]">
-				<option value="0">请选择</option>
-				<?php if (isset($area_list['default']['2'])) foreach ($area_list['2'] as $val):?>
-				<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
-				<?php endforeach;?>
-				</select>
-            </div>
-
-            <div class="unit">
-	            <label>所在区:</label>
-				<select class="combox" name="Form[area_id]" default="<?php echo !isset($area_list['default']['3'])?'0':$area_list['default']['3']?>">
-				<option value="0">请选择</option>
-				<?php if (isset($area_list['default']['3'])) foreach ($area_list['3'] as $val):?>
-				<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
-				<?php endforeach;?>
-				</select>
-				</select>
-            </div>
-
             <div class="unit">
 	            <label>电话号码:</label>
 	            <?php $phone = explode('-', $receiver->phone); ?>
@@ -47,18 +15,44 @@
 	            <input type="text" name="Form[phone-3]" style="width: 50px" value="<?php echo empty($phone[2]) ? '' : $phone[2] ?>"/>
 	            <span class="form-require">*</span>
 	            <span class="form-prompt">区号-电话号码-分机</span>
-        </div>
+	        </div>
+            <div class="unit" >
+                <label>客户地址:</label>
+                <span style="clear:both;">
+	            <select class="combox" isAjax="true" url="<?php echo $this->createUrl("user/area"); ?>" default="<?php echo !isset($area_list['default']['1'])?'0':$area_list['default']['1']?>" name="Form[area_1]" ref="Form[area_2]" >
+					<option value="0">选择省份</option>
+					<?php foreach ($area_list['1'] as $val):?>
+					<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
+					<?php endforeach;?>
+				</select>
+				</span>
+				<span style="clear:both;">
+				<select class="combox" name="Form[area_2]" isAjax="true" url="<?php echo $this->createUrl("user/area"); ?>" default="<?php echo !isset($area_list['default']['2'])?'0':$area_list['default']['2']?>" ref="Form[area_id]">
+					<option value="0">选择城市</option>
+					<?php if (isset($area_list['default']['2'])) foreach ($area_list['2'] as $val):?>
+					<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
+					<?php endforeach;?>
+				</select>
+				</span>
+				<span style="clear:both;">
+				<select class="combox" name="Form[area_id]" default="<?php echo !isset($area_list['default']['3'])?'0':$area_list['default']['3']?>">
+					<option value="0">选择地区</option>
+					<?php if (isset($area_list['default']['3'])) foreach ($area_list['3'] as $val):?>
+					<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
+					<?php endforeach;?>
+				</select>
+				</span>
+            </div>
 
-
-          <div class="unit">
+	        <div class="unit">
 	            <label>详细地址:</label>
 	            <textarea name="Form[street]" class="required" style="width: 300px; height: 50px;" ><?php  echo!empty($receiver->	street)?$receiver->	street:null   ?></textarea>
 	            <span class="form-prompt">不需要重复填写省/市/区</span>
         	</div>
 
             <div class="unit" >
-            <label>邮政编码:</label>
-            <input type="text" name="Form[postalcode]" class="required" style="width: 80px"  value="<?php  echo!empty($receiver->postalcode)?$receiver->postalcode:null   ?>"   />
+	            <label>邮政编码:</label>
+	            <input type="text" name="Form[postalcode]" class="required" style="width: 80px"  value="<?php  echo!empty($receiver->postalcode)?$receiver->postalcode:null   ?>"   />
             </div>
             <input type="hidden" name="Form[id]" value="<?php echo $user->id; ?>" />
             <?php if (!empty($user->id)): ?>

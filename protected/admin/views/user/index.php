@@ -10,7 +10,7 @@
 <div class="pageContent  width="100%"  layoutH="89">
     <div class="panelBar" >
         <ul class="toolBar">
-           <li><a class="add" href="<?php echo $this->createUrl("user/edit") ?>" target="dialog" width="630" height="320" mask="true" title="添加用户"><span>添加用户</span></a></li>
+           <li><a class="add" href="<?php echo $this->createUrl("user/edit") ?>" target="dialog" width="600" height="500" mask="true" title="添加用户"><span>添加用户</span></a></li>
            <li><a class="delete" href="<?php echo $this->createUrl("user/del"); ?>" target="selectedTodo" title="优惠券也会删除，确定删除选定数据吗？" rel="id[]" ><span>删除选定</span></a></li>
         </ul>
     </div>
