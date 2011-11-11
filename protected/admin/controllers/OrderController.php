@@ -101,13 +101,36 @@ class OrderController extends Controller
 	    {
 	        $this->error("删除失败，发生错误");
 	    }
-	    // 删除订单物品
-        OrderGoods::model()->deleteAllByAttributes(array('order_id'=>$id));
-	    // 删除订单模特
-        OrderModel::model()->deleteAllByAttributes(array('order_id'=>$id));
-	    //  删除订单
-	    Order::model()->deleteByPk($id);
-	    $this->success('删除成功', array('navTabId'=>'order-index'));
+	    //删除订单表
+	    $sql = "DELETE FROM {{order}} WHERE id = ".$id;
+        $command = Yii::app()->db->createCommand($sql);
+        $count = $command->execute();
+        //删除订单模特
+        $sql = "DELETE FROM {{order_model}} WHERE order_id = ".$id;
+        $command = Yii::app()->db->createCommand($sql);
+        $count = $command->execute();
+        //订单物品
+        $sql = "DELETE FROM {{order_goods}} WHERE order_id = ".$id;
+        $command = Yii::app()->db->createCommand($sql);
+        $count = $command->execute();
+        //删除订单跟进表
+        $sql = "DELETE FROM {{order_track}} WHERE order_id = ".$id;
+        $command = Yii::app()->db->createCommand($sql);
+        $count = $command->execute();
+        //订单排程
+        $sql = "DELETE FROM {{schedule}} WHERE order_id = ".$id;
+        $command = Yii::app()->db->createCommand($sql);
+        $count = $command->execute();
+        //订单仓储
+        $sql = "DELETE FROM {{storage}} WHERE order_id = ".$id;
+        $command = Yii::app()->db->createCommand($sql);
+        $count = $command->execute();
+        //仓储物品
+        $sql = "DELETE FROM {{storage_goods}} WHERE storage_id = (SELECT id FROM {{storage}} WHERE order_id =".$id.") ";
+        $command = Yii::app()->db->createCommand($sql);
+        $count = $command->execute();
+
+        $this->success('删除成功', array('navTabId'=>'order-index'));
     }
     /**
      * 切换订单状态
