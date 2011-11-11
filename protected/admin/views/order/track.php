@@ -1,10 +1,14 @@
-<div class="pageContent" width="100%" layoutH="27">
-	<?php $this->widget('widget.Search', array(
-	    'panleStyle'=>'width: 100%;',
-	    'searchCondition'=>array(
-	        '客户编号：'=>array('type'=>'text', 'name'=>'params[user_sn]', 'defaultValue'=>empty($params['user_sn']) ? '' : $params['user_sn']),
-	    ),
-	)); ?>
+<?php $this->widget('widget.Search', array(
+    'panleStyle'=>'width: 600px; height: 50px;',
+    'searchCondition'=>array(
+        '客户编号：'=>array('type'=>'text', 'name'=>'params[user_sn]', 'defaultValue'=>empty($params['user_sn']) ? '' : $params['user_sn'], 'alt'=>'字母开头'),
+        '客户名：'=>array('type'=>'text',  'name'=>'params[user_name]', 'defaultValue'=>empty($params['user_name']) ? '' : $params['user_name'], 'alt'=>'支持模糊查询'),
+
+        '时间查询：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[start_time]', 'defaultValue'=>empty($params['start_time']) ? '' : $params['start_time'],),
+        '至：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[end_time]', 'defaultValue'=>empty($params['end_time']) ? '' : $params['end_time'],),
+	),
+)); ?>
+<div class="pageContent" width="100%" layoutH="113">
     <table class="list" id="list" width="1300px">
     	<thead>
 	        <tr>

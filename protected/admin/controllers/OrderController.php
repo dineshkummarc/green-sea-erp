@@ -12,7 +12,8 @@ class OrderController extends Controller
 		if (!empty($params['logistics_sn']))
 		{
 			$criteria->addSearchCondition('logistics_sn', $params['logistics_sn']);
-		}elseif (!empty($params['start_time']) && !empty($params['end_time']))
+		}
+		if (!empty($params['start_time']) && !empty($params['end_time']))
 		{
 			$stare_time = strtotime($params['start_time']);
 			$end_time = strtotime($params['end_time']) + 24 * 3600;
@@ -856,28 +857,68 @@ class OrderController extends Controller
 		$criteria = new CDbCriteria;
 		if (!empty($params['user_sn']))
 		{
-			$user_p = substr($params['user_sn'],0,1);
-			if ($user_p == 'p' || $user_p == 'P')
+//			$user_p = substr($params['user_sn'],0,1);
+			$user_id = (int)substr($params['user_sn'],1);
+
+			$sql = "SELECT id FROM {{order}} WHERE user_id = ".$user_id;
+			$command = Yii::app()->db->createCommand($sql);
+			$order_id_list = $command->queryAll();
+
+			foreach ($order_id_list as $key=>$order)
 			{
-				$user_id = (int)substr($params['user_sn'],1);
-
-				$sql = "SELECT id FROM {{order}} WHERE user_id = ".$user_id;
-				$command = Yii::app()->db->createCommand($sql);
-				$order_id_list = $command->queryAll();
-
-				$condition = "";
-				foreach ($order_id_list as $key=>$order)
-				{
-					if ($key > 0) $condition .= ' or ';
-	            	$condition .= 'order_id = '.$order['id'];
-				}
-				if ($condition == "") $condition = "order_id = ".$params['user_sn'];
-				$criteria->condition = $condition;
-			}else{
-				$this->error("客户编号必须以\"p\"或\"P\"开头");
+				$criteria->addCondition('order_id = '.$order['id'],'or');
 			}
 		}
+		if (!empty($params['user_name']))
+		{
+			$criteria_user = new CDbCriteria;
+			$criteria_user->addSearchCondition('user_name', $params['user_name']);
+			$criteria_user->select = "id";
+			$order_id_list = Order::model()->cache()->findAll($criteria_user);
 
+			foreach ($order_id_list as $key=>$order)
+			{
+				$criteria->addCondition('order_id = '.$order->id,'or');
+			}
+		}
+		if (!empty($params['start_time']) && !empty($params['end_time']))
+		{
+			$stare_time = strtotime($params['start_time']);
+			$end_time = strtotime($params['end_time']) + 24 * 3600;
+
+			$sql = "SELECT order_id FROM {{storage}} WHERE in_time >= $stare_time and in_time < $end_time";
+			$command = Yii::app()->db->createCommand($sql);
+			$order_id_list = $command->queryAll();
+
+			foreach ($order_id_list as $key=>$order)
+			{
+				$criteria->addCondition('order_id = '.$order['order_id'],'or');
+			}
+		}elseif (!empty($params['start_time']))
+		{
+			$stare_time = strtotime($params['start_time']);
+
+			$sql = "SELECT order_id FROM {{storage}} WHERE in_time >= $stare_time";
+			$command = Yii::app()->db->createCommand($sql);
+			$order_id_list = $command->queryAll();
+
+			foreach ($order_id_list as $key=>$order)
+			{
+				$criteria->addCondition('order_id = '.$order['order_id'],'or');
+			}
+		}elseif (!empty($params['end_time']))
+		{
+			$end_time = strtotime($params['end_time']) + 24 * 3600;
+
+			$sql = "SELECT order_id FROM {{storage}} WHERE in_time < $stare_time";
+			$command = Yii::app()->db->createCommand($sql);
+			$order_id_list = $command->queryAll();
+
+			foreach ($order_id_list as $key=>$order)
+			{
+				$criteria->addCondition('order_id = '.$order['order_id'],'or');
+			}
+		}
 		$count = OrderTrack::model()->count($criteria);
         $pages = new CPagination($count);
         $pages->currentPage = $pageNum - 1;

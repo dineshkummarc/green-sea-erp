@@ -16,8 +16,8 @@
                         <?php endforeach; ?>
                     </select>
                     <?php endif; ?>
-                <?php endforeach; ?>
                 </li>
+                <?php endforeach; ?>
             </ul>
             <div class="subBar">
                 <ul>
