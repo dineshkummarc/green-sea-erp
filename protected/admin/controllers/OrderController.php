@@ -533,8 +533,6 @@ class OrderController extends Controller
     {
         if (empty($id))
             $this->error('参数传递错误');
-        if (empty($logistics_sn))
-            $this->error('订单号不能为空');
 
         $storage = Storage::model()->findByPk($id);
         $storage->out_time = Yii::app()->params['timestamp'];
