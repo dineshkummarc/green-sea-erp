@@ -17,30 +17,24 @@
 	        </div>
             <div class="unit" >
                 <label>客户地址:</label>
-                <span style="clear:both;">
 	            <select class="combox" isAjax="true" url="<?php echo $this->createUrl("user/area"); ?>" default="<?php echo !isset($area_list['default']['1']) ? '0' : $area_list['default']['1'];?>" name="Form[area_1]" ref="Form[area_2]" >
 					<option value="0">选择省份</option>
 					<?php foreach ($area_list['1'] as $val):?>
 					<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
 					<?php endforeach;?>
 				</select>
-				</span>
-				<span style="clear:both;">
 				<select class="combox" name="Form[area_2]" isAjax="true" url="<?php echo $this->createUrl("user/area"); ?>" default="<?php echo !isset($area_list['default']['2'])?'0':$area_list['default']['2']?>" ref="Form[area_id]">
 					<option value="0">选择城市</option>
 					<?php if (isset($area_list['default']['2'])) foreach ($area_list['2'] as $val):?>
 					<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
 					<?php endforeach;?>
 				</select>
-				</span>
-				<span style="clear:both;">
 				<select class="combox" name="Form[area_id]" default="<?php echo !isset($area_list['default']['3'])?'0':$area_list['default']['3']?>">
 					<option value="0">选择地区</option>
 					<?php if (isset($area_list['default']['3'])) foreach ($area_list['3'] as $val):?>
 					<option value="<?php echo $val['id']?>"><?php echo $val['name']?></option>
 					<?php endforeach;?>
 				</select>
-				</span>
             </div>
 
 	        <div class="unit">
