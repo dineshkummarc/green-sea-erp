@@ -47,7 +47,7 @@
 	</div>
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a class="add" href="<?php echo $this->createUrl("order/StorageGoods",array('id'=>$id,'storage_id'=>$storage->id,'order_sn'=>$storage->Order->sn)) ?>" target="dialog" width="400" height="200" title="添加物品"><span>添加物品</span></a></li>
+            <li><a class="add" href="<?php echo $this->createUrl("order/StorageGoods",array('storage_id'=>$storage->id,'order_sn'=>$storage->Order->sn,'orderId'=>$orderId)) ?>" target="dialog" width="400" height="200" title="添加物品"><span>添加物品</span></a></li>
             <li><a class="delete" href="<?php echo $this->createUrl("order/StorageGoodsDel"); ?>" target="selectedTodo" title="确定删除选定数据吗？" rel="id[]" ><span>删除选定</span></a></li>
             <li class="line">line</li>
 			<li><a class="icon" href="<?php echo $this->createUrl("order/StorageGoodsExcel",array('order_id'=>$storage->order_id)); ?>" target="dwzExport" targetType="navTab" title="确实要导出这些记录吗?" rel="id[]"><span>导出EXCEL</span></a></li>
@@ -77,8 +77,7 @@
 	            <td><?php echo !empty($storageGoods->shoot_type) ? ShootType::getShootName($storageGoods->shoot_type) : ''; ?></td>
 	            <td><?php echo $storageGoods->is_shoot == 0 ? "否" : "是"?></td>
 	            <td>
-	            	<a href="<?php echo $this->createUrl("order/StorageGoods",array('id'=>$storageGoods->id,'storage_id'=>$storage->id)) ?>" target="dialog" width="400" height="200" title="修改物品">修改</a>
-	                &nbsp;
+	            	<a href="<?php echo $this->createUrl("order/StorageGoods",array('id'=>$storageGoods->id,'storage_id'=>$storage->id, 'orderId'=>$orderId)) ?>" target="dialog" width="400" height="200" title="修改物品">修改</a>
 	            </td>
 	        </tr>
 	        <?php endforeach; endif; ?>

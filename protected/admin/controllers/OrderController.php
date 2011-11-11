@@ -393,6 +393,7 @@ class OrderController extends Controller
 		$storageGoodsList = StorageGoods::model()->findAll($criteria);
 		$this->render('storage',array(
 			'id' => $id,
+			'orderId' => $id,
 			'pageSizes' => $pageSizes,
 			'pages' => $pages,
 			'storage' => $storage,
@@ -455,15 +456,16 @@ class OrderController extends Controller
 	/**
 	 * 仓储 物品
 	 */
-	public function actionStorageGoods($id = null, $storage_id = null, $order_sn = null)
+	public function actionStorageGoods($id = null, $storage_id = null, $order_sn = null, $orderId = null)
 	{
 		$storageGoods = new StorageGoods;
 		if (!empty($id))
 			$storageGoods = $storageGoods->model()->findByPk($id);
+		if (!empty($orderId)){
 			$sql = "SELECT shoot_type FROM {{order_goods}} WHERE order_id =:Id GROUP BY shoot_type";
 			$command = Yii::app()->db->createCommand($sql);
-			$shootTypes = $command->queryAll(true, array(':Id'=>$id));
-
+			$shootTypes = $command->queryAll(true, array(':Id'=>$orderId));
+		}
 		if (isset($_POST['Form']))
         {
             if (!empty($_POST['Form']['id']))
@@ -531,8 +533,6 @@ class OrderController extends Controller
     {
         if (empty($id))
             $this->error('参数传递错误');
-        if (empty($logistics_sn))
-            $this->error('订单号不能为空');
 
         $storage = Storage::model()->findByPk($id);
         $storage->out_time = Yii::app()->params['timestamp'];
