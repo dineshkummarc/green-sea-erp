@@ -37,11 +37,9 @@ class ScheduleController extends Controller
 
 			$models = $models->findAll($criteria);
 			//得到拍摄类型 且 数组反向
-			$typeList = $this->getType();
+			$typeList = ShootType::getType();
 		}
 
-//        Dumper::dump($orders);
-//        Yii::app()->end();
 		$this->render('index',array(
 			'orderId' =>$orderId,
 			'typeList' => $typeList,
@@ -60,14 +58,14 @@ class ScheduleController extends Controller
 	}
 
 	//未排程订单
-	public function actionOrder($status = null, $pageNum = null, $numPerPage = null)
+	public function actionWait($status = null, $pageNum = null, $numPerPage = null)
 	{
 
 		$orders = new Order();
 
 		$criteria = new CDbCriteria;
-//		if(!empty($status))
-			$criteria -> condition =" status < 4 ";
+		if(!empty($status))
+			$criteria -> condition =" status = ".$status;
 		$count = $orders->count($criteria);
 
 		$pages = new CPagination($count);
@@ -127,14 +125,6 @@ class ScheduleController extends Controller
         $sql = "SELECT shoot_type FROM {{order_goods}} WHERE order_id =:Id GROUP BY shoot_type";
 		$command = Yii::app()->db->createCommand($sql);
 		$typeList = $command->queryAll(true, array(':Id'=>$orderId));
-//		$result = array();
-//		foreach ($typeList as $List){
-//			$result[] = $List['shoot_type'];
-//		}
-//		$model->shoot_type = !empty($result['0']) ? $result['0'] : 1;
-//		$sql = "SELECT * FROM {{shoot_type}}";
-//		$command = Yii::app()->db->createCommand($sql);
-//		$typeList = $command->queryAll();
 
 		// 根据订单ID查询拍摄模特
         $sql = "SELECT model_id FROM {{order_model}} WHERE order_id =:Id GROUP BY model_id";
@@ -154,8 +144,8 @@ class ScheduleController extends Controller
 			$modelList[] = Models::model()->cache()->findAll();
 
 		//得到摄影师列表和造型师列表
-		$shootList = $this->getAdmin(null, 6);
-		$styleList = $this->getAdmin(null, 8);
+		$shootList = Admin::getAdmin(6);
+		$styleList = Admin::getAdmin(8);
 
         $this->render('edit', array(
             'orders'=>$orders,
@@ -201,57 +191,6 @@ class ScheduleController extends Controller
 		else{
 			return $types;
 		}
-	}
-
-	/**
-	 * 获取模特
-	 */
-	public function getModel($id = null)
-	{
-		if(!empty($id))
-			$sql = "SELECT id, nick_name FROM {{models}} WHERE id =".$id;
-		else
-			$sql = "SELECT id, nick_name FROM {{models}}";
-		$command = Yii::app()->db->createCommand($sql);
-		$models = $command->queryAll();
-        return $models;
-	}
-
-	/**
-	 * 获取拍摄类型
-	 */
-	public function getType($id = null)
-	{
-		if(!empty($id))
-			$sql = "SELECT * FROM {{shoot_type}} WHERE id =".$id;
-		else
-			$sql = "SELECT * FROM {{shoot_type}}";
-		$command = Yii::app()->db->createCommand($sql);
-		$types = $command->queryAll();
-		if ($types === false)
-		{
-			return false;
-		}
-		else{
-			return $types;
-		}
-	}
-	/**
-	 * 获取用户组
-	 */
-	public function getAdmin($id = null, $roleId = null)
-	{
-		if(!empty($id))
-			$sql = "SELECT id, name FROM {{admin}} WHERE id = ".$id;
-		if(!empty($roleId))
-			$sql = "SELECT id, name FROM {{admin}} WHERE role_id = ".$roleId;
-		if(empty($id) && empty($roleId)){
-			$admins = false;
-		}else {
-			$command = Yii::app()->db->createCommand($sql);
-			$admins = $command->queryAll();
-		}
-	    return $admins;
 	}
 
 	/**

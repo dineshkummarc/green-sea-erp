@@ -74,7 +74,7 @@
 	            <td><input type="checkbox" name="id[]" value="<?php echo $storageGoods->id ?>" /></td>
 	            <td><?php echo $storageGoods->sn?></td>
 	            <td><?php echo $storageGoods->name?></td>
-	            <td><?php $result = $this->getType($storageGoods->shoot_type);foreach($result as $val ) echo $val['name']; ?></td>
+	            <td><?php echo !empty($storageGoods->shoot_type) ? ShootType::getShootName($storageGoods->shoot_type) : ''; ?></td>
 	            <td><?php echo $storageGoods->is_shoot == 0 ? "否" : "是"?></td>
 	            <td>
 	            	<a href="<?php echo $this->createUrl("order/StorageGoods",array('id'=>$storageGoods->id,'storage_id'=>$storage->id)) ?>" target="dialog" width="400" height="200" title="修改物品">修改</a>
