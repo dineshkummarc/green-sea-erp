@@ -43,6 +43,7 @@ class UserController extends Controller
 	public  function  actionEdit($id=null)
 	{
 		$user = new User;
+		$area_list = '';
 		if (!empty($id))
 		{
 			$user = $user->cache()->findByPk($id);
@@ -50,7 +51,7 @@ class UserController extends Controller
 			if (empty($receiver))  $receiver = new UserReceive;
 
 			if ($receiver->area_id == 0)
-				$area_list = null;
+				$area_list = Area::getAreaLevelAll(0);
 			else
 				$area_list = Area::getAreaLevelAll($receiver->area_id);
 		}
@@ -98,7 +99,6 @@ class UserController extends Controller
 			if (!empty($_POST['Form']['id']))
 			{
 				$message="修改成功";
-				$this->success($message,array('navTabId'=>'user-index') );
 			}
  			else
  			{
@@ -117,8 +117,8 @@ class UserController extends Controller
  			}
 
             $user->attributes = $_POST['Form'];
-
             $_POST['Form']['phone'] = trim($_POST['Form']['phone']);
+            $user->phone = !empty($_POST['Form']['phone']) ? $_POST['Form']['phone'] : '0';
 			$user->update_time = Yii::app()->params['timestamp'];
 
 			if($user->save())

@@ -18,7 +18,7 @@
     <thead>
         <tr>
             <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
-            <th>用户编号</th>
+            <th width="80">用户编号</th>
             <th>用户名</th>
             <th>旺旺号</th>
             <th >QQ号</th>
@@ -26,7 +26,7 @@
             <th width="220">淘宝网地址</th>
             <th >剩余积分</th>
             <th >详细信息</th>
-            <th>操作</th>
+            <th width="100">操作</th>
         </tr>
       </thead>
       <tbody>
