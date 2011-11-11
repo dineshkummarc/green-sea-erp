@@ -1,18 +1,3 @@
-<script type="text/javascript">
-function changeArea(id, name)
-{
-//    var result = new Array();
-//    result.push(['all', '请选择']);
-//    for (i = 0; i < Area.length; i++)
-//    {
-//        if (Area[i].parent == id)
-//        {
-//            result.push([Area[i].id, Area[i].name]);
-//        }
-//    }
-//    return result;
-}
-</script>
 <div class="pageContent">
     <form action="<?php echo $this->createUrl(''); ?>"  class="pageFormrequiredd-validate" onsubmit="return validateCallback(this, dialogAjaxDone);" method="post">
         <div class="pageFormContent" layoutH="60">

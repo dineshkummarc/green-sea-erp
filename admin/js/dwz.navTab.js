@@ -301,8 +301,6 @@ var navTab = {
 				var $tab = op.navTabId ? this._getTab(op.navTabId) : this._getTabs().eq(this._currentIndex);
 				url = $tab.attr("url");
 			}
-			var pagerData = $("form[rel=pagerForm]", $panel).serializeArray();
-			if (pagerData) op.data = $.extend(op.data, pagerData);
 			if (url) {
 				$panel.loadUrl(url, op.data, function(response){
 					navTab._loadUrlCallback($panel);

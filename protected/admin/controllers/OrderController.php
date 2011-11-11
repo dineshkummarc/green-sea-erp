@@ -9,8 +9,6 @@ class OrderController extends Controller
 	public function actionIndex(array $params = array(), $sort = null, $pageNum = 1, $numPerPage = 20)
 	{
 		$criteria = new CDbCriteria;
-
-
 		if (!empty($params['logistics_sn']))
 		{
 			$criteria->addSearchCondition('logistics_sn', $params['logistics_sn']);
@@ -230,6 +228,7 @@ class OrderController extends Controller
         $pages->currentPage = $pageNum - 1;
         $pages->pageSize = $numPerPage;
         $pages->applyLimit($criteria);
+        $pages->params = array('id'=>$id);
 
 		$orderGoodsList = OrderGoods::model()->findAll($criteria);
 		$this->render('goods',array(
