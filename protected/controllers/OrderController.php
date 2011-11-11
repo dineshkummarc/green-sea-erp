@@ -230,10 +230,10 @@ class OrderController extends Controller
                 // 检查订单中存在的拍摄类型
                 $shootTypes = $user->getState('shootTypes');
                 // 获取所有拍摄类型
-                $shootType = ShootType::getType();
+                $shootType = ShootType::getType(true);
                 // 保存拍摄类型
                 if (empty($shootTypes) || !isset($shootTypes[$goods->shoot_type]))
-                    $shootTypes[$goods->shoot_type] = $shootType[$goods->shoot_type]->name;
+                    $shootTypes[$goods->shoot_type] = $shootType[$goods->shoot_type]['name'];
 
                 $styles = $user->getState('modelStyles');
                 if ($goods->style == 0)
@@ -256,11 +256,9 @@ class OrderController extends Controller
         	$this->redirect(array("order/goodsList"));
         }
 
-	    $shootType = ShootType::model()->findAll();
-        foreach ($shootType as $key=>$type)
-        {
-            $shootType[$key] = $type->attributes;
-        }
+        $sql = "SELECT * FROM {{shoot_type}}";
+        $command = Yii::app()->db->createCommand($sql);
+        $shootType = $command->queryAll();
 
 	    $styles = Style::model()->findAll();
         foreach ($styles as $key=>$style)
@@ -412,9 +410,11 @@ class OrderController extends Controller
             $order->width = serialize($order->width);
             $order->shoot_notice = serialize($order->shoot_notice);
 
+//            $transaction = Yii::app()->db->beginTransaction();
             // 保存订单、订单物品、模特
             if ($order->save() && $this->saveGoods($order->id, $order->sn) && $this->saveModel($order->id))
             {
+//                $transaction->commit();
                 // 保存完毕，清空session
                 $user->setState("shootTypes", null);
                 $user->setState("totalPrice", null);
@@ -438,6 +438,7 @@ class OrderController extends Controller
             }
             else
             {
+//                $transaction->rollBack();
                 $this->error(Dumper::dumpString($order->getErrors()));
                 $this->refresh();
             }
