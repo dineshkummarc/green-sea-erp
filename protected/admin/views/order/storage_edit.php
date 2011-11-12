@@ -3,7 +3,6 @@
         enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);" method="post">
         <div class="pageFormContent" layoutH="60">
             <input type="hidden" name="Form[storage_id]" value="<?php echo !empty($storage->id) ? $storage->id : ''; ?>" />
-            <input type="hidden" name="Form[order_id]" value="<?php echo !empty($order->id) ? $order->id : ''; ?>" />
 
             <div class="unit">
                 <label>出库时间</label>
@@ -11,7 +10,7 @@
             </div>
             <div class="unit">
                 <label>订单号</label>
-                <input type="text" name="Form[logistics_sn]" value="<?php echo !empty($order->logistics_sn) ? $order->logistics_sn : ''; ?>"/>
+                <input type="text" name="Form[out_sn]" value="<?php echo !empty($storage->out_sn) ? $storage->out_sn : ''; ?>"/>
             </div>
         </div>
         <div class="formBar">
