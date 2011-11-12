@@ -56,7 +56,7 @@
 			</div>
             <div class="unit">
                 <label>修图标准：</label>
-                <input type="radio" name="Form[retouch]" value="1" <?php if ($orders->retouch == 1 || empty($orders->retouch)) echo "checked"; ?> /> 简修图&nbsp;<a href="#">简修图说明</a>
+                <input type="radio" name="Form[retouch]" value="1" <?php if ($orders->retouch == 1 || empty($orders->retouch)) echo "checked"; ?> /> 简修图
                 <input type="radio" name="Form[retouch]" value="2" <?php if ($orders->retouch == 2 ) echo "checked"; ?> /> 精修图
 			</div>
             <div class="unit">

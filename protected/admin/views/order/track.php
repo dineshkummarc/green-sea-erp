@@ -23,9 +23,8 @@
 	            <th rowspan="2">是否<br />交图</th>
 	            <th colspan="3">满意度</th>
 	            <th colspan="2">反馈处理</th>
-	            <th>出库</th>
-	            <th>入库单号</th>
-	            <th>出库单号</th>
+	            <th rowspan="2">入库时间<br/>入库单号</th>
+	            <th rowspan="2">出库时间<br/>出库单号</th>
 	        </tr>
 	        <tr>
 	            <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
@@ -43,9 +42,6 @@
 	            <th>C</th>
 	            <th>处理</th>
 	            <th>完成</th>
-	            <th></th>
-	            <th></th>
-	            <th></th>
 	        </tr>
         </thead>
         <tbody>
@@ -123,9 +119,8 @@
 	            <td></td><!-- C -->
 	            <td></td><!-- 处理 -->
 	            <td></td><!-- 完成 -->
-	            <td><?php echo $storage['out_time'] > 0 ? "<span style='color:red'>✔</span>" : "";?></td><!-- 出库 -->
-	            <td><?php echo $logistics_sn; ?></td><!-- 入库单号 -->
-	            <td><?php echo $storage['out_sn']?></td>
+	            <td><?php if ($storage['in_time'] > 0) { echo date('Y-m-d', $storage['in_time']).'<br/>'; echo !empty($logistics_sn) ? $logistics_sn : '无运单'; } ?></td><!-- 入库单号 -->
+	            <td><?php if ($storage['out_time'] > 0) { echo date('Y-m-d', $storage['in_time']).'<br/>'; echo !empty($storage['out_sn']) ? $storage['out_sn'] : '无运单'; }?></td>
 	        </tr>
 	        <?php endforeach; endif; ?>
         </tbody>
