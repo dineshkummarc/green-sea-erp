@@ -1,5 +1,5 @@
 <form id="pagerForm" action="<?php echo $this->controller->createUrl("", (array)$pages->params); ?>" method="post" >
-    <input type="hidden" name="pageNum" value="1" />
+    <input type="hidden" name="pageNum" value="<?php echo $pages->currentPage + 1; ?>" />
     <input type="hidden" name="numPerPage" value="<?php echo $pages->pageSize; ?>" />
 </form>
 <div class="panelBar" style="<?php if ($this->style !== null) echo $this->style; ?>">

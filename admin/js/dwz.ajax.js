@@ -129,7 +129,14 @@ function dialogAjaxDone(json){
 	DWZ.ajaxDone(json);
 	if (json.statusCode == DWZ.statusCode.ok){
 		if (json.navTabId){
-			navTab.reload(json.forwardUrl, {navTabId: json.navTabId});
+		    var data = {};
+		    if (json.navTabId)
+		    {
+		        var pagerForm = $("form#pagerForm", navTab.getPanel(json.navTabId));
+                if (pagerForm.length>0)
+                    data = pagerForm.serializeArray();
+		    }
+			navTab.reload(json.forwardUrl, {navTabId: json.navTabId, data: data});
 		} else if (json.rel) {
 			navTabPageBreak({}, json.rel);
 		}
