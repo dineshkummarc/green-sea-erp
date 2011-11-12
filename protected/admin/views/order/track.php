@@ -122,7 +122,6 @@
 	            <td></td><!-- C -->
 	            <td></td><!-- 处理 -->
 	            <td></td><!-- 完成 -->
-	            <td><?php if ($storage['in_time'] > 0) { echo date('Y-m-d', $storage['in_time']).'<br/>';  } ?></td><!-- 入库单号 -->
 	            <td><?php if ($storage['out_time'] > 0) { echo date('Y-m-d', $storage['in_time']).'<br/>'; echo !empty($storage['out_sn']) ? $storage['out_sn'] : '无运单'; }?></td>
 	        </tr>
 	        <?php endforeach; endif; ?>
