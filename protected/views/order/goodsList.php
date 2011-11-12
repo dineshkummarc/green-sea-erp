@@ -42,6 +42,6 @@
 </table>
 <?php if (!empty($goodsList)): ?>
 <div class="title">
-    <input type="button" value="填写拍摄需求" onclick="window.location.href='<?php echo $this->createUrl("order/shootScene"); ?>'" />
+    <input type="button" value="填写拍摄需求" onclick="window.location.href='<?php echo $this->createUrl("order/shootScene", array('save'=>false)); ?>'" />
 </div>
 <?php endif; ?>
