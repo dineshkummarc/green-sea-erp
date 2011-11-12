@@ -15,7 +15,7 @@
 	            <th width="30"></th>
 	            <th colspan="2">客户信息</th>
 	            <th rowspan="2">确认<br />拍摄</th>
-	            <th colspan="2">入库状态</th>
+	            <th colspan="3">入库状态</th>
 	            <th align="center">排程信息</th>
 	            <th colspan="2">拍摄状态</th>
 	            <th colspan="2">修图状态</th>
@@ -23,13 +23,13 @@
 	            <th rowspan="2">是否<br />交图</th>
 	            <th colspan="3">满意度</th>
 	            <th colspan="2">反馈处理</th>
-	            <th rowspan="2">入库时间<br/>入库单号</th>
 	            <th rowspan="2">出库时间<br/>出库单号</th>
 	        </tr>
 	        <tr>
 	            <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
 	            <th>客户编号</th>
 	            <th>客户名称</th>
+                <th>运单号</th>
 	            <th>时间</th>
 	            <th>数量</th>
 	            <th>拍摄类型&nbsp;&nbsp;|&nbsp;&nbsp;拍摄模特&nbsp;&nbsp;|&nbsp;&nbsp;拍摄时间</th>
@@ -73,9 +73,12 @@
 	            </td><!-- 客户编号 -->
 	            <td><?php echo $orderTrack->Order->user_name?></td><!-- 客户名称 -->
 	            <td><?php echo $orderTrack->photographer_id !=0 ? "<span style='color:red'>✔ </span>" : "";?></td><!-- 确认拍摄 -->
+                <td>
+                    <?php echo !empty($logistics_sn) ? $logistics_sn : '无运单'; ?>
+                </td><!-- 运单号 -->
 	            <td>
 	            	<?php $storage = $orderTrack->getStorage(); echo Admin::getAdminName($storage['admin_id']);?>
-	            	<?php echo empty($storage) ? '无仓储' : '<br/>'.date('m-d H:i',$storage['in_time']);?>
+	            	<?php echo empty($storage) ? '无仓储' : '<br/>'.date('Y-m-d H:i',$storage['in_time']);?>
 	            </td><!-- 时间 -->
 	            <td>
 	            	<?php if (empty($storage)) echo '无仓储'; else{ $count = $orderTrack->getStorageGoodsCount($storage['id']); echo empty($count)?'0':$count;}?>
@@ -119,7 +122,7 @@
 	            <td></td><!-- C -->
 	            <td></td><!-- 处理 -->
 	            <td></td><!-- 完成 -->
-	            <td><?php if ($storage['in_time'] > 0) { echo date('Y-m-d', $storage['in_time']).'<br/>'; echo !empty($logistics_sn) ? $logistics_sn : '无运单'; } ?></td><!-- 入库单号 -->
+	            <td><?php if ($storage['in_time'] > 0) { echo date('Y-m-d', $storage['in_time']).'<br/>';  } ?></td><!-- 入库单号 -->
 	            <td><?php if ($storage['out_time'] > 0) { echo date('Y-m-d', $storage['in_time']).'<br/>'; echo !empty($storage['out_sn']) ? $storage['out_sn'] : '无运单'; }?></td>
 	        </tr>
 	        <?php endforeach; endif; ?>
