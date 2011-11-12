@@ -434,12 +434,6 @@ class OrderController extends Controller
 			$storage -> in_time = Yii::app()->params['timestamp'];
 			$storage -> out_time = 0;
 			$storage -> out_sn = '';
-<<<<<<< HEAD
-			$storage->save();
-			$sql = "UPDATE {{order}} SET status = 3 WHERE id = :id";
-	        $command = Yii::app()->db->createCommand($sql);
-	        $count = $command->execute(array(':id'=> $id));
-=======
 
 			if ($storage->save())
 			{
@@ -457,8 +451,12 @@ class OrderController extends Controller
 				$order_track_sql = "UPDATE {{order_track}} SET storage_id = :storage_id WHERE id = :id";
         		$command = Yii::app()->db->createCommand($order_track_sql);
         		$command->execute(array(':storage_id'=>Yii::app()->user->id,':id'=>$order_track_id));
+        		//修改订单入库状态
+        		$sql = "UPDATE {{order}} SET status = 3 WHERE id = :id";
+	        	$command = Yii::app()->db->createCommand($sql);
+	        	$count = $command->execute(array(':id'=> $id));
+
 			}
->>>>>>> 8917ed7025550566f78bbb2b68cc698da153de2a
 		}
 		$criteria->condition='storage_id = '.$storage->id;
 
