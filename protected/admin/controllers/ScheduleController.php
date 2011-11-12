@@ -57,6 +57,16 @@ class ScheduleController extends Controller
 		return $shootType;
 	}
 
+	//根据订单ID查询分类信息
+	public function getStorage($orderId = null)
+	{
+		// 根据订单ID查询拍摄类型
+        $sql = "SELECT in_time FROM {{storage}} WHERE order_id =:Id";
+		$command = Yii::app()->db->createCommand($sql);
+		$storage = $command->queryScalar(array(':Id'=>$orderId));
+		return $storage;
+	}
+
 	//未排程订单
 	public function actionWait($status = null, $pageNum = null, $numPerPage = null)
 	{
