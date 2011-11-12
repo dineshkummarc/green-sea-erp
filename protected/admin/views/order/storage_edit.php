@@ -9,8 +9,12 @@
                 <input type="text" name="Form[out_time]" value="<?php echo !empty($storage->out_time) ? date('Y-m-d H:i:s', $storage->out_time) : ''; ?>" class="date required" yearstart="0" yearend="5" format="yyyy-MM-dd HH:mm:ss" /><a class="inputDateButton" href="javascript:;">选择</a>
             </div>
             <div class="unit">
+                <label>物流公司</label>
+                <input type="text" name="Form[sn_name]" value="<?php echo $sn_name?>"/>
+            </div>
+            <div class="unit">
                 <label>订单号</label>
-                <input type="text" name="Form[out_sn]" value="<?php echo !empty($storage->out_sn) ? $storage->out_sn : ''; ?>"/>
+                <input type="text" class="required" name="Form[out_sn]" value="<?php echo $out_sn?>"/>
             </div>
         </div>
         <div class="formBar">
