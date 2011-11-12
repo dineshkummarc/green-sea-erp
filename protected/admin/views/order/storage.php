@@ -5,7 +5,7 @@
 		    <?php if ($storage->out_time != 0):?>
     		<div class="panelBar">
 		        <ul class="toolBar">
-		            <li><a class="edit" href="<?php echo $this->createUrl("order/Storageedit",array('id'=>$storage->id)) ?>" target="dialog" width="400" height="170" title="修改仓储"><span>修改仓储</span></a></li>
+		            <li><a class="edit" href="<?php echo $this->createUrl("order/Storageedit",array('id'=>$storage->id)) ?>" target="dialog" width="400" height="190" title="修改仓储"><span>修改仓储</span></a></li>
 					<li class="line">line</li>
 					<li><a class="delete" end="true" tabId="order-storage" href="<?php echo $this->createUrl("order/StorageDel",array('id'=>$storage->id)); ?>" target="ajaxTodo" title="关联物品也将删除，确定删除仓储？"><span>删除仓储</span></a></li>
 				</ul>
@@ -23,24 +23,30 @@
 		    	<label>入库时间：</label>
 		    	<div style="line-height:20px"><?php echo date('Y-m-d H:i:s',$storage->in_time)?></div>
 		    </div>
+	    	<?php if ($storage->out_time == 0):?>
+	    	<script type="text/javascript">
+			$('a#submit').click(function(){
+				$out_sn = $("#out_sn").val();
+				$sn_name = $("#sn_name").val();
+				$(this).attr('href',"<?php echo $this->createUrl('order/StorageOut', array('id'=>$storage->id));?>"+"&out_sn="+$out_sn+"&sn_name="+$sn_name)
+			});
+	    	</script>
 		    <div class="unit">
-		    	<?php if ($storage->out_time == 0):?>
-		    	<script type="text/javascript">
-				$('a#submit').click(function(){
-					$out_sn = $("#out_sn").val();
-					$(this).attr('href',"<?php echo $this->createUrl('order/StorageOut', array('id'=>$storage->id));?>"+"&out_sn="+$out_sn)
-				});
-		    	</script>
-		    	<label>交图运单号：</label><input type="text" id="out_sn" value="" />&nbsp;&nbsp;&nbsp;
+		    	<label>物流公司：</label><input type="text" id="sn_name" value="" />
+		    </div>
+		    <div class="unit">
+		    	<label>出库运单号：</label><input type="text" id="out_sn" value="" />&nbsp;&nbsp;&nbsp;
 		    	<a style="line-height:20px" id="submit" href="" target="ajaxTodo">提交</a>
-		    	<?php else:?>
+		    </div>
+		    <?php else:?>
+		    <div class="unit">
 		    	<label>出库时间：</label>
 		    	<div style="line-height:20px"><?php echo date('Y-m-d H:i:s',$storage->out_time)?></div>
-		    	<?php endif;?>
 		    </div>
+	    	<?php endif;?>
 		    <?php if ($storage->out_time != 0):?>
 		    <div class="unit">
-		    	<label>运单号：</label>
+		    	<label>出库运单号：</label>
 		    	<div style="line-height:20px"><?php echo $storage->out_sn?></div>
 		    </div>
 		    <?php endif;?>
