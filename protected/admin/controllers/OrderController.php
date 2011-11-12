@@ -421,8 +421,10 @@ class OrderController extends Controller
 			$storage -> in_time = Yii::app()->params['timestamp'];
 			$storage -> out_time = 0;
 			$storage -> out_sn = '';
-
 			$storage->save();
+			$sql = "UPDATE {{order}} SET status = 3 WHERE id = :id";
+	        $command = Yii::app()->db->createCommand($sql);
+	        $count = $command->execute(array(':id'=> $id));
 		}
 		$criteria->condition='storage_id = '.$storage->id;
 
