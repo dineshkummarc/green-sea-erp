@@ -316,9 +316,22 @@ class OrderController extends Controller
 	public function actionShootScene($id = null)
 	{
 		$order = new Order;
+		$sn = null;
+		$sn_name = null;
 
 		if (!empty($id))
+		{
 			$order = $order->model()->findByPk($id);
+			$sn = $order->logistics_sn;
+			$str = explode(" ",$sn);
+			if (count($str) == 1)
+				$sn = $str[0];
+			if (count($str) == 2)
+			{
+				$sn_name = $str[0];
+				$sn = $str[1];
+			}
+		}
 
 		if (isset($_POST['Form']))
         {
@@ -331,9 +344,14 @@ class OrderController extends Controller
             {
                 $message = '添加成功';
             }
+			$sn = trim($_POST['Form']['sn']);
+			$sn_name = trim($_POST['Form']['sn_name']);
+			$sn = trim($sn_name." ".$sn);
+
             $order->attributes = $_POST['Form'];
-            $order->shoot_notice=serialize($_POST['Form']['shoot_notice']);
-            $order->width=serialize($_POST['Form']['width']);
+            $order->shoot_notice = serialize($_POST['Form']['shoot_notice']);
+            $order->width = serialize($_POST['Form']['width']);
+            $order->logistics_sn = $sn;
 
             if ($order->save())
                 $this->success($message, array('navTabId'=>'order-index'));
@@ -350,6 +368,8 @@ class OrderController extends Controller
 		$shootTypeList = unserialize($order->width);
         $shootNotice = Order::getShootNotice();
 		$this->render('shoot_scene',array(
+			'sn'=>$sn,
+			'sn_name'=>$sn_name,
 			'shoot'	=> $shoot,
 			'shootType' => $shootType,
 			'shootTypeList' => $shootTypeList,
@@ -430,12 +450,21 @@ class OrderController extends Controller
 	public function actionStorageEdit($id = null)
 	{
 		$storage = new Storage;
-
+		$out_sn = null;
+		$sn_name = null;
 		if (!empty($id))
 		{
 			$storage = $storage->model()->findByPk($id);
+			$sn = $storage->out_sn;
+			$str = explode(" ",$sn);
+			if (count($str) == 1)
+				$out_sn = $str[0];
+			if (count($str) == 2)
+			{
+				$sn_name = $str[0];
+				$out_sn = $str[1];
+			}
 		}
-
 		if (isset($_POST['Form']))
         {
             if (!empty($_POST['Form']['storage_id']))
@@ -447,8 +476,12 @@ class OrderController extends Controller
             {
                 $message = '添加成功';
             }
+			$out_sn = trim($_POST['Form']['out_sn']);
+			$sn_name = trim($_POST['Form']['sn_name']);
+			$sn = trim($sn_name." ".$out_sn);
+
             $storage->out_time = strtotime($_POST['Form']['out_time']);
-            $storage->out_sn = $_POST['Form']['out_sn'];
+            $storage->out_sn = $sn;
 
             if ($storage->save())
                 $this->success($message, array('navTabId'=>'order-storage'));
@@ -460,6 +493,8 @@ class OrderController extends Controller
             }
         }
 		$this->render('storage_edit',array(
+			'out_sn'=>$out_sn,
+			'sn_name'=>$sn_name,
 			'storage' => $storage
 		));
 	}
@@ -555,14 +590,18 @@ class OrderController extends Controller
     /**
      * 仓储入库 提交
      */
-    public function actionStorageOut($id = null,$out_sn)
+    public function actionStorageOut($id = null,$out_sn,$sn_name)
     {
         if (empty($id))
             $this->error('参数传递错误');
-
+        if (empty($out_sn))
+            $this->error('订单号不能为空');
+		$out_sn = trim($out_sn);
+		$sn_name = trim($sn_name);
+		$sn = trim($sn_name." ".$out_sn);
         $storage = Storage::model()->findByPk($id);
         $storage->out_time = Yii::app()->params['timestamp'];
-		$storage->out_sn = $out_sn;
+		$storage->out_sn = $sn;
 
         if ($storage->save())
             $this->success('修改成功', array('navTabId'=>'order-storage'));

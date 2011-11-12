@@ -94,8 +94,12 @@
                 <input type="text" maxlength="6" name="Form[total_price]" value="<?php echo !empty($orders->total_price) ? $orders->total_price : '0'; ?>" class="required" />
 			</div>
             <div class="unit">
+                <label>物流公司：</label>
+                <input type="text" name="Form[sn_name]" value="<?php echo $sn_name?>"/>
+			</div>
+            <div class="unit">
                 <label>运单号：</label>
-                <input type="text" name="Form[logistics_sn]" value="<?php echo !empty($orders->logistics_sn) ? $orders->logistics_sn : ''; ?>"/>
+                <input type="text" class="input required textInput valid" name="Form[sn]" value="<?php echo $sn?>"/>
 			</div>
             <div class="unit">
                 <label>下载链接：</label>
