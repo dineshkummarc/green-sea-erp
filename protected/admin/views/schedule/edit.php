@@ -41,7 +41,7 @@ $(function(){
             </div>
             <div class="unit">
                 <label>拍摄类型：</label>
-                <select name="Form[shoot_type]" class="combox required" <?php echo !empty($model->shoot_type) ? 'default="'.$model->shoot_type : ''; ?> >
+                <select name="Form[shoot_type]" class="combox required" <?php echo !empty($model->shoot_type) ? 'default="'.$model->shoot_type.'"' : ''; ?> >
                 	<?php if(!empty($model->order_id)): foreach ($typeList as $list):?>
                     <option value="<?php echo $list['shoot_type']?>"><?php echo ShootType::getShootName($list['shoot_type']);?></option>
                     <?php endforeach; else: foreach (ShootType::getType() as $val):?>
@@ -51,7 +51,7 @@ $(function(){
             </div>
 			<div class="unit">
 				<label>摄影师：</label>
-				<select name="Form[shoot_id]" class="combox required" <?php echo !empty($model->shoot_id) ? 'default="'.$model->shoot_id : ''; ?> >
+				<select name="Form[shoot_id]" class="combox required" <?php echo !empty($model->shoot_id) ? 'default="'.$model->shoot_id.'"' : ''; ?> >
 					<option value="0">未选择</option>
                 	<?php foreach ($shootList as $list):?>
                     <option value="<?php echo $list['id']?>"><?php echo $list['name']?></option>
@@ -60,7 +60,7 @@ $(function(){
 			</div>
 			<div class="unit">
 				<label>造型师：</label>
-				<select name="Form[stylist_id]" class="combox" <?php echo !empty($model->stylist_id) ? 'default="'.$model->stylist_id : ''; ?> >
+				<select name="Form[stylist_id]" class="combox" <?php echo !empty($model->stylist_id) ? 'default="'.$model->stylist_id.'"' : ''; ?> >
 					<option value="0">未选择</option>
                 	<?php foreach ($styleList as $list):?>
                     <option value="<?php echo $list['id']?>"><?php echo $list['name']?></option>
@@ -69,7 +69,7 @@ $(function(){
 			</div>
 			<div class="unit">
 				<label>模特：</label>
-				<select name="Form[model_id]" class="combox" id="diy" <?php echo !empty($model->model_id) ? 'default="'.$model->model_id : ''; ?> >
+				<select name="Form[model_id]" class="combox" id="diy" <?php echo !empty($model->model_id) ? 'default="'.$model->model_id.'"' : ''; ?> >
 					<option value="0">未选择</option>
                 	<?php foreach ($modelList as $list):?>
                     <option value="<?php echo $list['id']?>"><?php echo $list['nick_name']?></option>
