@@ -50,7 +50,7 @@
 	            <td><?php echo $orderGoods->count; ?></td>
 	            <td><?php echo $orderGoods->memo; ?></td>
 	            <td>
-	            	<a href="<?php echo $this->createUrl('order/goodsEdit', array('id'=>$orderGoods->id)); ?>" target="dialog" mask="true" width="500" height="400" title="修改物品">修改</a> |
+	            	<a href="<?php echo $this->createUrl('order/goodsEdit', array('id'=>$orderGoods->id,'orderId'=>$orderId)); ?>" target="dialog" mask="true" width="500" height="400" title="修改物品">修改</a> |
 	            	<a href="<?php echo $this->createUrl("order/goodsDel", array('id'=>$orderGoods->id)); ?>" target="ajaxTodo" title="确定删除改管理员？">删除</a>
 	            </td>
 	        </tr>

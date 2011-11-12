@@ -451,6 +451,11 @@ class OrderController extends Controller
 				$order_track_sql = "UPDATE {{order_track}} SET storage_id = :storage_id WHERE id = :id";
         		$command = Yii::app()->db->createCommand($order_track_sql);
         		$command->execute(array(':storage_id'=>Yii::app()->user->id,':id'=>$order_track_id));
+        		//修改订单入库状态
+        		$sql = "UPDATE {{order}} SET status = 3 WHERE id = :id";
+	        	$command = Yii::app()->db->createCommand($sql);
+	        	$count = $command->execute(array(':id'=> $id));
+
 			}
 		}
 		$criteria->condition='storage_id = '.$storage->id;
