@@ -66,7 +66,7 @@ class OrderTrack extends CActiveRecord
 	 */
 	public function getStorage()
 	{
-		$sql = "select in_time,id,out_time,admin_id FROM {{storage}} WHERE order_id = ".$this->order_id;
+		$sql = "select in_time,id,out_time,admin_id,out_sn FROM {{storage}} WHERE order_id = ".$this->order_id;
 		$command = Yii::app()->db->createCommand($sql);
 		return $command->queryRow();
 	}

@@ -50,7 +50,7 @@ class Storage extends CActiveRecord
 			array('order_id, admin_id, in_time, out_time', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, order_id, admin_id, in_time, out_time', 'safe', 'on'=>'search'),
+			array('id, order_id, admin_id, in_time, out_sn, out_time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -77,6 +77,7 @@ class Storage extends CActiveRecord
 			'order_id' => 'Order',
 			'admin_id' => 'Admin',
 			'in_time' => 'In Time',
+			'out_sn' => 'Out Sn',
 			'out_time' => 'Out Time',
 		);
 	}
@@ -96,6 +97,7 @@ class Storage extends CActiveRecord
 		$criteria->compare('order_id',$this->order_id,true);
 		$criteria->compare('admin_id',$this->admin_id,true);
 		$criteria->compare('in_time',$this->in_time,true);
+		$criteria->compare('out_sn',$this->out_sn,true);
 		$criteria->compare('out_time',$this->out_time,true);
 
 		return new CActiveDataProvider($this, array(

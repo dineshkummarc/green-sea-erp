@@ -31,8 +31,8 @@ class Admin extends CActiveRecord
 	 */
 	public static function getAdminName($id = null)
 	{
-		if(!empty($id))
-			$sql = "SELECT name FROM {{admin}} WHERE id = ".$id;
+		if(empty($id)) return '';
+		$sql = "SELECT name FROM {{admin}} WHERE id = ".$id;
 		$command = Yii::app()->db->createCommand($sql);
 		$admin = $command->queryScalar();
 		return $admin;
