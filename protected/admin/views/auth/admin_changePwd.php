@@ -1,17 +1,21 @@
 <div class="pageContent">
     <form action="<?php echo $this->createUrl("auth/changePwd"); ?>"  class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);" method="post">
         <div class="pageFormContent" layoutH="60">
+        	<div class="unit">
+        		<label>用户名</label>
+        		<?php echo Yii::app()->user->name; ?>
+        	</div>
             <div class="unit">
                 <label>旧密码</label>
-                <input name="Form[oldPwd]" type="password" class="required" size="50" value="" alt="密码不能为空" />
+                <input name="Form[oldPwd]" type="password" class="required" size="30" value="" alt="密码不能为空" />
             </div>
             <div class="unit">
                 <label>新密码</label>
-                <input name="Form[newPwd]" type="password" class="required" size="50" value="" alt="密码不能为空" />
+                <input name="Form[newPwd]" type="password" class="required" size="30" value="" alt="密码不能为空" />
             </div>
             <div class="unit">
                 <label>确认新密码</label>
-                <input name="Form[newPwd]" type="password" class="compare" size="50" value="" alt="必须与新密码相同" />
+                <input name="Form[newPwd]" type="password" class="compare" size="30" value="" alt="必须与新密码相同" />
             </div>
         </div>
         <div class="formBar">
