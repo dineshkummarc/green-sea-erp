@@ -95,11 +95,11 @@
 			</div>
             <div class="unit">
                 <label>物流公司：</label>
-                <input type="text" name="Form[sn_name]" value="<?php echo $sn_name?>"/>
+                <input type="text" name="Form[logistics_sn1]" value="<?php echo $logistics_sn1?>"/>
 			</div>
             <div class="unit">
                 <label>运单号：</label>
-                <input type="text" class="input required textInput valid" name="Form[sn]" value="<?php echo $sn?>"/>
+                <input type="text" class="required" name="Form[logistics_sn2]" value="<?php echo $logistics_sn2?>"/>
 			</div>
             <div class="unit">
                 <label>下载链接：</label>
