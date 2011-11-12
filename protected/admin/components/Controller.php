@@ -2,7 +2,7 @@
 
 class Controller extends CController
 {
-	public $layout = '//layouts/main';
+	public $layout = false;
 	public $compareExclude = array(
 	    'site'=>array('error', 'login', 'logout', 'captcha', ),
 	    'test'=>array('*'),

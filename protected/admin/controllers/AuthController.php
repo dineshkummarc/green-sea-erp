@@ -291,6 +291,7 @@ class AuthController extends Controller
         $pages->currentPage = $pageNum !== null ? $pageNum - 1 : 0;
         $pages->pageSize = $numPerPage !== null ? $numPerPage : 20;
         $pages->applyLimit($criteria);
+        $pages->params = array('id'=>$id);
 
         $allItems = $model->cache()->findAll($criteria);
 
@@ -376,7 +377,7 @@ class AuthController extends Controller
         {
             // 如果有，则撤销授权
             if ($item->item_id == $id)
-                AdminRoleChild::model()->deleteAllByAttributes(array('item_id'=>$item->id));
+                AdminRoleChild::model()->deleteAllByAttributes(array('item_id'=>$id));
         }
 
         $model = new AdminRoleChild;
@@ -404,12 +405,9 @@ class AuthController extends Controller
         	$this->error('参数传递错误');
         $sql = "DELETE FROM {{admin_role_child}} WHERE `item_id` = :item_id AND `role_id` = :role_id";
         $command = Yii::app()->db->createCommand($sql);
-        $count = $command->execute(array(":item_id"=>$id, ":role_id"=>$roleId));
+        $command->execute(array(":item_id"=>$id, ":role_id"=>$roleId));
 
-        if ($count > 0)
-            $this->success('撤销授权成功', array('auth-role-config'));
-        else
-            $this->error('撤销授权失败');
+        $this->success('撤销授权成功', array('auth-role-config'));
     }
 }
 ?>

@@ -27,6 +27,7 @@
 				<th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
 				<th width="150">订单</th>
 				<th width="80">拍摄类型</th>
+				<th width="120">入库时间</th>
 				<th width="120">拍摄时间</th>
 				<th width="100">拍摄场地</th>
 				<th width="80">摄影师</th>
@@ -46,6 +47,7 @@
 	    	<td><input type="checkbox" name="id[]" value="<?php echo $model->id ?>" /></td>
 	        <td><?php foreach ($this->getOrder($model->order_id) as $val) { echo "[ ".$val['sn']." ]".$val['user_name']; }?></td>
 	        <td><?php if(!empty($model->shoot_type) && $model->shoot_type != 0){ echo ShootType::getShootName($model->shoot_type); }?></td>
+	        <td><?php $in_time = $this->getStorage($model->order_id); echo !empty($in_time) ? date("Y-m-d H:i",$in_time) : '订单未入库'; ?></td>
 	        <td><?php echo date("Y-m-d H:i",$model->shoot_time); ?></td>
 	        <td><?php echo $model->shoot_site; ?></td>
 	        <td><?php echo !empty($model->shoot_id) ? Admin::getAdminName($model->shoot_id) : '';?></td>
