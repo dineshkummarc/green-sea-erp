@@ -45,11 +45,11 @@
             <div class="unit">
                 <label>图片宽度(高度自适应)：</label>
                 <div class="pic_width">
-                <?php foreach ($shootTypeList as $key=>$type):?>
+                <?php foreach ($shootTypeList as $key=>$width):?>
                 <div><?php echo $shootType[$key] ?></div>
                 <div>
-                    简图宽度：<input style="float: none;width: 50px;" value="<?php echo $type['width']?>" type="text" name="Form[width][<?php echo $key ?>][width]" tip="750" class="input required"/>px(像素)&nbsp;&nbsp;
-                    细节图宽度：<input style="float: none;width: 50px;" value="<?php echo $type['detail_width']?>" type="text" name="Form[width][<?php echo $key ?>][detail_width]" tip="750" class="input required"/>px(像素)
+                    简图宽度：<input style="float: none;width: 50px;" value="<?php echo isset($width['width']) ? $width['width'] : 750;?>" type="text" name="Form[width][<?php echo $key ?>][width]" tip="750" class="input required"/>px(像素)&nbsp;&nbsp;
+                    细节图宽度：<input style="float: none;width: 50px;" value="<?php echo isset($width['detail_width']) ? $width['detail_width'] : 750;?>" type="text" name="Form[width][<?php echo $key ?>][detail_width]" tip="750" class="input required"/>px(像素)
                 </div>
                 <?php endforeach;?>
                 </div>

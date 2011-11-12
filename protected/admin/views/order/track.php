@@ -20,7 +20,7 @@
 	            <th colspan="2">拍摄状态</th>
 	            <th colspan="2">修图状态</th>
 	            <th rowspan="2">是否<br />付款</th>
-	            <th>是否交图</th>
+	            <th rowspan="2">是否<br />交图</th>
 	            <th colspan="3">满意度</th>
 	            <th colspan="2">反馈处理</th>
 	            <th>出库</th>
@@ -38,7 +38,6 @@
 	            <th>已拍摄</th>
 	            <th>修中</th>
 	            <th>修完</th>
-	            <th>已交图</th>
 	            <th>A</th>
 	            <th>B</th>
 	            <th>C</th>
