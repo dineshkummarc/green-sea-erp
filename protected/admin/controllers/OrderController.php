@@ -978,7 +978,7 @@ class OrderController extends Controller
 
 			foreach ($order_id_list as $key=>$order)
 			{
-				$criteria->addCondition('order_id = '.$order['id'],'or');
+				$criteria->addCondition('t.order_id = '.$order['id'],'or');
 			}
 		}
 		if (!empty($params['user_name']))
@@ -990,7 +990,7 @@ class OrderController extends Controller
 
 			foreach ($order_id_list as $key=>$order)
 			{
-				$criteria->addCondition('order_id = '.$order->id,'or');
+				$criteria->addCondition('t.order_id = '.$order->id,'or');
 			}
 		}
 		if (!empty($params['start_time']) && !empty($params['end_time']))
@@ -1004,7 +1004,7 @@ class OrderController extends Controller
 
 			foreach ($order_id_list as $key=>$order)
 			{
-				$criteria->addCondition('order_id = '.$order['order_id'],'or');
+				$criteria->addCondition('t.order_id = '.$order['order_id'],'or');
 			}
 		}elseif (!empty($params['start_time']))
 		{
@@ -1016,7 +1016,7 @@ class OrderController extends Controller
 
 			foreach ($order_id_list as $key=>$order)
 			{
-				$criteria->addCondition('order_id = '.$order['order_id'],'or');
+				$criteria->addCondition('t.order_id = '.$order['order_id'],'or');
 			}
 		}elseif (!empty($params['end_time']))
 		{
@@ -1028,7 +1028,7 @@ class OrderController extends Controller
 
 			foreach ($order_id_list as $key=>$order)
 			{
-				$criteria->addCondition('order_id = '.$order['order_id'],'or');
+				$criteria->addCondition('t.order_id = '.$order['order_id'],'or');
 			}
 		}
 		$count = OrderTrack::model()->count($criteria);
