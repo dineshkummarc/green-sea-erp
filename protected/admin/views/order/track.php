@@ -24,7 +24,8 @@
 	            <th colspan="3">满意度</th>
 	            <th colspan="2">反馈处理</th>
 	            <th>出库</th>
-	            <th>运单号</th>
+	            <th>入库单号</th>
+	            <th>出库单号</th>
 	        </tr>
 	        <tr>
 	            <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
@@ -44,6 +45,7 @@
 	            <th>C</th>
 	            <th>处理</th>
 	            <th>完成</th>
+	            <th></th>
 	            <th></th>
 	            <th></th>
 	        </tr>
@@ -79,7 +81,7 @@
 	            <td><?php echo $orderTrack->photographer_id !=0 ? "<span style='color:red'>✔ </span>" : "";?></td><!-- 确认拍摄 -->
 	            <td>
 	            	<?php $storage = $orderTrack->getStorage(); echo empty($storage) ? '无仓储' : date('m-d H:i',$storage['in_time']);?>
-	            	<br /><?php !empty($orderTrack->admin_id) ? Admin::getAdminName($orderTrack->admin_id) : '';?>
+	            	<br /><?php echo !empty($orderTrack->admin_id) ? Admin::getAdminName($orderTrack->admin_id) : '';?>
 	            </td><!-- 时间 -->
 	            <td>
 	            	<?php if (empty($storage)) echo '无仓储'; else{ $count = $orderTrack->getStorageGoodsCount($storage['id']); echo empty($count)?'0':$count;}?>
@@ -125,7 +127,8 @@
 	            <td></td><!-- 处理 -->
 	            <td></td><!-- 完成 -->
 	            <td><?php echo $storage['out_time'] > 0 ? "<span style='color:red'>✔</span>" : "";?></td><!-- 出库 -->
-	            <td><?php echo $logistics_sn; ?></td><!-- 运单号 -->
+	            <td><?php echo $logistics_sn; ?></td><!-- 入库单号 -->
+	            <td><?php echo $storage['out_sn']?></td>
 	        </tr>
 	        <?php endforeach; endif; ?>
         </tbody>

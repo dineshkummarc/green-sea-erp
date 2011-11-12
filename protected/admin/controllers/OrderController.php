@@ -400,12 +400,9 @@ class OrderController extends Controller
 			$storage -> admin_id = Yii::app()->user->id;
 			$storage -> in_time = Yii::app()->params['timestamp'];
 			$storage -> out_time = 0;
+			$storage -> out_sn = '';
 
-			if($storage->save()){
-				$sql = "UPDATE {{order}} SET status = 3 WHERE id = :id";
-	            $command = Yii::app()->db->createCommand($sql);
-	            $count = $command->execute(array(':id'=> $id));
-			}
+			$storage->save();
 		}
 		$criteria->condition='storage_id = '.$storage->id;
 
@@ -433,31 +430,27 @@ class OrderController extends Controller
 	public function actionStorageEdit($id = null)
 	{
 		$storage = new Storage;
-		$order = new Order;
 
 		if (!empty($id))
 		{
 			$storage = $storage->model()->findByPk($id);
-			$order = $order->model()->cache()->findByPk($storage->order_id);
 		}
 
 		if (isset($_POST['Form']))
         {
-            if (!empty($_POST['Form']['storage_id']) && !empty($_POST['Form']['order_id']))
+            if (!empty($_POST['Form']['storage_id']))
             {
                 $message = '修改成功';
                 $storage = $storage->findByPk($_POST['Form']['storage_id']);
-                $order = $order->findByPk($_POST['Form']['order_id']);
             }
             else
             {
                 $message = '添加成功';
             }
             $storage->out_time = strtotime($_POST['Form']['out_time']);
-            $order->logistics_sn = $_POST['Form']['logistics_sn'];
-            $order->update_time = Yii::app()->params['timestamp'];
+            $storage->out_sn = $_POST['Form']['out_sn'];
 
-            if ($storage->save() && $order->save())
+            if ($storage->save())
                 $this->success($message, array('navTabId'=>'order-storage'));
             else
             {
@@ -467,7 +460,6 @@ class OrderController extends Controller
             }
         }
 		$this->render('storage_edit',array(
-			'order' => $order,
 			'storage' => $storage
 		));
 	}
@@ -563,22 +555,20 @@ class OrderController extends Controller
     /**
      * 仓储入库 提交
      */
-    public function actionStorageOut($id = null,$logistics_sn)
+    public function actionStorageOut($id = null,$out_sn)
     {
         if (empty($id))
             $this->error('参数传递错误');
 
         $storage = Storage::model()->findByPk($id);
         $storage->out_time = Yii::app()->params['timestamp'];
+		$storage->out_sn = $out_sn;
 
-        $order = Order::model()->cache()->findByPk($storage->order_id);
-        $order->logistics_sn = $logistics_sn;
-
-        if ($storage->save() && $order->save())
+        if ($storage->save())
             $this->success('修改成功', array('navTabId'=>'order-storage'));
         else
         {
-            $error = array_shift($order->getErrors());
+            $error = array_shift($storage->getErrors());
             $message = '错误：'.$error[0];
             $this->error($message);
         }

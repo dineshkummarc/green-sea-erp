@@ -27,11 +27,11 @@
 		    	<?php if ($storage->out_time == 0):?>
 		    	<script type="text/javascript">
 				$('a#submit').click(function(){
-					$logistics_sn = $("#logistics_sn").val();
-					$(this).attr('href',"<?php echo $this->createUrl('order/StorageOut', array('id'=>$storage->id));?>"+"&logistics_sn="+$logistics_sn)
+					$out_sn = $("#out_sn").val();
+					$(this).attr('href',"<?php echo $this->createUrl('order/StorageOut', array('id'=>$storage->id));?>"+"&out_sn="+$out_sn)
 				});
 		    	</script>
-		    	<label>交图运单号：</label><input type="text" id="logistics_sn" value="" />&nbsp;&nbsp;&nbsp;
+		    	<label>交图运单号：</label><input type="text" id="out_sn" value="" />&nbsp;&nbsp;&nbsp;
 		    	<a style="line-height:20px" id="submit" href="" target="ajaxTodo">提交</a>
 		    	<?php else:?>
 		    	<label>出库时间：</label>
@@ -41,7 +41,7 @@
 		    <?php if ($storage->out_time != 0):?>
 		    <div class="unit">
 		    	<label>运单号：</label>
-		    	<div style="line-height:20px"><?php echo Order::getLogisticsSn($storage->order_id)?></div>
+		    	<div style="line-height:20px"><?php echo $storage->out_sn?></div>
 		    </div>
 		    <?php endif;?>
 	    </div>
