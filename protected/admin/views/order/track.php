@@ -20,7 +20,7 @@
 	            <th colspan="2">拍摄状态</th>
 	            <th colspan="2">修图状态</th>
 	            <th rowspan="2">是否<br />付款</th>
-	            <th colspan="2">是否交图</th>
+	            <th>是否交图</th>
 	            <th colspan="3">满意度</th>
 	            <th colspan="2">反馈处理</th>
 	            <th>出库</th>
@@ -38,7 +38,6 @@
 	            <th>已拍摄</th>
 	            <th>修中</th>
 	            <th>修完</th>
-	            <th>已修图</th>
 	            <th>已交图</th>
 	            <th>A</th>
 	            <th>B</th>
@@ -80,8 +79,8 @@
 	            <td><?php echo $orderTrack->Order->user_name?></td><!-- 客户名称 -->
 	            <td><?php echo $orderTrack->photographer_id !=0 ? "<span style='color:red'>✔ </span>" : "";?></td><!-- 确认拍摄 -->
 	            <td>
-	            	<?php $storage = $orderTrack->getStorage(); echo empty($storage) ? '无仓储' : date('m-d H:i',$storage['in_time']);?>
-	            	<br /><?php echo !empty($orderTrack->admin_id) ? Admin::getAdminName($orderTrack->admin_id) : '';?>
+	            	<?php $storage = $orderTrack->getStorage(); echo Admin::getAdminName($storage['admin_id']);?>
+	            	<?php echo empty($storage) ? '无仓储' : '<br/>'.date('m-d H:i',$storage['in_time']);?>
 	            </td><!-- 时间 -->
 	            <td>
 	            	<?php if (empty($storage)) echo '无仓储'; else{ $count = $orderTrack->getStorageGoodsCount($storage['id']); echo empty($count)?'0':$count;}?>
@@ -101,25 +100,24 @@
 	            <td>
 	            	<?php echo $photographer_id != 0 ? "<span style='color:red'>✔ </span>" : " ";?>
 	            	<?php echo Admin::getAdminName($photographer_id);?>
-	            	<br/><?php echo $shoot_begin_time == 0 ? '' : date('m-d H:i',$shoot_begin_time)?>
+	            	<?php echo $shoot_begin_time == 0 ? '' : '<br/>'.date('m-d H:i',$shoot_begin_time)?>
 	            </td><!-- 拍摄中 -->
 	            <td>
 	            	<?php echo $photographer_id_2 != 0 ? "<span style='color:red'>✔ </span>" : "";?>
 	            	<?php echo Admin::getAdminName($photographer_id_2);?>
-	            	<br /><?php echo $shoot_end_time == 0 ? '' : date('m-d H:i',$shoot_end_time)?>
+	            	<?php echo $shoot_end_time == 0 ? '' : '<br/>'.date('m-d H:i',$shoot_end_time)?>
 	            </td><!-- 已拍摄 -->
 	            <td>
 	            	<?php echo $retouch_id != 0 ? "<span style='color:red'>✔ </span>" : "";?>
 	            	<?php echo Admin::getAdminName($retouch_id);?>
-	            	<br /><?php echo $retouch_begin_time == 0 ? '' : date('m-d H:i',$retouch_begin_time)?>
+	            	<?php echo $retouch_begin_time == 0 ? '' : '<br/>'.date('m-d H:i',$retouch_begin_time)?>
 	            </td><!-- 修中 -->
 	            <td>
 	            	<?php echo $retouch_id_2 != 0 ? "<span style='color:red'>✔ </span>" : "";?>
 	            	<?php echo Admin::getAdminName($retouch_id_2);?>
-	            	<br /><?php echo $retouch_end_time == 0 ? '' : date('m-d H:i',$retouch_end_time)?>
+	            	<?php echo $retouch_end_time == 0 ? '' : '<br/>'.date('m-d H:i',$retouch_end_time)?>
 	            </td><!-- 修完 -->
 	            <td><?php echo $orderTrack->Order->status >= 2 ? "<span style='color:red'>✔ </span>" : "";?></td><!-- 是否付款 -->
-	            <td><?php echo $orderTrack->retouch_id_2 != 0 ? "<span style='color:red'>✔ </span>" : "";?></td><!-- 已修图 -->
 	            <td><?php echo $orderTrack->Order->status >= 9 ? "<span style='color:red'>✔ </span>" : "";?></td><!-- 已交图 -->
 	            <td></td><!-- A -->
 	            <td></td><!-- B -->

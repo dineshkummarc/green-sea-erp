@@ -156,7 +156,20 @@ class OrderController extends Controller
 //		    12=>"确认收货",
 //		);
 		$order_track_sql = null;//订单追踪sql
+		//查找user_id
+		$sql = "select user_id FROM {{order}} WHERE id = :id";
+		$command = Yii::app()->db->createCommand($sql);
+		$user_id = $command->queryScalar(array(':id'=>$id));
+		//查找user admin_id
+		$sql = "select admin_id FROM {{user}} WHERE id = :id";
+		$command = Yii::app()->db->createCommand($sql);
+		$admin_id = $command->queryScalar(array(':id'=>$user_id));
 
+		if ($status > 2)//必须要仓储
+		{
+			$storage = Storage::getStorageBoolean($id);
+			if (empty($storage)) $this->error("[操作失败]仓储不存在，请创建仓储后再操作");
+		}
 	    if ($status == 2)//积分修改
 	    {
 //	        // 消费金额等积分
@@ -227,11 +240,11 @@ class OrderController extends Controller
         if ($order_track_sql != null)
         {
         	//添加订单追踪信息
-        	$order_track_id = OrderTrack::getOrderTrackId($id);
+        	$order_track_id = OrderTrack::getOrderTrackId($id,$admin_id);
         	$command = Yii::app()->db->createCommand($order_track_sql);
         	$command->execute(array(':user_id'=>Yii::app()->user->id,':id'=>$order_track_id));
         }else{
-        	OrderTrack::getOrderTrackId($id);
+        	OrderTrack::getOrderTrackId($id,$admin_id);
         }
         $command = Yii::app()->db->createCommand($sql);
         $command->execute(array(":id"=>$id, ":status"=>$status));
@@ -421,10 +434,31 @@ class OrderController extends Controller
 			$storage -> in_time = Yii::app()->params['timestamp'];
 			$storage -> out_time = 0;
 			$storage -> out_sn = '';
+<<<<<<< HEAD
 			$storage->save();
 			$sql = "UPDATE {{order}} SET status = 3 WHERE id = :id";
 	        $command = Yii::app()->db->createCommand($sql);
 	        $count = $command->execute(array(':id'=> $id));
+=======
+
+			if ($storage->save())
+			{
+				//查找user_id
+				$sql = "select user_id FROM {{order}} WHERE id = :id";
+				$command = Yii::app()->db->createCommand($sql);
+				$user_id = $command->queryScalar(array(':id'=>$id));
+				//查找user admin_id
+				$sql = "select admin_id FROM {{user}} WHERE id = :id";
+				$command = Yii::app()->db->createCommand($sql);
+				$admin_id = $command->queryScalar(array(':id'=>$user_id));
+
+				//添加订单追踪
+				$order_track_id = OrderTrack::getOrderTrackId($id,$admin_id);
+				$order_track_sql = "UPDATE {{order_track}} SET storage_id = :storage_id WHERE id = :id";
+        		$command = Yii::app()->db->createCommand($order_track_sql);
+        		$command->execute(array(':storage_id'=>Yii::app()->user->id,':id'=>$order_track_id));
+			}
+>>>>>>> 8917ed7025550566f78bbb2b68cc698da153de2a
 		}
 		$criteria->condition='storage_id = '.$storage->id;
 
@@ -849,11 +883,11 @@ class OrderController extends Controller
 	/**
 	 * 将物品 数据导出到Excel
 	 */
-	public function actionStorageGoodsExcel($order_id = null, $id = null)
+	public function actionStorageGoodsExcel($order_id = null, $id = null, $storage_id = null)
 	{
-        if (empty($id))$this->error('参数传递错误！');
+        if (empty($id)) $this->error('参数传递错误！');
+        if ($id != 'all') $idList=explode(",",$id);
 
-        $idList=explode(",",$id);
 		$chinese = new Chinese;
 		$order = Order::model()->findByPk($order_id);
 
@@ -888,16 +922,35 @@ class OrderController extends Controller
 		$objActSheet->setCellValue('C2','客户名称：'.$order->user_name);
 
 		$i = 3;
-		foreach ($idList as $key=>$id)
+		if ($id == 'all' && !empty($storage_id))
 		{
-			$list = '';
-			$data = StorageGoods::model()->findByPk($id);
-			$objActSheet
-				->setCellValue('A'.$i, $i-2)
-				->setCellValue('B'.$i, $data->sn)
-				->setCellValue('C'.$i, $data->name)
-				->setCellValue('D'.$i, $data->ShootType->name);
-			$i += 1;
+			$storage_goods = StorageGoods::model()->findAll(array('condition'=>'storage_id ='.$storage_id,'order'=>'sn ASC'));
+
+			if (empty($storage_goods)) $this->error('物品列表为空');
+			foreach ($storage_goods as $key=>$data)
+			{
+				$list = '';
+				$objActSheet
+					->setCellValue('A'.$i, $i-2)
+					->setCellValue('B'.$i, $data->sn)
+					->setCellValue('C'.$i, $data->name)
+					->setCellValue('D'.$i, $data->ShootType->name);
+				$i += 1;
+			}
+		}
+		else
+		{
+			foreach ($idList as $key=>$id)
+			{
+				$list = '';
+				$data = StorageGoods::model()->findByPk($id);
+				$objActSheet
+					->setCellValue('A'.$i, $i-2)
+					->setCellValue('B'.$i, $data->sn)
+					->setCellValue('C'.$i, $data->name)
+					->setCellValue('D'.$i, $data->ShootType->name);
+				$i += 1;
+			}
 		}
 
 		// Excel打开后显示的工作表
@@ -920,6 +973,7 @@ class OrderController extends Controller
 	public function actionOrderTrack(array $params = array(), $pageNum = 1, $numPerPage = 20)
 	{
 		$criteria = new CDbCriteria;
+
 		if (!empty($params['user_sn']))
 		{
 //			$user_p = substr($params['user_sn'],0,1);
@@ -931,7 +985,7 @@ class OrderController extends Controller
 
 			foreach ($order_id_list as $key=>$order)
 			{
-				$criteria->addCondition('order_id = '.$order['id'],'or');
+				$criteria->addCondition('t.order_id = '.$order['id'],'or');
 			}
 		}
 		if (!empty($params['user_name']))
@@ -943,7 +997,7 @@ class OrderController extends Controller
 
 			foreach ($order_id_list as $key=>$order)
 			{
-				$criteria->addCondition('order_id = '.$order->id,'or');
+				$criteria->addCondition('t.order_id = '.$order->id,'or');
 			}
 		}
 		if (!empty($params['start_time']) && !empty($params['end_time']))
@@ -957,7 +1011,7 @@ class OrderController extends Controller
 
 			foreach ($order_id_list as $key=>$order)
 			{
-				$criteria->addCondition('order_id = '.$order['order_id'],'or');
+				$criteria->addCondition('t.order_id = '.$order['order_id'],'or');
 			}
 		}elseif (!empty($params['start_time']))
 		{
@@ -969,7 +1023,7 @@ class OrderController extends Controller
 
 			foreach ($order_id_list as $key=>$order)
 			{
-				$criteria->addCondition('order_id = '.$order['order_id'],'or');
+				$criteria->addCondition('t.order_id = '.$order['order_id'],'or');
 			}
 		}elseif (!empty($params['end_time']))
 		{
@@ -981,7 +1035,7 @@ class OrderController extends Controller
 
 			foreach ($order_id_list as $key=>$order)
 			{
-				$criteria->addCondition('order_id = '.$order['order_id'],'or');
+				$criteria->addCondition('t.order_id = '.$order['order_id'],'or');
 			}
 		}
 		$count = OrderTrack::model()->count($criteria);
@@ -990,8 +1044,9 @@ class OrderController extends Controller
         $pages->pageSize = $numPerPage;
         $pages->applyLimit($criteria);
 
+        $criteria->with = "Storage";
+		$criteria->order = "Storage.in_time desc";
 		$orderTrackList = OrderTrack::model()->findAll($criteria);
-
 		$this->render('track',array(
 			'params' => $params,
 			'orderTrackList' => $orderTrackList,

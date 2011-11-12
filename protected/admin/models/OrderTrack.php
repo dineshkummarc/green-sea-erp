@@ -28,13 +28,13 @@ class OrderTrack extends CActiveRecord
 	/**
 	 * 新建 返回id
 	 */
-	public function getOrderTrackId($order_id, $admin_id = null)
+	public function getOrderTrackId($order_id, $admin_id = 0)
 	{
 		$sql = "SELECT id,admin_id FROM ll_erp_order_track WHERE order_id = ".$order_id;
 		$command = Yii::app()->db->createCommand($sql);
 		$track = $command->queryRow();
 
-		if ($admin_id == null) $admin_id = Yii::app()->user->id;
+		if ($admin_id == 0) $admin_id = Yii::app()->user->id;
 
 		if ($track['id'] == null || $track['id'] == "")
 		{
@@ -113,6 +113,7 @@ class OrderTrack extends CActiveRecord
 		return array(
 			'Order'=>array(self::BELONGS_TO, 'Order', 'order_id'),
 			'Admin'=>array(self::BELONGS_TO, 'Admin', 'admin_id'),
+			'Storage'=>array(self::BELONGS_TO, 'Storage', 'storage_id', 'joinType'=>'LEFT JOIN'),
 		);
 	}
 
