@@ -129,10 +129,7 @@ class AuthController extends Controller
         $sql = "UPDATE {{admin}} SET `status` = :status, `update_time` = :update_time WHERE `id` = :id";
         $command = Yii::app()->db->createCommand($sql);
         $count = $command->execute(array(":id"=>$id, ":status"=>$status, ":update_time"=>Yii::app()->params['timestamp']));
-        if ($count > 0)
-            $this->success('修改成功', array('navTabId'=>'list'));
-        else
-            $this->error('修改失败，请联系管理员');
+        $this->success('修改成功', array('navTabId'=>'list'));
     }
 
     /**
