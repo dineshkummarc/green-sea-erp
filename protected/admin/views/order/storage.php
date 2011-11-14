@@ -21,7 +21,9 @@
 		    </div>
 		    <div class="unit">
 		    	<label>入库时间：</label>
-		    	<div style="line-height:20px"><?php echo date('Y-m-d H:i:s',$storage->in_time)?></div>
+		    	<div style="line-height:20px"><?php echo date('Y-m-d H:i:s',$storage->in_time)?>&nbsp;&nbsp;&nbsp;&nbsp;
+		    	<a style="line-height:20px" href="<?php echo $this->createUrl('order/intime',array('id'=>$storage->id));?>" title="入库时间" height="150" width="400" target="dialog">修改</a>
+		    	</div>
 		    </div>
 	    	<?php if ($storage->out_time == 0):?>
 	    	<script type="text/javascript">
