@@ -1,15 +1,16 @@
 function orderInit()
 {
-    $("#goods-type").change(function () {
+    $(".change-goods-type").change(function () {
         var $this = $(this);
+        var num = $this.attr('num');
         if ($this.val() == 0)
         {
             var input = $("<input type='text' />")
-                .attr("name", "Form[type_name]")
+                .attr("name", "Form["+num+"][type_name]")
                 .attr("tip", "请填写")
                 .addClass("input")
                 .width(100)
-                .css("margin-left", 5);
+                .css("margin-top", 5);
             $this.after(input);
             inputTip(input);
         }

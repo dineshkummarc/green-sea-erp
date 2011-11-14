@@ -34,7 +34,7 @@
                 </select>
             </td>
             <td>
-                <select id="goods-type" name="Form[<?php echo $i;?>][type]">
+                <select class="change-goods-type" name="Form[<?php echo $i;?>][type]" num="<?php echo $i; ?>">
                     <?php foreach ($goodsType as $type): ?>
                     <option value="<?php echo $type->id ?>" <?php if (isset($goods->type) && $goods->type == $type->id) echo "selected"; ?>><?php echo $type->name; ?></option>
                     <?php endforeach; ?>
