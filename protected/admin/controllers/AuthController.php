@@ -148,18 +148,14 @@ class AuthController extends Controller
         {
             // 组合成字符串
             $id = implode(',', $id);
-            if (Admin::model()->deleteAll("id in ({$id})") > 0)
-                $this->success('删除成功', array('navTabId'=>'list'));
-            else
-                $this->error('删除失败，请联系管理员');
+            Yii::app()->db->createCommand()->delete("{{admin}}", "id IN ({$id})");
+            $this->success('删除成功', array('navTabId'=>'list'));
         }
         else
         {
             $id = $id[0];
-            if (Admin::model()->deleteByPk($id) > 0)
-                $this->success('删除成功', array('navTabId'=>'list'));
-            else
-                $this->error('删除失败，请联系管理员');
+            Yii::app()->db->createCommand()->delete("{{admin}}", "id = {$id}");
+            $this->success('删除成功', array('navTabId'=>'list'));
         }
     }
 
@@ -224,27 +220,23 @@ class AuthController extends Controller
             // 组合成字符串
             $id = implode(',', $id);
             // 删除其下属管理员
-            Admin::model()->deleteAll("role_id in ({$id})");
+            Yii::app()->db->createCommand()->delete("{{admin}}", "role_id in ({$id})");
             // 删除其下权限分配信息
-            AdminRoleChild::model()->deleteAll("role_id in ({$id})");
+            Yii::app()->db->createCommand()->delete("{{admin_role_child}}", "role_id in ({$id})");
             // 删除管理权限组
-            if (AdminRole::model()->deleteAll("id in ({$id})") > 0)
-                $this->success('删除成功', array('navTabId'=>'auth-role'));
-            else
-                $this->error('删除失败，请联系管理员');
+            Yii::app()->db->createCommand()->delete("{{admin_role}}", "id in ({$id})");
+            $this->success('删除成功', array('navTabId'=>'auth-role'));
         }
         else
         {
             $id = $id[0];
             // 删除其下属管理员
-            Admin::model()->deleteAll("role_id = {$id}");
+            Yii::app()->db->createCommand()->delete("{{admin}}", "role_id = ({$id})");
             // 删除其下权限分配信息
-            AdminRoleChild::model()->deleteAll("role_id = {$id}");
+            Yii::app()->db->createCommand()->delete("{{admin_role_child}}", "role_id = ({$id})");
             // 删除管理权限组
-            if (AdminRole::model()->deleteByPk($id) > 0)
-                $this->success('删除成功', array('navTabId'=>'auth-role'));
-            else
-                $this->error('删除失败，请联系管理员');
+            Yii::app()->db->createCommand()->delete("{{admin_role}}", "id = ({$id})");
+            $this->success('删除成功', array('navTabId'=>'auth-role'));
         }
 
     }
