@@ -1,6 +1,6 @@
 <div class="panelBar">
 <ul class="toolBar">
-	<li><a class="add" href="<?php echo $this->createUrl("order/goodsEdit", array('orderId'=>$orderId)); ?>" target="dialog" width="500" height="400" mask="true" title="添加订单物品" ><span>添加订单物品</span></a></li>
+	<li><a class="add" href="<?php echo $this->createUrl("order/goodsEdit", array('id'=>'','orderId'=>$orderId)); ?>" target="dialog" width="500" height="400" mask="true" title="添加订单物品" ><span>添加订单物品</span></a></li>
 	<li class="line">line</li>
 	<li><a class="delete" href="<?php echo $this->createUrl("order/goodsDel"); ?>" target="selectedTodo" title="确定删除选定管理员？" rel="id[]" ><span>删除选定</span></a></li>
 	</ul>

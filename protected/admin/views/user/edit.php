@@ -33,9 +33,9 @@ $(function(){
 		}
 
 		$score = $("input[name='Form[score]']").val();
-		$reg = /^[1-9]\d*$/;
+		$reg = /^[1-9]d*|0$/;
 		if(!$reg.test($score)){
-			alert('积分只能为正整数');
+			alert('积分只能为0或正整数');
 			return false;
 		}
 
@@ -50,12 +50,48 @@ $(function(){
 			}
 
 			$receive_mobile_phone = $("input[name='Form[receive][mobile_phone]']").val();
-			$reg = /^1[358][0-9]{9}$/;
-			if(!$reg.test($receive_mobile_phone)){
-				alert('[收货人手机]请输入正确的手机号码');
-				return false;
+			$phone_1 = $("input[name='Form[receive][phone-1]']").val();
+			$phone_2 = $("input[name='Form[receive][phone-2]']").val();
+			$phone_3 = $("input[name='Form[receive][phone-3]']").val();
+			$phone = "";
+			if(trim($phone_1)!="" && trim($phone_2)!="")
+			{
+				$phone = $phone_1+"-"+$phone_2;
+			}else{
+				$phone = $phone_1;
+			}
+			if(trim($phone_2)!="" && trim($phone_3)!="")
+			{
+				$phone = $phone+"-"+$phone_3;
+			}else if(trim($phone_2)!="")
+			{
+				$phone = $phone_2;
+			}else if(trim($phone_3)!="")
+			{
+				$phone = $phone_3;
 			}
 
+			if(trim($receive_mobile_phone)=="" && trim($phone)=="")
+			{
+				alert('[收货人]请填写手机号码或座机号码任意一个');
+				return false;
+			}
+			if(trim($receive_mobile_phone)!="")
+			{
+				$reg = /^1[358][0-9]{9}$/;
+				if(!$reg.test($receive_mobile_phone)){
+					alert('[收货人手机]请输入正确的手机号码');
+					return false;
+				}
+			}
+			if(trim($phone)!="")
+			{
+				$reg = /^((\d{3,4})|\d{3,4}-)?\d{7,8}(-\d{1,4})?$/;
+				if(!$reg.test($phone)){
+					alert('座机号码格式不正确');
+					return false;
+				}
+			}
 			$area_1 = $("input[name='Form[receive][area_1]']").val();
 			if($area_1 == 0)
 			{
@@ -77,7 +113,7 @@ $(function(){
 				return false;
 			}
 
-			$street = $("input[name='Form[receive][street]']").val();
+			$street = $("textarea[name='Form[receive][street]']").val();
 			if(trim($street) == "")
 			{
 				alert('详细地址不能为空');
@@ -85,7 +121,7 @@ $(function(){
 			}
 
 			$postalcode = $("input[name='Form[receive][postalcode]']").val();
-			$reg = /^\\d{6}$/;
+			$reg = /^[0-9]{6}$/;
 			if(!$reg.test($postalcode)){
 				alert('请输入正确的邮编');
 				return false;
@@ -107,20 +143,20 @@ $(function(){
             <?php endif; ?>
             <div class="unit">
                 <label>用户名</label>
-                <input type="text" name="Form[name]" class="required" value="<?php echo $user->name; ?>" alt="客户名不能为空" />
+                <input type="text" maxlength="20" name="Form[name]" class="required" value="<?php echo $user->name; ?>" alt="客户名不能为空" />
             </div>
             <div class="unit">
                 <?php if (!empty($user->password)): ?>
                 <label>密码重置</label>
-                <input id="pwdequal" type="password" name="Form[password]"/>
+                <input id="pwdequal" maxlength="20" type="password" name="Form[password]"/>
                 <?php else: ?>
                 <label>密码</label>
-                <input id="pwdequal" type="password" name="Form[password]" class="required" alt="密码不能为空" />
+                <input id="pwdequal" maxlength="20" type="password" name="Form[password]" class="required" alt="密码不能为空" />
                 <?php endif; ?>
             </div>
             <div class="unit">
                 <label>确认密码</label>
-                <input type="password" class="<?php if (empty($user->id))echo "required"?>" id="rePwd" equalto="#pwdequal" />
+                <input type="password" maxlength="20" class="<?php if (empty($user->id))echo "required"?>" id="rePwd" equalto="#pwdequal" />
             </div>
             <div class="unit">
                 <label>旺旺号</label>
@@ -144,7 +180,7 @@ $(function(){
             </div>
             <div class="unit">
                 <label>会员积分</label>
-                <input type="text" name="Form[score]" value="<?php echo $user->score; ?>" class="required number" alt="积分不能为空，为数字" />
+                <input type="text" name="Form[score]" value="<?php if (empty($user->score))echo '0';else echo $user->score; ?>" class="required number" alt="积分不能为空，为数字" />
             </div>
             <div class="unit" id="click_optional">
             	<?php if (empty($receiver->id)):?>
@@ -161,7 +197,7 @@ $(function(){
             </div>
             <div class="unit">
                 <label>收货人手机</label>
-                <input type="text" maxlength="11" name="Form[receive][mobile_phone]" value="<?php echo $receiver->mobile_phone; ?>"/><span style="color:red;">*</span>
+                <input type="text" maxlength="11" name="Form[receive][mobile_phone]" value="<?php echo $receiver->mobile_phone; ?>"/><span style="color:red;">*(手机或座机选填一个或多个)</span>
             </div>
             <div class="unit">
                 <label>电话号码:</label>

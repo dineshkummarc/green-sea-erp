@@ -137,9 +137,9 @@ class UserController extends Controller
                     $_POST['Form']['phone'] = "";
                 else
                     $_POST['Form']['phone'] = $phone1 . "-" . $phone2;
-                if (!empty($phone) && empty($phone3))
+                if (!empty($phone2) && !empty($phone3))
                 {
-                     $_POST['Form']['phone'] .= "-" . $phone3;
+                    $_POST['Form']['phone'] .= "-" . $phone3;
                 }
                 $_POST['Form']['phone'] = trim($_POST['Form']['phone']);
 
@@ -159,7 +159,7 @@ class UserController extends Controller
     	        }
     	        else
     	        {
-    	            $this->error(Dumper::dumpString($userInfo->getErrors()));
+    	            $this->error(Dumper::dumpString($receiver->getErrors()));
     	            $this->refresh();
     	        }
 
