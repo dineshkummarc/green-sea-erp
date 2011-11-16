@@ -149,7 +149,7 @@ class Order extends CActiveRecord
             array('example_img, shoot_notice', 'length', 'max'=>200),
 //            array('total_price', 'length', 'max'=>6),
             array('receive_address, other_comment, width, example_comment, other_comment, down_url', 'length', 'max'=>255),
-            array('down_url', 'default', 'value'=>''),
+            array('down_url, memo', 'default', 'value'=>''),
         );
     }
 

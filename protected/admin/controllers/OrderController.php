@@ -500,6 +500,36 @@ class OrderController extends Controller
 		));
 	}
 	/**
+	 * 入库时间修改
+	 */
+	public function actionInTime($id = null)
+	{
+		$in_time = "";
+		if (!empty($id))
+		{
+			$sql = "SELECT in_time FROM {{Storage}} WHERE id = ".$id;
+			$command = Yii::app()->db->createCommand($sql);
+			$in_time = $command->queryScalar();
+		}
+		if (isset($_POST['Form']))
+        {
+            $in_time = strtotime($_POST['Form']['in_time']);
+        	$sql = "UPDATE {{Storage}} SET in_time = :in_time WHERE id = :id";
+			$command = Yii::app()->db->createCommand($sql);
+			$count = $command->execute(array('in_time'=>$in_time, 'id'=>$_POST['Form']['storage_id']));
+			if ($count > 0)
+			{
+				$this->success("修改成功", array('navTabId'=>'order-storage'));
+			}else{
+				$this->error("修改失败");
+			}
+        }
+		$this->render('storage_in_time',array(
+			'in_time'=>$in_time,
+			'storage_id'=>$id
+		));
+	}
+	/**
 	 * 仓储 修改
 	 * Enter description here ...
 	 * @param unknown_type $id

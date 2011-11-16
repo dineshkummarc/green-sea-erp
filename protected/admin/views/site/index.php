@@ -73,8 +73,6 @@
     $(function(){
     	DWZ.init("admin/dwz.frag.xml", {
     		loginUrl:"<?php echo $this->createUrl('site/login'); ?>",
-    		statusCode:{ok:200, error:300, timeout:301}, //【可选】
-    		pageInfo:{pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderDirection"}, //【可选】
     		debug:false,	// 调试模式 【true|false】
     		callback:function(){
     			initEnv();
@@ -103,9 +101,7 @@
 				</ul>
 			</div>
 			<!-- navMenu -->
-
 		</div>
-
 		<div id="leftside">
 			<div id="sidebar_s">
 				<div class="collapse">
@@ -192,10 +188,7 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
-
 	<div id="footer">Copyright &copy; 2011 绿浪视觉</div>
-
 </body>
 </html>
