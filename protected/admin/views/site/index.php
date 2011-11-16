@@ -15,7 +15,7 @@
 	<link rel="shortcut icon" href="../favicon.ico" type="/image/x-icon" />
 	<link href="admin/themes/css/multiple.css" rel="stylesheet" type="text/css" />
 	<!--[if IE]>
-	<link href="themes/css/ieHack.css" rel="stylesheet" type="text/css" />
+	<link href="admin/themes/css/ieHack.css" rel="stylesheet" type="text/css" />
 	<![endif]-->
 
 	<script src="admin/js/speedup.js" type="text/javascript"></script>
