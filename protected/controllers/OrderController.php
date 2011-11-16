@@ -422,7 +422,6 @@ class OrderController extends Controller
             // 保存订单、订单物品、模特
             if ($order->save() && $this->saveGoods($order->id, $order->sn) && $this->saveModel($order->id))
             {
-                $transaction->commit();
                 // 保存完毕，清空session
                 $user->setState("shootTypes", null);
                 $user->setState("totalPrice", null);
@@ -440,6 +439,7 @@ class OrderController extends Controller
 
                 //添加订单追踪信息
         		OrderTrack::getOrderTrackId($order->id,$admin_id);
+        		$transaction->commit();
 
                 $this->success("订单添加成功");
                 $this->redirect(array('order/index'));
