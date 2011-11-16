@@ -17,7 +17,6 @@
             <div class="unit">
                 <label>权限组</label>
                 <select name="Form[role_id]" class="combox" default="<?php echo $admin->role_id ?>">
-                    <option value="0">无</option>
                     <?php foreach($roles as $val): ?>
                     <option value="<?php echo $val->id ?>"><?php echo $val->name ?></option>
                     <?php endforeach; ?>

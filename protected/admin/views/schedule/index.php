@@ -1,17 +1,19 @@
 <?php if(isset($typeList)): $this->widget('widget.Search', array(
-    'panleStyle'=>'width: 100%; height: 25px;',
+    'panleStyle'=>'width: 100%; height: 50px;',
     'searchCondition'=>array(
-        '拍摄时间：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[start_time]', 'defaultValue'=>empty($params['start_time']) ? '' : $params['start_time'],),
-	    '至结束时间：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[end_time]', 'defaultValue'=>empty($params['end_time']) ? '' : $params['end_time'],),
+		'订单号：'=>array('type'=>'text', 'name'=>'params[sn]', 'defaultValue'=>empty($params['sn']) ? '' : $params['sn'], 'alt'=>'支持模糊搜索'),
+		'客户名：'=>array('type'=>'text', 'name'=>'params[user_name]', 'defaultValue'=>empty($params['user_name']) ? '' : $params['user_name'], 'alt'=>'精确搜索'),
 		'拍摄类型：'=>array('type'=>'select', 'name'=>'params[shoot_type]', 'defaultValue'=>empty($params['shoot_type']) ? '' : $params['shoot_type'],
 		'options'=>array(
-				'请选择' => '0',
 				'模特棚拍' => '1',
 				'模特外拍' => '2',
 				'平铺拍摄' => '3',
 				'衣模拍摄' => '4',
 			),
 		),
+        '拍摄时间：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[start_time]', 'defaultValue'=>empty($params['start_time']) ? '' : $params['start_time'],),
+	    '至结束时间：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[end_time]', 'defaultValue'=>empty($params['end_time']) ? '' : $params['end_time'],),
+
     ),
 )); endif;?>
 <div class="panelBar">
