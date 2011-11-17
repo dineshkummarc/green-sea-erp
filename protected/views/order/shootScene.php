@@ -14,6 +14,7 @@
             <td class="label">棚拍背景：</td>
             <td>
                 <select name="Form[studio_shoot]">
+                	<option value="不限">不限</option>
                     <option value="白色">白色</option>
                     <option value="灰色">灰色</option>
                     <option value="黑色">黑色</option>
