@@ -27,6 +27,20 @@ class ScheduleController extends Controller
 			}
 			if(!empty($params['shoot_type']))
 				$criteria -> addCondition('shoot_type = '.$params['shoot_type']);
+			if(!empty($params['sn'])){
+				$sql = "SELECT id FROM {{order}} WHERE sn = :sn";
+				$command = Yii::app()->db->createCommand($sql);
+				$id = $command->queryScalar(array(':sn'=>$params['sn']));
+				if ($id != false)
+					$criteria -> addCondition('order_id = '.$id);
+			}
+			if(!empty($params['user_name'])){
+				$sql = "SELECT id FROM {{order}} WHERE user_name = :name";
+				$command = Yii::app()->db->createCommand($sql);
+				$id = $command->queryScalar(array(':name'=>$params['user_name']));
+				if ($id != false)
+					$criteria -> addCondition('order_id = '.$id);
+			}
 
 			$count = $models->count($criteria);
 
