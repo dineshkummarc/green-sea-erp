@@ -677,7 +677,7 @@ class OrderController extends Controller
     /**
      * 仓储入库 提交
      */
-    public function actionStorageOut($id = null,$out_sn,$sn_name)
+    public function actionStorageOut($id = null,$out_sn = "",$sn_name = "")
     {
         if (empty($id))
             $this->error('参数传递错误');
@@ -685,19 +685,18 @@ class OrderController extends Controller
             $this->error('订单号不能为空');
 		$out_sn = trim($out_sn);
 		$sn_name = trim($sn_name);
-		$sn = trim($sn_name." ".$out_sn);
-        $storage = Storage::model()->findByPk($id);
-        $storage->out_time = Yii::app()->params['timestamp'];
-		$storage->out_sn = $sn;
+		$chinese = new Chinese;
 
-        if ($storage->save())
-            $this->success('修改成功', array('navTabId'=>'order-storage'));
-        else
-        {
-            $error = array_shift($storage->getErrors());
-            $message = '错误：'.$error[0];
-            $this->error($message);
-        }
+		$sn = trim($sn_name." ".$out_sn);
+		$sql = "UPDATE {{storage}} SET out_time = :out_time, out_sn = :out_sn WHERE id = :id";
+		$command = Yii::app()->db->createCommand($sql);
+		$command->execute(array(
+			':out_time'=>Yii::app()->params['timestamp'],
+			':out_sn'=>$sn,
+			':id'=>$id
+		));
+
+        $this->success('修改成功', array('navTabId'=>'order-storage'));
     }
 
 	/**
