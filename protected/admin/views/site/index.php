@@ -2,7 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=7" />
 
     <link href="admin/themes/default/style.css" rel="stylesheet" type="text/css" />
 	<link href="admin/themes/css/core.css" rel="stylesheet" type="text/css" />
@@ -16,7 +15,39 @@
 	<link href="admin/themes/css/ieHack.css" rel="stylesheet" type="text/css" />
 	<![endif]-->
 	<script src="admin/js/jquery.js" type="text/javascript"></script>
-    <script src="admin/js/dwz-min.js" type="text/javascript"></script>
+    <script src="admin/js/jquery.cookie.js" type="text/javascript"></script>
+    <script src="admin/js/jquery.validate.js" type="text/javascript"></script>
+    <script src="admin/js/jquery.bgiframe.js" type="text/javascript"></script>
+
+    <script src="admin/js/dwz.core.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.accordion.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.ajax.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.alertMsg.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.barDrag.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.checkbox.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.combox.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.contextmenu.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.cssTable.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.database.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.datepicker.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.dialog.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.dialogDrag.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.drag.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.effects.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.history.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.navTab.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.pagination.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.panel.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.resize.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.stable.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.switchEnv.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.tab.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.taskBar.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.tree.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.ui.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.util.date.js" type="text/javascript"></script>
+    <script src="admin/js/dwz.validate.method.js" type="text/javascript"></script>
+
     <script src="admin/keditor/kindeditor.js" type="text/javascript"></script>
     <script src="admin/keditor/lang/zh_CN.js" type="text/javascript"></script>
 	<script src="admin/uploadify/scripts/swfobject.js" type="text/javascript"></script>

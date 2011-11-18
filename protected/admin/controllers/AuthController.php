@@ -382,7 +382,7 @@ class AuthController extends Controller
 
         $sql = "INSERT INTO {{admin_role_child}} VALUES (:roleId, :itemId)";
         $command = Yii::app()->db->createCommand($sql);
-        $items = $command->execute(array(':roleId'=>$roleId, ':itemId'=>$id));
+        $command->execute(array(':roleId'=>$roleId, ':itemId'=>$id));
 
         $this->success('授权成功', array('navTabId'=>'auth-role-config'));
     }
