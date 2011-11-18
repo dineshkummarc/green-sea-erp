@@ -265,28 +265,8 @@ function initUI(_box){
 		});
 	});
 	// ajaxTodo
-	$("a[target=ajaxTodo]", $p).each(function(){
-		$(this).click(function(event){
-			var $this = $(this);
-			var url = unescape($this.attr("href")).replaceTmById($p);
-			DWZ.debug(url);
-			if (!url.isFinishedTm()) {
-				alertMsg.error($this.attr("warn") || DWZ.msg("alertSelectMsg"));
-				return false;
-			}
-			var title = $this.attr("title");
-			if (title) {
-				alertMsg.confirm(title, {
-					okCall: function(){
-						ajaxTodo(url, $this.attr("callback"));
-					}
-				});
-			} else {
-				ajaxTodo(url, $this.attr("callback"));
-			}
-			event.preventDefault();
-		});
-	});
+	if ($.fn.ajaxTodo) $("a[target=ajaxTodo]", $p).ajaxTodo($p);
+    if ($.fn.dwzExport) $("a[target=dwzExport]", $p).dwzExport($p);
 	
 	//dialogs
 	$("a[target=dialog]", $p).each(function(){

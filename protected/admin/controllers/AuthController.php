@@ -366,20 +366,20 @@ class AuthController extends Controller
         if ( $id === null || $roleId === null)
             $this->error('参数传递错误');
 
-//        // 检查其下权限是否有被授权过
-//        $sql = "SELECT item_id FROM {{admin_role_child}} WHERE role_id = :roleId";
-//        $command = Yii::app()->db->createCommand($sql);
-//        $items = $command->queryAll(true, array(':roleId'=>$roleId));
-//        foreach ($items as $item)
-//        {
-//            // 如果有，则撤销授权
-//            if ($item['item_id'] == $id)
-//            {
-//                $sql = "DELETE FROM {{admin_role_child}} WHERE item_id = :itemId";
-//                $command = Yii::app()->db->createCommand($sql);
-//                $items = $command->execute(array(':itemId'=>$id));
-//            }
-//        }
+        // 检查其下权限是否有被授权过
+        $sql = "SELECT item_id FROM {{admin_role_child}} WHERE role_id = :roleId";
+        $command = Yii::app()->db->createCommand($sql);
+        $items = $command->queryAll(true, array(':roleId'=>$roleId));
+        foreach ($items as $item)
+        {
+            // 如果有，则撤销授权
+            if ($item['item_id'] == $id)
+            {
+                $sql = "DELETE FROM {{admin_role_child}} WHERE item_id = :itemId";
+                $command = Yii::app()->db->createCommand($sql);
+                $items = $command->execute(array(':itemId'=>$id));
+            }
+        }
 
         $sql = "INSERT INTO {{admin_role_child}} VALUES (:roleId, :itemId)";
         $command = Yii::app()->db->createCommand($sql);
