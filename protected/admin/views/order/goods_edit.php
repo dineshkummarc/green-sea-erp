@@ -64,6 +64,7 @@ $(function(){
             <div class="unit">
                 <label>拍摄风格</label>
                 <select name="Form[style]" class="combox required" default="<?php echo !empty($orderGoods->style) ? $orderGoods->style : ''; ?>">
+                	<option value="0">不限</option>
                 	<?php foreach ($styles as $style):?>
                     <option value="<?php echo $style->id?>"><?php echo $style->name?></option>
                     <?php endforeach;?>

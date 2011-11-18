@@ -5,7 +5,8 @@
             <input type="hidden" name="Form[id]" value="<?php echo !empty($orders->id) ? $orders->id : ''; ?>" />
             <div class="unit">
                 <label>棚拍背景</label>
-                <select name="Form[studio_shoot]" class="combox required" default="<?php echo !empty($orders->studio_shoot) ? $orders->studio_shoot : 0; ?>">
+                <select name="Form[studio_shoot]" class="combox required" default="<?php echo !empty($orders->studio_shoot) ? $orders->studio_shoot : ''; ?>">
+                	<option value="不限">不限</option>
                     <option value="白色">白色</option>
                     <option value="灰色">灰色</option>
                     <option value="黑色">黑色</option>

@@ -1,4 +1,4 @@
-<script type="text/javascript">
+﻿<script type="text/javascript">
 function status(val)
 {
 	var val = val.split("-");
@@ -33,7 +33,7 @@ function status(val)
 		<ul class="toolBar">
 			<li><a class="icon" href="<?php echo $this->createUrl("order/OrderExcel"); ?>" target="dwzExport" targetType="navTab" title="确实要导出这些记录吗?" rel="id[]"><span>导出EXCEL</span></a></li>
 			<li class="line">line</li>
-			<li><a class="icon" ><span style="color:#F00"><?php echo "金额：￥".$money?></span></a></li>
+			<li><a class="icon" ><span style="color:#F00"><?php // echo "金额：￥".$money?></span></a></li>
 		</ul>
 	</div>
     <table class="list" width="1200">
