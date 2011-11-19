@@ -1,30 +1,51 @@
+<script type="text/javascript">
+function status(val)
+{
+	function _getIds(selectedIds, targetType){
+		var ids = "";
+		var $box = targetType == "dialog" ? $.pdialog.getCurrent() : navTab.getCurrentPanel();
+		$box.find("input:checked").filter("[name='"+selectedIds+"']").each(function(i){
+			var val = $(this).val();
+			ids += i==0 ? val : ","+val;
+		});
+		return ids;
+	}
+	var val = val;
+	var rel = $this.attr("rel") || "ids";
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo $this->createUrl('order/StorageGoodsStatus');?>',
+		data: {id: rel, status: val},
+		dataType:"json",
+		cache: false,
+		success: DWZ.ajaxDone,
+		error: DWZ.ajaxError
+	});
+}
+</script>
 <div class="pageContent" width="100%" layoutH="0">
-	<div class="panel" [defH="200"|minH="100"] style="width:400px;">
-		<h1>仓储信息</h1>
-	    <div class="pageFormContent">
-		    <?php if ($storage->out_time != 0):?>
-    		<div class="panelBar">
-		        <ul class="toolBar">
-		            <li><a class="edit" href="<?php echo $this->createUrl("order/Storageedit",array('id'=>$storage->id)) ?>" target="dialog" width="400" height="190" title="修改仓储"><span>修改仓储</span></a></li>
-					<li class="line">line</li>
-					<li><a class="delete" end="true" tabId="order-storage" href="<?php echo $this->createUrl("order/StorageDel",array('id'=>$storage->id)); ?>" target="ajaxTodo" title="关联物品也将删除，确定删除仓储？"><span>删除仓储</span></a></li>
-				</ul>
-    		</div>
+	<div class="panel" [defH="200"|minH="100"]>
+		<h1>仓储信息<?php if ($storage->out_time != 0):?>
+		            <a class="edit" href="<?php echo $this->createUrl("order/Storageedit",array('id'=>$storage->id)) ?>" target="dialog" width="400" height="190" title="修改仓储"><span>修改仓储</span></a>
+					<a class="delete" end="true" tabId="order-storage" href="<?php echo $this->createUrl("order/StorageDel",array('id'=>$storage->id)); ?>" target="ajaxTodo" title="关联物品也将删除，确定删除仓储？"><span>删除仓储</span></a>
     		<?php endif;?>
-		    <div class="unit">
-		    	<label>订单：</label>
-		    	<div style="line-height:20px"><?php echo $storage->Order->user_name.' 【 '.$storage->Order->sn.' 】 '?></div>
-		    </div>
-		    <div class="unit">
-		    	<label>入库人：</label>
-		    	<div style="line-height:20px"><?php echo $storage->Admin->name . ' - '.'【'.$storage->Admin->number.'】'?></div>
-		    </div>
-		    <div class="unit">
-		    	<label>入库时间：</label>
-		    	<div style="line-height:20px"><?php echo date('Y-m-d H:i:s',$storage->in_time)?>&nbsp;&nbsp;&nbsp;&nbsp;
-		    	<a style="line-height:20px" href="<?php echo $this->createUrl('order/intime',array('id'=>$storage->id));?>" title="入库时间" height="150" width="400" target="dialog">修改</a>
-		    	</div>
-		    </div>
+    	</h1>
+	    <div class="pageFormContent">
+
+		    <p style="width:250px">
+		    	<label style="width:60px">订单：</label>
+		    	<label><?php echo $storage->Order->user_name.' 【 '.$storage->Order->sn.' 】 '?></label>
+		    </p>
+		    <p style="width:250px">
+		    	<label style="width:60px">入库人：</label>
+		    	<label><?php echo $storage->Admin->name . ' - '.'【'.$storage->Admin->number.'】'?></label>
+		    </p>
+		    <p style="width:250px">
+		    	<label style="width:60px">入库时间：</label>
+		    	<label><?php echo date('m-d H:i',$storage->in_time)?>&nbsp;&nbsp;&nbsp;&nbsp;
+		    	<a href="<?php echo $this->createUrl('order/intime',array('id'=>$storage->id));?>" title="入库时间" height="150" width="400" target="dialog">修改</a>
+		    	</label>
+		    </p>
 	    	<?php if ($storage->out_time == 0):?>
 	    	<script type="text/javascript">
 			$('a#submit').click(function(){
@@ -33,37 +54,40 @@
 				$(this).attr('href',"<?php echo $this->createUrl('order/StorageOut', array('id'=>$storage->id));?>"+"&out_sn="+$out_sn+"&sn_name="+$sn_name)
 			});
 	    	</script>
-		    <div class="unit">
+		    <p>
 		    	<label>物流公司：</label><input type="text" id="sn_name" value="" />
-		    </div>
-		    <div class="unit">
+		    </p>
+		    <p>
 		    	<label>出库运单号：</label><input type="text" id="out_sn" value="" />&nbsp;&nbsp;&nbsp;
 		    	<a style="line-height:20px" id="submit" href="" target="ajaxTodo">提交</a>
-		    </div>
+		    </p>
 		    <?php else:?>
-		    <div class="unit">
+		    <p>
 		    	<label>出库时间：</label>
-		    	<div style="line-height:20px"><?php echo date('Y-m-d H:i:s',$storage->out_time)?></div>
-		    </div>
+		    	<label><?php echo date('m-d H:i',$storage->out_time)?></label>
+		    </p>
 	    	<?php endif;?>
 		    <?php if ($storage->out_time != 0):?>
-		    <div class="unit">
+		    <p>
 		    	<label>出库运单号：</label>
-		    	<div style="line-height:20px"><?php echo $storage->out_sn?></div>
-		    </div>
+		    	<label><?php echo $storage->out_sn?></label>
+		    </p>
 		    <?php endif;?>
 	    </div>
 	</div>
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a class="add" href="<?php echo $this->createUrl("order/StorageGoods",array('storage_id'=>$storage->id,'order_sn'=>$storage->Order->sn,'orderId'=>$orderId)) ?>" target="dialog" width="400" height="200" title="添加物品"><span>添加物品</span></a></li>
+            <li><a class="add" href="<?php echo $this->createUrl("order/StorageGoods",array('storage_id'=>$storage->id,'order_sn'=>$storage->Order->sn,'orderId'=>$orderId)) ?>" target="dialog" width="400" height="250" title="添加物品"><span>添加物品</span></a></li>
             <li><a class="delete" href="<?php echo $this->createUrl("order/StorageGoodsDel"); ?>" target="selectedTodo" title="确定删除选定数据吗？" rel="id[]" ><span>删除选定</span></a></li>
             <li class="line">line</li>
 			<li><a class="icon" href="<?php echo $this->createUrl("order/StorageGoodsExcel",array('order_id'=>$storage->order_id)); ?>" target="dwzExport" targetType="navTab" title="确实要导出这些记录吗?" rel="id[]"><span>导出选定EXCEL</span></a></li>
 			<li><a class="icon" href="<?php echo $this->createUrl("order/StorageGoodsExcel",array('order_id'=>$storage->order_id, 'id'=>'all', 'storage_id'=>$storage->id)); ?>" target="dwzExport" rel="all" targetType="navTab"><span>导出全部EXCEL</span></a></li>
+			<li class="line">line</li>
+			<li><a class="icon"><span><?php echo "入库 ".$pages->itemCount." 件";  echo !empty($shootCount) ? '&nbsp;&nbsp;已拍摄  '.$shootCount.' 件' : ''; ?></span></a></li>
+			<li><a title="确定这些物品已拍吗?" target="selectedTodo" rel="id[]" href="<?php echo $this->createUrl('order/StorageGoodsStatus');?>" class="edit"><span>批量确认已拍摄状态</span></a></li>
         </ul>
     </div>
-    <table class="list" width="100%">
+    <table class="list" width="100%" layoutH="165">
     	<thead>
 	        <tr>
 	            <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>

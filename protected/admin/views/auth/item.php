@@ -2,7 +2,7 @@
     'panleStyle'=>'width: 100%;',
 	'params'=>array('id'=>$role->id),
     'searchCondition'=>array(
-    	'名称：'=>array('type'=>'text', 'name'=>'name', 'defaultValue'=>empty($params['name']) ? '' : $params['name'], 'alt'=>'支持模糊搜索'),
+    	'权限名称：'=>array('type'=>'text', 'name'=>'name', 'defaultValue'=>empty($params['name']) ? '' : $params['name'], 'alt'=>'支持模糊搜索'),
 
     ),
 )); ?>

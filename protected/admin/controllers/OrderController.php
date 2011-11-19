@@ -488,10 +488,15 @@ class OrderController extends Controller
         $pages->currentPage = $pageNum - 1;
         $pages->pageSize = $numPerPage;
         $pages->applyLimit($criteria);
-
+        $criteria->order = "is_shoot ASC";
 		$storageGoodsList = StorageGoods::model()->findAll($criteria);
+		// 根据订单ID查询拍摄类型
+        $sql = "SELECT count(is_shoot) FROM {{storage_goods}} WHERE storage_id = :Id AND is_shoot = 1 GROUP BY is_shoot";
+		$command = Yii::app()->db->createCommand($sql);
+		$shootCount = $command->queryScalar(array(":Id"=>$storage->id));
 		$this->render('storage',array(
 			'id' => $id,
+			'shootCount' => $shootCount,
 			'orderId' => $id,
 			'pageSizes' => $pageSizes,
 			'pages' => $pages,
@@ -585,6 +590,32 @@ class OrderController extends Controller
 			'storage' => $storage
 		));
 	}
+
+	/**
+     * 仓储入库 提交
+     */
+    public function actionStorageOut($id = null,$out_sn = "",$sn_name = "")
+    {
+        if (empty($id))
+            $this->error('参数传递错误');
+        if (empty($out_sn))
+            $this->error('订单号不能为空');
+		$out_sn = trim($out_sn);
+		$sn_name = trim($sn_name);
+		$chinese = new Chinese;
+
+		$sn = trim($sn_name." ".$out_sn);
+		$sql = "UPDATE {{storage}} SET out_time = :out_time, out_sn = :out_sn WHERE id = :id";
+		$command = Yii::app()->db->createCommand($sql);
+		$command->execute(array(
+			':out_time'=>Yii::app()->params['timestamp'],
+			':out_sn'=>$sn,
+			':id'=>$id
+		));
+
+        $this->success('修改成功', array('navTabId'=>'order-storage'));
+    }
+
 	/**
 	 * 仓储 删除
 	 * Enter description here ...
@@ -674,30 +705,22 @@ class OrderController extends Controller
 			'storageGoods'	=> $storageGoods
 		));
 	}
-    /**
-     * 仓储入库 提交
-     */
-    public function actionStorageOut($id = null,$out_sn = "",$sn_name = "")
-    {
-        if (empty($id))
-            $this->error('参数传递错误');
-        if (empty($out_sn))
-            $this->error('订单号不能为空');
-		$out_sn = trim($out_sn);
-		$sn_name = trim($sn_name);
-		$chinese = new Chinese;
 
-		$sn = trim($sn_name." ".$out_sn);
-		$sql = "UPDATE {{storage}} SET out_time = :out_time, out_sn = :out_sn WHERE id = :id";
-		$command = Yii::app()->db->createCommand($sql);
-		$command->execute(array(
-			':out_time'=>Yii::app()->params['timestamp'],
-			':out_sn'=>$sn,
-			':id'=>$id
-		));
+	//仓储物品拍状态
+	public function actionStorageGoodsStatus(array $id = array()){
+		if (empty($id))
+            $this->error('参数传递错误！');
+
+        //$sqlIn = implode(',', $id);
+        //Dumper::dump($sqlIn);Yii::app()->end();
+        foreach ($id as $val){
+        	$sql = "UPDATE {{storage_goods}} SET is_shoot = 1 WHERE id = ".$val;
+        	$command = Yii::app()->db->createCommand($sql);
+        	$count = $command->execute();
+        }
 
         $this->success('修改成功', array('navTabId'=>'order-storage'));
-    }
+	}
 
 	/**
 	 * 仓储物品 删除

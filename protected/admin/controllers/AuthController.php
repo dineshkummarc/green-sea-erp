@@ -375,9 +375,9 @@ class AuthController extends Controller
             // 如果有，则撤销授权
             if ($item['item_id'] == $id)
             {
-                $sql = "DELETE FROM {{admin_role_child}} WHERE item_id = :itemId";
+                $sql = "DELETE FROM {{admin_role_child}} WHERE item_id = :itemId AND role_id = :roleId";
                 $command = Yii::app()->db->createCommand($sql);
-                $items = $command->execute(array(':itemId'=>$id));
+                $items = $command->execute(array(':itemId'=>$id, ":roleId"=>$roleId));
             }
         }
 

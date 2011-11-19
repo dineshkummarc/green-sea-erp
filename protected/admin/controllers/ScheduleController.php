@@ -166,7 +166,7 @@ class ScheduleController extends Controller
 
 		//得到摄影师列表和造型师列表
 		$shootList = Admin::getAdmin(6);
-		$styleList = Admin::getAdmin(8);
+		$styleList = Admin::getAdmin(7);
 
         $this->render('edit', array(
             'orders'=>$orders,
