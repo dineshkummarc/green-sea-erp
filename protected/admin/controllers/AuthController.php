@@ -383,7 +383,7 @@ class AuthController extends Controller
 
         $sql = "INSERT INTO {{admin_role_child}} VALUES (:roleId, :itemId)";
         $command = Yii::app()->db->createCommand($sql);
-        $items = $command->execute(array(':roleId'=>$roleId, ':itemId'=>$id));
+        $command->execute(array(':roleId'=>$roleId, ':itemId'=>$id));
 
         $this->success('授权成功', array('navTabId'=>'auth-role-config'));
     }
@@ -397,7 +397,7 @@ class AuthController extends Controller
     {
     	if ( $id === null || $roleId === null)
         	$this->error('参数传递错误');
-        $sql = "DELETE FROM {{admin_role_child}} WHERE `item_id` = :item_id AND `role_id` = :role_id";
+
         Yii::app()->db->createCommand()->delete(
         	"{{admin_role_child}}",
         	"`item_id` = :item_id AND `role_id` = :role_id",
