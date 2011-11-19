@@ -48,7 +48,15 @@ class AdminRoleItem extends CActiveRecord
 	{
         $sql = "SELECT COUNT(*) FROM {{admin_role_child}} WHERE `item_id` = :id";
 	    $command = Yii::app()->db->createCommand($sql);
-	    return $command->queryScalar(array(":id"=>$this->parent_id));
+	    $result = $command->queryScalar(array(":id"=>$this->parent_id));
+	    if ($result === false ){
+	    	return null;
+	    }else{
+	    	$sql = "SELECT description FROM {{admin_role_item}} WHERE id = :Id";
+	    	$command = Yii::app()->db->createCommand($sql);
+	    	$result = $command->queryScalar(array(":Id"=>$this->parent_id));
+	    	return $result;
+	    }
 	}
 
 	/**

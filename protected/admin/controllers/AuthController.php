@@ -286,7 +286,8 @@ class AuthController extends Controller
         $pages->applyLimit($criteria);
         $pages->params = array('id'=>$id);
 
-        $criteria->order = "`parent_id`, `rule`";
+
+        $criteria->order .= "rule ASC";
         $allItems = $model->cache()->findAll($criteria);
 
         $this->render('item', array('role'=>$role, 'allItems'=>$allItems, 'pages'=>$pages));
