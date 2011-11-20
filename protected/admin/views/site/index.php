@@ -131,10 +131,8 @@
 						<ul class="tree treeFolder">
 							<li><a>用户组管理</a>
 								<ul>
-									<?php if($admin->is_supper == 1): ?>
 									<li><a href="<?php echo $this->createUrl('auth/admin'); ?>" target="navTab" rel="list">管理员列表</a></li>
 									<li><a href="<?php echo $this->createUrl('auth/role'); ?>" target="navTab" rel="auth-role">部门管理</a></li>
-									<?php endif; ?>
 								</ul>
 							</li>
 						</ul>
