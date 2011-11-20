@@ -488,7 +488,7 @@ class OrderController extends Controller
         $pages->currentPage = $pageNum - 1;
         $pages->pageSize = $numPerPage;
         $pages->applyLimit($criteria);
-        $criteria->order = "is_shoot ASC";
+        $criteria->order = "id ASC ";
 		$storageGoodsList = StorageGoods::model()->findAll($criteria);
 		// 根据订单ID查询拍摄类型
         $sql = "SELECT count(is_shoot) FROM {{storage_goods}} WHERE storage_id = :Id AND is_shoot = 1 GROUP BY is_shoot";
