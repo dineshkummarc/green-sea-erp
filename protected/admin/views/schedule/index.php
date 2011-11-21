@@ -14,6 +14,9 @@
         '拍摄时间：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[start_time]', 'defaultValue'=>empty($params['start_time']) ? '' : $params['start_time'],),
 	    '至结束时间：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[end_time]', 'defaultValue'=>empty($params['end_time']) ? '' : $params['end_time'],),
 
+        '摄影师：'=>array('type'=>'text', 'class'=>'text', 'name'=>'params[shoot]', 'defaultValue'=>empty($params['shoot']) ? '' : $params['shoot'], 'alt'=>'支持模糊搜索'),
+	    '造型师：'=>array('type'=>'text', 'class'=>'text', 'name'=>'params[stylist]', 'defaultValue'=>empty($params['stylist']) ? '' : $params['stylist'], 'alt'=>'支持模糊搜索'),
+
     ),
 )); endif;?>
 <div class="panelBar">
