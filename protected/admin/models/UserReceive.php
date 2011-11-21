@@ -52,7 +52,7 @@ class UserReceive extends CActiveRecord
 			// 电话号码格式验证
 			array('phone', 'match', 'pattern'=>'/^((\d{3,4})|\d{3,4}-)?\d{7,8}(-\d{1,4})?$/', 'message'=>'电话号码格式错误'),
 			// 手机号码格式验证
-			array('mobile_phone', 'match', 'pattern'=>'/^0{0,1}(13[0-9]|15[0-9])[0-9]{8}$/', 'message'=>'手机号码格式错误'),
+			array('mobile_phone', 'match', 'pattern'=>'/^1[358][0-9]{9}$/', 'message'=>'手机号码格式错误'),
 			// 过滤JS脚本，防止跨站攻击
 			array('receive_name, street', 'filter', 'filter'=>'StringFilter::JavascriptFilter')
 		);
