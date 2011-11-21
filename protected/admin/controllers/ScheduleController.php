@@ -213,6 +213,18 @@ class ScheduleController extends Controller
 			return $types;
 		}
 	}
+	/**
+	 * 查询订单
+	 */
+	public function actionGoods($orderId = null)
+	{
+		if(empty($orderId))$this->error("参数传递错误");
+		$shootStatus = $this->arrayReverse(Order::getShootStatus());//状态信息
+		$order = Order::model()->findByAttributes(array('id'=>$orderId));
+//		print_r($order);
+//		Yii::app()->end();
+ 		$this->render('order',array('order'=>$order, 'shootStatus'=>$shootStatus));
+	}
 
 	/**
 	 * 数组反向
