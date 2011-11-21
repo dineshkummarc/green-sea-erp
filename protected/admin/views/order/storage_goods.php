@@ -18,6 +18,13 @@
                     <?php endforeach;?>
                 </select>
             </div>
+            <div class="unit">
+            	<label>是否已拍</label>
+            	<select name="Form[is_shoot]" class="combox required" <?php echo !empty($storageGoods->is_shoot) ? 'default="'.$storageGoods->is_shoot.'"' : ''; ?>>
+                    <option value="0">否</option>
+                    <option value="1">是</option>
+                </select>
+            </div>
             <?php if (empty($storageGoods->id)):?>
             <div class="unit">
                 <label>物品数量</label>

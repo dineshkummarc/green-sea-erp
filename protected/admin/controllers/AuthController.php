@@ -32,7 +32,7 @@ class AuthController extends Controller
         $pages->pageSize = $numPerPage !== null ? $numPerPage : 20;
         $pages->applyLimit($criteria);
 
-        $criteria->select = array('id', 'number', 'name', 'login_time', 'login_count', 'INET_NTOA(last_ip) as last_ip', 'role_id', 'city_id', 'is_supper', 'status');
+        $criteria->select = array('id', 'number', 'name', 'login_time', 'login_count', 'last_ip', 'role_id', 'city_id', 'is_supper', 'status');
 
         $list = $model->cache()->findAll($criteria);
         $this->render("admin", array( 'list'=>$list, 'roles'=>$roles, 'pages'=>$pages, 'role_id'=>$role_id ));
@@ -286,7 +286,8 @@ class AuthController extends Controller
         $pages->applyLimit($criteria);
         $pages->params = array('id'=>$id);
 
-        $criteria->order = "`parent_id`, `rule`";
+
+        $criteria->order .= "rule ASC";
         $allItems = $model->cache()->findAll($criteria);
 
         $this->render('item', array('role'=>$role, 'allItems'=>$allItems, 'pages'=>$pages));
@@ -374,15 +375,15 @@ class AuthController extends Controller
             // 如果有，则撤销授权
             if ($item['item_id'] == $id)
             {
-                $sql = "DELETE FROM {{admin_role_child}} WHERE item_id = :itemId";
+                $sql = "DELETE FROM {{admin_role_child}} WHERE item_id = :itemId AND role_id = :roleId";
                 $command = Yii::app()->db->createCommand($sql);
-                $items = $command->execute(array(':itemId'=>$id));
+                $items = $command->execute(array(':itemId'=>$id, ":roleId"=>$roleId));
             }
         }
 
         $sql = "INSERT INTO {{admin_role_child}} VALUES (:roleId, :itemId)";
         $command = Yii::app()->db->createCommand($sql);
-        $items = $command->execute(array(':roleId'=>$roleId, ':itemId'=>$id));
+        $command->execute(array(':roleId'=>$roleId, ':itemId'=>$id));
 
         $this->success('授权成功', array('navTabId'=>'auth-role-config'));
     }
@@ -396,7 +397,7 @@ class AuthController extends Controller
     {
     	if ( $id === null || $roleId === null)
         	$this->error('参数传递错误');
-        $sql = "DELETE FROM {{admin_role_child}} WHERE `item_id` = :item_id AND `role_id` = :role_id";
+
         Yii::app()->db->createCommand()->delete(
         	"{{admin_role_child}}",
         	"`item_id` = :item_id AND `role_id` = :role_id",

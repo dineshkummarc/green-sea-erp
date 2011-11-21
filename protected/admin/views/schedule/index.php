@@ -23,7 +23,7 @@
 	<li><a class="icon" href="<?php echo $this->createUrl("schedule/wait", array('status'=>3));?>" target="navTab" ><span>未排程订单</span></a></li>
 	</ul>
 </div>
-	<table class="list" width="100%" layoutH="115">
+	<table class="list" width="100%" layoutH="138">
 		<thead>
 			<tr>
 				<th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>

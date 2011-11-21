@@ -77,15 +77,26 @@ class AdminRole extends CActiveRecord
 	{
 		$sql = "SELECT * FROM {{admin_role_child}} WHERE role_id = ".$id;
 		$command = Yii::app()->db->createCommand($sql);
-		$childs = $command->queryAll();
-		$role = array();
-		foreach($childs as $child )
+		$roles = $command->queryAll();
+		$result = array();
+		foreach($roles as $key=>$role )
 		{
 		    $sql = "SELECT * FROM {{admin_role_item}} WHERE id = :id";
 		    $command = Yii::app()->db->createCommand($sql);
-		    $role[] = (object)$command->queryRow(true, array(':id'=>$child['item_id']));
+		    $roles = $command->queryRow(true, array(':id'=>$role['item_id']));
+		    $result[$key]['parent_id'] = $roles['id'];
+		    $result[$key]['rule'] = $roles['rule'];
+		    if($result[$key]['parent_id'] != 0)
+		    {
+		    	$sql = "SELECT * FROM {{admin_role_item}} WHERE parent_id = :id";
+		    	$command = Yii::app()->db->createCommand($sql);
+		    	$role = $command->queryRow(true, array(':id'=>$result[$key]['parent_id']));
+				$result[$key]['parent'] = $role['rule'];
+				unset($result[$key]['parent_id']);
+		    }
+
 		}
-        return $role;
+        return $result;
 	}
 
 	/**

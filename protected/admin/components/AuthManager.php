@@ -25,10 +25,10 @@ class AuthManager extends CApplicationComponent
         $action = $itemName[1];
         // 获取会员角色组
         $role = AdminRole::model()->getByUser($user['role_id']);
-        if ($role !== null) foreach ($role as $item)
+        if ($role !== null) foreach ($role as $val)
         {
             // 获取会员角色组权限
-            $item = explode('/', strtolower($item->rule));
+            $item = explode('/', strtolower($val['rule']));
             // 如果拥有当前控制器权限
             if ($item[0] === $controller)
             {
@@ -36,6 +36,17 @@ class AuthManager extends CApplicationComponent
                 if ($item[1] === '*') return true;
                 // 如果拥有指定权限
                 else if ($item[1] === $action) return true;
+            }
+            if($val['parent'] != null){
+	            $item = explode('/', strtolower($val['parent']));
+	            // 如果拥有当前控制器权限
+	            if ($item[0] === $controller)
+	            {
+	                // 如果拥有所有权限
+	                if ($item[1] === '*') return true;
+	                // 如果拥有指定权限
+	                else if ($item[1] === $action) return true;
+	            }
             }
         }
         return false;

@@ -13,7 +13,7 @@ function validateCallback(form, callback) {
 	if (!$form.valid()) {
 		return false;
 	}
-
+	$form.trigger("beforeSubmit");
 	$.ajax({
 		type: form.method || 'POST',
 		url:$form.attr("action"),
@@ -308,7 +308,6 @@ function uploadifyError(event, queueId, fileObj, errorObj){
 	alert("event:" + event + "\nqueueId:" + queueId + "\nfileObj.name:" 
 		+ fileObj.name + "\nerrorObj.type:" + errorObj.type + "\nerrorObj.info:" + errorObj.info);
 }
-
 
 $.fn.extend({
 	ajaxTodo:function($p){

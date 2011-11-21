@@ -2,7 +2,7 @@
     'panleStyle'=>'width: 100%;',
 	'params'=>array('id'=>$role->id),
     'searchCondition'=>array(
-    	'名称：'=>array('type'=>'text', 'name'=>'name', 'defaultValue'=>empty($params['name']) ? '' : $params['name'], 'alt'=>'支持模糊搜索'),
+    	'权限名称：'=>array('type'=>'text', 'name'=>'name', 'defaultValue'=>empty($params['name']) ? '' : $params['name'], 'alt'=>'支持模糊搜索'),
 
     ),
 )); ?>
@@ -20,9 +20,9 @@
     <thead>
         <tr>
             <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
-            <th width="150">授权模块名</th>
+            <th width="150">权限名</th>
             <th>描述</th>
-            <th width="120">状态</th>
+            <th width="200">状态</th>
             <th width="150">操作</th>
         </tr>
         </thead>
@@ -30,15 +30,13 @@
         <?php if ($allItems !== null) foreach ($allItems as $item): ?>
         <tr>
             <td><input type="checkbox" name="id[]" value="<?php echo $item->id; ?>" /></td>
-            <td><?php echo $item->rule; ?></td>
             <td><?php echo $item->description; ?></td>
+            <td><?php echo $item->rule; ?></td>
             <td>
-                <?php if ($item->getIsAssign($role->id)): ?>
-                已授权&nbsp;&nbsp;&nbsp;
+                <?php if ($item->getIsAssign($role->id)): ?>已授权&nbsp;&nbsp;&nbsp;
                 <a href="<?php echo $this->createUrl('auth/revoke', array('id'=>$item->id, 'roleId'=>$role->id)) ; ?>" target="ajaxTodo">撤销授权</a>
-                <?php elseif ($item->isInherit): echo '继承';
-                else: ?>
-                未授权&nbsp;&nbsp;&nbsp;
+                <?php elseif ($item->isInherit): echo '继承自&nbsp;&nbsp;[ '.$item->isInherit.' ]';
+                else: ?>未授权&nbsp;&nbsp;&nbsp;
                 <a href="<?php echo $this->createUrl('auth/assign', array('id'=>$item->id, 'roleId'=>$role->id)) ; ?>" target="ajaxTodo">授权</a>
                 <?php endif; ?>
             </td>
