@@ -32,7 +32,7 @@ class AuthController extends Controller
         $pages->pageSize = $numPerPage !== null ? $numPerPage : 20;
         $pages->applyLimit($criteria);
 
-        $criteria->select = array('id', 'number', 'name', 'login_time', 'login_count', 'INET_NTOA(last_ip) as last_ip', 'role_id', 'city_id', 'is_supper', 'status');
+        $criteria->select = array('id', 'number', 'name', 'login_time', 'login_count', 'last_ip', 'role_id', 'city_id', 'is_supper', 'status');
 
         $list = $model->cache()->findAll($criteria);
         $this->render("admin", array( 'list'=>$list, 'roles'=>$roles, 'pages'=>$pages, 'role_id'=>$role_id ));

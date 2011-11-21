@@ -131,10 +131,8 @@
 						<ul class="tree treeFolder">
 							<li><a>用户组管理</a>
 								<ul>
-									<?php if($admin->is_supper == 1): ?>
 									<li><a href="<?php echo $this->createUrl('auth/admin'); ?>" target="navTab" rel="list">管理员列表</a></li>
 									<li><a href="<?php echo $this->createUrl('auth/role'); ?>" target="navTab" rel="auth-role">部门管理</a></li>
-									<?php endif; ?>
 								</ul>
 							</li>
 						</ul>
@@ -157,7 +155,7 @@
 				<ul class="tabsMoreList">
 					<li><a href="javascript:;">我的主页</a></li>
 				</ul>
-				<div class="navTab-panel tabsPageContent layoutBox">
+				<div class="navTab-panel tabsPageContent layoutBox" >
 					<div class="page unitBox">
 						<div class="accountInfo">
 							<div class="alertInfo">
@@ -165,12 +163,10 @@
 							<div class="right">
 							</div>
 							<p><span><?php echo isset($admin->Role->name) ? $admin->Role->name : ($admin->is_supper == 1 ? '超级管理员' : ''); ?>：<span style="color:red"><?php echo Yii::app()->user->name; ?></span>,您好！欢迎登录 <?php echo Yii::app()->name; ?></span></p>
-							<p>您已经登录 ：<?php echo $admin->login_count; ?> 次,最后一次登录时间 ：<?php echo date('Y-m-d H:i:s',$admin->login_time);?> IP为： <?php echo $admin->last_ip; ?></p>
+							<p>您已经登录 ：<?php echo $admin->login_count; ?> 次,最后一次登录时间 ：<?php echo date('Y-m-d H:i:s',$admin->login_time);?> IP为： <?php echo long2ip($admin->last_ip); ?></p>
 						</div>
-						<div class="pageFormContent" layoutH="80" style="margin-right:230px">
-
-						</div>
-						<div style="width:230px;position: absolute;top:60px;right:0" layoutH="80">
+						<div class="pageFormContent" layoutH="80" >
+                            <?php $this->widget('widget.RoleShoot');?>
 						</div>
 					</div>
 				</div>

@@ -14,6 +14,9 @@
         '拍摄时间：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[start_time]', 'defaultValue'=>empty($params['start_time']) ? '' : $params['start_time'],),
 	    '至结束时间：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[end_time]', 'defaultValue'=>empty($params['end_time']) ? '' : $params['end_time'],),
 
+        '摄影师：'=>array('type'=>'text', 'class'=>'text', 'name'=>'params[shoot]', 'defaultValue'=>empty($params['shoot']) ? '' : $params['shoot'], 'alt'=>'支持模糊搜索'),
+	    '造型师：'=>array('type'=>'text', 'class'=>'text', 'name'=>'params[stylist]', 'defaultValue'=>empty($params['stylist']) ? '' : $params['stylist'], 'alt'=>'支持模糊搜索'),
+
     ),
 )); endif;?>
 <div class="panelBar">
@@ -21,6 +24,8 @@
 	<li><a class="add" href="<?php echo $this->createUrl("schedule/edit", array('orderId'=>$orderId)); ?>" target="dialog" width="400" height="500" mask="true" ><span>添加排程</span></a></li>
 	<li class="line">line</li>
 	<li><a class="icon" href="<?php echo $this->createUrl("schedule/wait", array('status'=>3));?>" target="navTab" ><span>未排程订单</span></a></li>
+	<li class="line">line</li>
+	<li><a class="icon" href="<?php echo $this->createUrl("order/index")?>" target="navTab" ><span>查看订单</span></a></li>
 	</ul>
 </div>
 	<table class="list" width="100%" layoutH="138">
@@ -35,8 +40,8 @@
 				<th width="80">摄影师</th>
 				<th width="60">模特</th>
 				<th width="60">造型师</th>
-				<th>描述</th>
-				<th width="100">操作</th>
+				<th >描述</th>
+				<th width="150">操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -58,6 +63,7 @@
 	        <td><?php echo !empty($model->memo) ? $model->memo : ''; ?></td>
 	        <td align="center">
 	        	<a href="<?php echo $this->createUrl('schedule/index', array('orderId'=>$model->order_id)); ?>" target="navTab" rel="schedule-index">查看</a> |
+	            <a href="<?php echo $this->createUrl('order/index', array('id'=>$model->order_id)); ?>" target="navTab" rel="schedule-goods">查看订单</a> |
 	            <a href="<?php echo $this->createUrl("schedule/edit", array('id'=>$model->id, 'orderId'=>$model->order_id)); ?>" target="dialog" width="400" height="500" mask="true" >修改</a> |
 	            <a href="<?php echo $this->createUrl("schedule/del", array('id'=>$model->id)); ?>" target="ajaxTodo" title="删除" >删除</a>
 	        </td>

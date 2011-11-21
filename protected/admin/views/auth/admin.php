@@ -42,7 +42,7 @@ $this->widget('widget.Search', array(
                 <td><?php echo isset($admin->Role->name) ? $admin->Role->name : ($admin->is_supper == 1 ? '超级管理员' : '无'); ?></td>
                 <td><?php echo date('Y-m-d H:i', $admin->login_time); ?></td>
                 <td><?php echo $admin->login_count; ?></td>
-                <td><?php echo $admin->last_ip; ?></td>
+                <td><?php echo long2ip($admin->last_ip); ?></td>
                 <td>
                     <?php if ($admin->status == 1): ?>
                     启用&nbsp;&nbsp;&nbsp;

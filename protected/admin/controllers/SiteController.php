@@ -19,10 +19,11 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-    	$sql = "SELECT name,login_count,login_time,INET_NTOA(last_ip) as last_ip ,role_id,is_supper, status FROM {{admin}} WHERE id = :id";
-    	$command = Yii::app()->db->createCommand($sql);
-    	$result = $command->queryRow(true,array(':id'=>Yii::app()->user->id));
-    	$admin = (object)$result;
+//    	$sql = "SELECT name,login_count,login_time,INET_NTOA(last_ip) as last_ip ,role_id,is_supper, status FROM {{admin}} WHERE id = :id";
+//    	$command = Yii::app()->db->createCommand($sql);
+//    	$result = $command->queryRow(true,array(':id'=>Yii::app()->user->id));
+
+    	$admin = Admin::model()->cache()->findByPk(Yii::app()->user->id);
     	$this->render("index", array('admin'=>$admin));
     }
 
