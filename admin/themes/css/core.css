@@ -493,7 +493,7 @@ body { overflow:hidden;}
 
 /* Pages Form */
 .pageForm { display:block; overflow:auto;}
-.pageFormContent { display:block; overflow:auto; padding:10px 5px; position:relative;}
+.pageFormContent { display:block; overflow:auto;position:relative;}
 .pageFormContent div.unit {display:block; margin:0; padding:5px 0; position:relative;clear:both;}
 .pageFormContent p { float:left; display:block; width:380px; height:21px; margin:0; padding:5px 0; position:relative;}
 .pageFormContent p.nowrap { height:auto;}

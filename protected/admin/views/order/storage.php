@@ -32,20 +32,20 @@ function status(val)
     	</h1>
 	    <div class="pageFormContent">
 
-		    <p style="width:250px">
-		    	<label style="width:60px">订单：</label>
-		    	<label><?php echo $storage->Order->user_name.' 【 '.$storage->Order->sn.' 】 '?></label>
-		    </p>
-		    <p style="width:250px">
-		    	<label style="width:60px">入库人：</label>
-		    	<label><?php echo $storage->Admin->name . ' - '.'【'.$storage->Admin->number.'】'?></label>
-		    </p>
-		    <p style="width:250px">
-		    	<label style="width:60px">入库时间：</label>
-		    	<label><?php echo date('m-d H:i',$storage->in_time)?>&nbsp;&nbsp;&nbsp;&nbsp;
+		    <div class="unit">
+		    	<label>订单：</label>
+		    	<label style="width:200px"><?php echo $storage->Order->user_name.' 【 '.$storage->Order->sn.' 】 '?></label>
+		    </div>
+		    <div class="unit">
+		    	<label>入库人：</label>
+		    	<label style="width:200px"><?php echo $storage->Admin->name . ' - '.'【'.$storage->Admin->number.'】'?></label>
+		    </div>
+		    <div class="unit">
+		    	<label>入库时间：</label>
+		    	<label style="width:auto" ><?php echo date('m-d H:i',$storage->in_time)?>&nbsp;&nbsp;&nbsp;&nbsp;
 		    	<a href="<?php echo $this->createUrl('order/intime',array('id'=>$storage->id));?>" title="入库时间" height="150" width="400" target="dialog">修改</a>
 		    	</label>
-		    </p>
+		    </div>
 	    	<?php if ($storage->out_time == 0):?>
 	    	<script type="text/javascript">
 			$('a#submit').click(function(){
@@ -54,24 +54,25 @@ function status(val)
 				$(this).attr('href',"<?php echo $this->createUrl('order/StorageOut', array('id'=>$storage->id));?>"+"&out_sn="+$out_sn+"&sn_name="+$sn_name)
 			});
 	    	</script>
-		    <p>
+		    <div class="unit">
 		    	<label>物流公司：</label><input type="text" id="sn_name" value="" />
-		    </p>
-		    <p>
-		    	<label>出库运单号：</label><input type="text" id="out_sn" value="" />&nbsp;&nbsp;&nbsp;
+		    </div>
+		    <div class="unit">
+		    	<label>出库运单号：</label>
+		    	<input type="text" id="out_sn" value="" />&nbsp;&nbsp;&nbsp;
 		    	<a style="line-height:20px" id="submit" href="" target="ajaxTodo">提交</a>
-		    </p>
+		    </div>
 		    <?php else:?>
-		    <p>
+		    <div class="unit">
 		    	<label>出库时间：</label>
-		    	<label><?php echo date('m-d H:i',$storage->out_time)?></label>
-		    </p>
+		    	<label style="width:200px"><?php echo date('m-d H:i',$storage->out_time)?></label>
+		    </div>
 	    	<?php endif;?>
 		    <?php if ($storage->out_time != 0):?>
-		    <p>
+		    <div class="unit">
 		    	<label>出库运单号：</label>
-		    	<label><?php echo $storage->out_sn?></label>
-		    </p>
+		    	<label style="width:200px"><?php echo $storage->out_sn?></label>
+		    </div>
 		    <?php endif;?>
 	    </div>
 	</div>

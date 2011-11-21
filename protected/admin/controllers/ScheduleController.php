@@ -15,31 +15,61 @@ class ScheduleController extends Controller
 			{
 				$stare_time = strtotime($params['start_time']);
 				$end_time = strtotime($params['end_time']) + 24 * 3600;
-				$criteria->addCondition('shoot_time >= '.$stare_time.' and shoot_time < '.$end_time);
+				$criteria->addCondition('shoot_time >= '.$stare_time.' and shoot_time < '.$end_time,'or');
 			}elseif (!empty($params['start_time']))
 			{
 				$stare_time = strtotime($params['start_time']);
-				$criteria->addCondition('shoot_time >= '.$stare_time);
+				$criteria->addCondition('shoot_time >= '.$stare_time,'or');
 			}elseif (!empty($params['end_time']))
 			{
 				$end_time = strtotime($params['end_time']) + 24 * 3600;
-				$criteria->addCondition('shoot_time < '.$end_time);
+				$criteria->addCondition('shoot_time < '.$end_time,'or');
 			}
 			if(!empty($params['shoot_type']))
-				$criteria -> addCondition('shoot_type = '.$params['shoot_type']);
+				$criteria -> addCondition('shoot_type = '.$params['shoot_type'],'or');
 			if(!empty($params['sn'])){
 				$sql = "SELECT id FROM {{order}} WHERE sn = :sn";
 				$command = Yii::app()->db->createCommand($sql);
 				$id = $command->queryScalar(array(':sn'=>$params['sn']));
 				if ($id != false)
-					$criteria -> addCondition('order_id = '.$id);
+					$criteria -> addCondition('order_id = '.$id,'or');
+				$criteria -> addCondition('order_id = 0');
 			}
 			if(!empty($params['user_name'])){
 				$sql = "SELECT id FROM {{order}} WHERE user_name = :name";
 				$command = Yii::app()->db->createCommand($sql);
 				$id = $command->queryScalar(array(':name'=>$params['user_name']));
 				if ($id != false)
-					$criteria -> addCondition('order_id = '.$id);
+					$criteria -> addCondition('order_id = '.$id,'or');
+				$criteria -> addCondition('order_id = 0');
+			}
+			if(!empty($params['shoot'])){
+				$sql = "SELECT id FROM {{admin}} WHERE name LIKE '%".$params['shoot']."%'";
+				$command = Yii::app()->db->createCommand($sql);
+				$id_list = $command->queryAll();
+				if (!empty($id_list))
+				{
+					foreach($id_list as $id)
+					{
+						echo $id['id'];
+						$criteria -> addCondition('shoot_id = '.$id['id'],'or');
+					}
+				}
+				$criteria -> addCondition('shoot_id = -1','or');
+			}
+			if(!empty($params['stylist'])){
+				$sql = "SELECT id FROM {{admin}} WHERE name LIKE '%".$params['stylist']."%'";
+				$command = Yii::app()->db->createCommand($sql);
+				$id_list = $command->queryAll();
+				if (!empty($id_list))
+				{
+					foreach($id_list as $id)
+					{
+						echo $id['id'];
+						$criteria -> addCondition('stylist_id = '.$id['id'],'or');
+					}
+				}
+				$criteria -> addCondition('stylist_id = -1','or');
 			}
 
 			$count = $models->count($criteria);
@@ -55,6 +85,7 @@ class ScheduleController extends Controller
 		}
 
 		$this->render('index',array(
+			'params'=>$params,
 			'orderId' =>$orderId,
 			'typeList' => $typeList,
 			'models' => $models,
