@@ -6,9 +6,10 @@ class OrderController extends Controller
 	 * @param unknown_type $pageNum
 	 * @param unknown_type $numPerPage
 	 */
-	public function actionIndex(array $params = array(), $sort = null, $pageNum = 1, $numPerPage = 20)
+	public function actionIndex($id = null, array $params = array(), $sort = null, $pageNum = 1, $numPerPage = 20)
 	{
 		$criteria = new CDbCriteria;
+		if (!empty($id)) $criteria->addCondition('id = '.$id);
 		if (!empty($params['logistics_sn']))
 		{
 			$criteria->addSearchCondition('logistics_sn', $params['logistics_sn']);

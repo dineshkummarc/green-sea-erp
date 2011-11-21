@@ -63,7 +63,7 @@
 	        <td><?php echo !empty($model->memo) ? $model->memo : ''; ?></td>
 	        <td align="center">
 	        	<a href="<?php echo $this->createUrl('schedule/index', array('orderId'=>$model->order_id)); ?>" target="navTab" rel="schedule-index">查看</a> |
-	            <a href="<?php echo $this->createUrl('schedule/goods', array('orderId'=>$model->order_id)); ?>" target="navTab" rel="schedule-goods">查看订单</a> |
+	            <a href="<?php echo $this->createUrl('order/index', array('id'=>$model->order_id)); ?>" target="navTab" rel="schedule-goods">查看订单</a> |
 	            <a href="<?php echo $this->createUrl("schedule/edit", array('id'=>$model->id, 'orderId'=>$model->order_id)); ?>" target="dialog" width="400" height="500" mask="true" >修改</a> |
 	            <a href="<?php echo $this->createUrl("schedule/del", array('id'=>$model->id)); ?>" target="ajaxTodo" title="删除" >删除</a>
 	        </td>
