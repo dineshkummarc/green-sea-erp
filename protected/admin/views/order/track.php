@@ -68,7 +68,7 @@
 	        <tr>
 	            <td><input type="checkbox" name="id[]" value="" /></td>
 	            <td>
-	            	<?php echo $orderTrack->Order->sn?>
+	            	 <a href="<?php echo $this->createUrl('order/index', array('id'=>$orderTrack->Order->id)); ?>" target="navTab" ><?php echo $orderTrack->Order->sn?></a>
 	            	<br /><?php echo Admin::getAdminName($orderTrack->admin_id);?>
 	            </td><!-- 客户编号 -->
 	            <td><?php echo $orderTrack->Order->user_name?></td><!-- 客户名称 -->

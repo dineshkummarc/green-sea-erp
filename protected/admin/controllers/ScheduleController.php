@@ -34,6 +34,20 @@ class ScheduleController extends Controller
 				if ($id != false)
 					$criteria -> addCondition('order_id = '.$id);
 			}
+		    if(!empty($params['shoot'])){
+				$sql = "SELECT id FROM {{admin}} WHERE name = :name";
+				$command = Yii::app()->db->createCommand($sql);
+				$id = $command->queryScalar(array(':name'=>$params['shoot']));
+				if ($id != false)
+					$criteria -> addCondition('shoot_id = '.$id);
+			}
+		    if(!empty($params['stylist'])){
+				$sql = "SELECT id FROM {{admin}} WHERE name = :name";
+				$command = Yii::app()->db->createCommand($sql);
+				$id = $command->queryScalar(array(':name'=>$params['stylist']));
+				if ($id != false)
+					$criteria -> addCondition('stylist_id = '.$id);
+			}
 			if(!empty($params['user_name'])){
 				$sql = "SELECT id FROM {{order}} WHERE user_name = :name";
 				$command = Yii::app()->db->createCommand($sql);

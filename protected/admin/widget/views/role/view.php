@@ -45,7 +45,7 @@ function status(val)
 	    <?php else:  $models = (object)$models; foreach ($models as $model): ?>
 	    <tr>
 	    	<td><input type="checkbox" name="id[]" value="<?php echo $model->id ?>" /></td>
-	        <td><?php $val = $this->getOrder($model->order_id); echo "[ ".$val['sn']." ]".$val['user_name'];?></td>
+	        <td><a href="<?php echo $this->controller->createUrl('order/index', array('id'=>$model->order_id)); ?>" target="navTab" ><?php $val = $this->getOrder($model->order_id); echo "[ ".$val['sn']." ]".$val['user_name'];?></a></td>
 	        <td><?php if(!empty($model->shoot_type) && $model->shoot_type != 0){ echo ShootType::getShootName($model->shoot_type); }?></td>
 	        <td><?php echo date("Y-m-d H:i",$model->shoot_time); ?></td>
 	        <td><?php echo $model->shoot_site; ?></td>
@@ -55,9 +55,9 @@ function status(val)
 	        <td><?php echo !empty($model->memo) ? $model->memo : ''; ?></td>
 	        <td>
 	        	<select class="combox" default="<?php echo $model->order_id.'-'.$val['status']?>" name="status" change="status">
-            		<?php foreach (Order::getShootStatus() as $key=>$status):?>
+            		<?php foreach (Order::getShootStatus() as $key=>$status):if ($key === 4 || $key === 5 ||$key === 6):?>
             		<option value="<?php echo $model->order_id.'-'.$key;?>"><?php echo $status?></option>
-					<?php endforeach;?>
+					<?php endif; endforeach;?>
 				</select>
 	        </td>
 	        <td align="center">

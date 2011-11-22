@@ -3,6 +3,8 @@
     'searchCondition'=>array(
 		'订单号：'=>array('type'=>'text', 'name'=>'params[sn]', 'defaultValue'=>empty($params['sn']) ? '' : $params['sn'], 'alt'=>'支持模糊搜索'),
 		'客户名：'=>array('type'=>'text', 'name'=>'params[user_name]', 'defaultValue'=>empty($params['user_name']) ? '' : $params['user_name'], 'alt'=>'精确搜索'),
+        '摄影师：'=>array('type'=>'text', 'class'=>'text', 'name'=>'params[shoot]', 'defaultValue'=>empty($params['shoot']) ? '' : $params['shoot']),
+	    '造型师：'=>array('type'=>'text', 'class'=>'text', 'name'=>'params[stylist]', 'defaultValue'=>empty($params['stylist']) ? '' : $params['stylist']),
 		'拍摄类型：'=>array('type'=>'select', 'name'=>'params[shoot_type]', 'defaultValue'=>empty($params['shoot_type']) ? '' : $params['shoot_type'],
 		'options'=>array(
 				'模特棚拍' => '1',
@@ -13,10 +15,6 @@
 		),
         '拍摄时间：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[start_time]', 'defaultValue'=>empty($params['start_time']) ? '' : $params['start_time'],),
 	    '至结束时间：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[end_time]', 'defaultValue'=>empty($params['end_time']) ? '' : $params['end_time'],),
-
-        '摄影师：'=>array('type'=>'text', 'class'=>'text', 'name'=>'params[shoot]', 'defaultValue'=>empty($params['shoot']) ? '' : $params['shoot']),
-	    '造型师：'=>array('type'=>'text', 'class'=>'text', 'name'=>'params[stylist]', 'defaultValue'=>empty($params['stylist']) ? '' : $params['stylist']),
-
     ),
 )); endif;?>
 <div class="panelBar">
@@ -52,7 +50,7 @@
 	    <?php else:  $models = (object)$models; foreach ($models as $model): ?>
 	    <tr>
 	    	<td><input type="checkbox" name="id[]" value="<?php echo $model->id ?>" /></td>
-	        <td><?php foreach ($this->getOrder($model->order_id) as $val) { echo "[ ".$val['sn']." ]".$val['user_name']; }?></td>
+	        <td> <a href="<?php echo $this->createUrl('order/index', array('id'=>$model->order_id)); ?>" target="navTab"><?php foreach ($this->getOrder($model->order_id) as $val) { echo "[ ".$val['sn']." ]".$val['user_name']; }?></a></td>
 	        <td><?php if(!empty($model->shoot_type) && $model->shoot_type != 0){ echo ShootType::getShootName($model->shoot_type); }?></td>
 	        <td><?php $in_time = $this->getStorage($model->order_id); echo !empty($in_time) ? date("Y-m-d H:i",$in_time) : '订单未入库'; ?></td>
 	        <td><?php echo date("Y-m-d H:i",$model->shoot_time); ?></td>
@@ -62,8 +60,7 @@
 	        <td><?php echo !empty($model->stylist_id) ? Admin::getAdminName($model->stylist_id) : '';?></td>
 	        <td><?php echo !empty($model->memo) ? $model->memo : ''; ?></td>
 	        <td align="center">
-	        	<a href="<?php echo $this->createUrl('schedule/index', array('orderId'=>$model->order_id)); ?>" target="navTab" rel="schedule-index">查看</a> |
-	            <a href="<?php echo $this->createUrl('order/index', array('id'=>$model->order_id)); ?>" target="navTab" rel="schedule-goods">查看订单</a> |
+	        	<a href="<?php echo $this->createUrl('schedule/index', array('orderId'=>$model->order_id)); ?>" target="navTab" rel="schedule-index">查看排程</a> |
 	            <a href="<?php echo $this->createUrl("schedule/edit", array('id'=>$model->id, 'orderId'=>$model->order_id)); ?>" target="dialog" width="400" height="500" mask="true" >修改</a> |
 	            <a href="<?php echo $this->createUrl("schedule/del", array('id'=>$model->id)); ?>" target="ajaxTodo" title="删除" >删除</a>
 	        </td>

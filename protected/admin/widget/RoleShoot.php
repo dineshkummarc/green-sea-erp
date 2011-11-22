@@ -6,15 +6,32 @@ class RoleShoot extends CWidget
         $criteria = new CDbCriteria();
         $sql = "SELECT role_id FROM {{admin}} WHERE id = :Id";
         $command = Yii::app()->db->createCommand($sql);
+        $roleId = $command->queryScalar(array(':Id'=>Yii::app()->user->id));
         $beginTime = strtotime(date('Y-m-d'));
         $endTime = $beginTime + (3600 * 24);
         $criteria ->condition = "shoot_time >= ".$beginTime;
         $criteria ->condition .= " AND shoot_time <= ".$endTime;
-        $roleId = $command->queryScalar(array(':Id'=>Yii::app()->user->id));
-        if ($roleId === 6 )
+
+        if ($roleId == 6 )
             $criteria->addCondition('shoot_id = '.Yii::app()->user->id);
-        if ($roleId === 7)
+        if ($roleId == 7)
             $criteria->addCondition('stylist_id = '.Yii::app()->user->id);
+        if ($roleId == 3){
+            $sql = "SELECT id FROM {{order}} WHERE status <=7 AND status >= 6";
+            $command = Yii::app()->db->createCommand($sql);
+            $orderId = $command->queryAll();
+//            $models = array();
+            foreach ($orderId as $key=>$val){
+                $sql = "SELECT * FROM {{schedule}} WHERE order_id = :Id";
+                $command = Yii::app()->db->createCommand($sql);
+                $models = $command->queryAll(true, array(':Id'=>$val['id']));
+                //$models[$key][] = $result;
+            }
+            $this->render('role/show',array(
+    			'models' => $models
+    		));
+    		Yii::app()->end();
+        }
 
         $models = Schedule::model()->findAll($criteria);
 		$this->render('role/view',array(
