@@ -16,9 +16,8 @@ class RoleShoot extends CWidget
         if ($roleId === 7)
             $criteria->addCondition('stylist_id = '.Yii::app()->user->id);
 
-
         $models = Schedule::model()->findAll($criteria);
-		$this->render('role/shoot',array(
+		$this->render('role/view',array(
 			'models' => $models,
 		));
     }

@@ -45,10 +45,10 @@ function status(val)
 	            <th width="50">订单号</th>
 	            <th width="60">合同金额</th>
 	            <th width="120"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('sort'=>'time'));?>">下单时间</a></th>
-	            <th width="180"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('sort'=>'status'));?>">当前状态</a></th>
+	            <th width="120"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('sort'=>'status'));?>">当前状态</a></th>
 	            <th width="60">是否跟拍</th>
-	            <th width="60">运单号</th>
-	            <th>操作</th>
+	            <th width="100">运单号</th>
+	            <th width="200">操作</th>
 	        </tr>
         </thead>
         <tbody>
