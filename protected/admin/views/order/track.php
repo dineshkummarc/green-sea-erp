@@ -27,7 +27,7 @@
 	        </tr>
 	        <tr>
 	            <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
-	            <th>客户编号</th>
+	            <th>订单编号</th>
 	            <th>客户名称</th>
                 <th>运单号</th>
 	            <th>时间</th>
@@ -68,7 +68,7 @@
 	        <tr>
 	            <td><input type="checkbox" name="id[]" value="" /></td>
 	            <td>
-	            	<?php echo 'P'.substr(strval($orderTrack->Order->user_id + 1000),1,3)?>
+	            	<?php echo $orderTrack->Order->sn?>
 	            	<br /><?php echo Admin::getAdminName($orderTrack->admin_id);?>
 	            </td><!-- 客户编号 -->
 	            <td><?php echo $orderTrack->Order->user_name?></td><!-- 客户名称 -->
