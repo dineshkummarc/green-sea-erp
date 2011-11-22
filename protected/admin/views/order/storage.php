@@ -34,15 +34,15 @@ function status(val)
 
 		    <p style="width:250px">
 		    	<label style="width:60px">订单：</label>
-		    	<label><?php echo $storage->Order->user_name.' 【 '.$storage->Order->sn.' 】 '?></label>
+		    	<label style="width:auto" ><?php echo $storage->Order->user_name.' 【 '.$storage->Order->sn.' 】 '?></label>
 		    </p>
 		    <p style="width:250px">
-		    	<label style="width:60px">入库人：</label>
-		    	<label><?php echo $storage->Admin->name . ' - '.'【'.$storage->Admin->number.'】'?></label>
+		    	<label style="width:60px" >入库人：</label>
+		    	<label style="width:auto" ><?php echo $storage->Admin->name . ' - '.'【'.$storage->Admin->number.'】'?></label>
 		    </p>
 		    <p style="width:250px">
 		    	<label style="width:60px">入库时间：</label>
-		    	<label><?php echo date('m-d H:i',$storage->in_time)?>&nbsp;&nbsp;&nbsp;&nbsp;
+		    	<label style="width:auto" ><?php echo date('m-d H:i',$storage->in_time)?>&nbsp;&nbsp;&nbsp;&nbsp;
 		    	<a href="<?php echo $this->createUrl('order/intime',array('id'=>$storage->id));?>" title="入库时间" height="150" width="400" target="dialog">修改</a>
 		    	</label>
 		    </p>
