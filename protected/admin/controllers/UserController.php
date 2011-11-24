@@ -165,7 +165,25 @@ class UserController extends Controller
        $this->render("edit", array('user'=>$user,'area_list'=>$area_list,'receiver'=>$receiver));
 	}
 
+	//查看个人信息
+	public function actionInfo($id = null)
+	{
+	    $sql = "SELECT	* FROM {{user}} WHERE id = :id";
+        $command = Yii::app()->db->createCommand($sql);
+        $result = $command->queryRow(true, array(':id'=>$id));
+        $user = (object)$result;
+        if ($user != false){
+            $sql = "SELECT	* FROM {{user_receive}} WHERE user_id = :id";
+            $command = Yii::app()->db->createCommand($sql);
+            $result = $command->queryAll(true, array(':id'=>$user->id));
+            $receiver = $result;
+        }
 
+	    $this->render("info", array(
+	    	'user'=>$user,
+	    	'receiver'=>$receiver
+	    ));
+	}
 
     /**
      * 删除用户
@@ -272,6 +290,34 @@ class UserController extends Controller
 			$list[] = array('id'=>$area->id,'name'=>$area->name);
 		}
 		return $list;
+    }
+
+    public function getArea($id = null)
+    {
+        $area = array();
+        if (!empty($id))
+        {
+            $sql = "SELECT parent_id, name FROM {{area}} WHERE id = :id";
+            $command = Yii::app()->db->createCommand($sql);
+            $result = $command->queryRow(true, array(':id'=>$id));
+            $city_3 = $result['name'];
+            if ($result['parent_id'] != 0){
+                $sql = "SELECT parent_id, name FROM {{area}} WHERE id = :id";
+                $command = Yii::app()->db->createCommand($sql);
+                $result = $command->queryRow(true, array(':id'=>$result['parent_id']));
+                $city_2 = $result['name'];
+                if ($result['parent_id'] != 0){
+                    $sql = "SELECT parent_id, name FROM {{area}} WHERE id = :id";
+                    $command = Yii::app()->db->createCommand($sql);
+                    $result = $command->queryRow(true, array(':id'=>$result['parent_id']));
+                    $city_1 = $result['name'];
+                }
+            }
+        }
+        $area = isset($city_1) ? $city_1.' ' :'';
+        $area .= isset($city_2) ? $city_2.' ' :'';
+        $area .= isset($city_3) ? $city_3.' ' :'';
+        return $area;
     }
 }
 ?>

@@ -59,7 +59,7 @@ function status(val)
 	        <?php else: foreach ($orders as $order): ?>
 	        <tr>
 	            <td><input type="checkbox" name="id[]" value="<?php echo $order->id ?>" /></td>
-	            <td><?php echo $order->user_name; ?></td>
+	            <td><a target="dialog" width="600" height="600" mask="true" title="客户信息" href="<?php echo $this->createUrl('user/info', array('id'=>$order->user_id)); ?>"><?php echo $order->user_name; ?></a></td>
 	            <td><?php echo !empty($order->User->wangwang) ? $order->User->wangwang : ''; ?></td>
 	            <td><?php echo $order->sn; ?></td>
 	            <td>￥ <?php echo $order->total_price; ?></td>

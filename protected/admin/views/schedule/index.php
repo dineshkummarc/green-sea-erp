@@ -23,7 +23,6 @@
 	<li class="line">line</li>
 	<li><a class="icon" href="<?php echo $this->createUrl("schedule/wait", array('status'=>3));?>" target="navTab" ><span>未排程订单</span></a></li>
 	<li class="line">line</li>
-	<li><a class="icon" href="<?php echo $this->createUrl("order/index")?>" target="navTab" ><span>查看订单</span></a></li>
 	</ul>
 </div>
 	<table class="list" width="100%" layoutH="138">

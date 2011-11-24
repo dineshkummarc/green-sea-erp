@@ -60,7 +60,8 @@ $this->widget('widget.Search', array(
             <?php endforeach; ?>
         </tbody>
     </table>
-    <?php $this->widget('widget.Pager', array(
+
+</div>
+<?php $this->widget('widget.Pager', array(
     	'pages'=>$pages
     )); ?>
-</div>
