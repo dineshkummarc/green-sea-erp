@@ -12,7 +12,7 @@
             </div>
             <div class="unit">
                 <label>拍摄类型</label>
-                <select name="Form[shoot_type]" class="combox required" default="<?php echo !empty($storageGoods->shoot_type) ? $storageGoods->shoot_type : 0; ?>">
+                <select name="Form[shoot_type]" class="combox required" <?php echo !empty($storageGoods->shoot_type) ? 'default="'.$storageGoods->shoot_type.'"' : ''; ?>>
                 	<?php foreach ($shootTypes as $type):?>
                     <option value="<?php echo $type['shoot_type']?>"><?php echo ShootType::getShootName($type['shoot_type']);?></option>
                     <?php endforeach;?>

@@ -346,8 +346,14 @@ $.fn.extend({
 			return ids;
 		}
 		function _doExport($this,ids) {
-			var url = $this.attr("href");
-			window.open(url+"&id="+ids);
+			if(!ids)
+			{
+				var url = $this.attr("href");
+				window.open(url);
+			}else{
+				var url = $this.attr("href");
+				window.open(url+"&id="+ids);
+			}
 		}
 		return this.each(function(){
 			var $this = $(this);
@@ -355,7 +361,8 @@ $.fn.extend({
 
 			$this.click(function(event){
 				var ids = _getIds(selectedIds, $this.attr("targetType"));
-				if (!ids) {
+				var rel = $this.attr("rel");
+				if (!ids && rel != 'all') {
 					alertMsg.error($this.attr("warn") || DWZ.msg("alertSelectMsg"));
 					return false;
 				}
@@ -365,7 +372,7 @@ $.fn.extend({
 						okCall: function(){_doExport($this,ids);}
 					});
 				} else {_doExport($this,ids);}
-			
+
 				event.preventDefault();
 				return false;
 			});
