@@ -14,7 +14,7 @@ function status(val)
 }
 </script>
 <?php $this->widget('widget.Search', array(
-    'panleStyle'=>'width: 1000px; height: 50px;',
+    'panleStyle'=>'width: 1100px; height: 50px;',
     'searchCondition'=>array(
         '订单号：'=>array('type'=>'text', 'name'=>'params[sn]', 'defaultValue'=>empty($params['sn']) ? '' : $params['sn'], 'alt'=>'支持模糊搜索'),
         '运单号：'=>array('type'=>'text', 'name'=>'params[logistics_sn]', 'defaultValue'=>empty($params['logistics_sn']) ? '' : $params['logistics_sn'], 'alt'=>'支持模糊搜索'),
@@ -28,15 +28,15 @@ function status(val)
 
     ),
 )); ?>
-<div class="pageContent" width="100%" layoutH="114">
-	<div class="panelBar">
+<div class="pageContent" width="1100" layoutH="114">
+	<div class="panelBar" style="width:1100px">
 		<ul class="toolBar">
 			<li><a class="icon" href="<?php echo $this->createUrl("order/OrderExcel"); ?>" target="dwzExport" targetType="navTab" title="确实要导出这些记录吗?" rel="id[]"><span>导出EXCEL</span></a></li>
 			<li class="line">line</li>
 			<li><a class="icon" ><span style="color:#F00"><?php echo "金额：￥".$money?></span></a></li>
 		</ul>
 	</div>
-    <table class="list" width="100%">
+    <table class="list" width="1100">
     	<thead>
 	        <tr>
 	            <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
@@ -79,7 +79,7 @@ function status(val)
 	            	<a href="<?php echo $this->createUrl('order/ShootScene', array('id'=>$order->id)); ?>" target="dialog" mask="true" width="700" height="600" title="拍摄需求">需求</a>
 	                &nbsp;
 	                <?php if (Storage::getStorageBoolean($order->id) == null):?>
-	                <a href="<?php echo $this->createUrl('order/storage', array('id'=>$order->id)); ?>" target="navTab" a="仓储不存在，确定要创建吗？" rel="order-storage">仓储</a>
+	                <a href="<?php echo $this->createUrl('order/storage', array('id'=>$order->id)); ?>" target="navTab" a="入库单不存在，确定要创建吗？" rel="order-storage">仓储</a>
 	                <?php else:?>
 	                <a href="<?php echo $this->createUrl('order/storage', array('id'=>$order->id)); ?>" target="navTab" rel="order-storage">仓储</a>
 	                <?php endif;?>

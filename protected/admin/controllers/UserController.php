@@ -43,6 +43,7 @@ class UserController extends Controller
 	public  function  actionEdit($id=null)
 	{
 		$user = new User;
+		$receiver = new UserReceive;
 		$area_list = '';
 		if (!empty($id))
 		{
@@ -62,47 +63,16 @@ class UserController extends Controller
 		}
 	    if (isset($_POST['Form']))
         {
-        	if($_POST['Form']['area_1']==0)
-        	{
-        		$message="请选择省份";
-        		$this->error($message);
-        	}
-        	if($_POST['Form']['area_2']==0)
-        	{
-        		$message="请选择市区";
-        		$this->error($message);
-        	}
-        	if($_POST['Form']['area_id']==0)
-        	{
-        		$message="请选择具体地区";
-        		$this->error($message);
-        	}
         	if (!empty($_POST['Form']['id']))
         		$user = $user->cache()->findByPk($_POST['Form']['id']);
-        	if (!empty($_POST['Form']['id']) && trim($_POST['Form']['password']) == "")
-            	$_POST['Form']['password'] = $user->password;
-            else
-                $_POST['Form']['password'] = md5(trim($_POST['Form']['password']));
-	        $phone1 = trim($_POST['Form']['phone-1']);
-	        $phone2 = trim($_POST['Form']['phone-2']);
-	        $phone3 = trim($_POST['Form']['phone-3']);
-            unset($_POST['Form']['phone-1'], $_POST['Form']['phone-2'], $_POST['Form']['phone-3']);
-            if (empty($phone1) && empty($phone2))
-            	$_POST['Form']['phone'] = "";
-            else
-                $_POST['Form']['phone'] = $phone1 . "-" . $phone2;
-            if (!empty($phone) && empty($phone3))
-            {
-                $_POST['Form']['phone'] .= "-" . $phone3;
-            }
-
+        	if (!empty($_POST['Form']['receiver_id']))
+        		$receiver = $receiver->findByPk($_POST['Form']['receiver_id']);
 			if (!empty($_POST['Form']['id']))
 			{
 				$message="修改成功";
 			}
  			else
  			{
-
 			 	$message="添加成功";
 			 	$user->first = 1;
             	$user->area_id = 0;
@@ -116,30 +86,88 @@ class UserController extends Controller
 				$user->create_time = Yii::app()->params['timestamp'];
  			}
 
+        	if (!empty($_POST['Form']['id']) && trim($_POST['Form']['password']) == "")
+            	$_POST['Form']['password'] = $user->password;
+            else
+                $_POST['Form']['password'] = md5(trim($_POST['Form']['password']));
+
+
+			if (preg_match("/^1[358][0-9]{9}$/",trim($_POST['Form']['mobile_phone'])) <= 0)
+			{
+				$this->error('请输入正确的手机号码');
+			}
+        	if (preg_match("/^\d{5,10}$/",trim($_POST['Form']['qq'])) <= 0)
+			{
+				$this->error('请输入正确的QQ号码');
+			}
+			//收获地址验证
+        	if (isset($_POST['Form']['receive']['optional']))
+        	{
+        		$receive_name = trim($_POST['Form']['receive']['receive_name']);
+				if (empty($receive_name)) $this->error("收货人姓名不能为空");
+
+        		$receive_mobile_phone = trim($_POST['Form']['receive']['mobile_phone']);
+				if (empty($receive_mobile_phone)) $this->error("收货人手机不能为空");
+
+        		$receive_street = trim($_POST['Form']['receive']['street']);
+				if (empty($receive_street)) $this->error("详细地址不能为空");
+
+        		$receive_postalcode = trim($_POST['Form']['receive']['postalcode']);
+				if (empty($receive_street)) $this->error("邮政编码不能为空");
+
+	        	if($_POST['Form']['receive']['area_1']==0) $this->error("请选择省份");
+	        	if($_POST['Form']['receive']['area_2']==0) $this->error("请选择市区");
+	        	if($_POST['Form']['receive']['area_id']==0) $this->error("请选择具体地区");
+				if (preg_match("/^1[358][0-9]{9}$/",trim($_POST['Form']['receive']['mobile_phone'])) <= 0) $this->error('[收货人手机]请输入正确的手机号码');
+
+				$phone1 = trim($_POST['Form']['receive']['phone-1']);
+		        $phone2 = trim($_POST['Form']['receive']['phone-2']);
+		        $phone3 = trim($_POST['Form']['receive']['phone-3']);
+	            unset($_POST['Form']['phone-1'], $_POST['Form']['phone-2'], $_POST['Form']['phone-3']);
+	            if (empty($phone1) && empty($phone2))
+	            	$phone = "";
+	            else
+	                $phone = $phone1 . "-" . $phone2;
+	            if (!empty($phone) && !empty($phone3))
+	            {
+	                $phone .= "-" . $phone3;
+	            }
+	            if (preg_match("/^(\(\d{3,4}\)|\d{3,4}-)?\d{7,8}$/",trim($phone)) <= 0) $this->error('请输入正确的座机号码');
+	        	if (preg_match("/^\\d{6}$/",trim($_POST['Form']['receive']['postalcode'])) <= 0) $this->error('请输入正确的邮编');
+
+				if (empty($user->id) && empty($receiver->id))
+					$user->receive_count = 1;
+				elseif (!empty($user->id) && empty($receiver->id))
+					$user->receive_count += 1;
+
+	        	$receiver->receive_name = $_POST['Form']['receive']['receive_name'];//收货人姓名
+	        	$receiver->phone = $phone;
+	        	$receiver->mobile_phone = $_POST['Form']['receive']['mobile_phone'];//收货人手机
+	        	$receiver->area_id = $_POST['Form']['receive']['area_id'];
+	        	$receiver->street = $_POST['Form']['receive']['street'];
+				$receiver->postalcode = $_POST['Form']['receive']['postalcode'];
+				$receiver->user_id = 0;
+				$receiver->save();
+
+				$user->receive_id = $receiver->id;
+	        	$user->phone = $phone;
+	        	$user->area_id = $_POST['Form']['receive']['area_id'];
+        	}
+
             $user->attributes = $_POST['Form'];
-            $_POST['Form']['phone'] = trim($_POST['Form']['phone']);
-            $user->phone = !empty($_POST['Form']['phone']) ? $_POST['Form']['phone'] : '0';
 			$user->update_time = Yii::app()->params['timestamp'];
 
 			if($user->save())
 			{
-				$receiver->attributes = $_POST['Form'];
-				$receiver->user_id=$user->id;
-				$receiver->receive_name=$user->name;
-
-				if($receiver->save())
-				{
-					$user->receive_count+1;
-					$user->receive_id=$receiver->id;
-					$user->save();
-					$this->success($message,array('navTabId'=>'user-index') );
-				}
-				else
-				{
-					$error = array_shift($receiver->getErrors());
-                	$message = '添加失败：'.$error[0];
-                	$this->error($message);
-				}
+				if (isset($_POST['Form']['receive']['optional']))
+	        	{
+					$sql = "update {{user_receive}} SET user_id = :user_id WHERE id = :id";
+					$command = Yii::app()->db->createCommand($sql);
+					$command->execute(array(':user_id'=>$user->id,':id'=>$user->receive_id));
+	        	}
+//				$this->error(CVarDumper::dump($user->attributes));
+//				Yii::app()->end();
+				$this->success($message,array('navTabId'=>'user-index'));
 			}
 			else
 			{

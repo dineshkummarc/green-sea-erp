@@ -7,10 +7,10 @@
         '手机号：'=>array('type'=>'text', 'name'=>'params[phone]', 'defaultValue'=>empty($params['phone']) ? '' : $params['phone']),
 	),
 )); ?>
-<div class="pageContent  width="100%"  layoutH="89">
+<div class="pageContent"  width="100%"  layoutH="113">
     <div class="panelBar" >
         <ul class="toolBar">
-           <li><a class="add" href="<?php echo $this->createUrl("user/edit") ?>" target="dialog" width="600" height="500" mask="true" title="添加用户"><span>添加用户</span></a></li>
+           <li><a class="add" href="<?php echo $this->createUrl("user/edit") ?>" target="dialog" width="600" height="600" mask="true" title="添加用户"><span>添加用户</span></a></li>
            <li><a class="delete" href="<?php echo $this->createUrl("user/del"); ?>" target="selectedTodo" title="优惠券也会删除，确定删除选定数据吗？" rel="id[]" ><span>删除选定</span></a></li>
         </ul>
     </div>
@@ -51,7 +51,7 @@
 					<?php echo !empty ($user->ReceiveAddress->street)?$user->ReceiveAddress->street:null ?>
             </td>
             <td>
-                <a href="<?php echo $this->createUrl('user/edit', array('id'=>$user->id)) ?>" target="dialog" width="630" height="500" mask="true" title="修改">修改</a> |
+                <a href="<?php echo $this->createUrl('user/edit', array('id'=>$user->id)) ?>" target="dialog" width="630" height="600" mask="true" title="修改">修改</a> |
                 <a href="<?php echo $this->createUrl('user/del', array('id'=>$user->id)); ?>" target="ajaxTodo" title="相对应的数据也将删除，确认删除？">删除</a>
             </td>
         </tr>

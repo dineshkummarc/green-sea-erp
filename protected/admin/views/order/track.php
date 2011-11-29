@@ -92,7 +92,7 @@
 	            		else : foreach($schedules as $schedule):?>
 	            		<P style="text-align:center;line-height:20px;">
 	            			<span><?php echo !empty($schedule['shoot_type']) ?  ShootType::getShootName($schedule['shoot_type']) : '类型未定';?></span>
-	            			&nbsp;&nbsp;<span><?php echo !empty($model['model_id']) ? Models::getModelName($model['model_id']) : '模特未定';?></span>
+	            			&nbsp;&nbsp;<span><?php echo !empty($schedule['model_id']) ? Models::getModelName($schedule['model_id']) : '模特未定';?></span>
 	            			&nbsp;&nbsp;<span><?php echo !empty($schedule['shoot_time']) ? date("m-d H:i",$schedule['shoot_time']) : '时间未定'; ?></span>
 	            		</p>
 	            	<?php endforeach; endif; ?>

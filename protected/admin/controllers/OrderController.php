@@ -985,6 +985,7 @@ class OrderController extends Controller
 			{
 				$criteria->addCondition('t.order_id = '.$order['id'],'or');
 			}
+			$criteria->addCondition("t.order_id = 0",'or');
 		}
 		if (!empty($params['user_name']))
 		{
@@ -997,6 +998,7 @@ class OrderController extends Controller
 			{
 				$criteria->addCondition('t.order_id = '.$order->id,'or');
 			}
+			$criteria->addCondition("t.order_id = 0",'or');
 		}
 		if (!empty($params['start_time']) && !empty($params['end_time']))
 		{
@@ -1011,6 +1013,7 @@ class OrderController extends Controller
 			{
 				$criteria->addCondition('t.order_id = '.$order['order_id'],'or');
 			}
+			$criteria->addCondition("t.order_id = 0",'or');
 		}elseif (!empty($params['start_time']))
 		{
 			$stare_time = strtotime($params['start_time']);
@@ -1023,6 +1026,7 @@ class OrderController extends Controller
 			{
 				$criteria->addCondition('t.order_id = '.$order['order_id'],'or');
 			}
+			$criteria->addCondition("t.order_id = 0",'or');
 		}elseif (!empty($params['end_time']))
 		{
 			$end_time = strtotime($params['end_time']) + 24 * 3600;
@@ -1035,7 +1039,9 @@ class OrderController extends Controller
 			{
 				$criteria->addCondition('t.order_id = '.$order['order_id'],'or');
 			}
+			$criteria->addCondition("t.order_id = 0",'or');
 		}
+
 		$count = OrderTrack::model()->count($criteria);
         $pages = new CPagination($count);
         $pages->currentPage = $pageNum - 1;

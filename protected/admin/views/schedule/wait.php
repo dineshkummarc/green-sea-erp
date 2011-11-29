@@ -21,14 +21,11 @@
 			<td width="30"><input type="checkbox" name="id[]" value="<?php echo $order['id']; ?>" /></td>
 	        <td ><?php echo "[ ".$order['sn']." ]".$order['user_name']; ?></td>
 	        <td>
-	        	<div class="unit">
-	                <select name="" class="combox" default="">
-	                	<?php $typeList =$this->getShootType($order['id']); ?>
-	                	<?php foreach ($typeList as $list):?>
-	                    <option value="<?php echo $list['shoot_type']?>"><?php echo ShootType::getShootName($list['shoot_type'])?></option>
-	                    <?php endforeach;?>
-	                </select>
-	            </div>
+            <?php $typeList =$this->getShootType($order['id']); ?>
+            <?php foreach ($typeList as $key=>$list):?>
+            <?php if ($key > 0) echo "<br/>";?>
+            <?php echo ShootType::getShootName($list['shoot_type'])?></option>
+            <?php endforeach;?>
 	        </td>
 	        <td><?php $in_time = $this->getStorage($order['id']); echo !empty($in_time) ? date("Y-m-d H:i",$in_time) : '订单未入库'; ?></td>
 			<td width="100">
