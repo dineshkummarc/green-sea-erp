@@ -38,7 +38,16 @@ class Controller extends CController
         if ($user->checkAccess($authName))
             return true;
         else
-            $this->error('您没有权限执行本操作', array('navTabId'=>$tabid));
+        {
+            if (Yii::app()->request->urlReferrer == Yii::app()->request->hostInfo.$this->createUrl("site/login"))
+            {
+                header("Content-Type: text/html; charset=utf8;");
+                echo "<script>alert('您没有权限登录后台，请联系管理员'); window.location.href='".$this->createUrl("site/logout")."'</script>";
+                Yii::app()->end();
+            }
+            else
+                $this->error('您没有权限执行本操作', array('navTabId'=>$tabid));
+        }
         return false;
 	}
 

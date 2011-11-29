@@ -90,6 +90,8 @@ class AuthController extends Controller
     {
         if (isset($_POST['Form']))
         {
+        	$oldPwd = $_POST['Form']['oldPwd'];
+        	$newPwd = $_POST['Form']['newPwd'];
             $sql = "SELECT `password` FROM {{admin}} WHERE `id` = :id";
             $command = Yii::app()->db->createCommand($sql);
             $password = $command->queryScalar(array(":id"=>Yii::app()->user->id));
@@ -101,7 +103,7 @@ class AuthController extends Controller
                 }
                 $sql = "UPDATE {{admin}} SET `password` = :password, `update_time` = :update_time";
                 $command = Yii::app()->db->createCommand($sql);
-                $count = $command->excute(array(":password"=>md5(trim($newPwd)), ":update_time"=>Yii::app()->params['timestamp']));
+                $count = $command->execute(array(":password"=>md5(trim($newPwd)), ":update_time"=>Yii::app()->params['timestamp']));
 
                 if ($count > 0)
                     $this->success('修改成功', array('navTabId'=>'menu-index'));

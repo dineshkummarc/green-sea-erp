@@ -93,7 +93,7 @@
 				<ul class="nav">
 					<li id="switchEnvBox"><a href="javascript:">您好，（<span><?php echo Yii::app()->user->name; ?></span>） </a>
 						<ul>
-							<li><a href="<?php echo $this->createUrl('auth/changePwd'); ?>" target="dialog" width="500">修改密码</a></li>
+							<li><a href="<?php echo $this->createUrl('auth/changePwd'); ?>" target="dialog" width="400">修改密码</a></li>
 						</ul>
 					</li>
 					<li><a href="#" target="_blank">您最后登录时间：<?php echo date('Y-m-d H:i:s',$admin->login_time);?></a></li>

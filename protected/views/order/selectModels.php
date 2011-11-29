@@ -3,7 +3,7 @@
 <div class="step">选择付款方式</div>
 <div class="step">生成订单</div>
 <div class="clear"></div>
-<form id="model-form" action="<?php echo $this->createUrl("order/selectModels"); ?>"
+<form id="model-form" action="<?php echo $this->createUrl("order/selectModels", array('save'=>false)); ?>"
         onsubmit="return validateModel()" method="post">
     <div class="models">
         <h2>B类模特</h2>

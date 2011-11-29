@@ -3,7 +3,8 @@
     <form action="<?php echo $this->createUrl("order/goodsEdit") ?>" method="post">
         您需要拍摄几种物品呢？&nbsp;
         <input type="text" name="count" class="input" />&nbsp;
-        <input type="submit" value="提交" />
+        <input type="submit" value="提交" />&nbsp;
+        <input type="button" value="查看已添加物品" onclick="window.location.href='<?php echo $this->createUrl("order/goodsList") ?>'" />
     </form>
 </div>
 <?php else: if ((int)$_POST['count'] <= 0) $_POST['count'] = 1; ?>
