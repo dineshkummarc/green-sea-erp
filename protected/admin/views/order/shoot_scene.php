@@ -45,18 +45,18 @@
             <div class="unit">
                 <label>图片宽度(高度自适应)：</label>
                 <div class="pic_width">
-                <?php foreach ($shootTypeList as $key=>$type):?>
+                <?php foreach ($shootTypeList as $key=>$width):?>
                 <div><?php echo $shootType[$key] ?></div>
                 <div>
-                    简图宽度：<input style="float: none;width: 50px;" value="<?php echo $type['width']?>" type="text" name="Form[width][<?php echo $key ?>][width]" tip="750" class="input required"/>px(像素)&nbsp;&nbsp;
-                    细节图宽度：<input style="float: none;width: 50px;" value="<?php echo $type['detail_width']?>" type="text" name="Form[width][<?php echo $key ?>][detail_width]" tip="750" class="input required"/>px(像素)
+                    简图宽度：<input style="float: none;width: 50px;" value="<?php echo isset($width['width']) ? $width['width'] : 750;?>" type="text" name="Form[width][<?php echo $key ?>][width]" tip="750" class="input required"/>px(像素)&nbsp;&nbsp;
+                    细节图宽度：<input style="float: none;width: 50px;" value="<?php echo isset($width['detail_width']) ? $width['detail_width'] : 750;?>" type="text" name="Form[width][<?php echo $key ?>][detail_width]" tip="750" class="input required"/>px(像素)
                 </div>
                 <?php endforeach;?>
                 </div>
 			</div>
             <div class="unit">
                 <label>修图标准：</label>
-                <input type="radio" name="Form[retouch]" value="1" <?php if ($orders->retouch == 1 || empty($orders->retouch)) echo "checked"; ?> /> 简修图&nbsp;<a href="#">简修图说明</a>
+                <input type="radio" name="Form[retouch]" value="1" <?php if ($orders->retouch == 1 || empty($orders->retouch)) echo "checked"; ?> /> 简修图
                 <input type="radio" name="Form[retouch]" value="2" <?php if ($orders->retouch == 2 ) echo "checked"; ?> /> 精修图
 			</div>
             <div class="unit">
@@ -95,11 +95,11 @@
 			</div>
             <div class="unit">
                 <label>物流公司：</label>
-                <input type="text" name="Form[sn_name]" value="<?php echo $sn_name?>"/>
+                <input type="text" name="Form[logistics_sn1]" value="<?php echo $logistics_sn1?>"/>
 			</div>
             <div class="unit">
                 <label>运单号：</label>
-                <input type="text" class="input required textInput valid" name="Form[sn]" value="<?php echo $sn?>"/>
+                <input type="text" class="required" name="Form[logistics_sn2]" value="<?php echo $logistics_sn2?>"/>
 			</div>
             <div class="unit">
                 <label>下载链接：</label>

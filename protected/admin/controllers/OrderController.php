@@ -329,20 +329,19 @@ class OrderController extends Controller
 	public function actionShootScene($id = null)
 	{
 		$order = new Order;
-		$sn = null;
-		$sn_name = null;
+		$logistics_sn1 = null;
+		$logistics_sn2 = null;
 
 		if (!empty($id))
 		{
 			$order = $order->model()->findByPk($id);
-			$sn = $order->logistics_sn;
-			$str = explode(" ",$sn);
+			$str = explode(" ",$order->logistics_sn);
 			if (count($str) == 1)
-				$sn = $str[0];
+				$logistics_sn2 = $str[0];
 			if (count($str) == 2)
 			{
-				$sn_name = $str[0];
-				$sn = $str[1];
+				$logistics_sn1 = $str[0];
+				$logistics_sn2 = $str[1];
 			}
 		}
 
@@ -357,14 +356,13 @@ class OrderController extends Controller
             {
                 $message = '添加成功';
             }
-			$sn = trim($_POST['Form']['sn']);
-			$sn_name = trim($_POST['Form']['sn_name']);
-			$sn = trim($sn_name." ".$sn);
+            $sn_name = trim($_POST['Form']['logistics_sn1']);
+			$sn = trim($_POST['Form']['logistics_sn2']);
+			$_POST['Form']['logistics_sn'] = trim($sn_name." ".$sn);
 
             $order->attributes = $_POST['Form'];
             $order->shoot_notice = serialize($_POST['Form']['shoot_notice']);
             $order->width = serialize($_POST['Form']['width']);
-            $order->logistics_sn = $sn;
 
             if ($order->save())
                 $this->success($message, array('navTabId'=>'order-index'));
@@ -381,8 +379,8 @@ class OrderController extends Controller
 		$shootTypeList = unserialize($order->width);
         $shootNotice = Order::getShootNotice();
 		$this->render('shoot_scene',array(
-			'sn'=>$sn,
-			'sn_name'=>$sn_name,
+			'logistics_sn1'=>$logistics_sn1,
+			'logistics_sn2'=>$logistics_sn2,
 			'shoot'	=> $shoot,
 			'shootType' => $shootType,
 			'shootTypeList' => $shootTypeList,

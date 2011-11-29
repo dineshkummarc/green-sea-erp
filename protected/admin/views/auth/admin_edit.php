@@ -25,8 +25,8 @@
             </div>
             <div class="unit">
                 <label>超级管理员</label>
-                <span><input type="radio" value="1" name="Form[is_supper]" <?php if (isset($admin->is_supper) && $admin->is_supper == 1) echo "checked='1'"; ?> />是</span>
-                <span><input type="radio" value="0" name="Form[is_supper]" <?php if (!isset($admin->is_supper) || $admin->is_supper == 0) echo "checked='1'"; ?> />否</span>
+                <span><input type="radio" value="1" name="Form[is_supper]" <?php if (!isset($admin->is_supper) || $admin->is_supper) echo "checked='1'"; ?> />是</span>
+                <span><input type="radio" value="0" name="Form[is_supper]" <?php if (isset($admin->is_supper) && !$admin->is_supper) echo "checked='1'"; ?> />否</span>
             </div>
             <div class="unit">
                 <label>是否启用</label>

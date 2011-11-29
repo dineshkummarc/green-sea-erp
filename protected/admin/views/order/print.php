@@ -203,7 +203,7 @@
                         <?php foreach($order->width as $key=>$width): ?>
                         <div style="font-weight: bold; margin-bottom: 5px;"><?php echo $shootType[$key]; ?></div>
                         <div style="margin-bottom: 5px;">
-                            简图宽度：<strong><?php echo $width['width'] ?>px(像素)</strong>&nbsp;&nbsp;细节图宽度：<strong><?php echo $width['detail_width'] ?>px(像素)</strong><br/>
+                            简图宽度：<strong><?php echo isset($width['width']) ? $width['width'] : 750; ?>px(像素)</strong>&nbsp;&nbsp;细节图宽度：<strong><?php echo isset($width['detail_width']) ? $width['detail_width'] : 750; ?>px(像素)</strong><br/>
                         </div>
                         <?php endforeach; ?>
                     </td>

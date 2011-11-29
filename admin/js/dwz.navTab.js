@@ -117,6 +117,9 @@ var navTab = {
 		var index = this._indexTabId(tabid);
 		if (index >= 0) return this._getPanels().eq(index);
 	},
+	getPanel: function (tabid) {
+	    return this._getPanel(tabid);
+	},
 	_getTabsW: function(iStart, iEnd){
 		return this._tabsW(this._getTabs().slice(iStart, iEnd));
 	},
@@ -273,12 +276,9 @@ var navTab = {
 				navTab.openExternal(url, $panel);
 			}else {
 			    var data = {};
-		        var pagerData = $("div.pagination", $panel);
-		        if (pagerData.length>0)
-		        {
-		            data.pageNum = pagerData.attr("currentPage");
-		            data.numPerPage = pagerData.attr("numPerPage");
-		        }
+			    var pagerForm = $("form#pagerForm", $panel);
+                if (pagerForm.length>0)
+                    data = pagerForm.serializeArray();
 				$panel.loadUrl(url, data, function(){
 					navTab._loadUrlCallback($panel);
 				});
