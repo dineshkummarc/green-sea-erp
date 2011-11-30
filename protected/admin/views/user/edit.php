@@ -50,12 +50,6 @@ $(function(){
 			}
 
 			$receive_mobile_phone = $("input[name='Form[receive][mobile_phone]']").val();
-			$reg = /^1[358][0-9]{9}$/;
-			if(!$reg.test($receive_mobile_phone)){
-				alert('[收货人手机]请输入正确的手机号码');
-				return false;
-			}
-
 			$phone_1 = $("input[name='Form[receive][phone-1]']").val();
 			$phone_2 = $("input[name='Form[receive][phone-2]']").val();
 			$phone_3 = $("input[name='Form[receive][phone-3]']").val();
@@ -63,17 +57,41 @@ $(function(){
 			if(trim($phone_1)!="" && trim($phone_2)!="")
 			{
 				$phone = $phone_1+"-"+$phone_2;
+			}else{
+				$phone = $phone_1;
 			}
 			if(trim($phone_2)!="" && trim($phone_3)!="")
 			{
 				$phone = $phone+"-"+$phone_3;
-			}
-			$reg = /^((\d{3,4})|\d{3,4}-)?\d{7,8}(-\d{1,4})?$/;
-			if(!$reg.test($phone)){
-				alert('座机格式不正确');
-				return false;
+			}else if(trim($phone_2)!="")
+			{
+				$phone = $phone_2;
+			}else if(trim($phone_3)!="")
+			{
+				$phone = $phone_3;
 			}
 
+			if(trim($receive_mobile_phone)=="" && trim($phone)=="")
+			{
+				alert('[收货人]请填写手机号码或座机号码任意一个');
+				return false;
+			}
+			if(trim($receive_mobile_phone)!="")
+			{
+				$reg = /^1[358][0-9]{9}$/;
+				if(!$reg.test($receive_mobile_phone)){
+					alert('[收货人手机]请输入正确的手机号码');
+					return false;
+				}
+			}
+			if(trim($phone)!="")
+			{
+				$reg = /^((\d{3,4})|\d{3,4}-)?\d{7,8}(-\d{1,4})?$/;
+				if(!$reg.test($phone)){
+					alert('座机号码格式不正确');
+					return false;
+				}
+			}
 			$area_1 = $("input[name='Form[receive][area_1]']").val();
 			if($area_1 == 0)
 			{
@@ -103,7 +121,7 @@ $(function(){
 			}
 
 			$postalcode = $("input[name='Form[receive][postalcode]']").val();
-			$reg = /^\\d{6}$/;
+			$reg = /^[0-9]{6}$/;
 			if(!$reg.test($postalcode)){
 				alert('请输入正确的邮编');
 				return false;
@@ -179,7 +197,7 @@ $(function(){
             </div>
             <div class="unit">
                 <label>收货人手机</label>
-                <input type="text" maxlength="11" name="Form[receive][mobile_phone]" value="<?php echo $receiver->mobile_phone; ?>"/><span style="color:red;">*</span>
+                <input type="text" maxlength="11" name="Form[receive][mobile_phone]" value="<?php echo $receiver->mobile_phone; ?>"/><span style="color:red;">*(手机或座机选填一个或多个)</span>
             </div>
             <div class="unit">
                 <label>电话号码:</label>

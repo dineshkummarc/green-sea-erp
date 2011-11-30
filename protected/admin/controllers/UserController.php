@@ -105,12 +105,6 @@ class UserController extends Controller
         	{
         		if ($receiver === null) $receiver = new UserReceive();
 
-        		$receive_mobile_phone = trim($_POST['Form']['receive']['mobile_phone']);
-				if (empty($receive_mobile_phone)) $this->error("收货人手机不能为空");
-
-        		$receive_postalcode = trim($_POST['Form']['receive']['postalcode']);
-				if (empty($receive_postalcode)) $this->error("邮政编码不能为空");
-
 	        	if($_POST['Form']['receive']['area_1']==0) $this->error("请选择省份");
 	        	if($_POST['Form']['receive']['area_2']==0) $this->error("请选择市区");
 	        	if($_POST['Form']['receive']['area_id']==0) $this->error("请选择具体地区");
