@@ -56,6 +56,24 @@ $(function(){
 				return false;
 			}
 
+			$phone_1 = $("input[name='Form[receive][phone-1]']").val();
+			$phone_2 = $("input[name='Form[receive][phone-2]']").val();
+			$phone_3 = $("input[name='Form[receive][phone-3]']").val();
+			$phone = "";
+			if(trim($phone_1)!="" && trim($phone_2)!="")
+			{
+				$phone = $phone_1+"-"+$phone_2;
+			}
+			if(trim($phone_2)!="" && trim($phone_3)!="")
+			{
+				$phone = $phone+"-"+$phone_3;
+			}
+			$reg = /^((\d{3,4})|\d{3,4}-)?\d{7,8}(-\d{1,4})?$/;
+			if(!$reg.test($phone)){
+				alert('座机格式不正确');
+				return false;
+			}
+
 			$area_1 = $("input[name='Form[receive][area_1]']").val();
 			if($area_1 == 0)
 			{
@@ -77,7 +95,7 @@ $(function(){
 				return false;
 			}
 
-			$street = $("input[name='Form[receive][street]']").val();
+			$street = $("textarea[name='Form[receive][street]']").val();
 			if(trim($street) == "")
 			{
 				alert('详细地址不能为空');
