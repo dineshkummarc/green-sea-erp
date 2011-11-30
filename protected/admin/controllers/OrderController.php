@@ -121,12 +121,12 @@ class OrderController extends Controller
         $sql = "DELETE FROM {{schedule}} WHERE order_id = ".$id;
         $command = Yii::app()->db->createCommand($sql);
         $count = $command->execute();
-        //订单仓储
-        $sql = "DELETE FROM {{storage}} WHERE order_id = ".$id;
+        //仓储物品
+        $sql = "DELETE FROM {{storage_goods}} WHERE storage_id = (SELECT id FROM {{storage}} WHERE order_id = ".$id.")";
         $command = Yii::app()->db->createCommand($sql);
         $count = $command->execute();
-        //仓储物品
-        $sql = "DELETE FROM {{storage_goods}} WHERE storage_id = (SELECT id FROM {{storage}} WHERE order_id =".$id.") ";
+        //订单仓储
+        $sql = "DELETE FROM {{storage}} WHERE order_id = ".$id;
         $command = Yii::app()->db->createCommand($sql);
         $count = $command->execute();
 
@@ -273,10 +273,26 @@ class OrderController extends Controller
 			'orderGoodsList' => $orderGoodsList
 		));
 	}
+
+	/**
+	 * 订单物品 删除
+	 */
+    public function actionGoodsDel(array $id = array())
+    {
+        if (empty($id))
+            $this->error('参数传递错误！');
+
+        $sqlIn = implode(',', $id);
+
+        $sql = "DELETE FROM {{order_goods}} WHERE id in ($sqlIn)";
+        $command = Yii::app()->db->createCommand($sql);
+        $count = $command->execute();
+        $this->success('删除成功', array('navTabId'=>'order-goods'));
+    }
 	/**
 	 * 订单物品 修改
 	 */
-	public function actionGoodsEdit($id = null,$orderId = null)
+	public function actionGoodsEdit($id = null, $orderId = null)
 	{
 		$orderGoods = new OrderGoods;
 
@@ -293,8 +309,17 @@ class OrderController extends Controller
             else
             {
                 $message = '添加成功';
+            	$sql = "select sn FROM {{order_goods}} WHERE id = (select MAX(id) FROM {{order_goods}} WHERE order_id = :order_id)";
+            	$command = Yii::app()->db->createCommand($sql);
+            	$max = $command->queryScalar(array(':order_id'=>$_POST['Form']['order_id']));
+
+            	$sn = substr($max,0,6);
+            	$max = (int)substr($max,6) + 1;
+            	$orderGoods->sn = $sn.$max;
+            	$orderGoods->status = 2;
             }
             $orderGoods->attributes = $_POST['Form'];
+
 			if ($_POST['Form']['type'] != 0)
 			{
             	$sql = "SELECT name FROM {{goods_type}} WHERE id = :id";

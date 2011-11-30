@@ -178,9 +178,61 @@ class UserController extends Controller
 
         // 组合成字符串
         $id = implode(',', $id);
-        $sql = "DELETE FROM {{user}} WHERE id IN ({$id})";
+		$sql = "SELECT id FROM {{order}} WHERE user_id IN ($id)";
+        $command = Yii::app()->db->createCommand($sql);
+        $order = $command->queryAll();
+
+        $order_id = '';
+        foreach ($order as $key=>$val)
+        {
+        	if ($key > 0) $order_id .= ',';
+        	$order_id .= $val['id'];
+        }
+
+		if (!empty($order_id))
+		{
+		    //删除订单表
+		    $sql = "DELETE FROM {{order}} WHERE id IN ($order_id)";
+	        $command = Yii::app()->db->createCommand($sql);
+	        $count = $command->execute();
+	        //删除订单模特
+	        $sql = "DELETE FROM {{order_model}} WHERE order_id IN ($order_id)";
+	        $command = Yii::app()->db->createCommand($sql);
+	        $count = $command->execute();
+	        //订单物品
+	        $sql = "DELETE FROM {{order_goods}} WHERE order_id IN ($order_id)";
+	        $command = Yii::app()->db->createCommand($sql);
+	        $count = $command->execute();
+	        //删除订单跟进表
+	        $sql = "DELETE FROM {{order_track}} WHERE order_id IN ($order_id)";
+	        $command = Yii::app()->db->createCommand($sql);
+	        $count = $command->execute();
+	        //订单排程
+	        $sql = "DELETE FROM {{schedule}} WHERE order_id IN ($order_id)";
+	        $command = Yii::app()->db->createCommand($sql);
+	        $count = $command->execute();
+	        //仓储物品
+	        $sql = "DELETE FROM {{storage_goods}} WHERE storage_id IN (SELECT id FROM {{storage}} WHERE order_id IN ($order_id))";
+	        $command = Yii::app()->db->createCommand($sql);
+	        $count = $command->execute();
+	        //订单仓储
+	        $sql = "DELETE FROM {{storage}} WHERE order_id IN ($order_id)";
+	        $command = Yii::app()->db->createCommand($sql);
+	        $count = $command->execute();
+    	}
+        //删除用户
+        $sql = "DELETE FROM {{user}} WHERE id IN ($id)";
         $command = Yii::app()->db->createCommand($sql);
         $count = $command->execute();
+        //删除地址
+        $sql = "DELETE FROM {{user_receive}} WHERE user_id IN ($id)";
+        $command = Yii::app()->db->createCommand($sql);
+        $count = $command->execute();
+        //删除积分log
+        $sql = "DELETE FROM {{score_log}} WHERE user_id IN ($id)";
+        $command = Yii::app()->db->createCommand($sql);
+        $count = $command->execute();
+
         $this->success('删除成功', array('navTabId'=>'user-index'));
     }
 
