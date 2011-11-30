@@ -33,9 +33,9 @@ $(function(){
 		}
 
 		$score = $("input[name='Form[score]']").val();
-		$reg = /^[1-9]\d*$/;
+		$reg = /^[1-9]d*|0$/;
 		if(!$reg.test($score)){
-			alert('积分只能为正整数');
+			alert('积分只能为0或正整数');
 			return false;
 		}
 
@@ -125,20 +125,20 @@ $(function(){
             <?php endif; ?>
             <div class="unit">
                 <label>用户名</label>
-                <input type="text" name="Form[name]" class="required" value="<?php echo $user->name; ?>" alt="客户名不能为空" />
+                <input type="text" maxlength="20" name="Form[name]" class="required" value="<?php echo $user->name; ?>" alt="客户名不能为空" />
             </div>
             <div class="unit">
                 <?php if (!empty($user->password)): ?>
                 <label>密码重置</label>
-                <input id="pwdequal" type="password" name="Form[password]"/>
+                <input id="pwdequal" maxlength="20" type="password" name="Form[password]"/>
                 <?php else: ?>
                 <label>密码</label>
-                <input id="pwdequal" type="password" name="Form[password]" class="required" alt="密码不能为空" />
+                <input id="pwdequal" maxlength="20" type="password" name="Form[password]" class="required" alt="密码不能为空" />
                 <?php endif; ?>
             </div>
             <div class="unit">
                 <label>确认密码</label>
-                <input type="password" class="<?php if (empty($user->id))echo "required"?>" id="rePwd" equalto="#pwdequal" />
+                <input type="password" maxlength="20" class="<?php if (empty($user->id))echo "required"?>" id="rePwd" equalto="#pwdequal" />
             </div>
             <div class="unit">
                 <label>旺旺号</label>
@@ -162,7 +162,7 @@ $(function(){
             </div>
             <div class="unit">
                 <label>会员积分</label>
-                <input type="text" name="Form[score]" value="<?php echo $user->score; ?>" class="required number" alt="积分不能为空，为数字" />
+                <input type="text" name="Form[score]" value="<?php if (empty($user->score))echo '0';else echo $user->score; ?>" class="required number" alt="积分不能为空，为数字" />
             </div>
             <div class="unit" id="click_optional">
             	<?php if (empty($receiver->id)):?>
