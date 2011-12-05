@@ -264,9 +264,6 @@ function initUI(_box){
 			}
 		});
 	});
-	// ajaxTodo
-	if ($.fn.ajaxTodo) $("a[target=ajaxTodo]", $p).ajaxTodo($p);
-    if ($.fn.dwzExport) $("a[target=dwzExport]", $p).dwzExport($p);
 	
 	//dialogs
 	$("a[target=dialog]", $p).each(function(){

@@ -23,7 +23,8 @@
 	<li class="line">line</li>
 	<li><a class="icon" href="<?php echo $this->createUrl("schedule/wait", array('status'=>3));?>" target="navTab" ><span>未排程订单</span></a></li>
 	<li class="line">line</li>
-	</ul>
+	<li><a class="icon" href="<?php echo $this->createUrl("schedule/Excel");?>" target="dwzExport" title="确实要导出这些记录吗?" rel="id[]"><span>导出EXCEL</span></a></li>
+</ul>
 </div>
 	<table class="list" width="100%" layoutH="138">
 		<thead>
@@ -49,7 +50,7 @@
 	    <?php else:  $models = (object)$models; foreach ($models as $model): ?>
 	    <tr>
 	    	<td><input type="checkbox" name="id[]" value="<?php echo $model->id ?>" /></td>
-	        <td> <a href="<?php echo $this->createUrl('order/index', array('id'=>$model->order_id)); ?>" target="navTab"><?php foreach ($this->getOrder($model->order_id) as $val) { echo "[ ".$val['sn']." ]".$val['user_name']; }?></a></td>
+	        <td> <a href="<?php echo $this->createUrl('order/index', array('id'=>$model->order_id)); ?>" target="navTab"><?php $val = $this->getOrder($model->order_id); echo "[ ".$val['sn']." ]".$val['user_name']; ?></a></td>
 	        <td><?php if(!empty($model->shoot_type) && $model->shoot_type != 0){ echo ShootType::getShootName($model->shoot_type); }?></td>
 	        <td><?php $in_time = $this->getStorage($model->order_id); echo !empty($in_time) ? date("Y-m-d H:i",$in_time) : '订单未入库'; ?></td>
 	        <td><?php echo date("Y-m-d H:i",$model->shoot_time); ?></td>

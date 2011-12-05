@@ -206,6 +206,79 @@ class ScheduleController extends Controller
         $this->success('删除成功',array('navTabId'=>'schedule-index'));
 	}
 
+	/**排程导出**/
+	public function actionExcel($id = null)
+	{
+		$chinese = new Chinese;
+
+		$phpExcelPath = Yii::getPathOfAlias('application.components');
+		spl_autoload_unregister(array('YiiBase','autoload'));
+		include($phpExcelPath . DIRECTORY_SEPARATOR . 'PHPExcel.php');
+
+		$objPHPExcel = new PHPExcel();
+		$objActSheet = $objPHPExcel->getActiveSheet(0);
+		//标题样式
+		$objStyle = $objActSheet->getStyle('A1');
+		$objStyle->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+
+		$objActSheet->setCellValue('A1','绿浪视觉排程列表');
+		$obj = $objActSheet->getStyle('A1');
+		$objStyle = $obj->getAlignment();
+		$objStyle->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$objStyle->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+		//设置字体
+		$objFont = $obj->getFont();
+		$objFont->setSize(20);
+		$objFont->setBold(true);
+		$objFont->getColor()->setARGB('000000');
+		$objActSheet->setCellValue('A2','序号')
+		    ->setCellValue('B2','订单号')
+		    ->setCellValue('C2','客户名')
+		    ->setCellValue('D2','拍摄时间')
+		    ->setCellValue('E2','拍摄类型')
+		    ->setCellValue('F2','摄影师')
+		    ->setCellValue('G2','拍摄模特')
+		    ->setCellValue('H2','造型师')
+		    ->setCellValue('I2','说明');
+		$i = 3;
+		$id = explode(',', $id);
+		foreach ($id as $key=>$id)
+		{
+			$sql = "SELECT * FROM {{schedule}} WHERE id = :id";
+            $data = Yii::app()->db->createCommand($sql)->queryRow(true,array(":id"=>$id));
+			$order = isset($data['order_id']) ? $this->getOrder($data['order_id']) : '';
+			$shoot = isset($data['shoot_id']) ? Admin::getAdminName($data['shoot_id']) : '';
+			$stylist = isset($data['stylist_id']) ? Admin::getAdminName($data['stylist_id']) : '';
+			$model = isset($data['model_id']) ? Models::getModelName($data['model_id']) : '';
+			$shoot = !empty($shoot) ? $shoot: '';
+			$stylist = !empty($stylist) ? $stylist : '';
+			$model = !empty($model) ? $model : '';
+			$objActSheet
+				->setCellValue('A'.$i, $i-2)
+				->setCellValue('B'.$i, $order['sn'])
+				->setCellValue('C'.$i, $order['user_name'])
+				->setCellValue('D'.$i, date("Y-m-d H:i",$data['shoot_time']))
+				->setCellValue('E'.$i, $data['shoot_site'])
+				->setCellValue('F'.$i, $shoot)
+				->setCellValue('G'.$i, $model)
+				->setCellValue('H'.$i, $stylist)
+				->setCellValue('I'.$i, $data['memo']);
+			$i += 1;
+		}
+
+		// Excel打开后显示的工作表
+		$objPHPExcel->setActiveSheetIndex(0);
+		//通浏览器输出Excel报表
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment;filename='.$chinese->convert("UTF-8", "gb2312","拍摄清单导出表.xls"));
+		header('Cache-Control: max-age=0');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+		$objWriter->save('php://output');
+
+		//恢复Yii自动加载功能
+		spl_autoload_register(array('YiiBase','autoload'));
+		Yii::app()->end();
+	}
 	/**
 	 * 获取订单信息
 	 */
@@ -213,18 +286,20 @@ class ScheduleController extends Controller
 	{
 		if(!empty($params))
 			$sql = $params;
-		if(!empty($id))
-			$sql = "SELECT id, sn, user_name FROM {{order}} WHERE id =".$id;
-		else
-			$sql = "SELECT id, sn, user_name FROM {{order}}";
-		$command = Yii::app()->db->createCommand($sql);
-		$types = $command->queryAll();
-		if ($types === false)
+		if(!empty($id)){
+		    $sql = "SELECT id, sn, user_name FROM {{order}} WHERE id = :id";
+		    $results = Yii::app()->db->createCommand($sql)->queryRow(true, array(":id"=>$id));
+		}
+		else{
+		    $sql = "SELECT id, sn, user_name FROM {{order}}";
+		    $results = Yii::app()->db->createCommand($sql)->query();
+		}
+		if ($results === false)
 		{
 			return false;
 		}
 		else{
-			return $types;
+			return $results;
 		}
 	}
 

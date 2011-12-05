@@ -69,8 +69,7 @@ class Models extends CActiveRecord
 	 */
 	public static function getModelName($id = null)
 	{
-		if(!empty($id))
-			$sql = "SELECT nick_name FROM {{models}} WHERE id =".$id;
+		$sql = "SELECT nick_name FROM {{models}} WHERE id =".$id;
 		$command = Yii::app()->db->createCommand($sql);
 		$models = $command->queryScalar();
         return $models;

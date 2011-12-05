@@ -162,7 +162,7 @@
 							</div>
 							<div class="right">
 							</div>
-							<p><span><?php echo isset($admin->Role->name) ? $admin->Role->name : ($admin->is_supper == 1 ? '超级管理员' : ''); ?>：<span style="color:red"><?php echo Yii::app()->user->name; ?></span>,您好！欢迎登录 <?php echo Yii::app()->name; ?></span></p>
+							<p><span><?php if($admin->is_supper == 1) echo '超级管理员';else echo empty($admin->Role->name) ? $admin->Role->name : ''; ?>：<span style="color:red"><?php echo Yii::app()->user->name; ?></span>,您好！欢迎登录 <?php echo Yii::app()->name; ?></span></p>
 							<p>您已经登录 ：<?php echo $admin->login_count; ?> 次,最后一次登录时间 ：<?php echo date('Y-m-d H:i:s',$admin->login_time);?> IP为： <?php echo long2ip($admin->last_ip); ?></p>
 						</div>
 						<div class="pageFormContent" layoutH="80" >
