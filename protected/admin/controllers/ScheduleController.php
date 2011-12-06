@@ -4,11 +4,11 @@ class ScheduleController extends Controller
 	//首页控制器
 	public function actionIndex(array $params = array(), $orderId = null, $pageNum = null, $numPerPage = null)
 	{
-		$pages = null;
 		$typeList = null;
 		$models = new Schedule();
 		if(!empty($orderId)){
 			$models = $models->findAllByAttributes(array('order_id'=>$orderId));
+			$pages = null;
 		}else {
 			$criteria = new CDbCriteria;
 			if (!empty($params['start_time']) && !empty($params['end_time']))
@@ -62,6 +62,7 @@ class ScheduleController extends Controller
 	        $pages->currentPage = $pageNum !== null ? $pageNum - 1 : 0;
 	        $pages->pageSize = $numPerPage !== null ? $numPerPage : 20;
 	        $pages->applyLimit($criteria);
+	        $pages->params = $params;
 
 			$models = $models->findAll($criteria);
 			//得到拍摄类型 且 数组反向
@@ -70,6 +71,7 @@ class ScheduleController extends Controller
 
 		$this->render('index',array(
 			'orderId' =>$orderId,
+		    'params' => $params,
 			'typeList' => $typeList,
 			'models' => $models,
 			'pages' => $pages
@@ -226,11 +228,20 @@ class ScheduleController extends Controller
 		$objStyle = $obj->getAlignment();
 		$objStyle->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		$objStyle->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
 		//设置字体
 		$objFont = $obj->getFont();
 		$objFont->setSize(20);
 		$objFont->setBold(true);
 		$objFont->getColor()->setARGB('000000');
+		//设置边框
+		$objBorder = $obj->getBorders();
+		$objBorder->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$objBorder->getTop()->getColor()->setARGB('000000'); // color
+		$objBorder->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$objBorder->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+		$objBorder->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
 		$objActSheet->setCellValue('A2','序号')
 		    ->setCellValue('B2','订单号')
 		    ->setCellValue('C2','客户名')
@@ -241,36 +252,61 @@ class ScheduleController extends Controller
 		    ->setCellValue('H2','造型师')
 		    ->setCellValue('I2','说明');
 		$i = 3;
-		$id = explode(',', $id);
-		foreach ($id as $key=>$id)
-		{
-			$sql = "SELECT * FROM {{schedule}} WHERE id = :id";
-            $data = Yii::app()->db->createCommand($sql)->queryRow(true,array(":id"=>$id));
-			$order = isset($data['order_id']) ? $this->getOrder($data['order_id']) : '';
-			$shoot = isset($data['shoot_id']) ? Admin::getAdminName($data['shoot_id']) : '';
-			$stylist = isset($data['stylist_id']) ? Admin::getAdminName($data['stylist_id']) : '';
-			$model = isset($data['model_id']) ? Models::getModelName($data['model_id']) : '';
-			$shoot = !empty($shoot) ? $shoot: '';
-			$stylist = !empty($stylist) ? $stylist : '';
-			$model = !empty($model) ? $model : '';
-			$objActSheet
-				->setCellValue('A'.$i, $i-2)
-				->setCellValue('B'.$i, $order['sn'])
-				->setCellValue('C'.$i, $order['user_name'])
-				->setCellValue('D'.$i, date("Y-m-d H:i",$data['shoot_time']))
-				->setCellValue('E'.$i, $data['shoot_site'])
-				->setCellValue('F'.$i, $shoot)
-				->setCellValue('G'.$i, $model)
-				->setCellValue('H'.$i, $stylist)
-				->setCellValue('I'.$i, $data['memo']);
-			$i += 1;
+		if ($id == 'all'){
+		    $sql = "SELECT * FROM {{schedule}} ";
+            $results = Yii::app()->db->createCommand($sql)->queryAll();
+            foreach ($results as $data ){
+    			$order = isset($data['order_id']) ? $this->getOrder($data['order_id']) : '';
+    			$shoot = isset($data['shoot_id']) ? Admin::getAdminName($data['shoot_id']) : '';
+    			$stylist = isset($data['stylist_id']) ? Admin::getAdminName($data['stylist_id']) : '';
+    			$model = isset($data['model_id']) ? Models::getModelName($data['model_id']) : '';
+    			$shoot = !empty($shoot) ? $shoot: '';
+    			$stylist = !empty($stylist) ? $stylist : '';
+    			$model = !empty($model) ? $model : '';
+    			$objActSheet
+    				->setCellValue('A'.$i, $i-2)
+    				->setCellValue('B'.$i, $order['sn'])
+    				->setCellValue('C'.$i, $order['user_name'])
+    				->setCellValue('D'.$i, date("Y-m-d H:i",$data['shoot_time']))
+    				->setCellValue('E'.$i, $data['shoot_site'])
+    				->setCellValue('F'.$i, $shoot)
+    				->setCellValue('G'.$i, $model)
+    				->setCellValue('H'.$i, $stylist)
+    				->setCellValue('I'.$i, $data['memo']);
+    			$i += 1;
+            }
+		}else{
+    		$id = explode(',', $id);
+    		foreach ($id as $key=>$id)
+    		{
+    			$sql = "SELECT * FROM {{schedule}} WHERE id = :id";
+                $data = Yii::app()->db->createCommand($sql)->queryRow(true,array(":id"=>$id));
+    			$order = isset($data['order_id']) ? $this->getOrder($data['order_id']) : '';
+    			$shoot = isset($data['shoot_id']) ? Admin::getAdminName($data['shoot_id']) : '';
+    			$stylist = isset($data['stylist_id']) ? Admin::getAdminName($data['stylist_id']) : '';
+    			$model = isset($data['model_id']) ? Models::getModelName($data['model_id']) : '';
+    			$shoot = !empty($shoot) ? $shoot: '';
+    			$stylist = !empty($stylist) ? $stylist : '';
+    			$model = !empty($model) ? $model : '';
+    			$objActSheet
+    				->setCellValue('A'.$i, $i-2)
+    				->setCellValue('B'.$i, $order['sn'])
+    				->setCellValue('C'.$i, $order['user_name'])
+    				->setCellValue('D'.$i, date("Y-m-d H:i",$data['shoot_time']))
+    				->setCellValue('E'.$i, $data['shoot_site'])
+    				->setCellValue('F'.$i, $shoot)
+    				->setCellValue('G'.$i, $model)
+    				->setCellValue('H'.$i, $stylist)
+    				->setCellValue('I'.$i, $data['memo']);
+    			$i += 1;
+    		}
 		}
 
 		// Excel打开后显示的工作表
 		$objPHPExcel->setActiveSheetIndex(0);
 		//通浏览器输出Excel报表
 		header('Content-Type: application/octet-stream');
-		header('Content-Disposition: attachment;filename='.$chinese->convert("UTF-8", "gb2312","拍摄清单导出表.xls"));
+		header('Content-Disposition: attachment;filename='.$chinese->convert("UTF-8", "gb2312","绿浪视觉-排程导出表.xls"));
 		header('Cache-Control: max-age=0');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 		$objWriter->save('php://output');

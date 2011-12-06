@@ -53,11 +53,15 @@ class OrderController extends Controller
         $pages->currentPage = $pageNum - 1;
         $pages->pageSize = $numPerPage;
         $pages->applyLimit($criteria);
+        $pages->params = $params;
 
-        if ($sort == 'time')$criteria->order = 'create_time DESC';
-		else if ($sort == 'status')$criteria->order = 'status ASC';
-		else $criteria->order = "status asc, create_time desc";
-
+        if (!empty($params['sort']) && $params['sort'] == 'create_time'){
+            $criteria->order = $params['sort'].' DESC';
+        }else if (!empty($params['sort']) && $params['sort'] == 'status'){
+            $criteria->order = $params['sort'].' ASC';
+        }else {
+            $criteria->order = "status asc, create_time desc";
+        }
 		$orders = Order::model()->cache()->findAll($criteria);
 
 		$this->render('index',array(
@@ -817,11 +821,15 @@ class OrderController extends Controller
 	{
         if (empty($id))$this->error('参数传递错误！');
 
-        $sql = "SELECT SUM( `total_price` ) FROM {{order}} WHERE id in (".$id.")";
+        if($id == 'all'){
+            $sql = "SELECT SUM( `total_price` ) FROM {{order}} ";
+        }else{
+            $sql = "SELECT SUM( `total_price` ) FROM {{order}} WHERE id in (".$id.")";
+        }
 	    $command = Yii::app()->db->createCommand($sql);
 	    $money = $command->queryScalar();
 
-        $idList=explode(",",$id);
+
 		$chinese = new Chinese;
 
 		$phpExcelPath = Yii::getPathOfAlias('application.components');
@@ -914,38 +922,66 @@ class OrderController extends Controller
 		}
 
 		$i = 4;
-		foreach ($idList as $key=>$id)
-		{
-			$list = '';
-			$data = Order::model()->findByPk($id);
-			if (!empty($data->Models))
-			{
-				foreach ($data->Models as $key=>$name)
-				{
-					if ($key > 0) $list.=',';
-					$list .= $name->nick_name;
-				}
-			}
-			$objActSheet
-				->setCellValue('A'.$i, $i-3)
-				->setCellValue('B'.$i, $data->sn)
-				->setCellValue('C'.$i, $data->user_name)
-				->setCellValue('D'.$i, !empty($data->User->wangwang)?$data->User->wangwang:'')//旺旺
-				->setCellValue('E'.$i, date('Y-m-d H:i:s', $data->create_time))
-				->setCellValue('F'.$i, $data->goodsCount)
-				->setCellValue('G'.$i, $data->goodsSex)
-				->setCellValue('H'.$i, $data->goodsType)
-				->setCellValue('I'.$i, $list)
-				->setCellValue('J'.$i, $data->memo)
-				->setCellValue('K'.$i, '￥'.$data->total_price);
-			$i += 1;
+		$list = '';
+		if ($id == 'all'){
+		    $results = Order::model()->findAll();
+		    foreach ($results as $data){
+		        if (!empty($data->Models))
+    			{
+    				foreach ($data->Models as $key=>$name)
+    				{
+    					if ($key > 0) $list.=',';
+    					$list .= $name->nick_name;
+    				}
+    			}
+    			$objActSheet
+    				->setCellValue('A'.$i, $i-3)
+    				->setCellValue('B'.$i, $data->sn)
+    				->setCellValue('C'.$i, $data->user_name)
+    				->setCellValue('D'.$i, !empty($data->User->wangwang)?$data->User->wangwang:'')//旺旺
+    				->setCellValue('E'.$i, date('Y-m-d H:i:s', $data->create_time))
+    				->setCellValue('F'.$i, $data->goodsCount)
+    				->setCellValue('G'.$i, $data->goodsSex)
+    				->setCellValue('H'.$i, $data->goodsType)
+    				->setCellValue('I'.$i, $list)
+    				->setCellValue('J'.$i, $data->memo)
+    				->setCellValue('K'.$i, '￥'.$data->total_price);
+    			$i += 1;
+		    }
+		}else {
+		    $idList=explode(",",$id);
+    		foreach ($idList as $key=>$id)
+    		{
+    			$data = Order::model()->findByPk($id);
+    			if (!empty($data->Models))
+    			{
+    				foreach ($data->Models as $key=>$name)
+    				{
+    					if ($key > 0) $list.=',';
+    					$list .= $name->nick_name;
+    				}
+    			}
+    			$objActSheet
+    				->setCellValue('A'.$i, $i-3)
+    				->setCellValue('B'.$i, $data->sn)
+    				->setCellValue('C'.$i, $data->user_name)
+    				->setCellValue('D'.$i, !empty($data->User->wangwang)?$data->User->wangwang:'')//旺旺
+    				->setCellValue('E'.$i, date('Y-m-d H:i:s', $data->create_time))
+    				->setCellValue('F'.$i, $data->goodsCount)
+    				->setCellValue('G'.$i, $data->goodsSex)
+    				->setCellValue('H'.$i, $data->goodsType)
+    				->setCellValue('I'.$i, $list)
+    				->setCellValue('J'.$i, $data->memo)
+    				->setCellValue('K'.$i, '￥'.$data->total_price);
+    			$i += 1;
+    		}
 		}
 
 		// Excel打开后显示的工作表
 		$objPHPExcel->setActiveSheetIndex(0);
 		//通浏览器输出Excel报表
 		header('Content-Type: application/octet-stream');
-		header('Content-Disposition: attachment;filename='.$chinese->convert("UTF-8", "gb2312","订单导出表.xls"));
+		header('Content-Disposition: attachment;filename='.$chinese->convert("UTF-8", "gb2312","绿浪视觉-订单导出表.xls"));
 		header('Cache-Control: max-age=0');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 		$objWriter->save('php://output');
@@ -960,7 +996,6 @@ class OrderController extends Controller
 	public function actionStorageGoodsExcel($order_id = null, $id = null, $storage_id = null)
 	{
         if (empty($id)) $this->error('参数传递错误！');
-        if ($id != 'all') $idList=explode(",",$id);
 
 		$chinese = new Chinese;
 		$order = Order::model()->findByPk($order_id);
@@ -998,7 +1033,7 @@ class OrderController extends Controller
 		$i = 3;
 		if ($id == 'all' && !empty($storage_id))
 		{
-			$storage_goods = StorageGoods::model()->findAll(array('condition'=>'storage_id ='.$storage_id,'order'=>'sn ASC'));
+			$storage_goods = StorageGoods::model()->findAll();
 
 			if (empty($storage_goods)) $this->error('物品列表为空');
 			foreach ($storage_goods as $key=>$data)
@@ -1014,6 +1049,7 @@ class OrderController extends Controller
 		}
 		else
 		{
+		    $idList=explode(",",$id);
 			foreach ($idList as $key=>$id)
 			{
 				$list = '';
@@ -1031,7 +1067,7 @@ class OrderController extends Controller
 		$objPHPExcel->setActiveSheetIndex(0);
 		//通浏览器输出Excel报表
 		header('Content-Type: application/octet-stream');
-		header('Content-Disposition: attachment;filename='.$chinese->convert("UTF-8", "gb2312","拍摄清单导出表.xls"));
+		header('Content-Disposition: attachment;filename='.$chinese->convert("UTF-8", "gb2312","绿浪视觉-拍摄清单导出表.xls"));
 		header('Cache-Control: max-age=0');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 		$objWriter->save('php://output');

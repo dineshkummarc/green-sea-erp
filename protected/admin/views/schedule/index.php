@@ -16,7 +16,7 @@
         '拍摄时间：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[start_time]', 'defaultValue'=>empty($params['start_time']) ? '' : $params['start_time'],),
 	    '至结束时间：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[end_time]', 'defaultValue'=>empty($params['end_time']) ? '' : $params['end_time'],),
     ),
-)); endif;?>
+)); endif; ?>
 <div class="panelBar">
 <ul class="toolBar">
 	<li><a class="add" href="<?php echo $this->createUrl("schedule/edit", array('orderId'=>$orderId)); ?>" target="dialog" width="400" height="500" mask="true" ><span>添加排程</span></a></li>
@@ -24,6 +24,7 @@
 	<li><a class="icon" href="<?php echo $this->createUrl("schedule/wait", array('status'=>3));?>" target="navTab" ><span>未排程订单</span></a></li>
 	<li class="line">line</li>
 	<li><a class="icon" href="<?php echo $this->createUrl("schedule/Excel");?>" target="dwzExport" title="确实要导出这些记录吗?" rel="id[]"><span>导出EXCEL</span></a></li>
+	<li><a class="icon" href="<?php echo $this->createUrl("schedule/Excel", array('id'=>'all'));?>" target="dwzExport" title="确实要导出全部记录吗?" rel="all"><span>全部导出EXCEL</span></a></li>
 </ul>
 </div>
 	<table class="list" width="100%" layoutH="138">
@@ -65,7 +66,7 @@
 	            <a href="<?php echo $this->createUrl("schedule/del", array('id'=>$model->id)); ?>" target="ajaxTodo" title="删除" >删除</a>
 	        </td>
 	    </tr>
-	    <?php endforeach; endif; ?>
+	    <?php endforeach; endif;?>
 	</tbody>
 </table>
 <?php if(isset($pages)): $this->widget('widget.Pager', array(

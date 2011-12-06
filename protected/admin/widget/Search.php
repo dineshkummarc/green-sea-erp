@@ -11,7 +11,6 @@ class Search extends CWidget
     {
         if (empty($this->searchCondition))
             $this->controller->error('未指定查询组件的查询条件');
-
         $this->render('search');
     }
 }

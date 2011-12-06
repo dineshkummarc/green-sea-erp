@@ -32,8 +32,9 @@ function status(val)
 	<div class="panelBar" style="width:1200px">
 		<ul class="toolBar">
 			<li><a class="icon" href="<?php echo $this->createUrl("order/OrderExcel"); ?>" target="dwzExport" targetType="navTab" title="确实要导出这些记录吗?" rel="id[]"><span>导出EXCEL</span></a></li>
+			<li><a class="icon" href="<?php echo $this->createUrl("order/OrderExcel", array('id'=>'all')); ?>" target="dwzExport" targetType="navTab" title="确实要导出全部记录吗?" rel="all"><span>全部导出EXCEL</span></a></li>
 			<li class="line">line</li>
-			<li><a class="icon" ><span style="color:#F00"><?php // echo "金额：￥".$money?></span></a></li>
+			<li><a class="icon" ><span style="color:#F00"><?php // echo "统计金额：￥".$money?></span></a></li>
 		</ul>
 	</div>
     <table class="list" width="1200">
@@ -44,8 +45,8 @@ function status(val)
 	            <th width="80">旺旺号</th>
 	            <th width="50">订单号</th>
 	            <th width="60">合同金额</th>
-	            <th width="120"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('sort'=>'time'));?>">下单时间</a></th>
-	            <th width="120"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('sort'=>'status'));?>">当前状态</a></th>
+	            <th width="120"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('params[sort]'=>'create_time'));?>">下单时间</a></th>
+	            <th width="120"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('params[sort]'=>'status'));?>">当前状态</a></th>
 	            <th width="60">是否跟拍</th>
 	            <th width="100">运单号</th>
 	            <th width="200">操作</th>
