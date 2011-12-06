@@ -19,13 +19,12 @@ function status(val)
         '订单号：'=>array('type'=>'text', 'name'=>'params[sn]', 'defaultValue'=>empty($params['sn']) ? '' : $params['sn'], 'alt'=>'精确搜索'),
         '运单号：'=>array('type'=>'text', 'name'=>'params[logistics_sn]', 'defaultValue'=>empty($params['logistics_sn']) ? '' : $params['logistics_sn'], 'alt'=>'支持模糊搜索'),
 		'客户名：'=>array('type'=>'text', 'name'=>'params[user_name]', 'defaultValue'=>empty($params['user_name']) ? '' : $params['user_name'], 'alt'=>'支持模糊搜索'),
-
         '状态：'=>array('type'=>'select', 'name'=>'params[status]', 'defaultValue'=>empty($params['status']) ? '' : $params['status'],
             'options'=>$shootStatus
         ),
         '时间查询：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[start_time]', 'defaultValue'=>empty($params['start_time']) ? '' : $params['start_time'],),
         '至：'=>array('type'=>'text', 'class'=>'date', 'readonly'=>'readonly', 'name'=>'params[end_time]', 'defaultValue'=>empty($params['end_time']) ? '' : $params['end_time'],),
-
+        '&nbsp;'=>array('type'=>'text', 'name'=>'params[sort]', 'style'=>'display:none', 'defaultValue'=>empty($params['sort']) ? '' : $params['sort'], 'alt'=>''),
     ),
 )); ?>
 <div class="pageContent" width="1200px" layoutH="114">
@@ -37,7 +36,7 @@ function status(val)
 			<li><a class="icon" ><span style="color:#F00"><?php // echo "统计金额：￥".$money?></span></a></li>
 		</ul>
 	</div>
-    <table class="list" width="1200">
+    <table class="list" width="1200" targetType="navTab" asc="asc" desc="desc">
     	<thead>
 	        <tr>
 	            <th width="30"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
@@ -45,8 +44,8 @@ function status(val)
 	            <th width="80">旺旺号</th>
 	            <th width="50">订单号</th>
 	            <th width="60">合同金额</th>
-	            <th width="120"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('params[sort]'=>'create_time'));?>">下单时间</a></th>
-	            <th width="120"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('params[sort]'=>'status'));?>">当前状态</a></th>
+	            <th width="120" orderField="create_time" class="desc"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('params[sort]'=>'create_time'));?>">下单时间</a></th>
+	            <th width="120" orderField="status" class="desc"><a style="line-height:20px" target="navTab" rel="order-index" href="<?php echo $this->createUrl('order/index', array('params[sort]'=>'status'));?>">当前状态</a></th>
 	            <th width="60">是否跟拍</th>
 	            <th width="100">运单号</th>
 	            <th width="200">操作</th>

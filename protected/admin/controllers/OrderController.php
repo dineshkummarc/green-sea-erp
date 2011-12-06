@@ -55,12 +55,10 @@ class OrderController extends Controller
         $pages->applyLimit($criteria);
         $pages->params = $params;
 
-        if (!empty($params['sort']) && $params['sort'] == 'create_time'){
+        if (!empty($params['sort'])){
             $criteria->order = $params['sort'].' DESC';
-        }else if (!empty($params['sort']) && $params['sort'] == 'status'){
-            $criteria->order = $params['sort'].' ASC';
-        }else {
-            $criteria->order = "status asc, create_time desc";
+        } else{
+            $criteria->order = "status asc";
         }
 		$orders = Order::model()->cache()->findAll($criteria);
 
