@@ -92,6 +92,8 @@ class AuthController extends Controller
         {
         	$oldPwd = $_POST['Form']['oldPwd'];
         	$newPwd = $_POST['Form']['newPwd'];
+        	$newPwd1 = $_POST['Form']['newPwd1'];
+        	if (trim($newPwd1) != trim($newPwd)) $this->error('重复密码不匹配');
             $sql = "SELECT `password` FROM {{admin}} WHERE `id` = :id";
             $command = Yii::app()->db->createCommand($sql);
             $password = $command->queryScalar(array(":id"=>Yii::app()->user->id));
@@ -101,9 +103,9 @@ class AuthController extends Controller
                 {
                     $this->success('修改成功', array('navTabId'=>'menu-index'));
                 }
-                $sql = "UPDATE {{admin}} SET `password` = :password, `update_time` = :update_time";
+                $sql = "UPDATE {{admin}} SET `password` = :password, `update_time` = :update_time WHERE id = :id";
                 $command = Yii::app()->db->createCommand($sql);
-                $count = $command->execute(array(":password"=>md5(trim($newPwd)), ":update_time"=>Yii::app()->params['timestamp']));
+                $count = $command->execute(array(":password"=>md5(trim($newPwd)), ":update_time"=>Yii::app()->params['timestamp'], ":id"=>Yii::app()->user->id));
 
                 if ($count > 0)
                     $this->success('修改成功', array('navTabId'=>'menu-index'));

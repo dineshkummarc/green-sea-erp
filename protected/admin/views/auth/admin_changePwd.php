@@ -15,7 +15,7 @@
             </div>
             <div class="unit">
                 <label>确认新密码</label>
-                <input name="Form[newPwd]" type="password" id="rePwd" class="required" equalto="#password" class="compare" size="30" value="" alt="必须与新密码相同" />
+                <input name="Form[newPwd1]" type="password" id="rePwd" class="required" equalto="#password" class="compare" size="30" value="" alt="必须与新密码相同" />
             </div>
         </div>
         <div class="formBar">
