@@ -235,7 +235,7 @@ KindEditor.plugin('table', function(K) {
 						for (var i = 0; i < rows; i++) {
 							html += '<tr>';
 							for (var j = 0; j < cols; j++) {
-								html += '<td>' + (K.IE ? '' : '<br />') + '</td>';
+								html += '<td>' + (K.IE ? '&nbsp;' : '<br />') + '</td>';
 							}
 							html += '</tr>';
 						}
@@ -281,6 +281,7 @@ KindEditor.plugin('table', function(K) {
 						selectedColor : K(this).html(),
 						colors : self.colorTable,
 						noColor : self.lang('noColor'),
+						shadowMode : self.shadowMode,
 						click : function(color) {
 							setColor(box, color);
 							removePicker();
@@ -469,6 +470,7 @@ KindEditor.plugin('table', function(K) {
 						selectedColor : K(this).html(),
 						colors : self.colorTable,
 						noColor : self.lang('noColor'),
+						shadowMode : self.shadowMode,
 						click : function(color) {
 							setColor(box, color);
 							removePicker();
