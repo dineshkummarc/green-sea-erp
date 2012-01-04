@@ -26,15 +26,20 @@ function change(dom, url)
             }
         })
         .blur(function () {
-            $(this).unbind('blur');
-            changeEvent(this, url);
+            if (changeEvent(this, url))
+                $(this).unbind('blur');
         });
 }
 
 function changeEvent(dom, url)
 {
     $dom = $(dom);
-    var val = $dom.val()
+    var val = $dom.val();
+    if (!/^\d+$/.test(val))
+    {
+        alertMsg.error("只允许填数字");
+        return false;
+    }
     var data = new Object();
     data.id = $dom.attr('id');
     eval("data."+$dom.attr('name')+"="+val);
@@ -50,6 +55,7 @@ function changeEvent(dom, url)
         },
         error: DWZ.ajaxError
     });
+    return true;
 }
 
 function reUpload(dom, event)
