@@ -337,7 +337,7 @@ class OrderController extends Controller
             if ($goods->shoot_type == 1 || $goods->shoot_type == 2 || $goods->shoot_type == 5)
         	    $goodsCounts += (int)$goods->count;
 
-        if (!isset($shootTypes[1]) && !isset($shootTypes[2]) && !isset($shootTypes[5]) && $goodsCounts < 50)
+        if (!isset($shootTypes[1]) && !isset($shootTypes[2]) && !isset($shootTypes[5]) && $goodsCounts < 30)
             $this->redirect(array("order/shootScene"));
 
 	    if (isset($_POST['Form']))
@@ -388,7 +388,7 @@ class OrderController extends Controller
             if ($goods->shoot_type == 1 || $goods->shoot_type == 2 || $goods->shoot_type == 5)
         	    $goodsCounts += (int)$goods->count;
 
-        if ( !$save && (isset($shootTypes[1]) || isset($shootTypes[2]) || isset($shootTypes[5])) && $goodsCounts >= 50)
+        if ( !$save && (isset($shootTypes[1]) || isset($shootTypes[2]) || isset($shootTypes[5])) && $goodsCounts >= 30)
             $this->redirect(array("order/selectModels"));
         elseif ($selectedModels === null)
             $user->setState("selectedModels", array());
