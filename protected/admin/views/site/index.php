@@ -122,6 +122,11 @@
 									<li><a href="<?php echo $this->createUrl('user/index');?>"   target="navTab" rel="user-index">用户管理</a></li>
 								</ul>
 							</li>
+							<li><a>公告管理</a>
+								<ul>
+									<li><a href="<?php echo $this->createUrl('notice/index');?>"   target="navTab" rel="notice-index">公告管理</a></li>
+								</ul>
+							</li>
 						</ul>
 					</div>
 					<div class="accordionHeader">
