@@ -31,7 +31,8 @@ class StarController extends Controller
 	    $starList = $star->with('Admin')->findAll($criteria);
 		$this->render('index',array('starList'=>$starList,'pages'=>$pages,'params'=>$params));
 	}
-	public function actionEdit($id = NULL){
+	public function actionEdit($id = NULL)
+	{//明星添加删除
 	    $star = new Star;
 	    if(isset($_POST['Form'])){
 	        if(!empty($_POST['Form']['id'])){
