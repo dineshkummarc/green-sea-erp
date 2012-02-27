@@ -53,7 +53,8 @@ class NoticeController extends Controller
 	    $this->render('edit',array('notice'=>$notice));
 	}
 
-	public function actionDel(array $id = array()){//删除公告
+	public function actionDel(array $id = array())
+	{//删除公告
 	    if(empty($id)){
 	        $this->error('参数传递错误');
 	    }
