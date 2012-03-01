@@ -115,6 +115,7 @@
 							<li><a>模特管理</a>
 								<ul>
 									<li><a href="<?php echo $this->createUrl('model/index');?>" target="navTab" rel="model-index">模特列表</a></li>
+									<li><a href="<?php echo $this->createUrl("modelschedule/index",array('scheduled'=>1));?>" target="navTab" rel="modelschedule-index">模特档期</a></li>
 								</ul>
 							</li>
 							<li><a>客户管理</a>
@@ -143,6 +144,11 @@
 								<ul>
 									<li><a href="<?php echo $this->createUrl('auth/admin'); ?>" target="navTab" rel="list">管理员列表</a></li>
 									<li><a href="<?php echo $this->createUrl('auth/role'); ?>" target="navTab" rel="auth-role">部门管理</a></li>
+								</ul>
+							</li>
+							<li><a>基地管理</a>
+								<ul>
+									<li><a href="<?php echo $this->createUrl('shootbase/index'); ?>" target="navTab" rel="shootbase-index">基地管理</a></li>
 								</ul>
 							</li>
 						</ul>
