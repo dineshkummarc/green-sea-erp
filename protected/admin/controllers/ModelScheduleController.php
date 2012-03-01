@@ -60,10 +60,10 @@ class ModelScheduleController extends Controller{
 	                }else{
 	                    $modelschedule = $modelscheduleList;
 	                    $modelschedule->attributes = $_POST['Form'];
-	                    $message = '公告修改成功';
+	                    $message = '档期修改成功';
 	                }
 	            }else{
-	                $message = '公告添加成功';
+	                $message = '档期添加成功';
 	                $modelschedule->attributes = $_POST['Form'];
 	            }
 	            if ($modelschedule->save())
