@@ -5,17 +5,20 @@ class ModelScheduleController extends Controller{
 	{//模特档期显示
 	    $modelschedule = new ModelSchedule;
 	    $criteria = new CDbCriteria(array('select'=>'*',));
-
-	    $modelscheduleList = $modelschedule->with('Model')->findAll($criteria);
-	    foreach($modelscheduleList as $modelscheduleRow){
-	        $nick_names[$modelscheduleRow->Model->nick_name] = $modelscheduleRow->model_id;
-	        if(!empty($_GET['model_id'])){
-	            if($_GET['model_id'] == $modelscheduleRow->model_id){
-	                $params['model_id'] = $_GET['model_id'];
-	                $model_id_cd = true;
+        if($modelschedule->with('Model')->count($criteria) > 0){
+	        $modelscheduleList = $modelschedule->with('Model')->findAll($criteria);
+	        foreach($modelscheduleList as $modelscheduleRow){
+	            $nick_names[$modelscheduleRow->Model->nick_name] = $modelscheduleRow->model_id;
+	            if(!empty($_GET['model_id'])){
+	                if($_GET['model_id'] == $modelscheduleRow->model_id){
+	                    $params['model_id'] = $_GET['model_id'];
+	                    $model_id_cd = true;
+	                }
 	            }
 	        }
-	    }
+        }else{
+            $nick_names = array('默认'=>'');
+        }
 	    if(!empty($params['model_id']))
 	        $criteria->addSearchCondition('model_id', $params['model_id']);
         if(isset($_GET['scheduled'])){
