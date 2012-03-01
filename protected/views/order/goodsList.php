@@ -3,45 +3,63 @@
 <div class="step">选择付款方式</div>
 <div class="step">生成订单</div>
 <div class="clear"></div>
-<?php  if (empty($goodsList)): ?>
-<div class="title">
-    您还没有添加任何拍摄物品，请<a href="<?php echo $this->createUrl("order/goodsEdit") ?>">点击这里</a>进行添加。
-</div>
-<?php else: ?>
-<div class="title">
-    您已经添加了下列拍摄物品，如果需要添加更多，请<a href="<?php echo $this->createUrl("order/goodsEdit") ?>">点击这里</a>进行添加。
-</div>
-<?php endif; ?>
-<table id="goodsTable" class="list" cellpadding="0" cellspacing="0" width="600">
-    <tr class="head">
-        <th width="85">类别</th>
-        <th width="40">季节</th>
-        <th width="40">性别</th>
-        <th width="60">拍摄类型</th>
-        <th width="60">拍摄风格</th>
-        <th width="60">拍摄数量</th>
-        <th width="50">金额</th>
-        <th width="55">操作</th>
-    </tr>
-    <?php $sun=0;if  (!empty($goodsList)) foreach ($goodsList as $key=>$goods): ?>
-    <tr>
-        <td><?php echo $goods->type_name; ?></td>
-        <td><?php echo $season[$goods->season]; ?></td>
-        <td><?php echo $sex[$goods->sex]; ?></td>
-        <td><?php echo $shootType[$goods->shoot_type] ?></td>
-        <td><?php echo $styles[$goods->style]; ?></td>
-        <td><?php echo $goods->count; ?></td>
-        <td class="price"><?php $goods->price; ?></td>
-        <td>
-            <a href="<?php echo $this->createUrl("order/goodsEdit", array("id"=>$goods->id)) ?>">修改</a>
-            <a href="<?php echo $this->createUrl("order/goodsDel", array("id"=>$goods->id)) ?>" onclick="return confirm('删除之后将不能恢复，确认删除？')">删除</a>
-        </td>
-    </tr>
-    <?php endforeach; ?>
 
-</table>
-<?php if (!empty($goodsList)): ?>
-<div class="title">
-    <input type="button" value="填写拍摄需求" onclick="window.location.href='<?php echo $this->createUrl("order/shootScene", array('save'=>false)); ?>'" />
-</div>
-<?php endif; ?>
+<script>
+function addItem(){
+	var tb="myOrderList";
+	var index=$("#"+tb+">tbody>tr").length;
+	var firstTr=$("#"+tb+">tbody>tr:first");
+	var tr="<tr onmouseover=\"this.style.backgroundColor='#eee'\" onmouseout=\"this.style.backgroundColor='#fff'\">"+firstTr.html()+"</tr>";
+	var html=tr.replace(/Form\[\d+\]/g,"Form["+(index+1)+"]").replace(/<a><\/a>/i,"<a href='javascript:;' onclick='deleteItem(this)'>删除</a>").replace().replace(/background-color: #ffffbb/ig,'');
+	var newTr=$(html);
+	newTr.find("input[type='text']").val('');
+	newTr.find("option").removeAttr("selected");
+	newTr.appendTo($("#"+tb+">tbody"));
+}
+function deleteItem(n){
+$(n).parents('tr').remove();
+}
+</script>
+
+<form action="<?php echo $this->createUrl("order/shootStyle") ?>" method="post" onsubmit="return validateGoods()">
+    <table id="myOrderList" class="table" cellpadding="0" cellspacing="0">
+        <thead>
+        <tr>
+            <th class="label">拍摄类型</th>
+            <th class="label">类别&nbsp;&nbsp;/&nbsp;&nbsp;季节&nbsp;&nbsp;/&nbsp;&nbsp;性别</th>
+            <th class="label">拍摄数量</th>
+            <th class="label">备注</th>
+            <th class="label"></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <?php// for ($i = 0; $i < $_POST['count']; $i++): ?>
+        <tr onmouseover="this.style.backgroundColor='#eee'" onmouseout="this.style.backgroundColor='#fff'">
+            <td>
+                <select name="Form[1][shoot_type]">
+                    <?php foreach ($shootType as $type): ?>
+                    <option value="<?php echo $type['id']; ?>"><?php echo $type['name']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+            <td>
+                <select class="change-goods-type" name="Form[1][type]" num="<?php echo $i; ?>">
+                    <?php foreach ($goodsList as $key=>$goods): ?>
+                    <option value="$key"><?php echo $goods->type_name.','.$goods->season.','.$goods->sex;?></option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+            <td>
+                <input type="hidden" name="Form[1][id]" value="<?php echo $id; ?>" />
+                <input type="text" name="Form[1][count]" class="input check-count" style="width: 50px;" tip="只能填数字" />
+            </td>
+            <td><textarea name="Form[1][memo]" class="text" style="width: 150px; height: 30px;"><?php if (isset($goods->memo)) echo $goods->memo; ?></textarea></td>
+            <td class="acenter" width="50"><a></a></td>
+        </tr>
+        <?php //endfor;?>
+        </tbody>
+    </table>
+    <input type="button" onclick="addItem() " value="添加一项">
+    <input type="submit" value="保存" />
+</form>

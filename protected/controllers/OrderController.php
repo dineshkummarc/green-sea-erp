@@ -23,7 +23,7 @@ class OrderController extends Controller
         $pages->applyLimit($criteria);
         $criteria->order = 'create_time DESC, status ASC';
 
-        $orderList = $order->findAll($criteria);
+        $orderList = $order->with('Goods')->findAll($criteria);
 		$this->render('index', array('orderList'=>$orderList, 'pages'=>$pages));
 	}
 
@@ -62,223 +62,6 @@ class OrderController extends Controller
         $this->redirect(array('order/index'));
 	}
 
-
-	public function actionChangeStatus($id = null, $status = null)
-	{
-	    if ($id === null || $status === null)
-	    {
-	        $this->error("参数不正确");
-            $this->redirect($this->urlReferrer);
-	    }
-	    Order::changeStatus($id, $status);
-	    if ($status == 2)
-	    {
-	        // 消费金额等积分
-	        $sql = "SELECT total_price FROM {{order}} WHERE id = $id";
-	        $data = Yii::app()->db->createCommand($sql)->query();
-            $data->bindColumn(1, $price);
-            if ($data->read() !== false) User::addScore((int)$price);
-
-            // 新客户送积分和累积消费积分
-            $sql = "SELECT first, accumulation_price FROM {{user}} WHERE id = " . Yii::app()->user->id;
-            $data = Yii::app()->db->createCommand($sql)->query();
-            $data->bindColumn(1, $first);
-            $data->bindColumn(2, $price);
-            if ($data->read() !== false)
-            {
-                // 如果为首次下单
-                if ($first == 1)
-                {
-                    User::addScore(1500, "首次下单积分奖励");
-                    // 清楚首次下单状态，防止重复奖励
-                    $sql = "UPDATE  {{user}} first = 0, update_time = :update_time WHERE id = " . Yii::app()->user->id;
-                    $command = Yii::app()->db->createCommand($sql);
-                    $command->bindParam(":update_time", Yii::app()->params['timestamp'], PDO::PARAM_INT);
-                    $command->execute();
-                }
-                // 如果累积消费大于等于5000，则额外赠送3000积分
-                if ((int)$price >= 5000)
-                {
-                    User::addScore(3000, "累积消费额外积分奖励");
-                    // 减去累积消费5000，防止重复奖励
-                    $sql = "UPDATE {{user}} SET accumulation_price = :price , update_time = :update_time WHERE id = " . Yii::app()->user->id;
-                    $command = Yii::app()->db->createCommand($sql);
-                    $command->bindParam(":price", strval($price - 5000), PDO::PARAM_STR);
-                    $command->bindParam(":update_time", Yii::app()->params['timestamp'], PDO::PARAM_INT);
-                    $command->execute();
-                }
-            }
-	    }
-	    $this->success("修改成功");
-	    $this->redirect($this->urlReferrer);
-	}
-
-	/**
-	 * 拍摄物品列表
-	 * @param integer $id 订单ID
-	 */
-	public function actionGoodsList($id = null)
-	{
-	    $goodsList = Yii::app()->user->getState("goodsList");
-	    if ($goodsList === null && $id !== null)
-	    {
-            $goodsList = OrderGoods::model()->findAllByAttributes(array("order_id"=>$orderId));
-	    }
-	    else if ($goodsList === null)
-            $goodsList = array();
-
-        $goodsType = GoodsType::model()->findAll();
-	    $result = array();
-        foreach ($goodsType as $type)
-        {
-            $result[$type->id] = $type->name;
-        }
-        $goodsType = $result;
-
-        $season = array();
-        $season[0] = "不限";
-        $season[1] = "春秋";
-        $season[2] = "夏";
-        $season[3] = "冬";
-
-        $sex = array();
-        $sex[0] = "不限";
-        $sex[1] = "男";
-        $sex[2] = "女";
-        $sex[3] = "情侣";
-
-	    $shootType = ShootType::model()->findAll();
-	    $result = array();
-        foreach ($shootType as $type)
-        {
-            $result[$type->id] = $type->name;
-        }
-        $shootType = $result;
-
-	    $styles = Style::model()->findAll();
-	    $result = array();
-        foreach ($styles as $style)
-        {
-            $result[$style->id] = $style->name;
-        }
-        $result[0] = "不限";
-        $styles = $result;
-	    $this->render("goodsList", array(
-	    	'goodsList'=>$goodsList,
-	        'goodsType'=>$goodsType,
-	        'season'=>$season,
-	        'sex'=>$sex,
-        	'shootType'=>$shootType,
-	    	'styles'=>$styles,
-	    ));
-	}
-
-	/**
-	 * 添加、修改拍摄物品
-	 * @param integer $id
-	 */
-	public function actionGoodsEdit($id = null)
-	{
-	    $user = Yii::app()->user;
-
-	    // 获取session中的数据
-        $goodsList = $user->getState("goodsList");
-	    if ($id !== null && $goodsList !== null)
-	    {
-	        $_POST['count'] = 1;
-            $goods = (object)$goodsList[$id];
-	    }
-	    else
-	        $goods = new StdClass;
-
-	    $goodsType = GoodsType::getType();
-
-        if (isset($_POST['Form']))
-        {
-            foreach ($_POST['Form'] as $form)
-            {
-                $form['count'] = trim($form['count']);
-                if (empty($form['count'])) continue;
-                if (empty($form['id']))
-                {
-                    $id = $user->getState("lastGoodsId");
-        	        if ($id === null) $id = 1;
-        	        $user->setState("lastGoodsId", $id + 1);
-                }
-                else
-                    $id = $form['id'];
-
-                $goods = (object)$form;
-                if (empty($goods->id))
-                    $goods->id = $id;
-
-                if ($goods->type != 0)
-                    $goods->type_name = $goodsType[$goods->type]->name;
-
-                $totalPrice = $user->getState("totalPrice");
-                // TODO 添加价格计算
-                $price = 0;
-                $goods->price = $price;
-
-                if ($totalPrice === null)
-                    $totalPrice = $price;
-                else
-                    $totalPrice += $price;
-
-                $user->setState("totalPrice", $totalPrice);
-
-                // 检查订单中存在的拍摄类型
-                $shootTypes = $user->getState('shootTypes');
-                // 获取所有拍摄类型
-                $shootType = ShootType::getType(true);
-                // 保存拍摄类型
-                if (empty($shootTypes) || !isset($shootTypes[$goods->shoot_type]))
-                    $shootTypes[$goods->shoot_type] = $shootType[$goods->shoot_type]['name'];
-
-                $styles = $user->getState('modelStyles');
-                if ($goods->style == 0)
-                {
-                    $styles = array();
-                    $styles[0] = 0;
-                }
-                else if (empty($styles) || ($goods->style != 0 && !isset($styles[$goods->type])) )
-                {
-                    $styles[$goods->type] = $goods->type;
-                }
-                // 保存到session
-                $goodsList[$id] = $goods;
-                $user->setState("shootTypes", $shootTypes);
-                $user->setState("modelStyles", $styles);
-                $user->setState("goodsList", $goodsList);
-            }
-
-        	$this->success("添加成功");
-        	$this->redirect(array("order/goodsList"));
-        }
-
-        $sql = "SELECT * FROM {{shoot_type}}";
-        $command = Yii::app()->db->createCommand($sql);
-        $shootType = $command->queryAll();
-
-	    $styles = Style::model()->findAll();
-        foreach ($styles as $key=>$style)
-        {
-            $styles[$key] = $style->attributes;
-        }
-
-	    $this->render("goodsEdit", array(
-	        'id'=>$id,
-	        'goods'=>$goods,
-	        'goodsType'=>$goodsType,
-        	'shootType'=>$shootType,
-	    	'styles'=>$styles,
-	    ));
-	}
-
-	/**
-	 * 删除拍摄物品
-	 * @param integer $id
-	 */
 	public function actionGoodsDel($id = null)
 	{
 	    $user = Yii::app()->user;
@@ -324,72 +107,25 @@ class OrderController extends Controller
 	    $this->redirect(array("order/goodsList"));
 	}
 
-	/**
-	 * 选择模特
-	 * @param integet $id 订单ID
-	 */
-	public function actionSelectModels()
-	{
-	    $user = Yii::app()->user;
-	    $goodsList = $user->getState("goodsList");
-		$goodsCounts=0;
-        foreach ($goodsList as $goods)
-            if ($goods->shoot_type == 1 || $goods->shoot_type == 2 || $goods->shoot_type == 5)
-        	    $goodsCounts += (int)$goods->count;
-
-        if (!isset($shootTypes[1]) && !isset($shootTypes[2]) && !isset($shootTypes[5]) && $goodsCounts < 30)
-            $this->redirect(array("order/shootScene"));
-
-	    if (isset($_POST['Form']))
-	    {
-	        if (empty($_POST['Form']['models']))
-	        {
-	            $this->error("请选择模特");
-	            $this->redirect(array("order/selectModels"));
-	        }
-	        else
-	        {
-	            $models = $_POST['Form']['models'];
-                $user->setState("selectedModels", $models);
-                $this->redirect(array("order/shootScene"));
-	        }
-	    }
-
-	    $criteria = new CDbCriteria;
-	    $criteria->select = "t.id, t.nick_name, t.head_img, t.picture";
-	    $models = Models::model()->findAll($criteria);
-	    $modelArr = array();
-	    foreach ($models as $model)
-	    {
-	        $modelArr[$model->id] = (object)$model->attributes;
-	    }
-	    $models = $user->getState("selectedModels");
-        if ($models === null) $models = array();
-	    $this->render("selectModels", array(
-	    	"selectedModels"=>$models,
-	    	"models"=>$modelArr
-	    ));
-	}
-
-	/**
-	 * 添加、修改拍摄需求
-	 * @param integet $id 订单ID
-	 */
 	public function actionShootScene($id = null, $save = true)
 	{
         $user = Yii::app()->user;
         $shootTypes = $user->getState('shootTypes');
         $selectedModels = $user->getState("selectedModels");
 
-        //获取拍摄数量和
-        $goodsList = $user->getState("goodsList");
-		$goodsCounts=0;
-        foreach ($goodsList as $goods)
-            if ($goods->shoot_type == 1 || $goods->shoot_type == 2 || $goods->shoot_type == 5)
-        	    $goodsCounts += (int)$goods->count;
+	    if (isset($_POST['Form']))
+	    {
+	        foreach ($_POST['Form'] as $form)
+	        {
+	            $goods = (object)$form;
+	            if (empty($shootTypes) || !isset($shootTypes[$goods->shoot_type]))
+    	                $shootTypes[$goods->shoot_type] = $shootType[$goods->shoot_type]['name'];
 
-        if ( !$save && (isset($shootTypes[1]) || isset($shootTypes[2]) || isset($shootTypes[5])) && $goodsCounts >= 30)
-            $this->redirect(array("order/selectModels"));
+	            if ($goods->shoot_type == 1 || $goods->shoot_type == 2 || $goods->shoot_type == 5)
+    	                $this->redirect(array("order/selectModels"));
+	        }
+	    }
+
         elseif ($selectedModels === null)
             $user->setState("selectedModels", array());
 
@@ -611,4 +347,253 @@ class OrderController extends Controller
         return $styles->save();
 	}
 
+	public function actionView($id = null)
+	{
+	    if ($id === null)
+	    {
+	        $this->error("参数错误");
+	        $this->redirect(array("homePage/index"));
+	    }
+	    $this->layout = false;
+
+	    // 获取数据库信息
+	    $order = Order::model()->findByPk($id);
+	    $goodsList = OrderGoods::model()->findAllByAttributes(array('order_id'=>$order->id));
+	    $models = OrderModel::model()->findAllByAttributes(array('order_id'=>$order->id));
+	    $shootType = ShootType::model()->findAll();
+	    $style = Style::model()->findAll();
+
+	    // 拆解数据对象
+	    $season = array();
+	    $season[0] = "不限";
+	    $season[1] = "春秋";
+	    $season[2] = "夏";
+	    $season[3] = "冬";
+
+	    $sex = array();
+	    $sex[0] = "不限";
+	    $sex[1] = "男";
+	    $sex[2] = "女";
+	    $sex[3] = "情侣";
+
+	    $result = array();
+	    foreach ($shootType as $type)
+	    {
+	        $result[$type->id] = $type->name;
+	    }
+	    $shootType = $result;
+
+	    $result = array();
+	    foreach ($style as $style)
+	    {
+	        $result[$style->id] = $style->name;
+	    }
+	    $result[0] = "不限";
+	    $style = $result;
+
+	    $result = array();
+	    foreach ($models as $model)
+	    {
+	        $result[] = $model->Info;
+	    }
+	    $models = $result;
+
+	    $order->shoot_notice = unserialize($order->shoot_notice);
+	    $order->width = unserialize($order->width);
+
+	    $this->render("view", array(
+	            'order'=>$order,
+	            'goodsList'=>$goodsList,
+	            'models'=>$models,
+	            'season'=>$season,
+	            'sex'=>$sex,
+	            'shootType'=>$shootType,
+	            'style'=>$style,
+	            'models'=>$models,
+	            'shootNotice'=>Order::getShootNotice()
+	    ));
+	}
+
+	public function actionAgreement()
+	{
+// 	    $this->layout = false;
+
+	    $this->render('agreement');
+	}
+
+	public function actionGoodsEdit()
+	{
+	    $user = Yii::app()->user;
+
+	    // 获取session中的数据
+        $goodsList = $user->getState("goodsList");
+        $goodsList = null;
+
+	    if ($id !== null && $goodsList !== null)
+	    {
+	        $_POST['count'] = 1;
+            $goods = (object)$goodsList[$id];
+	    }
+	    else
+	        $goods = new StdClass;
+
+	    $goodsType = GoodsType::getType();
+
+        if (isset($_POST['Form']))
+        {
+
+            foreach ($_POST['Form'] as $form)
+            {
+
+                $form['count'] = trim($form['count']);
+                if (empty($form['count'])) continue;
+                if (empty($form['id']))
+                {
+                    $id = $user->getState("lastGoodsId");
+                    if ($id === null) $id = 1;
+                    $user->setState("lastGoodsId", $id + 1);
+                }
+                else
+                    $id = $form['id'];
+
+                $goods = (object)$form;
+                if (empty($goods->id))
+                    $goods->id = $id;
+
+                if ($goods->type != 0)
+                    $goods->type_name = $goodsType[$goods->type]->name;
+                else $goods->type_name = $form[type_name];
+
+                switch ($goods->season)
+                {
+                    case 0:
+                        $goods->season = '不限';
+                        break;
+                    case 1:
+                        $goods->season = '春秋';
+                        break;
+                    case 2:
+                        $goods->season = '夏';
+                        break;
+                    case 3:
+                        $goods->season = '冬';
+                        break;
+                }
+
+                switch ($goods->sex)
+                {
+                    case 0:
+                        $goods->sex = '不限';
+                        break;
+                    case 1:
+                        $goods->sex = '男';
+                        break;
+                    case 2:
+                        $goods->sex = '女';
+                        break;
+                    case 3:
+                        $goods->sex = '情侣';
+                        break;
+                }
+
+                // 检查订单中存在的拍摄类型
+                $shootTypes = $user->getState('shootTypes');
+                // 获取所有拍摄类型
+                $shootType = ShootType::getType(true);
+                // 保存拍摄类型
+                if (empty($shootTypes) || !isset($shootTypes[$goods->shoot_type]))
+                    $shootTypes[$goods->shoot_type] = $shootType[$goods->shoot_type]['name'];
+
+                $styles = $user->getState('modelStyles');
+                if ($goods->style == 0)
+                {
+                    $styles = array();
+                    $styles[0] = 0;
+                }
+                else if (empty($styles) || ($goods->style != 0 && !isset($styles[$goods->type])) )
+                {
+                    $styles[$goods->type] = $goods->type;
+                }
+
+                // 保存到session
+                $goodsList[$id] = $goods;
+                $user->setState("shootTypes", $shootTypes);
+                $user->setState("modelStyles", $styles);
+                $user->setState("goodsList", $goodsList);
+
+            }
+
+        	$this->success("添加成功");
+        	$this->redirect(array("order/goodsList"));
+        }
+
+        $sql = "SELECT * FROM {{shoot_type}}";
+        $command = Yii::app()->db->createCommand($sql);
+        $shootType = $command->queryAll();
+
+	    $styles = Style::model()->findAll();
+        foreach ($styles as $key=>$style)
+        {
+            $styles[$key] = $style->attributes;
+        }
+
+	    $this->render("goodsEdit", array(
+	        'id'=>$id,
+	        'goods'=>$goods,
+	        'goodsType'=>$goodsType,
+        	'shootType'=>$shootType,
+	    	'styles'=>$styles,
+	    ));
+	}
+
+	public function actionGoodsList()
+	{
+	    $user = Yii::app()->user;
+	    $shootType = ShootType::model()->findAll();
+	    $goodsList = $user->getState("goodsList");
+
+	    $this->render('goodsList',array('shootType'=>$shootType,'goodsList'=>$goodsList));
+	}
+
+	public function actionShootStyle()
+	{
+	    $user = Yii::app()->user;
+        $shootTypes = $user->getState('shootTypes');
+        $selectedModels = $user->getState("selectedModels");
+
+	    if (isset($_POST['Form']))
+	    {
+	        foreach ($_POST['Form'] as $form)
+	        {
+	            $goods = (object)$form;
+	            if (empty($shootTypes) || !isset($shootTypes[$goods->shoot_type]))
+    	                $shootTypes[$goods->shoot_type] = $shootType[$goods->shoot_type]['name'];
+
+// 	            if ($goods->shoot_type == 1 || $goods->shoot_type == 2 || $goods->shoot_type == 5)
+//     	                $this->redirect(array("order/selectModels"));
+
+	            $user->setState("shootTypes", $shootTypes);
+	        }
+	    }
+	    $selectedShootType = $user->getState("shootTypes");
+// 	    CVarDumper::dump($selectedShootType,10,true);
+// 	    Yii::app()->end();
+	    $this->render('shootStyle',array("selectedShootType"=>$selectedShootType));
+	}
+
+	public function actionPic()
+	{
+	    $a[]=array();
+	    $a[1]="uploads/1.jpg";
+	    $a[2]="uploads/2.jpg";
+	    $a[3]="uploads/3.jpg";
+	    $a[4]="uploads/4.jpg";
+	    $a[5]="uploads/5.jpg";
+	    $a[6]="uploads/6.jpg";
+
+	    for ($i=1;$i<=6;$i++)
+	    {
+	        echo "<img src='".$a[$i]. "'/>";
+	    }
+	}
 }

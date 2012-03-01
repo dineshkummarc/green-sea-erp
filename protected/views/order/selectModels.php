@@ -1,4 +1,4 @@
-<div class="step">添加拍摄物品</div>
+`<div class="step">添加拍摄物品</div>
 <div class="step active">填写拍摄要求</div>
 <div class="step">选择付款方式</div>
 <div class="step">生成订单</div>

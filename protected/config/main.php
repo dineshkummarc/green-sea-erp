@@ -9,7 +9,7 @@ return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'绿浪视觉-客户管理中心',
 
-    'defaultController'=>'order',
+    'defaultController'=>'homePage',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -104,5 +104,6 @@ return array(
     	'upload_url'=>'uploads/',
 	    'sitemap'=>require("sitemap.php"),
 	    'menu'=>require("menu.php"),
+        'orderType'=>require("orderType.php"),
 	),
 );

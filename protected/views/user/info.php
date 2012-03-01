@@ -19,7 +19,7 @@
         <label>我的积分：</label><span><?php echo $info->score; ?></span> <a href="<?php echo $this->createUrl("user/score"); ?>">积分详情</a>
     </div>
 </div>
-<div class="title"><a href="<?php echo $this->createUrl("user/receive"); ?>">添加、修改</a>收货信息</div>
+<div class="title"><a href="<?php echo $this->createUrl("user/receive"); ?>">修改</a>收货信息</div>
 <div class="info">
     <?php if ($info->ReceiveAddress !== null): ?>
     <div>

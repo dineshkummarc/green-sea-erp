@@ -6,7 +6,7 @@ function orderInit()
         if ($this.val() == 0)
         {
             var input = $("<input type='text' />")
-                .attr("name", "Form["+num+"][type_name]")
+                .attr("name", "Form[1][type_name]")
                 .attr("tip", "请填写")
                 .addClass("input")
                 .width(100)
@@ -42,7 +42,8 @@ function orderInit()
 
 function validateGoods()
 {
-    var type = $("#goods-type");
+	var checked = true;
+    var type = $(".change-goods-type");
     if (type.val() == 0)
     {
         var type = type.next();
@@ -54,15 +55,19 @@ function validateGoods()
         }
     }
     
-    var count = $("#goods-count");
-    var numRegexp = /^\d{1,}$/;
-    if (count.val() == '' || !numRegexp.test(count.val()) || count.val() < 1)
-    {
-        alert("请填写正确的拍摄数量");
-        count.select();
-        return false;
-    }
-    return true;
+    var numRegexp = /^\d+$/;
+    $(".check-count").each(function (k,v) {
+    	v = $(v);
+    	if (v.val() == '' || !numRegexp.test(v.val()) || v.val() < 1)
+        {
+            alert("请填写正确的拍摄数量");
+            v.select();
+            checked = false;
+            return false;
+        }
+    });
+    
+    return checked;
 }
 
 function validateModel()

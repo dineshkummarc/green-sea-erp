@@ -1,6 +1,27 @@
 <?php
 return array(
     array(
+        "text"=>"首页",
+        "active"=>"homePage",
+        "url"=>"homePage/index",
+    ),
+    array(
+        "text"=>"我的订单",
+        "active"=>"order",
+    	"child"=>array(
+            array(
+                "text"=>"创建新订单",
+                "active"=>"add",
+                "url"=>"order/agreement",
+            ),
+            array(
+                "text"=>"订单列表",
+                "active"=>"index",
+                "url"=>"order/index",
+            ),
+        ),
+    ),
+    array(
         "text"=>"我的资料",
         "active"=>"user",
         "child"=>array(
@@ -8,16 +29,6 @@ return array(
                 "text"=>"查看资料",
                 "active"=>"info",
                 "url"=>"user/info",
-            ),
-            array(
-                "text"=>"修改资料",
-                "active"=>"editInfo",
-                "url"=>"user/editInfo",
-            ),
-            array(
-                "text"=>"收货地址",
-                "active"=>"receive",
-                "url"=>"user/receive",
             ),
             array(
                 "text"=>"修改密码",
@@ -29,43 +40,11 @@ return array(
                 "active"=>"score",
                 "url"=>"user/score",
             ),
-            array(
-                "text"=>"积分说明",
-                "active"=>"scoreExplain",
-                "url"=>"user/scoreExplain",
-            ),
-            array(
-                "text"=>"意见反馈",
-                "active"=>"contact",
-                "url"=>"user/contact",
-            ),
-            /*array(
-                "text"=>"作品下载",
-                "active"=>"download",
-                "class"=>"no-top",
-                "url"=>"user/dowload",
-            ),*/
         ),
     ),
     array(
-        "text"=>"我的订单",
-        "active"=>"order",
-    	"child"=>array(
-            array(
-                "text"=>"添加新订单",
-                "active"=>"add",
-                "url"=>"order/goodsEdit",
-            ),
-            array(
-                "text"=>"订单列表",
-                "active"=>"index",
-                "url"=>"order/index",
-            ),
-            /*array(
-                "text"=>"订单详情",
-                "active"=>"show",
-                "url"=>"order/show",
-            ),*/
-        ),
+        "text"=>"请您建议",
+        "active"=>"contact",
+        "url"=>"user/contact",
     ),
 );

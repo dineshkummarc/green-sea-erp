@@ -1,5 +1,9 @@
 <?php
 return array(
+    "homePage"=>array(
+        "text"=>"首页",
+        "index"=>"首页",
+    ),
     "user"=>array(
         "text"=>"我的资料",
         "info"=>"查看资料",
@@ -8,7 +12,7 @@ return array(
         "changepwd"=>"修改密码",
         "score"=>"我的积分",
         "scoreexplain"=>"积分说明",
-        "contact"=>"意见反馈",
+        "contact"=>"请您建议",
     	"download"=>"作品下载",
         "adduser"=>"添加新客户",
     	'list'=>'客户列表',
@@ -21,6 +25,8 @@ return array(
     ),
     "order"=>array(
         "text"=>"我的订单",
+        "agreement"=>"拍摄协议",
+        "chbase"=>"选择基地",
         "index"=>"订单列表",
         "show"=>"订单详情",
         "add"=>"添加新订单",

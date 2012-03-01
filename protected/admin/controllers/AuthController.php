@@ -63,7 +63,7 @@ class AuthController extends Controller
                 $_POST['Form']['password'] = md5(trim($_POST['Form']['password']));
 
             $admin->attributes = $_POST['Form'];
-            if (empty($admin->city_id)) $admin->city_id = 178;
+            if (empty($admin->city_id)) $admin->city_id = 1;
             $admin->update_time = Yii::app()->params['timestamp'];
             if ($admin->save())
                 $this->success($message, array('navTabId'=>'list'));
@@ -76,9 +76,9 @@ class AuthController extends Controller
         }
 
         $roles = AdminRole::model()->cache()->findAll();
-        $cities = array();
+        $bases = ShootBase::model()->findAll();
 
-        $this->render('admin_edit', array('admin'=>$admin, 'roles'=>$roles, 'cities'=>$cities));
+        $this->render('admin_edit', array('admin'=>$admin, 'roles'=>$roles, 'bases'=>$bases));
     }
 
 	/**
