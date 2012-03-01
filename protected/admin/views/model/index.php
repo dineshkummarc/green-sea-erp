@@ -50,7 +50,8 @@
 		        <td><?php echo $model->level; ?></td>
 		        <td align="center">
 		            <a href="<?php echo $this->createUrl("model/edit", array('id'=>$model->id)); ?>" target="dialog" width="400" height="500" mask="true" >修改</a> |
-		            <a href="<?php echo $this->createUrl("model/del", array('id'=>$model->id)); ?>" target="ajaxTodo" title="删除" >删除</a>
+		            <a href="<?php echo $this->createUrl("model/del", array('id'=>$model->id)); ?>" target="ajaxTodo" title="删除" >删除</a> |
+		            <a href="<?php echo $this->createUrl("modelschedule/index",array('model_id'=>$model->id,'scheduled'=>1));?>" target="navTab" title="档期安排"  rel="modelschedule-index">档期安排</a>
 		        </td>
 		    </tr>
 		    <?php endforeach; endif; ?>
