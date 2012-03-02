@@ -580,20 +580,4 @@ class OrderController extends Controller
 // 	    Yii::app()->end();
 	    $this->render('shootStyle',array("selectedShootType"=>$selectedShootType));
 	}
-
-	public function actionPic()
-	{
-	    $a[]=array();
-	    $a[1]="uploads/1.jpg";
-	    $a[2]="uploads/2.jpg";
-	    $a[3]="uploads/3.jpg";
-	    $a[4]="uploads/4.jpg";
-	    $a[5]="uploads/5.jpg";
-	    $a[6]="uploads/6.jpg";
-
-	    for ($i=1;$i<=6;$i++)
-	    {
-	        echo "<img src='".$a[$i]. "'/>";
-	    }
-	}
 }
